@@ -35,6 +35,11 @@ import { DailyUpdatesPage } from './pages/teacher/DailyUpdatesPage';
 import { ParentDailyUpdatesPage } from './pages/parent/ParentDailyUpdatesPage';
 import { FileManagerPage } from './pages/admin/FileManagerPage';
 import { AuditLogsPage } from './pages/admin/AuditLogsPage';
+import { ParentPortionCompletionPage } from './pages/parent/ParentPortionCompletionPage';
+import { ParentTimetablePage } from './pages/parent/ParentTimetablePage';
+import { ParentCalendarPage } from './pages/parent/ParentCalendarPage';
+import { ParentAnnouncementsPage } from './pages/parent/ParentAnnouncementsPage';
+import { ParentChangePasswordPage } from './pages/parent/ParentChangePasswordPage';
 import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
@@ -139,13 +144,18 @@ export const App: React.FC = () => {
               <Route path="/parent/profile" element={<ParentProfilePage />} />
               <Route path="/parent/attendance" element={<ParentAttendancePage />} />
               <Route path="/parent/leaves" element={<ParentLeavesPage />} />
-              <Route path="/parent/test-papers" element={<ParentTestsPage />} />
               <Route path="/parent/tuition-reach" element={<ParentTuitionReachPage />} />
               <Route path="/parent/marks" element={<ParentMarksPage />} />
               <Route path="/parent/scorecards" element={<ParentMarksPage />} />
-              <Route path="/parent/performance-graphs" element={<ParentPerformanceGraphsPage />} />
+              <Route path="/parent/test-papers" element={<ParentTestsPage />} />
               <Route path="/parent/answer-sheets" element={<ParentMarksPage />} />
+              <Route path="/parent/performance-graphs" element={<ParentPerformanceGraphsPage />} />
+              <Route path="/parent/portion-completion" element={<ParentPortionCompletionPage />} />
               <Route path="/parent/daily-updates" element={<ParentDailyUpdatesPage />} />
+              <Route path="/parent/timetable" element={<ParentTimetablePage />} />
+              <Route path="/parent/calendar" element={<ParentCalendarPage />} />
+              <Route path="/parent/announcements" element={<ParentAnnouncementsPage />} />
+              <Route path="/parent/change-password" element={<ParentChangePasswordPage />} />
               <Route path="/parent/*" element={<ParentDashboard />} />
             </Route>
           </Route>
