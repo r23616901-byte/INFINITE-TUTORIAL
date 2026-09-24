@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { StatCard } from '../../components/common/StatCard';
@@ -80,6 +81,8 @@ const POPULAR_CHAPTERS: Record<string, string[]> = {
 export const TestManagementPage: React.FC = () => {
   const { user } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
+  const location = useLocation();
+  const isPaperUploadView = location.pathname.includes('test-papers');
 
   // Data State
   const [tests, setTests] = useState<TestItem[]>([]);
@@ -416,14 +419,16 @@ export const TestManagementPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                Test Management System
+                {isPaperUploadView ? 'Upload & Manage Test Papers' : 'Test Management System'}
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                QUESTION PAPERS & EXAMS
+                {isPaperUploadView ? 'OFFICIAL QUESTION PAPERS VAULT' : 'QUESTION PAPERS & EXAMS'}
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Create tests using the sequential workflow (Class &rarr; Board &rarr; Subject &rarr; Chapter &rarr; Test Type &rarr; Details &rarr; Upload Paper &rarr; Save).
+              {isPaperUploadView
+                ? 'Upload, preview, and replace official test papers and solutions (PDF or Images) for Class 10 CBSE & State Board examinations.'
+                : 'Create tests using the sequential workflow (Class → Board → Subject → Chapter → Test Type → Details → Upload Paper → Save).'}
             </p>
           </div>
         </div>

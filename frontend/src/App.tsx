@@ -40,6 +40,10 @@ import { ParentTimetablePage } from './pages/parent/ParentTimetablePage';
 import { ParentCalendarPage } from './pages/parent/ParentCalendarPage';
 import { ParentAnnouncementsPage } from './pages/parent/ParentAnnouncementsPage';
 import { ParentChangePasswordPage } from './pages/parent/ParentChangePasswordPage';
+import { TeacherPortionProgressPage } from './pages/teacher/TeacherPortionProgressPage';
+import { TeacherTimetablePage } from './pages/teacher/TeacherTimetablePage';
+import { TeacherAnnouncementsPage } from './pages/teacher/TeacherAnnouncementsPage';
+import { TeacherResetPasswordPage } from './pages/teacher/TeacherResetPasswordPage';
 import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
@@ -133,6 +137,10 @@ export const App: React.FC = () => {
               <Route path="/teacher/performance" element={<TeacherAnalyticsPage />} />
               <Route path="/teacher/analytics" element={<TeacherAnalyticsPage />} />
               <Route path="/teacher/daily-updates" element={<DailyUpdatesPage />} />
+              <Route path="/teacher/syllabus-progress" element={<TeacherPortionProgressPage />} />
+              <Route path="/teacher/timetable" element={<TeacherTimetablePage />} />
+              <Route path="/teacher/announcements" element={<TeacherAnnouncementsPage />} />
+              <Route path="/teacher/reset-student-password" element={<TeacherResetPasswordPage />} />
               <Route path="/teacher/*" element={<TeacherDashboard />} />
             </Route>
           </Route>
