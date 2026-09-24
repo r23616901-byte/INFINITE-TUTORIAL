@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
-import { AppLayout } from './layouts/AppLayout';
 import { AdminLayout } from './layouts/AdminLayout';
 import { TeacherLayout } from './layouts/TeacherLayout';
 import { ParentLayout } from './layouts/ParentLayout';
@@ -38,22 +37,23 @@ import { FileManagerPage } from './pages/admin/FileManagerPage';
 import { AuditLogsPage } from './pages/admin/AuditLogsPage';
 import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
+import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
 
-// Smart Home / Root redirector based on authentication status & role
-const RootRedirect: React.FC = () => {
+// Smart Home / Root route: Shows RoleSelectionPage for visitors, or redirects to dashboard if authenticated
+const RootRoute: React.FC = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return <LoadingScreen message="Loading Infinite Tutorial..." subMessage="Checking your portal permissions and records" />;
   }
 
-  if (!isAuthenticated || !user) {
-    return <Navigate to="/login" replace />;
+  if (isAuthenticated && user) {
+    if (user.role === 'ADMIN') return <Navigate to="/admin" replace />;
+    if (user.role === 'TEACHER') return <Navigate to="/teacher" replace />;
+    return <Navigate to="/parent" replace />;
   }
 
-  if (user.role === 'ADMIN') return <Navigate to="/admin" replace />;
-  if (user.role === 'TEACHER') return <Navigate to="/teacher" replace />;
-  return <Navigate to="/parent" replace />;
+  return <RoleSelectionPage />;
 };
 
 // Login Route wrapper (redirects logged-in user away from /login)
@@ -75,11 +75,13 @@ export const App: React.FC = () => {
       <LoadingProvider>
         <BrowserRouter>
           <Routes>
-            {/* Public & Login Route with standard AppLayout */}
-            <Route element={<AppLayout />}>
-              <Route path="/" element={<RootRedirect />} />
-              <Route path="/login" element={<LoginRoute />} />
-            </Route>
+            {/* Public Landing & Role Selection Routes */}
+            <Route path="/" element={<RootRoute />} />
+            <Route path="/select-role" element={<RootRoute />} />
+
+            {/* Role-Specific & Standard Login Routes */}
+            <Route path="/login" element={<LoginRoute />} />
+            <Route path="/login/:role" element={<LoginRoute />} />
 
             {/* Protected Admin Routes with AdminLayout */}
             <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
