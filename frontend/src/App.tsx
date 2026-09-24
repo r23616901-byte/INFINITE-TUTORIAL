@@ -44,6 +44,11 @@ import { TeacherPortionProgressPage } from './pages/teacher/TeacherPortionProgre
 import { TeacherTimetablePage } from './pages/teacher/TeacherTimetablePage';
 import { TeacherAnnouncementsPage } from './pages/teacher/TeacherAnnouncementsPage';
 import { TeacherResetPasswordPage } from './pages/teacher/TeacherResetPasswordPage';
+import { AdminTimetablePage } from './pages/admin/AdminTimetablePage';
+import { AdminPortionCompletionPage } from './pages/admin/AdminPortionCompletionPage';
+import { AdminAnnouncementsCalendarPage } from './pages/admin/AdminAnnouncementsCalendarPage';
+import { AdminPasswordManagementPage } from './pages/admin/AdminPasswordManagementPage';
+import { AdminSettingsSecurityPage } from './pages/admin/AdminSettingsSecurityPage';
 import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
@@ -106,15 +111,20 @@ export const App: React.FC = () => {
                 <Route path="/admin/tests" element={<TestManagementPage />} />
                 <Route path="/admin/batches" element={<AdminBatchesPage />} />
                 <Route path="/admin/subjects" element={<AdminSubjectsPage />} />
+                <Route path="/admin/timetable" element={<AdminTimetablePage />} />
+                <Route path="/admin/portion-completion" element={<AdminPortionCompletionPage />} />
                 <Route path="/admin/home-reach" element={<AdminHomeReachPage />} />
                 <Route path="/admin/marks" element={<MarksEntryPage />} />
                 <Route path="/admin/answer-sheets" element={<MarksEntryPage />} />
                 <Route path="/admin/scorecards" element={<TeacherScorecardsPage />} />
                 <Route path="/admin/performance" element={<TeacherAnalyticsPage />} />
                 <Route path="/admin/analytics" element={<TeacherAnalyticsPage />} />
+                <Route path="/admin/announcements" element={<AdminAnnouncementsCalendarPage />} />
                 <Route path="/admin/daily-updates" element={<DailyUpdatesPage />} />
                 <Route path="/admin/files" element={<FileManagerPage />} />
                 <Route path="/admin/audit-logs" element={<AuditLogsPage />} />
+                <Route path="/admin/passwords" element={<AdminPasswordManagementPage />} />
+                <Route path="/admin/settings" element={<AdminSettingsSecurityPage />} />
                 <Route path="/admin/*" element={<AdminDashboard />} />
               </Route>
             </Route>
