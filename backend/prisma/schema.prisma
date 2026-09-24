@@ -1,0 +1,465 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ------------------------------------------------------
+// USER ROLES
+// ------------------------------------------------------
+enum Role {
+  ADMIN
+  TEACHER
+  PARENT
+}
+
+// ------------------------------------------------------
+// STUDENT ENROLLMENT STATUS
+// ------------------------------------------------------
+enum StudentStatus {
+  ACTIVE
+  INACTIVE
+  TRANSFERRED
+  COMPLETED
+  SUSPENDED
+}
+
+// ------------------------------------------------------
+// CENTRAL USER / ACCOUNT MODEL
+// ------------------------------------------------------
+model User {
+  id                 String    @id @default(uuid())
+  phone              String    @unique
+  email              String?   @unique
+  passwordHash       String
+  role               Role      @default(PARENT)
+  isActive           Boolean   @default(true)
+  mustChangePassword Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  // 1-to-1 relations based on role
+  admin              Admin?
+  teacher            Teacher?
+  parent             Parent?
+
+  @@index([phone])
+  @@index([role])
+}
+
+// ------------------------------------------------------
+// ADMIN PROFILE
+// ------------------------------------------------------
+model Admin {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  phone     String
+  email     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ------------------------------------------------------
+// TEACHER PROFILE
+// ------------------------------------------------------
+model Teacher {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  phone     String
+  email     String?
+  status    String   @default("ACTIVE")
+  batches   Batch[]  // Assigned teaching batches
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ------------------------------------------------------
+// PARENT PROFILE
+// ------------------------------------------------------
+model Parent {
+  id             String    @id @default(uuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  phone          String
+  alternatePhone String?
+  address        String?
+  students       Student[] // Linked enrolled children/students
+  leaveRequests  LeaveRequest[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([phone])
+}
+
+// ------------------------------------------------------
+// ACADEMIC CLASS / GRADE MODEL
+// ------------------------------------------------------
+model Class {
+  id          String    @id @default(uuid())
+  name        String    @unique // e.g. "Class 10", "Class 9"
+  grade       Int       // 10, 9
+  description String?
+  students    Student[]
+  batches     Batch[]
+  tests       Test[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ------------------------------------------------------
+// ACADEMIC BOARD MODEL
+// ------------------------------------------------------
+model Board {
+  id        String    @id @default(uuid())
+  name      String    @unique // e.g. "CBSE", "Karnataka State Board"
+  code      String    @unique // "CBSE", "KSB"
+  students  Student[]
+  batches   Batch[]
+  subjects  Subject[]
+  tests     Test[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// ------------------------------------------------------
+// ACADEMIC SUBJECT MODEL
+// ------------------------------------------------------
+model Subject {
+  id        String   @id @default(uuid())
+  name      String   // e.g. "Mathematics", "Science - Physics"
+  code      String   // "MATH10"
+  boardId   String?
+  board     Board?   @relation(fields: [boardId], references: [id])
+  tests     Test[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId])
+}
+
+// ------------------------------------------------------
+// BATCH MODEL
+// ------------------------------------------------------
+model Batch {
+  id           String        @id @default(uuid())
+  name         String        // e.g. "10-A Morning", "10-B Evening"
+  timing       String        // e.g. "07:00 AM - 09:30 AM"
+  session      String        @default("MORNING") // "MORNING", "EVENING"
+  startTime    String?       // "07:00 AM"
+  endTime      String?       // "08:30 AM"
+  days         String        @default("Monday-Saturday")
+  status       String        @default("ACTIVE")  // "ACTIVE", "INACTIVE"
+  classId      String
+  class        Class         @relation(fields: [classId], references: [id])
+  boardId      String
+  board        Board         @relation(fields: [boardId], references: [id])
+  academicYear String        @default("2024-2025")
+  students     Student[]
+  teachers     Teacher[]
+  attendances  Attendance[]
+  homeReachRecords HomeReachRecord[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([classId])
+  @@index([boardId])
+}
+
+// ------------------------------------------------------
+// UPLOADED FILE / PHOTO MODEL
+// ------------------------------------------------------
+model File {
+  id         String   @id @default(uuid())
+  fileName   String
+  fileUrl    String
+  fileType   String?
+  fileSize   Int?
+  uploadedBy String?
+  student    Student?
+  createdAt  DateTime @default(now())
+}
+
+// ------------------------------------------------------
+// STUDENT MODEL
+// ------------------------------------------------------
+model Student {
+  id           String        @id @default(uuid())
+  studentId    String        @unique // e.g. IT10025
+  name         String
+  photoId      String?       @unique
+  photo        File?         @relation(fields: [photoId], references: [id])
+  photoUrl     String?       // Direct image URL or placeholder
+  school       String        // e.g. ABC Public School
+  parentId     String
+  parent       Parent        @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  parentName   String?       // Denormalized for fast filtering
+  parentPhone  String?       // Denormalized for fast filtering
+  studentPhone String?
+  dateOfBirth  DateTime
+  classId      String
+  class        Class         @relation(fields: [classId], references: [id])
+  boardId      String
+  board        Board         @relation(fields: [boardId], references: [id])
+  batchId      String
+  batch        Batch         @relation(fields: [batchId], references: [id])
+  academicYear String        @default("2024-2025")
+  admissionDate DateTime     @default(now())
+  status       StudentStatus @default(ACTIVE)
+  attendances  Attendance[]
+  leaveRequests LeaveRequest[]
+  homeReachRecords HomeReachRecord[]
+  marks        StudentMark[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([studentId])
+  @@index([name])
+  @@index([school])
+  @@index([parentId])
+  @@index([classId])
+  @@index([boardId])
+  @@index([batchId])
+  @@index([status])
+}
+
+// ------------------------------------------------------
+// ATTENDANCE ENUMS & MODEL
+// ------------------------------------------------------
+enum AttendanceSession {
+  MORNING
+  EVENING
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
+model Attendance {
+  id             String            @id @default(uuid())
+  date           DateTime
+  dateStr        String            // "YYYY-MM-DD"
+  day            String            // "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+  session        AttendanceSession @default(MORNING)
+  batchId        String
+  batch          Batch             @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  studentId      String
+  student        Student           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status         AttendanceStatus  @default(PRESENT)
+  recordedById   String?
+  recordedByName String?
+  remarks        String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@unique([studentId, dateStr, session, batchId])
+  @@index([batchId])
+  @@index([studentId])
+  @@index([dateStr])
+  @@index([status])
+}
+
+// ------------------------------------------------------
+// LEAVE REQUEST MODEL & ENUM
+// ------------------------------------------------------
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model LeaveRequest {
+  id             String      @id @default(uuid())
+  studentId      String
+  student        Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  parentId       String
+  parent         Parent      @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  fromDate       String      // YYYY-MM-DD
+  toDate         String      // YYYY-MM-DD
+  session        String      @default("BOTH") // "MORNING", "EVENING", "BOTH"
+  reason         String      // "Medical", "Family Function", "Examination", "Personal", "Travel", "Other"
+  description    String
+  attachmentUrl  String?
+  status         LeaveStatus @default(PENDING)
+  reviewedById   String?
+  reviewedByName String?
+  reviewNote     String?
+  reviewedAt     DateTime?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([studentId])
+  @@index([parentId])
+  @@index([status])
+}
+
+// ------------------------------------------------------
+// TEST MANAGEMENT & TEST TYPES
+// ------------------------------------------------------
+model TestType {
+  id        String   @id @default(uuid())
+  name      String   @unique // "Test 1", "Chapter-wise Test", etc.
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Test {
+  id              String   @id @default(uuid())
+  testId          String   @unique // "TST-10-MAT-001"
+  name            String
+  classId         String
+  class           Class    @relation(fields: [classId], references: [id])
+  boardId         String
+  board           Board    @relation(fields: [boardId], references: [id])
+  subjectId       String
+  subject         Subject  @relation(fields: [subjectId], references: [id])
+  chapter         String   // e.g. "Chapter 1: Real Numbers"
+  testType        String   // "Test 1", "Unit Test", etc.
+  date            DateTime
+  dateStr         String   // "YYYY-MM-DD"
+  maxMarks        Int      // 25, 40, 50, 100
+  duration        String   // "90 mins"
+  durationMinutes Int      @default(90)
+  testPaperUrl    String?  // Storage URL / identifier
+  testPaperName   String?  // Original file name
+  testPaperSize   Int?     // Size in bytes
+  mimeType        String?  // "application/pdf", "image/png", etc.
+  instructions    String?
+  createdById     String
+  createdByName   String
+  marks           StudentMark[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([classId])
+  @@index([boardId])
+  @@index([subjectId])
+  @@index([dateStr])
+  @@index([testType])
+}
+
+// ------------------------------------------------------
+// HOME-REACH / STUDENT REACHED HOME TRACKING (STEP 13 & 21)
+// ------------------------------------------------------
+enum HomeReachStatus {
+  IN_CLASS
+  LEFT_TUITION
+  REACHED_HOME
+  DELAYED
+}
+
+model HomeReachRecord {
+  id              String          @id @default(uuid())
+  studentId       String
+  student         Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentName     String
+  studentRoll     String
+  batchId         String
+  batch           Batch           @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  batchName       String
+  date            DateTime
+  dateStr         String          // "YYYY-MM-DD"
+  session         String          @default("EVENING") // "MORNING", "EVENING"
+  classEndedTime  String          // e.g. "7:30 PM"
+  classEndedAt    DateTime
+  reachedHomeTime String?         // e.g. "7:52 PM"
+  reachedHomeAt   DateTime?
+  transitMinutes  Int?            // e.g. 22
+  status          HomeReachStatus @default(LEFT_TUITION)
+  recordedById    String?
+  recordedByName  String?
+  confirmedById   String?
+  confirmedByName String?
+  notes           String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([studentId, dateStr, session, batchId])
+  @@index([studentId])
+  @@index([batchId])
+  @@index([dateStr])
+  @@index([status])
+}
+
+model HomeReachConfig {
+  id                      String   @id @default("default-config")
+  isEnabled               Boolean  @default(true)
+  alertThresholdMinutes   Int      @default(45)
+  autoNotifyParents       Boolean  @default(true)
+  allowParentSelfConfirm   Boolean  @default(true)
+  allowStudentSelfConfirm Boolean  @default(true)
+  updatedAt               DateTime @updatedAt
+}
+
+// ------------------------------------------------------
+// STUDENT MARKS & EVALUATED ANSWER SHEETS (STEPS 18, 19, 20)
+// ------------------------------------------------------
+model StudentMark {
+  id              String         @id @default(uuid())
+  studentId       String
+  student         Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentName     String
+  studentRoll     String
+  testId          String
+  test            Test           @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testCode        String         // e.g. "TST-10-PHY-003"
+  testName        String         // e.g. "Chapter 3 Test"
+  subjectId       String
+  subjectName     String         // e.g. "Physics"
+  maxMarks        Float          // e.g. 50
+  marksObtained   Float          // e.g. 42
+  percentage      Float          // e.g. 84.0
+  answerSheetUrl  String?        // Cloudinary secure URL or storage path
+  answerSheetName String?        // Original scanned file name
+  answerSheetSize Int?           // File size in bytes
+  mimeType        String?        // "application/pdf", "image/jpeg", "image/png"
+  isPublished     Boolean        @default(true) // Visible to parent/student
+  remarks         String?
+  createdById     String
+  createdByName   String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  auditLogs       MarkAuditLog[]
+
+  @@unique([studentId, testId])
+  @@index([studentId])
+  @@index([testId])
+  @@index([subjectName])
+  @@index([isPublished])
+}
+
+model MarkAuditLog {
+  id            String      @id @default(uuid())
+  markId        String
+  mark          StudentMark @relation(fields: [markId], references: [id], onDelete: Cascade)
+  oldMarks      Float
+  newMarks      Float
+  oldPercentage Float?
+  newPercentage Float?
+  changedById   String
+  changedByName String
+  changedByRole String      @default("TEACHER") // "TEACHER", "ADMIN"
+  changedAt     DateTime    @default(now())
+  reason        String      // e.g. "Rechecking"
+  createdAt     DateTime    @default(now())
+
+  @@index([markId])
+  @@index([changedById])
+  @@index([changedAt])
+}
+
+

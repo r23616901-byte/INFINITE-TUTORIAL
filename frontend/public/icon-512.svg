@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="pwaGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E40AF" />
+      <stop offset="45%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+    <linearGradient id="pwaAccent512" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#A78BFA" />
+    </linearGradient>
+    <filter id="pwaShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#312E81" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="120" fill="url(#pwaGrad512)" filter="url(#pwaShadow)" />
+  <rect x="8" y="8" width="496" height="496" rx="112" stroke="rgba(255,255,255,0.25)" stroke-width="6"/>
+
+  <g transform="translate(16, 16) scale(0.9375)">
+    <!-- Infinity Academic Loop -->
+    <path d="M165 260 C165 212, 212 176, 256 230 C300 284, 347 310, 347 260 C347 212, 300 176, 256 230 C212 284, 165 310, 165 260 Z" 
+          fill="none" 
+          stroke="url(#pwaAccent512)" 
+          stroke-width="32" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+
+    <!-- Graduation Cap -->
+    <path d="M256 120 L365 174 L256 228 L147 174 Z" fill="#FFFFFF"/>
+    <path d="M338 190 L360 265" stroke="#FDE047" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="360" cy="273" r="10" fill="#FDE047"/>
+    <path d="M202 195 V238 C202 270 310 270 310 238 V195" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+  </g>
+</svg>

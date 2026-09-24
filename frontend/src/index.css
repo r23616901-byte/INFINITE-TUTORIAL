@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
+}
+
+/* Safe area padding utilities for mobile wrappers, PWAs, iOS and Android */
+.pt-safe {
+  padding-top: max(1rem, var(--sat));
+}
+.pb-safe {
+  padding-bottom: max(1rem, var(--sab));
+}
+.mb-safe {
+  margin-bottom: var(--sab);
+}
+
+/* Touch targets: Ensure mobile friendly minimum 44px hit targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Print optimizations for scorecards and official reports */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+  }
+  .no-print, header, nav, footer, .mobile-bottom-nav {
+    display: none !important;
+  }
+}

@@ -1,0 +1,262 @@
+[
+  {
+    "id": "audit-1790230081042-967n3",
+    "userId": "admin-uuid-1111-2222-333344445555",
+    "userName": "Infinite System Administrator",
+    "userRole": "ADMIN",
+    "action": "STUDENT_PROFILE_EDIT",
+    "actionLabel": "Admin edited student profile",
+    "entity": "Student",
+    "entityId": "IT10025",
+    "entityName": "Ramya S (Class 10 CBSE)",
+    "oldValue": {
+      "name": "Rahul Kumar",
+      "parentName": "Mr. Ramesh Kumar",
+      "parentPhone": "6361085188",
+      "school": "ABC Public School",
+      "className": "Class 10",
+      "batchName": "10-A Morning"
+    },
+    "newValue": {
+      "name": "Ramya S",
+      "parentName": "Mr. Ramesh Kumar",
+      "parentPhone": "6361085188",
+      "school": "ABC Public School",
+      "className": "Class 10",
+      "batchName": "10-A Morning"
+    },
+    "reason": "Student profile update",
+    "ipAddress": "::1",
+    "device": "Chrome on Windows 11",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-24T06:08:01.043Z"
+  },
+  {
+    "id": "audit-1790178739500-00ihv",
+    "userId": "admin-super-01",
+    "userName": "Principal Director",
+    "userRole": "ADMIN",
+    "action": "STUDENT_PROFILE_EDIT",
+    "actionLabel": "Admin edited student profile",
+    "entity": "Student",
+    "entityId": "std-test-999",
+    "entityName": "Ananya Sen (Class 10)",
+    "oldValue": {
+      "status": "ACTIVE",
+      "school": "Delhi Public School"
+    },
+    "newValue": {
+      "status": "ACTIVE",
+      "school": "National Public School"
+    },
+    "reason": "School transfer request received from parents",
+    "ipAddress": "203.0.113.195",
+    "device": "Firefox on Windows 11",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0",
+    "timestamp": "2026-09-23T15:52:19.500Z"
+  },
+  {
+    "id": "audit-001",
+    "userId": "admin-1",
+    "userName": "Admin Rajesh Verma",
+    "userRole": "ADMIN",
+    "action": "STUDENT_PROFILE_EDIT",
+    "actionLabel": "Admin edited student profile",
+    "entity": "Student",
+    "entityId": "std-10-001",
+    "entityName": "Rahul Kumar (Class 10 CBSE)",
+    "oldValue": {
+      "parentPhone": "9876543210",
+      "address": "14 MG Road, Bengaluru",
+      "emergencyContact": "Uncle: 9811223344"
+    },
+    "newValue": {
+      "parentPhone": "9876543219",
+      "address": "42 Residency Road, Richmond Circle, Bengaluru",
+      "emergencyContact": "Mother: 9876543219"
+    },
+    "reason": "Parent address update and primary contact telephone correction",
+    "ipAddress": "192.168.1.10",
+    "device": "Chrome on Windows 11",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-18T10:15:30.000Z"
+  },
+  {
+    "id": "audit-002",
+    "userId": "tch-10-001",
+    "userName": "Teacher Priya Sharma",
+    "userRole": "TEACHER",
+    "action": "MARKS_ENTRY",
+    "actionLabel": "Teacher entered marks",
+    "entity": "Mark",
+    "entityId": "mrk-phy-101",
+    "entityName": "Physics Chapter 3 Test - Rahul Kumar",
+    "oldValue": null,
+    "newValue": {
+      "studentId": "std-10-001",
+      "studentName": "Rahul Kumar",
+      "subject": "Physics",
+      "testName": "Chapter 3 Motion Test",
+      "maxMarks": 50,
+      "marksObtained": 38,
+      "percentage": 76
+    },
+    "reason": "Initial official test evaluation submission",
+    "ipAddress": "192.168.1.45",
+    "device": "Firefox on macOS",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:124.0) Gecko/20100101 Firefox/124.0",
+    "timestamp": "2026-09-18T14:20:00.000Z"
+  },
+  {
+    "id": "audit-003",
+    "userId": "tch-10-001",
+    "userName": "Teacher Priya Sharma",
+    "userRole": "TEACHER",
+    "action": "MARKS_EDIT",
+    "actionLabel": "Teacher changed marks",
+    "entity": "Mark",
+    "entityId": "mrk-phy-101",
+    "entityName": "Physics Chapter 3 Test - Rahul Kumar",
+    "oldValue": {
+      "marksObtained": 38,
+      "percentage": 76
+    },
+    "newValue": {
+      "marksObtained": 42,
+      "percentage": 84
+    },
+    "reason": "Rechecking",
+    "ipAddress": "192.168.1.45",
+    "device": "Firefox on macOS",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:124.0) Gecko/20100101 Firefox/124.0",
+    "timestamp": "2026-09-18T17:30:00.000Z"
+  },
+  {
+    "id": "audit-004",
+    "userId": "admin-1",
+    "userName": "Admin Rajesh Verma",
+    "userRole": "ADMIN",
+    "action": "BATCH_CHANGE",
+    "actionLabel": "Admin changed batch",
+    "entity": "Batch",
+    "entityId": "std-10-001",
+    "entityName": "Rahul Kumar (Class 10 CBSE)",
+    "oldValue": {
+      "batchId": "batch-10-morning",
+      "batchName": "10A Morning",
+      "schedule": "07:00 AM - 09:00 AM"
+    },
+    "newValue": {
+      "batchId": "batch-10-evening",
+      "batchName": "10A Evening",
+      "schedule": "05:30 PM - 07:30 PM"
+    },
+    "reason": "Parent requested batch adjustment due to school extracurricular sports schedule",
+    "ipAddress": "192.168.1.10",
+    "device": "Chrome on Windows 11",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/128.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-19T09:00:00.000Z"
+  },
+  {
+    "id": "audit-005",
+    "userId": "admin-1",
+    "userName": "Admin Rajesh Verma",
+    "userRole": "ADMIN",
+    "action": "PASSWORD_RESET",
+    "actionLabel": "Admin reset password",
+    "entity": "User",
+    "entityId": "tch-10-002",
+    "entityName": "Teacher Anita Sharma (Mathematics)",
+    "oldValue": {
+      "mustChangePassword": false,
+      "credentialStatus": "ACTIVE"
+    },
+    "newValue": {
+      "mustChangePassword": true,
+      "credentialStatus": "TEMP_CREDENTIAL_ISSUED",
+      "resetMethod": "Administrative Override"
+    },
+    "reason": "Faculty member forgot password after phone replacement",
+    "ipAddress": "192.168.1.10",
+    "device": "Chrome on Windows 11",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/128.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-19T11:45:00.000Z"
+  },
+  {
+    "id": "audit-006",
+    "userId": "tch-10-001",
+    "userName": "Teacher Priya Sharma",
+    "userRole": "TEACHER",
+    "action": "ANSWER_SHEET_UPLOAD",
+    "actionLabel": "Teacher uploaded answer sheet",
+    "entity": "AnswerSheet",
+    "entityId": "ans-sheet-101",
+    "entityName": "Rahul Kumar - Physics Ch3 Evaluated Sheet",
+    "oldValue": null,
+    "newValue": {
+      "file_name": "rahul_kumar_physics_ch3_eval.pdf",
+      "file_url": "/uploads/answer-sheets/rahul_kumar_physics_ch3_eval_hq_1790178496464.pdf",
+      "file_size": 1450230,
+      "preservationTier": "HIGH_QUALITY_PRESERVED",
+      "isPublicToParent": true
+    },
+    "reason": "Official scanned and graded answer sheet published for parent review",
+    "ipAddress": "192.168.1.45",
+    "device": "Firefox on macOS",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:124.0) Gecko/20100101 Firefox/124.0",
+    "timestamp": "2026-09-19T15:10:00.000Z"
+  },
+  {
+    "id": "audit-007",
+    "userId": "admin-1",
+    "userName": "Admin Rajesh Verma",
+    "userRole": "ADMIN",
+    "action": "LEAVE_APPROVAL",
+    "actionLabel": "Admin approved leave",
+    "entity": "LeaveRequest",
+    "entityId": "leave-101",
+    "entityName": "Rahul Kumar - Leave for 18/09/2026",
+    "oldValue": {
+      "status": "PENDING",
+      "leaveDate": "2026-09-18",
+      "reason": "Medical"
+    },
+    "newValue": {
+      "status": "APPROVED",
+      "reviewedBy": "Admin Rajesh Verma",
+      "reviewedAt": "2026-09-18T08:30:00.000Z",
+      "adminNote": "Medical prescription attachment verified"
+    },
+    "reason": "Parent submitted valid doctor note; approved for full day exemption",
+    "ipAddress": "192.168.1.10",
+    "device": "Chrome on Windows 11",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/128.0.0.0 Safari/537.36",
+    "timestamp": "2026-09-18T08:30:00.000Z"
+  },
+  {
+    "id": "audit-008",
+    "userId": "tch-10-001",
+    "userName": "Teacher Priya Sharma",
+    "userRole": "TEACHER",
+    "action": "ATTENDANCE_CORRECTION",
+    "actionLabel": "Teacher corrected attendance",
+    "entity": "Attendance",
+    "entityId": "att-101-0918",
+    "entityName": "Rahul Kumar - Attendance 18/09/2026",
+    "oldValue": {
+      "status": "ABSENT",
+      "markedAt": "2026-09-18T07:15:00.000Z",
+      "notes": "Initial roll call missing"
+    },
+    "newValue": {
+      "status": "PRESENT",
+      "markedAt": "2026-09-18T09:15:00.000Z",
+      "notes": "Verified in-person presence in practical session"
+    },
+    "reason": "Student arrived 10 mins late due to bus traffic; verified present by faculty",
+    "ipAddress": "192.168.1.45",
+    "device": "Firefox on macOS",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.4; rv:124.0) Gecko/20100101 Firefox/124.0",
+    "timestamp": "2026-09-18T09:15:00.000Z"
+  }
+]
