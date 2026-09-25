@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Card } from '../../components/common/Card';
-import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
+import { Button } from '../../components/common/Button';
 import {
   CalendarCheck,
   Award,
-  FileText,
   FileCheck,
-  TrendingUp,
-  Bell,
-  Clock,
-  Calendar,
   User,
+  TrendingUp,
+  Calendar,
+  FileText,
+  BookOpen,
+  Megaphone,
+  Clock,
   CheckCircle2,
   AlertTriangle,
   KeyRound,
-  ExternalLink,
   X,
+  ChevronRight,
 } from 'lucide-react';
 import api from '../../services/api';
 
@@ -26,7 +26,7 @@ export const ParentDashboard: React.FC = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
 
-  // Modals for Quick Access items
+  // Modals for Quick Action items
   const [activeModal, setActiveModal] = useState<'ANNOUNCEMENTS' | 'TIMETABLE' | 'CALENDAR' | null>(null);
 
   // Password change modal state
@@ -74,28 +74,132 @@ export const ParentDashboard: React.FC = () => {
     }
   };
 
-  const studentPhotoUrl =
-    'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=300';
+  // ROW 2 — QUICK ACTION GRID (8 Square Icon Cards)
+  // 👤 Profile, 📊 Scorecard, 📈 Performance, 📅 Calendar, 📝 Leave, 📚 Homework, 📢 Notices, ⏰ Timetable
+  const quickActions = [
+    {
+      id: 'profile',
+      name: 'Profile',
+      icon: User,
+      color: 'text-[#2563EB]',
+      bgColor: 'bg-blue-50/80 group-hover:bg-blue-100',
+      action: () => navigate('/parent/profile'),
+    },
+    {
+      id: 'scorecard',
+      name: 'Scorecard',
+      icon: Award,
+      color: 'text-[#2563EB]',
+      bgColor: 'bg-blue-50/80 group-hover:bg-blue-100',
+      action: () => navigate('/parent/scorecards'),
+    },
+    {
+      id: 'performance',
+      name: 'Performance',
+      icon: TrendingUp,
+      color: 'text-[#0284C7]',
+      bgColor: 'bg-sky-50/80 group-hover:bg-sky-100',
+      action: () => navigate('/parent/performance-graphs'),
+    },
+    {
+      id: 'calendar',
+      name: 'Calendar',
+      icon: Calendar,
+      color: 'text-[#7C3AED]',
+      bgColor: 'bg-purple-50/80 group-hover:bg-purple-100',
+      action: () => setActiveModal('CALENDAR'),
+    },
+    {
+      id: 'leave',
+      name: 'Leave',
+      icon: FileText,
+      color: 'text-[#D97706]',
+      bgColor: 'bg-amber-50/80 group-hover:bg-amber-100',
+      action: () => navigate('/parent/leaves'),
+    },
+    {
+      id: 'homework',
+      name: 'Homework',
+      icon: BookOpen,
+      color: 'text-[#059669]',
+      bgColor: 'bg-emerald-50/80 group-hover:bg-emerald-100',
+      action: () => navigate('/parent/daily-updates'),
+    },
+    {
+      id: 'notices',
+      name: 'Notices',
+      icon: Megaphone,
+      color: 'text-[#EA580C]',
+      bgColor: 'bg-orange-50/80 group-hover:bg-orange-100',
+      action: () => setActiveModal('ANNOUNCEMENTS'),
+    },
+    {
+      id: 'timetable',
+      name: 'Timetable',
+      icon: Clock,
+      color: 'text-[#2563EB]',
+      bgColor: 'bg-blue-50/80 group-hover:bg-blue-100',
+      action: () => setActiveModal('TIMETABLE'),
+    },
+  ];
 
-  const quickAccessItems = [
-    { name: 'Profile', href: '/parent/profile', icon: <User className="w-5 h-5 text-[#155EEF]" />, bg: 'bg-[#EEF4FF] hover:bg-[#E0F8FF]', desc: 'Student info & enrollment' },
-    { name: 'Attendance', href: '/parent/attendance', icon: <CalendarCheck className="w-5 h-5 text-emerald-700" />, bg: 'bg-emerald-50 hover:bg-emerald-100/80', desc: 'Daily records & history' },
-    { name: 'Scorecard', href: '/parent/scorecards', icon: <Award className="w-5 h-5 text-[#155EEF]" />, bg: 'bg-[#EEF4FF] hover:bg-[#E0F8FF]', desc: '4-Subject term scorecard' },
-    { name: 'Daily Updates', href: '/parent/daily-updates', icon: <Bell className="w-5 h-5 text-[#F7931E]" />, bg: 'bg-[#FFF4E5] hover:bg-[#FFE8CC]', desc: 'Lessons & homework' },
-    { name: 'Performance', href: '/parent/performance-graphs', icon: <TrendingUp className="w-5 h-5 text-[#00B8F8]" />, bg: 'bg-[#E0F8FF] hover:bg-[#BAE6FD]', desc: 'Line & chapter bar graphs' },
-    { name: 'Leave Request', href: '/parent/leaves', icon: <FileCheck className="w-5 h-5 text-amber-700" />, bg: 'bg-amber-50 hover:bg-amber-100/80', desc: 'Submit & track leaves' },
-    { name: 'Announcements', action: () => setActiveModal('ANNOUNCEMENTS'), icon: <Bell className="w-5 h-5 text-[#F7931E]" />, bg: 'bg-[#FFF4E5] hover:bg-[#FFE8CC]', desc: 'Parent meetings & notices' },
-    { name: 'Timetable', action: () => setActiveModal('TIMETABLE'), icon: <Clock className="w-5 h-5 text-[#1677FF]" />, bg: 'bg-[#EEF4FF] hover:bg-[#E0F8FF]', desc: 'Weekly schedule & timing' },
-    { name: 'Calendar', action: () => setActiveModal('CALENDAR'), icon: <Calendar className="w-5 h-5 text-[#0B1F4D]" />, bg: 'bg-[#F5F8FC] hover:bg-[#EEF4FF]', desc: 'Monthly test & holidays' },
+  // ROW 3 — ACTIVITY FEED (Maximum 5 entries)
+  // 📢 Parent Meeting Scheduled, 📊 Physics Test: 42/50, 📝 Leave Approved, 📅 Holiday Tomorrow, 📚 New Homework Uploaded
+  const activityFeed = [
+    {
+      id: '1',
+      title: 'Parent Meeting Scheduled',
+      timestamp: 'Tomorrow, 10:00 AM',
+      icon: Megaphone,
+      iconColor: 'text-[#EA580C]',
+      iconBg: 'bg-orange-50',
+      action: () => setActiveModal('ANNOUNCEMENTS'),
+    },
+    {
+      id: '2',
+      title: 'Physics Test: 42/50',
+      timestamp: 'Yesterday',
+      icon: Award,
+      iconColor: 'text-[#2563EB]',
+      iconBg: 'bg-blue-50',
+      action: () => navigate('/parent/scorecards'),
+    },
+    {
+      id: '3',
+      title: 'Leave Approved',
+      timestamp: '18 Sep, 2:30 PM',
+      icon: CheckCircle2,
+      iconColor: 'text-[#10B981]',
+      iconBg: 'bg-emerald-50',
+      action: () => navigate('/parent/leaves'),
+    },
+    {
+      id: '4',
+      title: 'Holiday Tomorrow',
+      timestamp: '2 days ago',
+      icon: Calendar,
+      iconColor: 'text-[#7C3AED]',
+      iconBg: 'bg-purple-50',
+      action: () => setActiveModal('CALENDAR'),
+    },
+    {
+      id: '5',
+      title: 'New Homework Uploaded',
+      timestamp: '3 days ago',
+      icon: BookOpen,
+      iconColor: 'text-[#059669]',
+      iconBg: 'bg-emerald-50',
+      action: () => navigate('/parent/daily-updates'),
+    },
   ];
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-12">
+    <div className="space-y-7 max-w-6xl mx-auto">
       {/* Must Change Password Alert */}
       {user?.mustChangePassword && !showPasswordModal && (
-        <div className="bg-[#FFF4E5] border border-[#FDE68A] rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-950 text-xs">
+        <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-950 text-xs shadow-2xs">
           <div className="flex items-center gap-2.5">
-            <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+            <AlertTriangle className="w-5 h-5 text-[#F59E0B] flex-shrink-0" />
             <span>
               <strong>Action Required:</strong> You logged in with your initial password. Please set a custom permanent password.
             </span>
@@ -110,342 +214,276 @@ export const ParentDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* TOP STUDENT WELCOME HERO BANNER */}
-      <div className="bg-white rounded-2xl border border-[#DCE5F2] p-6 sm:p-7 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div className="flex items-center space-x-4">
-            {/* Student Photo */}
-            <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl bg-[#EEF4FF] border-2 border-[#DCE5F2] overflow-hidden shadow-xs flex-shrink-0">
-              <img
-                src={studentPhotoUrl}
-                alt="Rahul Kumar"
-                className="w-full h-full object-cover"
-              />
+      {/* ========================================================= */}
+      {/* ROW 1 — KEY METRICS (3 Compact KPI Cards) */}
+      {/* Attendance: 91.3% | Overall Score: 84.7% | Pending Leave: 1 */}
+      {/* Style: Equal width, Rounded 16px, Soft shadow, Icon on top, */}
+      {/* Large metric (36px / Bold), Small label (14px / Medium), Hover animation */}
+      {/* NO descriptions! */}
+      {/* ========================================================= */}
+      <section aria-label="Key Metrics">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+          {/* Card 1: Attendance */}
+          <div
+            onClick={() => navigate('/parent/attendance')}
+            className="bg-white rounded-2xl border border-[#E5E7EB] p-5 sm:p-6 shadow-xs hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-pointer group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#10B981] flex items-center justify-center transition-transform group-hover:scale-110">
+              <CalendarCheck className="w-5 h-5" />
             </div>
+            <div className="mt-4">
+              <div className="text-[36px] font-bold text-slate-900 tracking-tight leading-none group-hover:text-[#10B981] transition-colors">
+                91.3%
+              </div>
+              <div className="text-[14px] font-medium text-slate-500 mt-2">
+                Attendance
+              </div>
+            </div>
+          </div>
 
-            <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#155EEF] block mb-1">
-                Parent &amp; Student Portal
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-black text-[#0B1F4D] tracking-tight">
-                Rahul Kumar
-              </h1>
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-semibold text-[#5B6B82] mt-1.5">
-                <span className="bg-[#F5F8FC] px-2.5 py-0.5 rounded-lg text-[#0B1F4D] border border-[#DCE5F2]">
-                  Class 10 | CBSE Board
+          {/* Card 2: Overall Score */}
+          <div
+            onClick={() => navigate('/parent/scorecards')}
+            className="bg-white rounded-2xl border border-[#E5E7EB] p-5 sm:p-6 shadow-xs hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-pointer group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center transition-transform group-hover:scale-110">
+              <Award className="w-5 h-5" />
+            </div>
+            <div className="mt-4">
+              <div className="text-[36px] font-bold text-slate-900 tracking-tight leading-none group-hover:text-[#2563EB] transition-colors">
+                84.7%
+              </div>
+              <div className="text-[14px] font-medium text-slate-500 mt-2">
+                Overall Score
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Pending Leave */}
+          <div
+            onClick={() => navigate('/parent/leaves')}
+            className="bg-white rounded-2xl border border-[#E5E7EB] p-5 sm:p-6 shadow-xs hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-pointer group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-[#F59E0B] flex items-center justify-center transition-transform group-hover:scale-110">
+              <FileCheck className="w-5 h-5" />
+            </div>
+            <div className="mt-4">
+              <div className="text-[36px] font-bold text-slate-900 tracking-tight leading-none group-hover:text-[#F59E0B] transition-colors">
+                1
+              </div>
+              <div className="text-[14px] font-medium text-slate-500 mt-2">
+                Pending Leave
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* ROW 2 — QUICK ACTION GRID (8 Square Cards, 160x160 Desktop) */}
+      {/* 👤 Profile, 📊 Scorecard, 📈 Performance, 📅 Calendar, */}
+      {/* 📝 Leave, 📚 Homework, 📢 Notices, ⏰ Timetable */}
+      {/* Style: 32px icons, small label only, hover scale, hover shadow */}
+      {/* ========================================================= */}
+      <section aria-label="Quick Actions">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3.5 sm:gap-4 justify-items-stretch">
+          {quickActions.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.id}
+                onClick={item.action}
+                className="w-full lg:w-[160px] lg:h-[160px] aspect-square bg-white rounded-2xl border border-[#E5E7EB] p-4 flex flex-col items-center justify-center text-center shadow-xs hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-pointer group select-none"
+              >
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200 group-hover:scale-110 ${item.bgColor}`}
+                >
+                  <Icon className={`w-8 h-8 ${item.color}`} />
+                </div>
+                <span className="text-[14px] font-medium text-slate-700 tracking-tight mt-3 truncate max-w-full">
+                  {item.name}
                 </span>
-                <span>•</span>
-                <span className="text-[#155EEF] font-bold">Batch 10A Morning</span>
               </div>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2.5 self-start sm:self-auto">
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() => setShowPasswordModal(true)}
-              leftIcon={<KeyRound className="w-3.5 h-3.5" />}
-            >
-              Password
-            </Button>
-            <Button
-              size="sm"
-              variant="primary"
-              onClick={() => navigate('/parent/leaves')}
-              leftIcon={<FileCheck className="w-3.5 h-3.5" />}
-            >
-              Apply Leave
-            </Button>
-          </div>
+            );
+          })}
         </div>
-      </div>
+      </section>
 
-      {/* DASHBOARD CARDS */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        {/* Attendance: 91.3% (Semantic Green) */}
-        <div
-          onClick={() => navigate('/parent/attendance')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-emerald-400 transition-all cursor-pointer group"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Attendance</span>
-            <div className="p-2 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-200 group-hover:scale-105 transition-transform">
-              <CalendarCheck className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-[#0B1F4D] group-hover:text-emerald-700 transition-colors">
-              91.3%
+      {/* ========================================================= */}
+      {/* ROW 3 — ACTIVITY FEED (Timeline / Feed Appearance, Max 5) */}
+      {/* 📢 Parent Meeting Scheduled, 📊 Physics Test: 42/50, */}
+      {/* 📝 Leave Approved, 📅 Holiday Tomorrow, 📚 New Homework Uploaded */}
+      {/* ========================================================= */}
+      <section aria-label="Activity Feed">
+        <div className="bg-white rounded-2xl border border-[#E5E7EB] p-5 sm:p-6 shadow-xs">
+          <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+              Activity Feed
+            </h2>
+            <span className="text-[12px] font-semibold text-[#2563EB] bg-blue-50 px-2.5 py-1 rounded-full">
+              Latest Updates
             </span>
-            <span className="text-xs text-emerald-700 font-semibold block mt-1">42 Present / 4 Absent</span>
-          </div>
-        </div>
-
-        {/* Overall Score: 84.7% */}
-        <div
-          onClick={() => navigate('/parent/scorecards')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-[#155EEF] transition-all cursor-pointer group"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Overall Score</span>
-            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2] group-hover:scale-105 transition-transform">
-              <Award className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-[#0B1F4D] group-hover:text-[#155EEF] transition-colors">
-              84.7%
-            </span>
-            <span className="text-xs text-[#155EEF] font-semibold block mt-1">4 Core Subjects (Grade A)</span>
-          </div>
-        </div>
-
-        {/* Latest Test: 42/50 */}
-        <div
-          onClick={() => navigate('/parent/scorecards')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-[#1677FF] transition-all cursor-pointer group"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Latest Test</span>
-            <div className="p-2 bg-[#EEF4FF] text-[#1677FF] rounded-xl border border-[#DCE5F2] group-hover:scale-105 transition-transform">
-              <FileText className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-[#0B1F4D] group-hover:text-[#1677FF] transition-colors">
-              42/50
-            </span>
-            <span className="text-xs text-[#1677FF] font-semibold block mt-1">Physics Unit 4 (84%)</span>
-          </div>
-        </div>
-
-        {/* Pending Leave: 1 */}
-        <div
-          onClick={() => navigate('/parent/leaves')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Pending Leave</span>
-            <div className="p-2 bg-amber-50 text-amber-700 rounded-xl border border-amber-200 group-hover:scale-105 transition-transform">
-              <FileCheck className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-amber-700">
-              1
-            </span>
-            <span className="text-xs text-amber-800 font-semibold block mt-1">Medical (18/09 Review)</span>
-          </div>
-        </div>
-      </div>
-
-      {/* RECENT INFORMATION & LIVE UPDATES */}
-      <Card
-        title="Recent Information & Live Updates"
-        subtitle="Real-time tuition updates, test evaluations, announcements, and leaves"
-        headerAction={
-          <span className="text-xs font-bold text-[#155EEF] bg-[#EEF4FF] px-2.5 py-1 rounded-full border border-[#DCE5F2]">
-            Live Academic Feed
-          </span>
-        }
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1: Latest Test */}
-          <div className="bg-[#F8FAFD] rounded-xl p-4 border border-[#DCE5F2]">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#155EEF]">Latest Test</span>
-              <span className="text-xs bg-[#EEF4FF] text-[#155EEF] px-2 py-0.5 rounded font-bold border border-[#DCE5F2]">84%</span>
-            </div>
-            <div className="mt-2.5">
-              <span className="text-sm font-bold text-[#0B1F4D] block">Physics</span>
-              <span className="text-xs text-[#5B6B82] block mt-0.5">Chapter 4 Test</span>
-              <div className="flex items-baseline space-x-1.5 mt-2">
-                <span className="text-2xl font-black text-[#0B1F4D]">42/50</span>
-                <span className="text-xs text-emerald-700 font-bold">(84% Grade A)</span>
-              </div>
-            </div>
           </div>
 
-          {/* Card 2: Recent Announcement */}
-          <div className="bg-[#FFF4E5] rounded-xl p-4 border border-[#FDE68A]">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-900">Announcement</span>
-              <Bell className="w-3.5 h-3.5 text-[#F7931E]" />
-            </div>
-            <div className="mt-2.5">
-              <span className="text-sm font-bold text-[#0B1F4D] block">Parent Meeting</span>
-              <span className="text-xs text-[#5B6B82] block mt-0.5">Saturday, 20 September</span>
-              <div className="mt-2 pt-2 border-t border-[#FDE68A] text-[11px] text-amber-900 font-medium">
-                Mandatory Term 1 Progress Review with Principal
-              </div>
-            </div>
-          </div>
+          <div className="space-y-3">
+            {activityFeed.map((activity) => {
+              const Icon = activity.icon;
+              return (
+                <div
+                  key={activity.id}
+                  onClick={activity.action}
+                  className="flex items-center justify-between p-3 sm:p-3.5 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group"
+                >
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-105 ${activity.iconBg}`}
+                    >
+                      <Icon className={`w-5 h-5 ${activity.iconColor}`} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-slate-900 group-hover:text-[#2563EB] transition-colors truncate">
+                        {activity.title}
+                      </p>
+                      <p className="text-[12px] font-medium text-slate-400 mt-0.5">
+                        {activity.timestamp}
+                      </p>
+                    </div>
+                  </div>
 
-          {/* Card 3: Attendance */}
-          <div className="bg-emerald-50/60 rounded-xl p-4 border border-emerald-200">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">Attendance</span>
-              <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">91.3%</span>
-            </div>
-            <div className="mt-2.5">
-              <div className="flex items-center justify-between text-xs text-[#0B1F4D] font-bold">
-                <span>Present: 42</span>
-                <span className="text-red-700">Absent: 4</span>
-              </div>
-              <div className="w-full bg-emerald-200 rounded-full h-2 mt-2">
-                <div className="bg-emerald-600 h-2 rounded-full" style={{ width: '91.3%' }} />
-              </div>
-              <span className="text-[11px] text-emerald-800 font-bold block mt-2">91.3% Compliant Attendance</span>
-            </div>
-          </div>
-
-          {/* Card 4: Latest Leave */}
-          <div className="bg-[#F8FAFD] rounded-xl p-4 border border-[#DCE5F2]">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#5B6B82]">Latest Leave</span>
-              <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-bold">Approved</span>
-            </div>
-            <div className="mt-2.5">
-              <span className="text-sm font-bold text-[#0B1F4D] block">18 September</span>
-              <span className="text-xs text-[#5B6B82] block mt-0.5">Medical Reason</span>
-              <div className="flex items-center space-x-1.5 mt-2 pt-2 border-t border-[#DCE5F2]">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-xs font-bold text-[#0B1F4D]">Verified by Faculty</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* QUICK ACCESS SECTIONS */}
-      <Card
-        title="Quick Access"
-        subtitle="Jump directly into academic, attendance, and tuition modules"
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
-          {quickAccessItems.map((item) => (
-            <div
-              key={item.name}
-              onClick={() => {
-                if (item.href) navigate(item.href);
-                else if (item.action) item.action();
-              }}
-              className="p-4 rounded-2xl border border-[#DCE5F2] bg-white hover:border-[#155EEF] hover:bg-[#F5F8FC] transition-all cursor-pointer group shadow-2xs"
-            >
-              <div className="flex items-center justify-between">
-                <div className="p-2.5 rounded-xl bg-[#EEF4FF] border border-[#DCE5F2] group-hover:scale-105 transition-transform">
-                  {item.icon}
+                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[#2563EB] group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-2" />
                 </div>
-                <ExternalLink className="w-3.5 h-3.5 text-[#8A9BB0] group-hover:text-[#155EEF] transition-colors" />
-              </div>
-              <h3 className="font-bold text-[#0B1F4D] text-sm mt-3">{item.name}</h3>
-              <p className="text-[11px] text-[#5B6B82] mt-0.5 leading-snug line-clamp-1">{item.desc}</p>
-            </div>
-          ))}
+              );
+            })}
+          </div>
         </div>
-      </Card>
+      </section>
 
-      {/* MODALS FOR QUICK ACCESS (Announcements, Timetable, Calendar) */}
+      {/* ========================================================= */}
+      {/* MODALS (Announcements, Timetable, Calendar, Password) */}
+      {/* ========================================================= */}
+
+      {/* ANNOUNCEMENTS MODAL */}
       {activeModal === 'ANNOUNCEMENTS' && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-lg w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-[#F0F4FA] pb-3">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] max-w-lg w-full p-6 space-y-4 shadow-xl animate-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center space-x-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#FFF4E5] text-[#F7931E] flex items-center justify-center">
-                  <Bell className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-xl bg-orange-50 text-[#EA580C] flex items-center justify-center">
+                  <Megaphone className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Tuition Announcements</h3>
+                <h3 className="font-bold text-slate-900 text-base">Notices &amp; Announcements</h3>
               </div>
-              <button onClick={() => setActiveModal(null)} className="p-1 rounded-lg text-[#8A9BB0] hover:text-[#0B1F4D]">
+              <button
+                onClick={() => setActiveModal(null)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="space-y-3">
-              <div className="p-4 bg-[#FFF4E5] rounded-xl border border-[#FDE68A]">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 block">Upcoming Notice</span>
-                <h4 className="font-bold text-[#0B1F4D] text-sm mt-0.5">Parent Meeting</h4>
-                <p className="text-xs text-[#5B6B82] mt-1">Saturday, 20 September at 10:00 AM in Tuitions Main Hall.</p>
+            <div className="space-y-3 text-xs">
+              <div className="p-4 bg-amber-50/70 rounded-xl border border-amber-200">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 block">
+                  Mandatory Event
+                </span>
+                <h4 className="font-bold text-slate-900 text-sm mt-0.5">Parent-Teacher Meeting</h4>
+                <p className="text-slate-600 mt-1">Saturday, 20 September at 10:00 AM in the Tuitions Main Hall.</p>
               </div>
-              <div className="p-4 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#155EEF] block">Exam Schedule</span>
-                <h4 className="font-bold text-[#0B1F4D] text-sm mt-0.5">Monthly Revision Tests</h4>
-                <p className="text-xs text-[#5B6B82] mt-1">Commencing 25 September across Physics, Chemistry, Biology &amp; Maths.</p>
+              <div className="p-4 bg-blue-50/70 rounded-xl border border-blue-200">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-900 block">
+                  Exam Schedule
+                </span>
+                <h4 className="font-bold text-slate-900 text-sm mt-0.5">Monthly Revision Tests</h4>
+                <p className="text-slate-600 mt-1">Commencing 25 September across Physics, Chemistry, Biology &amp; Mathematics.</p>
               </div>
+            </div>
+            <div className="pt-2 text-right">
+              <Button
+                size="sm"
+                variant="primary"
+                onClick={() => {
+                  setActiveModal(null);
+                  navigate('/parent/announcements');
+                }}
+              >
+                View All Notices
+              </Button>
             </div>
           </div>
         </div>
       )}
 
+      {/* TIMETABLE MODAL */}
       {activeModal === 'TIMETABLE' && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-lg w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-[#F0F4FA] pb-3">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] max-w-lg w-full p-6 space-y-4 shadow-xl animate-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center space-x-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center">
-                  <Clock className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
+                  <Clock className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Weekly Class Timetable (10A Morning)</h3>
+                <h3 className="font-bold text-slate-900 text-base">Weekly Class Timetable (10A Morning)</h3>
               </div>
-              <button onClick={() => setActiveModal(null)} className="p-1 rounded-lg text-[#8A9BB0] hover:text-[#0B1F4D]">
+              <button
+                onClick={() => setActiveModal(null)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Monday</span>
-                <span className="text-[#155EEF] font-bold">Physics (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Tuesday</span>
-                <span className="text-[#F7931E] font-bold">Chemistry (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Wednesday</span>
-                <span className="text-[#155EEF] font-bold">Mathematics (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Thursday</span>
-                <span className="text-emerald-700 font-bold">Biology (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Friday</span>
-                <span className="text-[#155EEF] font-bold">Physics Problem Solving (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Saturday</span>
-                <span className="text-[#00B8F8] font-bold">Weekly Test Session (07:00 AM - 09:30 AM)</span>
-              </div>
+              {[
+                { day: 'Monday', subject: 'Physics', time: '07:00 AM - 09:30 AM', color: 'text-[#2563EB]' },
+                { day: 'Tuesday', subject: 'Chemistry', time: '07:00 AM - 09:30 AM', color: 'text-[#F59E0B]' },
+                { day: 'Wednesday', subject: 'Mathematics', time: '07:00 AM - 09:30 AM', color: 'text-[#2563EB]' },
+                { day: 'Thursday', subject: 'Biology', time: '07:00 AM - 09:30 AM', color: 'text-[#10B981]' },
+                { day: 'Friday', subject: 'Physics Problem Solving', time: '07:00 AM - 09:30 AM', color: 'text-[#2563EB]' },
+                { day: 'Saturday', subject: 'Weekly Assessment Session', time: '07:00 AM - 09:30 AM', color: 'text-[#7C3AED]' },
+              ].map((item) => (
+                <div
+                  key={item.day}
+                  className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"
+                >
+                  <span className="font-semibold text-slate-900">{item.day}</span>
+                  <span className={`font-semibold ${item.color}`}>
+                    {item.subject}{' '}
+                    <span className="text-slate-400 font-normal">({item.time})</span>
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       )}
 
+      {/* CALENDAR MODAL */}
       {activeModal === 'CALENDAR' && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-lg w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-[#F0F4FA] pb-3">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] max-w-lg w-full p-6 space-y-4 shadow-xl animate-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center space-x-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center">
-                  <Calendar className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-xl bg-purple-50 text-[#7C3AED] flex items-center justify-center">
+                  <Calendar className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Academic Calendar (September 2026)</h3>
+                <h3 className="font-bold text-slate-900 text-base">Academic Calendar (September 2026)</h3>
               </div>
-              <button onClick={() => setActiveModal(null)} className="p-1 rounded-lg text-[#8A9BB0] hover:text-[#0B1F4D]">
+              <button
+                onClick={() => setActiveModal(null)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="space-y-2.5 text-xs">
-              <div className="p-3 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200">
+              <div className="p-3 bg-emerald-50 text-emerald-950 rounded-xl border border-emerald-100">
                 <strong>01 - 06 Sept:</strong> Term 1 Chapter Diagnostic Assessments
               </div>
-              <div className="p-3 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2]">
+              <div className="p-3 bg-blue-50 text-blue-950 rounded-xl border border-blue-100">
                 <strong>15 - 18 Sept:</strong> Mid-Term Unit Tests (Physics, Chem, Bio, Maths)
               </div>
-              <div className="p-3 bg-[#FFF4E5] text-amber-950 rounded-xl border border-[#FDE68A]">
+              <div className="p-3 bg-amber-50 text-amber-950 rounded-xl border border-amber-100">
                 <strong>20 Sept (Sat):</strong> Parent-Teacher Meeting (10:00 AM)
               </div>
-              <div className="p-3 bg-[#F8FAFD] text-[#0B1F4D] rounded-xl border border-[#DCE5F2]">
+              <div className="p-3 bg-slate-50 text-slate-900 rounded-xl border border-slate-200">
                 <strong>28 Sept:</strong> Revision Test &amp; Scorecard Distribution
               </div>
             </div>
@@ -453,17 +491,17 @@ export const ParentDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Password Change Dialog Modal */}
+      {/* PASSWORD CHANGE MODAL */}
       {showPasswordModal && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-md w-full p-6 space-y-4 shadow-xl">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] max-w-md w-full p-6 space-y-4 shadow-xl animate-in zoom-in-95 duration-150">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center border border-[#DCE5F2]">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#2563EB] flex items-center justify-center border border-blue-100">
                 <KeyRound className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Update Password</h3>
-                <p className="text-xs text-[#5B6B82]">Set a custom permanent password for your parent account.</p>
+                <h3 className="font-bold text-slate-900 text-base">Update Password</h3>
+                <p className="text-xs text-slate-500">Set a custom permanent password for your parent account.</p>
               </div>
             </div>
 
