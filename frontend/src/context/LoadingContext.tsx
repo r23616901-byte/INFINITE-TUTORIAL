@@ -40,16 +40,16 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     <LoadingContext.Provider value={{ isLoading, message, startLoading, stopLoading, withLoading }}>
       {/* Top indeterminate progress line when loading */}
       {isLoading && (
-        <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-indigo-100 overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 animate-pulse w-full" />
+        <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-[#EEF4FF] overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-[#0B1F4D] via-[#155EEF] to-[#00B8F8] animate-pulse w-full" />
         </div>
       )}
 
-      {/* Floating non-blocking activity pill (Step 45: "Never allow users to wonder whether an action worked") */}
+      {/* Floating non-blocking activity pill */}
       {isLoading && (
         <div className="fixed bottom-6 right-6 z-50 animate-bounce-short">
-          <div className="bg-slate-900/90 backdrop-blur-md text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl border border-slate-700/60 flex items-center gap-2.5">
-            <Loader2 className="w-4 h-4 text-indigo-400 animate-spin" />
+          <div className="bg-[#0B1F4D]/95 backdrop-blur-md text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl border border-[#155EEF]/40 flex items-center gap-2.5">
+            <Loader2 className="w-4 h-4 text-[#00B8F8] animate-spin" />
             <span>{message}</span>
           </div>
         </div>

@@ -33,7 +33,7 @@ export const ParentTimetablePage: React.FC = () => {
       faculty: 'Prof. Rajesh Sharma',
       room: 'Lecture Hall 2',
       sessionType: 'LECTURE',
-      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+      badgeColor: 'bg-[#EEF4FF] text-[#1048B5] border-[#DCE5F2]',
     },
     {
       id: 'e-tue',
@@ -55,7 +55,7 @@ export const ParentTimetablePage: React.FC = () => {
       faculty: 'Mrs. Priya Sundaram',
       room: 'Lecture Hall 1',
       sessionType: 'LECTURE',
-      badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+      badgeColor: 'bg-[#EEF4FF] text-[#155EEF] border-[#DCE5F2]',
     },
     {
       id: 'e-thu',
@@ -102,7 +102,7 @@ export const ParentTimetablePage: React.FC = () => {
       faculty: 'Prof. Rajesh Sharma',
       room: 'Lecture Hall 1',
       sessionType: 'LECTURE',
-      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+      badgeColor: 'bg-[#EEF4FF] text-[#1048B5] border-[#DCE5F2]',
     },
     {
       id: 'm-tue',
@@ -124,7 +124,7 @@ export const ParentTimetablePage: React.FC = () => {
       faculty: 'Mrs. Priya Sundaram',
       room: 'Lecture Hall 2',
       sessionType: 'LECTURE',
-      badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+      badgeColor: 'bg-[#EEF4FF] text-[#155EEF] border-[#DCE5F2]',
     },
     {
       id: 'm-thu',

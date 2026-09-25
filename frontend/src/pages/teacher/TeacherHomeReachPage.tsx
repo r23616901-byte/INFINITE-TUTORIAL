@@ -161,7 +161,7 @@ export const TeacherHomeReachPage: React.FC = () => {
       {/* Quick Dismissal Card */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
         <h2 className="text-base font-bold text-gray-900 flex items-center mb-4">
-          <Clock className="w-5 h-5 text-indigo-600 mr-2" />
+          <Clock className="w-5 h-5 text-[#155EEF] mr-2" />
           Record Class Ended / Batch Departure
         </h2>
 
@@ -308,7 +308,7 @@ export const TeacherHomeReachPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-700">
                     {rec.transitMinutes ? (
-                      <span className="font-semibold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">
+                      <span className="font-semibold bg-[#EEF4FF] text-[#1048B5] px-2 py-0.5 rounded">
                         {rec.transitMinutes} mins
                       </span>
                     ) : (

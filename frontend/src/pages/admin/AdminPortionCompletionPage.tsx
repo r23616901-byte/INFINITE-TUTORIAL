@@ -382,7 +382,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
         </div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-indigo-400/20 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#155EEF]/20 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
               Administrative Curriculum & Milestone Tracker
             </div>
@@ -437,7 +437,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
           title="Scheduled Milestones"
           value={scheduledChapters}
           subtitle="3 Chapters Target by Nov 15"
-          icon={<Layers className="w-5 h-5 text-purple-600" />}
+          icon={<Layers className="w-5 h-5 text-[#00B8F8]" />}
         />
       </div>
 
@@ -452,11 +452,11 @@ export const AdminPortionCompletionPage: React.FC = () => {
               Institutional benchmark target: 100% syllabus delivered before 15 November 2026.
             </p>
           </div>
-          <span className="text-2xl font-black text-indigo-600">{overallPercentage}% Overall</span>
+          <span className="text-2xl font-black text-[#155EEF]">{overallPercentage}% Overall</span>
         </div>
         <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
           <div
-            className="bg-gradient-to-r from-indigo-500 via-teal-500 to-emerald-500 h-3 rounded-full transition-all duration-700"
+            className="bg-gradient-to-r from-[#155EEF] via-teal-500 to-emerald-500 h-3 rounded-full transition-all duration-700"
             style={{ width: `${overallPercentage}%` }}
           />
         </div>
@@ -489,7 +489,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
               <span className="text-xs text-emerald-600 font-medium">3/5 Ch</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1.5">
-              <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '90%' }} />
+              <div className="bg-[#00B8F8] h-1.5 rounded-full" style={{ width: '90%' }} />
             </div>
           </div>
           <div>
@@ -499,7 +499,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
               <span className="text-xs text-emerald-600 font-medium">5/6 Ch</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1.5">
-              <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: '88%' }} />
+              <div className="bg-[#155EEF] h-1.5 rounded-full" style={{ width: '88%' }} />
             </div>
           </div>
         </div>
@@ -518,7 +518,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
                 onClick={() => setSelectedSubject(sub)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   selectedSubject === sub
-                    ? 'bg-indigo-600 text-white shadow-sm'
+                    ? 'bg-[#155EEF] text-white shadow-sm'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -535,14 +535,14 @@ export const AdminPortionCompletionPage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search chapter, faculty, topic..."
-                className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#155EEF]"
               />
             </div>
 
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#155EEF]"
             >
               <option value="ALL">All Statuses</option>
               <option value="COMPLETED">Completed</option>
@@ -569,7 +569,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : ch.status === 'IN_PROGRESS'
                         ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                        : 'bg-purple-50 text-purple-700 border border-purple-200'
+                        : 'bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]'
                     }`}
                   >
                     Ch {ch.chapterNumber}
@@ -582,7 +582,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
                       <span className="text-xs text-gray-400">&bull;</span>
                       <span className="text-xs text-gray-600 font-medium">Faculty: {ch.faculty}</span>
                       <span className="text-xs text-gray-400">&bull;</span>
-                      <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">
+                      <span className="text-xs font-semibold text-[#155EEF] bg-[#EEF4FF] border border-[#DCE5F2] px-2 py-0.5 rounded">
                         Weightage: {ch.weightageMarks} Marks
                       </span>
                       {ch.verifiedByAdmin && (
@@ -661,7 +661,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
                       <Button
                         size="sm"
                         onClick={() => handleSaveEdit(ch.id)}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1"
+                        className="bg-[#155EEF] hover:bg-[#1048B5] text-white text-xs px-2.5 py-1"
                       >
                         <Save className="w-3.5 h-3.5 mr-1" />
                         Save
@@ -682,7 +682,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
                       ? 'bg-emerald-500'
                       : ch.status === 'IN_PROGRESS'
                       ? 'bg-amber-500'
-                      : 'bg-purple-300'
+                      : 'bg-blue-300'
                   }`}
                   style={{ width: `${pct}%` }}
                 />

@@ -74,7 +74,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
         </div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-indigo-400/20 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#155EEF]/20 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
               Global Configuration & Enterprise Security
             </div>
@@ -123,13 +123,13 @@ export const AdminSettingsSecurityPage: React.FC = () => {
           title="Database Cluster"
           value="PostgreSQL"
           subtitle="Prisma ORM Synchronized"
-          icon={<Database className="w-5 h-5 text-purple-600" />}
+          icon={<Database className="w-5 h-5 text-[#00B8F8]" />}
         />
         <StatCard
           title="System Architecture"
           value="Resilient"
           subtitle="Client Fallback Active"
-          icon={<Server className="w-5 h-5 text-indigo-600" />}
+          icon={<Server className="w-5 h-5 text-[#0B1F4D]" />}
         />
       </div>
 
@@ -137,7 +137,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
         {/* Card 1: Institution Details */}
         <Card className="p-6 space-y-4">
           <h3 className="text-base font-bold text-gray-900 flex items-center gap-2 border-b pb-3">
-            <Server className="w-5 h-5 text-indigo-600" />
+            <Server className="w-5 h-5 text-[#155EEF]" />
             Institution & Academic Year Profile
           </h3>
 
@@ -149,7 +149,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                 required
                 value={instituteName}
                 onChange={(e) => setInstituteName(e.target.value)}
-                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
               />
             </div>
             <div>
@@ -159,7 +159,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                 required
                 value={academicYear}
                 onChange={(e) => setAcademicYear(e.target.value)}
-                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
               />
             </div>
             <div>
@@ -169,7 +169,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                 required
                 value={currentTerm}
                 onChange={(e) => setCurrentTerm(e.target.value)}
-                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
               />
             </div>
           </div>
@@ -178,7 +178,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
         {/* Card 2: Security & Session Policies */}
         <Card className="p-6 space-y-4">
           <h3 className="text-base font-bold text-gray-900 flex items-center gap-2 border-b pb-3">
-            <Lock className="w-5 h-5 text-indigo-600" />
+            <Lock className="w-5 h-5 text-[#155EEF]" />
             Security & Authentication Policies
           </h3>
 
@@ -191,7 +191,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                 <select
                   value={sessionTimeout}
                   onChange={(e) => setSessionTimeout(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 >
                   <option value="30">30 Minutes</option>
                   <option value="60">60 Minutes (Recommended)</option>
@@ -209,7 +209,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                   id="chk-reset"
                   checked={enforcePasswordReset}
                   onChange={(e) => setEnforcePasswordReset(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                  className="w-4 h-4 text-[#155EEF] rounded border-gray-300 focus:ring-[#155EEF]"
                 />
                 <label htmlFor="chk-reset" className="text-xs font-semibold text-gray-700 cursor-pointer">
                   Enforce Password Change on Temporary PIN First Login
@@ -222,7 +222,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                   id="chk-sms"
                   checked={enableParentSmsAlerts}
                   onChange={(e) => setEnableParentSmsAlerts(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                  className="w-4 h-4 text-[#155EEF] rounded border-gray-300 focus:ring-[#155EEF]"
                 />
                 <label htmlFor="chk-sms" className="text-xs font-semibold text-gray-700 cursor-pointer">
                   Dispatch Automated SMS Alerts for Password Resets & Urgent Circulars
@@ -246,7 +246,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
         {/* Card 3: Academic Thresholds */}
         <Card className="p-6 space-y-4">
           <h3 className="text-base font-bold text-gray-900 flex items-center gap-2 border-b pb-3">
-            <Sparkles className="w-5 h-5 text-indigo-600" />
+            <Sparkles className="w-5 h-5 text-[#155EEF]" />
             Academic Thresholds & Compliance Metrics
           </h3>
 
@@ -261,7 +261,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                 max="100"
                 value={minimumAttendance}
                 onChange={(e) => setMinimumAttendance(e.target.value)}
-                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
               />
               <p className="text-[11px] text-gray-500 mt-1">
                 Students below this threshold trigger parent alerts (Rahul Kumar is currently at 91.3% - Compliant).
@@ -278,7 +278,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
                 max="60"
                 value={passPercentage}
                 onChange={(e) => setPassPercentage(e.target.value)}
-                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
               />
               <p className="text-[11px] text-gray-500 mt-1">
                 Scores below this cutoff are tagged as &quot;Needs Improvement / Remedial Session&quot;.
@@ -291,7 +291,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
           <Button
             type="submit"
             disabled={isSaving}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2.5 shadow-md text-xs"
+            className="bg-[#155EEF] hover:bg-[#1048B5] text-white font-semibold px-6 py-2.5 shadow-md text-xs"
           >
             <Save className="w-4 h-4 mr-2" />
             {isSaving ? 'Saving Policies...' : 'Save Configuration'}

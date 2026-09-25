@@ -106,7 +106,7 @@ export const ParentLayout: React.FC = () => {
           href: '/parent/announcements',
           icon: <Bell className="w-4 h-4" />,
           badge: '2 New',
-          badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+          badgeColor: 'bg-[#EEF4FF] text-[#155EEF] border-[#DCE5F2]',
         },
         {
           name: 'Change Password',

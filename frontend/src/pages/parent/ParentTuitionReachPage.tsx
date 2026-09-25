@@ -101,7 +101,7 @@ export const ParentTuitionReachPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
               <Home className="w-6 h-6" />
             </div>
             <div>
@@ -147,10 +147,10 @@ export const ParentTuitionReachPage: React.FC = () => {
 
       {/* PROMINENT LIVE STATUS CARD (Fulfilling Prompt Example) */}
       {latestRecord ? (
-        <div className="bg-gradient-to-br from-white to-indigo-50/40 rounded-2xl border border-indigo-100 shadow-sm overflow-hidden p-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-indigo-100/80 pb-5">
+        <div className="bg-gradient-to-br from-white to-indigo-50/40 rounded-2xl border border-[#DCE5F2] shadow-sm overflow-hidden p-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#DCE5F2]/80 pb-5">
             <div className="flex items-center space-x-4">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md">
+              <div className="w-14 h-14 rounded-2xl bg-[#155EEF] text-white flex items-center justify-center font-bold text-xl shadow-md">
                 {latestRecord.studentName.charAt(0)}
               </div>
               <div>
@@ -161,7 +161,7 @@ export const ParentTuitionReachPage: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-center space-x-3 mt-1 text-sm text-gray-600">
-                  <span className="font-medium text-indigo-700">{latestRecord.batchName}</span>
+                  <span className="font-medium text-[#1048B5]">{latestRecord.batchName}</span>
                   <span>•</span>
                   <span>{latestRecord.session} Session</span>
                   <span>•</span>
@@ -196,7 +196,7 @@ export const ParentTuitionReachPage: React.FC = () => {
 
             <div className="bg-white/80 p-4 rounded-xl border border-gray-100">
               <span className="text-xs font-medium text-gray-500 block">Transit Duration</span>
-              <span className="text-lg font-bold text-indigo-700 mt-1 block">
+              <span className="text-lg font-bold text-[#1048B5] mt-1 block">
                 {latestRecord.transitMinutes ? `${latestRecord.transitMinutes} mins` : '—'}
               </span>
               <span className="text-xs text-emerald-600 mt-0.5 block">
@@ -214,7 +214,7 @@ export const ParentTuitionReachPage: React.FC = () => {
           </div>
 
           {/* Real-time Journey Progress Steps */}
-          <div className="pt-4 border-t border-indigo-100/60">
+          <div className="pt-4 border-t border-[#DCE5F2]/60">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">
               Tuition to Home Journey Timeline
             </h3>
@@ -270,7 +270,7 @@ export const ParentTuitionReachPage: React.FC = () => {
           </div>
 
           {/* Action to confirm arrival if in transit or to update */}
-          <div className="mt-6 pt-5 border-t border-indigo-100/60 bg-white/70 p-4 rounded-xl">
+          <div className="mt-6 pt-5 border-t border-[#DCE5F2]/60 bg-white/70 p-4 rounded-xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h4 className="text-sm font-bold text-gray-900 flex items-center">
@@ -288,7 +288,7 @@ export const ParentTuitionReachPage: React.FC = () => {
                   placeholder="e.g. 7:55 PM (Optional)"
                   value={customTime}
                   onChange={(e) => setCustomTime(e.target.value)}
-                  className="w-36 text-xs px-2.5 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-36 text-xs px-2.5 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF]"
                 />
                 <button
                   onClick={() => handleConfirmArrival(latestRecord.id)}
@@ -357,7 +357,7 @@ export const ParentTuitionReachPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-700">
                     {rec.transitMinutes ? (
-                      <span className="font-medium bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">
+                      <span className="font-medium bg-[#EEF4FF] text-[#1048B5] px-2 py-0.5 rounded">
                         {rec.transitMinutes} mins
                       </span>
                     ) : (

@@ -320,7 +320,7 @@ export const AdminStudentsPage: React.FC = () => {
       ACTIVE: 'bg-emerald-50 text-emerald-700 border-emerald-200',
       INACTIVE: 'bg-slate-100 text-slate-700 border-slate-200',
       TRANSFERRED: 'bg-blue-50 text-blue-700 border-blue-200',
-      COMPLETED: 'bg-purple-50 text-purple-700 border-purple-200',
+      COMPLETED: 'bg-[#EEF4FF] text-[#155EEF] border-[#DCE5F2]',
       SUSPENDED: 'bg-red-50 text-red-700 border-red-200',
     }[status] || 'bg-slate-100 text-slate-700 border-slate-200';
 
@@ -340,7 +340,7 @@ export const AdminStudentsPage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
               Students Directory & Enrollment
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#1048B5] border border-[#DCE5F2]">
               ADMIN CONTROL
             </span>
           </div>
@@ -362,9 +362,9 @@ export const AdminStudentsPage: React.FC = () => {
       </div>
 
       {/* Admin Protection Policy Note */}
-      <div className="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 flex items-center justify-between text-xs text-indigo-900 gap-3">
+      <div className="bg-[#EEF4FF]/70 border border-[#DCE5F2] rounded-xl p-3.5 flex items-center justify-between text-xs text-[#071633] gap-3">
         <div className="flex items-center gap-2.5">
-          <Shield className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+          <Shield className="w-4 h-4 text-[#155EEF] flex-shrink-0" />
           <span>
             <strong>Protected Academic Records:</strong> Only administrators possess authority to register, edit identity fields, or deactivate students. Parents and teachers have read-only access.
           </span>
@@ -377,8 +377,8 @@ export const AdminStudentsPage: React.FC = () => {
           title="Total Students"
           value={totalCount}
           subtitle="All enrolled cohorts"
-          icon={<GraduationCap className="w-5 h-5 text-indigo-600" />}
-          iconBg="bg-indigo-50"
+          icon={<GraduationCap className="w-5 h-5 text-[#155EEF]" />}
+          iconBg="bg-[#EEF4FF]"
         />
         <StatCard
           title="Active Students"
@@ -415,7 +415,7 @@ export const AdminStudentsPage: React.FC = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by Student Name, Parent Phone, School, Class, Board, Batch, Student ID..."
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800 placeholder-slate-400"
+                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#155EEF]/20 focus:border-[#155EEF] transition-all text-slate-800 placeholder-slate-400"
               />
             </div>
 
@@ -425,7 +425,7 @@ export const AdminStudentsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs text-[#155EEF] hover:text-[#0B1F4D] font-semibold transition-colors"
                 >
                   <RotateCcw className="w-3 h-3" />
                   Reset Filters
@@ -444,7 +444,7 @@ export const AdminStudentsPage: React.FC = () => {
               <select
                 value={selectedClass}
                 onChange={(e) => setSelectedClass(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Classes</option>
                 {lookups?.classes.map((c) => (
@@ -463,7 +463,7 @@ export const AdminStudentsPage: React.FC = () => {
               <select
                 value={selectedBoard}
                 onChange={(e) => setSelectedBoard(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Boards</option>
                 {lookups?.boards.map((b) => (
@@ -482,7 +482,7 @@ export const AdminStudentsPage: React.FC = () => {
               <select
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Batches</option>
                 {lookups?.batches.map((b) => (
@@ -501,7 +501,7 @@ export const AdminStudentsPage: React.FC = () => {
               <select
                 value={selectedSchool}
                 onChange={(e) => setSelectedSchool(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Schools</option>
                 {schoolOptions.map((sch) => (
@@ -520,7 +520,7 @@ export const AdminStudentsPage: React.FC = () => {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Statuses</option>
                 <option value="ACTIVE">Active</option>
@@ -539,7 +539,7 @@ export const AdminStudentsPage: React.FC = () => {
               <select
                 value={selectedAcademicYear}
                 onChange={(e) => setSelectedAcademicYear(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Years</option>
                 <option value="2024-2025">2024-2025</option>
@@ -596,7 +596,7 @@ export const AdminStudentsPage: React.FC = () => {
                         </div>
                         <div>
                           <p className="font-bold text-slate-900">{student.name}</p>
-                          <span className="font-mono text-[11px] font-semibold text-indigo-600">
+                          <span className="font-mono text-[11px] font-semibold text-[#155EEF]">
                             {student.studentId}
                           </span>
                         </div>
@@ -645,7 +645,7 @@ export const AdminStudentsPage: React.FC = () => {
                             setIsViewModalOpen(true);
                           }}
                           title="View Profile"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-[#155EEF] hover:bg-[#EEF4FF] transition-colors"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
@@ -683,7 +683,7 @@ export const AdminStudentsPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-2xl w-full p-6 space-y-4 my-8">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] text-[#1048B5] flex items-center justify-center font-bold">
                   <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
@@ -1082,7 +1082,7 @@ export const AdminStudentsPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 text-base">{activeStudent.name}</h3>
-                  <p className="text-xs text-indigo-600 font-mono font-semibold">{activeStudent.studentId}</p>
+                  <p className="text-xs text-[#155EEF] font-mono font-semibold">{activeStudent.studentId}</p>
                 </div>
               </div>
               <button

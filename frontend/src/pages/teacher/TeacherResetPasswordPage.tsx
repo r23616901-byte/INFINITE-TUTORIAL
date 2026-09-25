@@ -97,20 +97,20 @@ export const TeacherResetPasswordPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-emerald-800 via-teal-800 to-indigo-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#071633] via-[#0B1F4D] to-[#155EEF] rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-[#155EEF]/30">
         <div className="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
           <KeyRound className="w-80 h-80 text-white" />
         </div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-emerald-400/20 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/30 text-[#00B8F8] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#00B8F8]/30 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
               Student Credentials & Access Control
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               Reset Student / Parent Password
             </h1>
-            <p className="text-emerald-100/90 text-sm mt-1 max-w-2xl">
+            <p className="text-blue-100/90 text-sm mt-1 max-w-2xl">
               Assist students or parents who have forgotten their portal credentials. Generate a temporary password or reset credentials securely.
             </p>
           </div>

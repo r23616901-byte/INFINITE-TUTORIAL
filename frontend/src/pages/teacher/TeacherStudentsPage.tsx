@@ -82,7 +82,7 @@ export const TeacherStudentsPage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
               Assigned Students Management
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
               FACULTY DESK
             </span>
           </div>
@@ -135,8 +135,8 @@ export const TeacherStudentsPage: React.FC = () => {
           title="Assigned Students"
           value={students.length}
           subtitle="Enrolled in your batches"
-          icon={<Users className="w-5 h-5 text-indigo-600" />}
-          iconBg="bg-indigo-50"
+          icon={<Users className="w-5 h-5 text-[#155EEF]" />}
+          iconBg="bg-[#EEF4FF]"
         />
         <StatCard
           title="Active Batches"
@@ -149,8 +149,8 @@ export const TeacherStudentsPage: React.FC = () => {
           title="Curriculum Grades"
           value="Class 10 & 9"
           subtitle="CBSE & State Board"
-          icon={<BookOpen className="w-5 h-5 text-purple-600" />}
-          iconBg="bg-purple-50"
+          icon={<BookOpen className="w-5 h-5 text-[#00B8F8]" />}
+          iconBg="bg-[#E0F8FF]"
         />
       </div>
 
@@ -164,7 +164,7 @@ export const TeacherStudentsPage: React.FC = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by student name or student ID (e.g. Rahul, IT10025)..."
-              className="w-full pl-9 pr-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-hidden focus:border-indigo-500"
+              className="w-full pl-9 pr-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-hidden focus:border-[#155EEF]"
             />
           </div>
 
@@ -172,7 +172,7 @@ export const TeacherStudentsPage: React.FC = () => {
             <select
               value={selectedBatch}
               onChange={(e) => setSelectedBatch(e.target.value)}
-              className="p-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-800 focus:outline-hidden focus:border-indigo-500"
+              className="p-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-800 focus:outline-hidden focus:border-[#155EEF]"
             >
               <option value="">All Batches</option>
               {lookups?.batches.map((b) => (
@@ -185,7 +185,7 @@ export const TeacherStudentsPage: React.FC = () => {
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="p-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-800 focus:outline-hidden focus:border-indigo-500"
+              className="p-2 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-800 focus:outline-hidden focus:border-[#155EEF]"
             >
               <option value="">All Classes</option>
               {lookups?.classes.map((c) => (
@@ -252,7 +252,7 @@ export const TeacherStudentsPage: React.FC = () => {
                         </div>
                         <div>
                           <p className="font-bold text-gray-900">{student.name}</p>
-                          <span className="font-mono text-[11px] font-semibold text-indigo-600">
+                          <span className="font-mono text-[11px] font-semibold text-[#155EEF]">
                             {student.studentId}
                           </span>
                         </div>
@@ -286,7 +286,7 @@ export const TeacherStudentsPage: React.FC = () => {
                             setActiveStudent(student);
                             setIsViewModalOpen(true);
                           }}
-                          className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors"
+                          className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-[#EEF4FF] text-[#155EEF] hover:bg-[#DCE5F2] border border-[#DCE5F2] transition-colors"
                         >
                           Profile & Actions
                         </button>
@@ -307,7 +307,7 @@ export const TeacherStudentsPage: React.FC = () => {
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg overflow-hidden">
+                <div className="w-12 h-12 rounded-2xl bg-[#0B1F4D] text-white flex items-center justify-center font-bold text-lg overflow-hidden">
                   {activeStudent.photoUrl ? (
                     <img src={activeStudent.photoUrl} alt={activeStudent.name} className="w-full h-full object-cover" />
                   ) : (
@@ -389,20 +389,20 @@ export const TeacherStudentsPage: React.FC = () => {
 
                 <button
                   onClick={() => navigate('/teacher/scorecards')}
-                  className="p-3 text-left rounded-xl bg-gray-50 hover:bg-indigo-50 border border-gray-200 hover:border-indigo-300 transition-all group"
+                  className="p-3 text-left rounded-xl bg-[#F8FAFD] hover:bg-[#EEF4FF] border border-[#DCE5F2] hover:border-[#155EEF] transition-all group"
                 >
-                  <Award className="w-4 h-4 text-indigo-600 mb-1" />
-                  <span className="font-bold text-gray-900 text-xs block group-hover:text-indigo-700">View Scorecard</span>
+                  <Award className="w-4 h-4 text-[#155EEF] mb-1" />
+                  <span className="font-bold text-[#0B1F4D] text-xs block group-hover:text-[#155EEF]">View Scorecard</span>
                   <span className="text-[10px] text-gray-400 block">4-Subject breakdown</span>
                 </button>
 
                 <button
                   onClick={() => navigate('/teacher/performance')}
-                  className="p-3 text-left rounded-xl bg-gray-50 hover:bg-purple-50 border border-gray-200 hover:border-purple-300 transition-all group"
+                  className="p-3 text-left rounded-xl bg-[#F8FAFD] hover:bg-[#E0F8FF] border border-[#DCE5F2] hover:border-[#00B8F8] transition-all group"
                 >
-                  <TrendingUp className="w-4 h-4 text-purple-600 mb-1" />
-                  <span className="font-bold text-gray-900 text-xs block group-hover:text-purple-700">View Performance</span>
-                  <span className="text-[10px] text-gray-400 block">Line & chapter bars</span>
+                  <TrendingUp className="w-4 h-4 text-[#00B8F8] mb-1" />
+                  <span className="font-bold text-[#0B1F4D] text-xs block group-hover:text-[#00B8F8]">View Performance</span>
+                  <span className="text-[10px] text-[#5B6B82] block">Line & chapter bars</span>
                 </button>
 
                 <button
@@ -443,10 +443,10 @@ export const TeacherStudentsPage: React.FC = () => {
 
                 <button
                   onClick={() => navigate('/teacher/marks-entry')}
-                  className="p-3 text-left rounded-xl bg-gray-50 hover:bg-indigo-50 border border-gray-200 hover:border-indigo-300 transition-all group col-span-2"
+                  className="p-3 text-left rounded-xl bg-[#F8FAFD] hover:bg-[#EEF4FF] border border-[#DCE5F2] hover:border-[#155EEF] transition-all group col-span-2"
                 >
-                  <Award className="w-4 h-4 text-indigo-600 mb-1" />
-                  <span className="font-bold text-gray-900 text-xs block group-hover:text-indigo-700">Enter / Edit Marks (Authorized)</span>
+                  <Award className="w-4 h-4 text-[#155EEF] mb-1" />
+                  <span className="font-bold text-[#0B1F4D] text-xs block group-hover:text-[#155EEF]">Enter / Edit Marks (Authorized)</span>
                   <span className="text-[10px] text-gray-400 block">Audit-trailed mark revisions with mandatory faculty reason</span>
                 </button>
               </div>

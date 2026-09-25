@@ -81,7 +81,7 @@ export const ParentTestsPage: React.FC = () => {
       {/* Header Banner */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-md flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-[#1048B5] flex items-center justify-center text-white shadow-md flex-shrink-0">
             <FileText className="w-7 h-7" />
           </div>
           <div>
@@ -119,7 +119,7 @@ export const ParentTestsPage: React.FC = () => {
           icon={<Calendar className="w-5 h-5 text-blue-600" />}
           iconBg="bg-blue-50"
           badge="Scheduled"
-          badgeVariant="indigo"
+          badgeVariant="blue"
           isLoading={isLoading}
         />
         <StatCard
@@ -136,10 +136,10 @@ export const ParentTestsPage: React.FC = () => {
           title="Papers Available"
           value={papersAvailableCount.toString()}
           subtitle="Downloadable Question Papers"
-          icon={<Download className="w-5 h-5 text-purple-600" />}
-          iconBg="bg-purple-50"
+          icon={<Download className="w-5 h-5 text-[#00B8F8]" />}
+          iconBg="bg-[#EEF4FF]"
           badge="Ready"
-          badgeVariant="purple"
+          badgeVariant="cyan"
           isLoading={isLoading}
         />
       </div>

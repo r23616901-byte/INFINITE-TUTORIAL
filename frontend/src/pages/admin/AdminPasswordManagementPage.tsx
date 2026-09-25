@@ -201,7 +201,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
         </div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-indigo-400/20 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#155EEF]/20 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
               Administrative Security & Credentials Management
             </div>
@@ -228,7 +228,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
           title="Total User Accounts"
           value={users.length}
           subtitle="Enrolled Across Roles"
-          icon={<Users className="w-5 h-5 text-indigo-600" />}
+          icon={<Users className="w-5 h-5 text-[#155EEF]" />}
         />
         <StatCard
           title="Active Accounts"
@@ -246,7 +246,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
           title="Students & Parents"
           value={users.filter((u) => u.role === 'STUDENT' || u.role === 'PARENT').length}
           subtitle="Class 10 & 9 Cohorts"
-          icon={<User className="w-5 h-5 text-purple-600" />}
+          icon={<User className="w-5 h-5 text-[#00B8F8]" />}
         />
       </div>
 
@@ -260,7 +260,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search user by name, roll, or phone..."
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#155EEF]"
             />
           </div>
 
@@ -269,7 +269,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#155EEF]"
             >
               <option value="ALL">All Roles</option>
               <option value="STUDENT">Students</option>
@@ -292,12 +292,12 @@ export const AdminPasswordManagementPage: React.FC = () => {
               <div
                 className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-base flex-shrink-0 ${
                   u.role === 'ADMIN'
-                    ? 'bg-purple-100 text-purple-800'
+                    ? 'bg-[#0B1F4D] text-white'
                     : u.role === 'TEACHER'
-                    ? 'bg-blue-100 text-blue-800'
+                    ? 'bg-blue-100 text-[#155EEF]'
                     : u.role === 'PARENT'
                     ? 'bg-emerald-100 text-emerald-800'
-                    : 'bg-indigo-100 text-indigo-800'
+                    : 'bg-[#EEF4FF] text-[#155EEF]'
                 }`}
               >
                 {u.name.charAt(0)}
@@ -308,12 +308,12 @@ export const AdminPasswordManagementPage: React.FC = () => {
                   <span
                     className={`text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                       u.role === 'ADMIN'
-                        ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                        ? 'bg-[#EEF4FF] text-[#0B1F4D] border border-[#DCE5F2]'
                         : u.role === 'TEACHER'
                         ? 'bg-blue-50 text-blue-700 border border-blue-200'
                         : u.role === 'PARENT'
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                        : 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                        : 'bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]'
                     }`}
                   >
                     {u.role}
@@ -367,7 +367,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
                 onClick={() => handleOpenReset(u)}
                 className="text-xs font-semibold"
               >
-                <KeyRound className="w-3.5 h-3.5 mr-1 text-indigo-600" />
+                <KeyRound className="w-3.5 h-3.5 mr-1 text-[#155EEF]" />
                 Reset Password
               </Button>
             </div>
@@ -405,7 +405,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
                     required
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full text-sm font-mono px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-sm font-mono px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                   <Button
                     type="button"
@@ -442,7 +442,7 @@ export const AdminPasswordManagementPage: React.FC = () => {
                 <Button type="button" variant="outline" size="sm" onClick={() => setSelectedUser(null)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button type="submit" size="sm" className="bg-[#155EEF] hover:bg-[#1048B5] text-white">
                   <KeyRound className="w-3.5 h-3.5 mr-1" />
                   Confirm & Reset
                 </Button>

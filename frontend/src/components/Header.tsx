@@ -1,60 +1,17 @@
 import React from 'react';
-import { GraduationCap, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
+import { BrandLogo } from './common/BrandLogo';
 
 export const Header: React.FC = () => {
   return (
-    <header style={{
-      backgroundColor: '#ffffff',
-      borderBottom: '1px solid var(--border)',
-      padding: '0.875rem 1.5rem',
-      position: 'sticky',
-      top: 0,
-      zIndex: 50
-    }}>
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ffffff'
-          }}>
-            <GraduationCap size={24} />
-          </div>
-          <div>
-            <h1 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-main)', letterSpacing: '-0.025em' }}>
-              INFINITE TUTORIAL
-            </h1>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              Tuition Management & Academic Record System
-            </p>
-          </div>
-        </div>
+    <header className="bg-white/95 backdrop-blur-md border-b border-[#DCE5F2] py-3.5 px-6 sticky top-0 z-50 shadow-2xs">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <BrandLogo size="md" />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.35rem',
-            padding: '0.25rem 0.65rem',
-            borderRadius: '9999px',
-            fontSize: '0.75rem',
-            fontWeight: 500,
-            backgroundColor: 'var(--success-light)',
-            color: 'var(--success)'
-          }}>
-            <ShieldCheck size={14} />
-            Phase 1 Foundation Ready
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            Academic Portal Active
           </span>
         </div>
       </div>

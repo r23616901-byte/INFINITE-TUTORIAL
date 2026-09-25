@@ -254,8 +254,8 @@ export const DailyUpdatesPage: React.FC = () => {
           title="Total Updates"
           value={updates.length}
           subtitle="All published logs"
-          icon={<Bell className="w-5 h-5 text-indigo-600" />}
-          iconBg="bg-indigo-50"
+          icon={<Bell className="w-5 h-5 text-[#155EEF]" />}
+          iconBg="bg-[#EEF4FF]"
         />
         <StatCard
           title="Today's Updates"
@@ -291,7 +291,7 @@ export const DailyUpdatesPage: React.FC = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by topic, lesson, homework, or subject..."
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800 placeholder-slate-400"
+                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#155EEF]/20 focus:border-[#155EEF] transition-all text-slate-800 placeholder-slate-400"
               />
             </div>
 
@@ -299,7 +299,7 @@ export const DailyUpdatesPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 text-xs text-[#155EEF] hover:text-[#0B1F4D] font-semibold transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />
                 Reset Filters
@@ -315,7 +315,7 @@ export const DailyUpdatesPage: React.FC = () => {
               <select
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Batches</option>
                 {BATCH_OPTIONS.map((b) => (
@@ -332,7 +332,7 @@ export const DailyUpdatesPage: React.FC = () => {
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               />
             </div>
           </div>
@@ -362,7 +362,7 @@ export const DailyUpdatesPage: React.FC = () => {
               {/* Header row */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2.5 flex-wrap">
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center gap-1.5">
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-[#EEF4FF] text-[#1048B5] border border-[#DCE5F2] flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5" />
                     {update.date}
                   </span>
@@ -402,7 +402,7 @@ export const DailyUpdatesPage: React.FC = () => {
                       key={sIdx}
                       className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1"
                     >
-                      <span className="font-bold text-indigo-700 text-[11px] uppercase tracking-wide">
+                      <span className="font-bold text-[#1048B5] text-[11px] uppercase tracking-wide">
                         {sub.subject}:
                       </span>
                       <p className="font-medium text-slate-800 leading-snug">{sub.status}</p>
@@ -421,9 +421,9 @@ export const DailyUpdatesPage: React.FC = () => {
                   <p className="text-slate-700 leading-relaxed">{update.todayLesson || 'N/A'}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-purple-50/50 border border-purple-100">
-                  <div className="flex items-center gap-1.5 font-bold text-purple-900 mb-1 text-[11px]">
-                    <FileText className="w-3.5 h-3.5 text-purple-600" />
+                <div className="p-3 rounded-xl bg-[#EEF4FF]/70 border border-[#DCE5F2]">
+                  <div className="flex items-center gap-1.5 font-bold text-[#0B1F4D] mb-1 text-[11px]">
+                    <FileText className="w-3.5 h-3.5 text-[#155EEF]" />
                     Topics Covered
                   </div>
                   <p className="text-slate-700 leading-relaxed">{update.topicsCovered || 'N/A'}</p>
@@ -545,7 +545,7 @@ export const DailyUpdatesPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleAddSubject}
-                    className="text-xs text-indigo-600 font-bold hover:underline flex items-center gap-1"
+                    className="text-xs text-[#155EEF] font-bold hover:underline flex items-center gap-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     Add Subject

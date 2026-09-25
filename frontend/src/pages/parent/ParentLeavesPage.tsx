@@ -120,7 +120,7 @@ export const ParentLeavesPage: React.FC = () => {
       {/* Header Banner */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-800 flex items-center justify-center text-white shadow-md flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-[#0B1F4D] flex items-center justify-center text-white shadow-md flex-shrink-0">
             <FileCheck className="w-7 h-7" />
           </div>
           <div>
@@ -248,7 +248,7 @@ export const ParentLeavesPage: React.FC = () => {
                     onClick={() => setSession('EVENING')}
                     className={`py-1.5 rounded-md font-bold text-[11px] transition-all ${
                       session === 'EVENING'
-                        ? 'bg-indigo-600 text-white shadow-xs'
+                        ? 'bg-[#155EEF] text-white shadow-xs'
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >

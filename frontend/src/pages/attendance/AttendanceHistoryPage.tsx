@@ -161,15 +161,15 @@ export const AttendanceHistoryPage: React.FC = () => {
       {/* Header */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-800 flex items-center justify-center text-white shadow-md flex-shrink-0">
-            <CalendarCheck className="w-7 h-7" />
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0B1F4D] to-[#155EEF] flex items-center justify-center text-white shadow-md flex-shrink-0">
+            <CalendarCheck className="w-7 h-7 text-[#00B8F8]" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-black text-[#0B1F4D] tracking-tight">
                 Attendance History & Logs
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
                 AUDIT LOGS & PERCENTAGE
               </span>
             </div>
@@ -188,10 +188,10 @@ export const AttendanceHistoryPage: React.FC = () => {
               placeholder="Search Student (e.g. IT10025)..."
               value={searchStudent}
               onChange={(e) => setSearchStudent(e.target.value)}
-              className="text-xs border border-slate-300 rounded-lg pl-9 pr-3 py-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-56 sm:w-64"
+              className="text-xs border border-[#DCE5F2] rounded-lg pl-9 pr-3 py-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#155EEF] w-56 sm:w-64"
             />
           </div>
-          <Button size="sm" variant="primary" type="submit" className="bg-purple-600 hover:bg-purple-700">
+          <Button size="sm" variant="primary" type="submit">
             Search
           </Button>
         </form>
@@ -203,15 +203,15 @@ export const AttendanceHistoryPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
             <div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">
+                <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2] flex items-center justify-center font-bold text-sm">
                   {currentStudentStats.studentName.charAt(0)}
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-slate-900">
+                  <h2 className="text-base font-bold text-[#0B1F4D]">
                     {currentStudentStats.studentName}
                   </h2>
-                  <p className="text-xs text-slate-500">
-                    Roll: <strong className="font-mono">{currentStudentStats.studentRoll}</strong> &bull; {currentStudentStats.className} &bull; {currentStudentStats.boardName} &bull; Batch: {currentStudentStats.batchName}
+                  <p className="text-xs text-[#5B6B82]">
+                    Roll: <strong className="font-mono text-[#0B1F4D]">{currentStudentStats.studentRoll}</strong> &bull; {currentStudentStats.className} &bull; {currentStudentStats.boardName} &bull; Batch: {currentStudentStats.batchName}
                   </p>
                 </div>
               </div>
@@ -219,7 +219,7 @@ export const AttendanceHistoryPage: React.FC = () => {
 
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                <span className="text-[10px] font-bold text-[#5B6B82] uppercase tracking-wider block">
                   Overall Compliance
                 </span>
                 <span className="text-xl font-black text-emerald-600">
@@ -256,15 +256,15 @@ export const AttendanceHistoryPage: React.FC = () => {
               title="Total Sessions"
               value={currentStudentStats.totalSessions.toString()}
               subtitle="Mon–Sat Applicable"
-              icon={<CalendarCheck className="w-5 h-5 text-blue-600" />}
-              iconBg="bg-blue-50"
+              icon={<CalendarCheck className="w-5 h-5 text-[#155EEF]" />}
+              iconBg="bg-[#EEF4FF]"
             />
             <StatCard
               title="Attendance Rate"
               value={`${currentStudentStats.attendancePercentage}%`}
               subtitle="Formula: Present/Total × 100"
-              icon={<Percent className="w-5 h-5 text-purple-600" />}
-              iconBg="bg-purple-50"
+              icon={<Percent className="w-5 h-5 text-[#00B8F8]" />}
+              iconBg="bg-[#E0F8FF]"
               badge={currentStudentStats.attendancePercentage >= 85 ? 'Eligible (>85%)' : 'Low Attendance'}
               badgeVariant={currentStudentStats.attendancePercentage >= 85 ? 'emerald' : 'amber'}
             />
@@ -384,7 +384,7 @@ export const AttendanceHistoryPage: React.FC = () => {
                           className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${
                             rec.session === 'MORNING'
                               ? 'bg-amber-100 text-amber-800'
-                              : 'bg-indigo-100 text-indigo-800'
+                              : 'bg-[#EEF4FF] text-[#0B1F4D]'
                           }`}
                         >
                           {rec.session}

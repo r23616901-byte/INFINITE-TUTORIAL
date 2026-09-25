@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { loginApi } from '../../services/api';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
+import { BrandWatermark } from '../../components/common/BrandWatermark';
 import {
   Users,
   GraduationCap,
@@ -17,6 +18,9 @@ import {
   HelpCircle,
   Eye,
   EyeOff,
+  BookOpen,
+  Award,
+  Shield,
 } from 'lucide-react';
 
 export type RoleType = 'parent' | 'teacher' | 'admin';
@@ -46,58 +50,45 @@ export const LoginPage: React.FC = () => {
 
   // Sync state if URL route param changes
   useEffect(() => {
+    const rawRole = (params.role || new URLSearchParams(location.search).get('role') || '').toLowerCase();
+    if (!rawRole) {
+      navigate('/select-role', { replace: true });
+      return;
+    }
     const nextRole = getInitialRole();
     setActiveRole(nextRole);
     setErrorMessage('');
-  }, [params.role, location.search]);
-
-  // Switch role tab
-  const handleSwitchRole = (role: RoleType) => {
-    setActiveRole(role);
-    setIdentifier('');
-    setPassword('');
-    setErrorMessage('');
-    navigate(`/login/${role}`, { replace: true });
-  };
+  }, [params.role, location.search, navigate]);
 
   const roleMeta = {
     parent: {
-      title: 'Parent Login',
-      badge: 'Parent Portal',
-      subtitle: "Sign in to access your student's academic information.",
-      icon: <Users className="w-5 h-5 text-blue-600" />,
-      accentColor: 'text-blue-600',
-      badgeBg: 'bg-blue-50 text-blue-700 border-blue-200/60',
-      btnClass: 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 shadow-sm',
-      identifierLabel: 'Phone Number',
+      title: 'Parent Portal Login',
+      badge: 'Parent & Student Access',
+      subtitle: "Sign in with your registered phone number to view attendance, marks & tests.",
+      icon: <Users className="w-5 h-5 text-[#155EEF]" />,
+      identifierLabel: 'Registered Mobile Number',
       identifierPlaceholder: 'e.g. 6361085188',
       identifierIcon: <Phone className="w-4 h-4" />,
       identifierHelper: 'Enter your registered 10-digit mobile number',
       passwordHelper: 'Initial password is student Date of Birth (DDMMYY)',
     },
     teacher: {
-      title: 'Teacher Login',
-      badge: 'Educator Portal',
-      subtitle: 'Sign in to manage students, attendance, tests, and marks.',
-      icon: <GraduationCap className="w-5 h-5 text-emerald-600" />,
-      accentColor: 'text-emerald-600',
-      badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
-      btnClass: 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 shadow-sm',
-      identifierLabel: 'Email Address',
+      title: 'Teacher Portal Login',
+      badge: 'Faculty Educator Desk',
+      subtitle: 'Sign in with your faculty email to record attendance, exams & updates.',
+      icon: <GraduationCap className="w-5 h-5 text-[#155EEF]" />,
+      identifierLabel: 'Faculty Email Address',
       identifierPlaceholder: 'e.g. teacher@infinite.com',
       identifierIcon: <Mail className="w-4 h-4" />,
       identifierHelper: 'Enter your registered faculty email address',
       passwordHelper: 'Enter your assigned educator password',
     },
     admin: {
-      title: 'Admin Login',
+      title: 'Admin Portal Login',
       badge: 'Administration Portal',
       subtitle: 'Sign in to manage tuition operations, teachers, and system records.',
-      icon: <ShieldCheck className="w-5 h-5 text-indigo-600" />,
-      accentColor: 'text-indigo-600',
-      badgeBg: 'bg-indigo-50 text-indigo-700 border-indigo-200/60',
-      btnClass: 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 shadow-sm',
-      identifierLabel: 'Admin Email',
+      icon: <ShieldCheck className="w-5 h-5 text-[#155EEF]" />,
+      identifierLabel: 'Admin Email Address',
       identifierPlaceholder: 'e.g. admin@infinite.com',
       identifierIcon: <Mail className="w-4 h-4" />,
       identifierHelper: 'Enter your registered administrator email address',
@@ -149,7 +140,7 @@ export const LoginPage: React.FC = () => {
 
     setIsLoading(true);
 
-    // Check if credentials match portal accounts (for instant offline/demo support)
+    // Check credentials for instant offline/demo support
     const normalizedPhone = cleanIdentifier.replace(/\D/g, '');
     const isParentMatch =
       activeRole === 'parent' &&
@@ -171,7 +162,6 @@ export const LoginPage: React.FC = () => {
       if (res && res.success && res.data) {
         login(res.data.token, res.data.user);
 
-        // Redirect according to authenticated user role
         const role = res.data.user.role;
         const from = (location.state as { from?: { pathname?: string } })?.from?.pathname;
 
@@ -187,7 +177,7 @@ export const LoginPage: React.FC = () => {
         return;
       }
     } catch {
-      // Backend is offline or database is unreachable; fallback to authenticated demo accounts
+      // Backend offline fallback to authenticated demo accounts
       if (isParentMatch) {
         const parentUser = {
           ...mockUsers.PARENT,
@@ -220,25 +210,20 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  // Demo credential quick-fill helpers for evaluation
   const fillDemo = (role: RoleType) => {
     setErrorMessage('');
     if (role === 'parent') {
-      handleSwitchRole('parent');
       setIdentifier('6361085188');
       setPassword('260906');
     } else if (role === 'teacher') {
-      handleSwitchRole('teacher');
       setIdentifier('teacher@infinite.com');
       setPassword('Teacher@123');
     } else {
-      handleSwitchRole('admin');
       setIdentifier('admin@infinite.com');
       setPassword('Admin@123');
     }
   };
 
-  // Direct UI Shell Launcher for testing without backend
   const enterDirectRole = (role: 'ADMIN' | 'TEACHER' | 'PARENT') => {
     const targetUser = mockUsers[role];
     login(`dev-token-${role.toLowerCase()}`, targetUser);
@@ -246,142 +231,161 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-      {/* Top Header with Infinite Tutorial Logo positioned at top-left with comfortable spacing */}
-      <header className="w-full px-6 py-5 sm:px-8 sm:py-6 md:px-12 md:py-8 flex items-center justify-between z-20">
-        <Link
-          to="/"
-          className="group inline-flex items-center gap-3 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
-          aria-label="Infinite Tutorial Home"
-        >
-          {/* Proportional Official Infinite Tutorial Logo */}
-          <div className="flex items-center">
-            <img
-              src="/logo-transparent.png"
-              alt="Infinite Tutorial Logo"
-              className="h-9 sm:h-11 md:h-12 w-auto max-w-[200px] sm:max-w-[240px] md:max-w-[280px] object-contain transition-transform duration-200 group-hover:scale-[1.02]"
-              onError={(e) => {
-                const target = e.currentTarget;
-                if (!target.src.includes('logo.svg')) {
-                  target.src = '/logo.svg';
-                }
-              }}
-            />
-          </div>
-        </Link>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F5F8FC] text-[#0B1F4D]">
+      {/* ========================================================= */}
+      {/* BRAND SHOWCASE COLUMN (LEFT SIDE ON DESKTOP) */}
+      {/* ========================================================= */}
+      <div className="lg:w-5/12 xl:w-1/2 brand-sidebar-bg text-white p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden select-none">
+        {/* Subtle decorative glow in brand cyan/orange */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#155EEF]/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#F7931E]/20 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Back to Role Selection in top bar for quick access */}
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition-colors"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Back to role selection</span>
-          <span className="sm:hidden">Roles</span>
-        </Link>
-      </header>
+        {/* Subtle Watermark inside the dark branding pane */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
+          <img
+            src="/logo-emblem-transparent.png"
+            alt=""
+            className="w-96 h-auto object-contain filter invert"
+          />
+        </div>
 
-      {/* Main Login Card Area (Centered vertically and horizontally on desktop) */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4 sm:py-8 max-w-lg w-full mx-auto">
-        {/* Navigation link back to role selection */}
-        <div className="w-full flex items-center justify-start mb-4">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-blue-600 transition-colors group"
-          >
-            <ArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" />
-            <span>← Back to role selection</span>
+        {/* Top Logo Slot */}
+        <div className="relative z-10">
+          <Link to="/" className="inline-flex items-center gap-3">
+            <div className="bg-white px-4 py-2 rounded-2xl shadow-sm border border-white/30 inline-flex items-center">
+              <img
+                src="/logo-transparent.png"
+                alt="Infinite Tutorial Logo"
+                className="h-9 sm:h-11 w-auto object-contain"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.src.includes('logo.png')) {
+                    target.src = '/logo.png';
+                  }
+                }}
+              />
+            </div>
           </Link>
         </div>
 
-        {/* Main Card */}
-        <div className="w-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-8">
-          {/* Role Switcher Pill Bar */}
-          <div className="flex rounded-xl bg-slate-100/90 p-1 mb-6 text-xs font-semibold border border-slate-200/50">
-            <button
-              type="button"
-              onClick={() => handleSwitchRole('parent')}
-              className={`flex-1 py-2 px-2.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                activeRole === 'parent'
-                  ? 'bg-white text-blue-600 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Users className="w-3.5 h-3.5" />
-              <span>Parent</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSwitchRole('teacher')}
-              className={`flex-1 py-2 px-2.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                activeRole === 'teacher'
-                  ? 'bg-white text-emerald-600 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <GraduationCap className="w-3.5 h-3.5" />
-              <span>Teacher</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSwitchRole('admin')}
-              className={`flex-1 py-2 px-2.5 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                activeRole === 'admin'
-                  ? 'bg-white text-indigo-600 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin</span>
-            </button>
+        {/* Center Educational Value Proposition */}
+        <div className="my-10 lg:my-0 space-y-6 relative z-10 max-w-lg">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-[#00B8F8] text-xs font-bold tracking-wide uppercase">
+            <Sparkles className="w-3.5 h-3.5 text-[#FFB52E]" />
+            Official Educational Portal
           </div>
 
-          {/* Role Header */}
-          <div className="mb-6 space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold border ${roleMeta.badgeBg}`}>
-                {roleMeta.icon}
-                {roleMeta.badge}
-              </span>
+          <h1 className="text-3xl sm:text-4xl xl:text-5xl font-black text-white tracking-tight leading-tight">
+            Inspiring Academic Excellence,{' '}
+            <span className="text-[#00B8F8]">Boundless Potential</span>
+          </h1>
+
+          <p className="text-sm sm:text-base text-[#DCE5F2] leading-relaxed font-normal">
+            Infinite Tutorial provides structured mentoring, verified performance analytics, instant attendance notifications, and transparent tuition management.
+          </p>
+
+          {/* 3 Pillars */}
+          <div className="pt-4 space-y-3.5 text-xs sm:text-sm text-[#DCE5F2]">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#00B8F8]">
+                <Shield className="w-4 h-4" />
+              </div>
+              <span className="font-medium">Real-time attendance &amp; departure safety alerts</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              {roleMeta.title}
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-              {roleMeta.subtitle}
-            </p>
+
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#FFB52E]">
+                <Award className="w-4 h-4" />
+              </div>
+              <span className="font-medium">Official verified scorecards &amp; analytics</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#1677FF]">
+                <BookOpen className="w-4 h-4" />
+              </div>
+              <span className="font-medium">Syllabus progression &amp; daily class logs</span>
+            </div>
           </div>
+        </div>
 
-          {/* Clean Inline Error Alert */}
-          {errorMessage && (
-            <div
-              role="alert"
-              className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-xs text-red-700 animate-fadeIn"
-            >
-              <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-              <div className="flex-1 font-medium">{errorMessage}</div>
+        {/* Bottom copyright in showcase */}
+        <div className="relative z-10 text-xs text-[#8A9BB0] pt-6 border-t border-white/10">
+          <p>&copy; {new Date().getFullYear()} Infinite Tutorial &bull; All Rights Reserved</p>
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* LOGIN CARD COLUMN (RIGHT SIDE ON DESKTOP) */}
+      {/* ========================================================= */}
+      <div className="flex-1 flex flex-col justify-between p-6 sm:p-10 lg:p-16 relative overflow-hidden">
+        {/* Subtle Watermark on right page background */}
+        <BrandWatermark opacity={0.035} size="lg" position="center" />
+
+        {/* Top bar back link */}
+        <div className="w-full flex items-center justify-between mb-6 relative z-10">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#5B6B82] hover:text-[#155EEF] transition-colors group"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" />
+            <span>Back to role selection</span>
+          </Link>
+
+          <span className="text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] border border-[#DCE5F2] px-3 py-1 rounded-full">
+            Secure SSL 256-Bit
+          </span>
+        </div>
+
+        {/* Centered Login Card */}
+        <div className="w-full max-w-md mx-auto my-auto relative z-10">
+          <div className="bg-white rounded-2xl border border-[#DCE5F2] shadow-sm p-6 sm:p-8">
+
+            {/* Header info */}
+            <div className="mb-6 space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
+                  {roleMeta.icon}
+                  {roleMeta.badge}
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#0B1F4D] tracking-tight">
+                {roleMeta.title}
+              </h2>
+              <p className="text-xs sm:text-sm text-[#5B6B82] leading-relaxed">
+                {roleMeta.subtitle}
+              </p>
             </div>
-          )}
 
-          {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Input
-                label={roleMeta.identifierLabel}
-                type={activeRole === 'parent' ? 'tel' : 'email'}
-                inputMode={activeRole === 'parent' ? 'numeric' : 'email'}
-                placeholder={roleMeta.identifierPlaceholder}
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-                startIcon={roleMeta.identifierIcon}
-                helperText={roleMeta.identifierHelper}
-                autoComplete={activeRole === 'parent' ? 'tel' : 'email'}
-                required
-              />
-            </div>
+            {/* Error Alert */}
+            {errorMessage && (
+              <div
+                role="alert"
+                className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-xs text-red-700 animate-fadeIn"
+              >
+                <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                <div className="flex-1 font-medium">{errorMessage}</div>
+              </div>
+            )}
 
-            <div>
-              <div className="relative">
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Input
+                  label={roleMeta.identifierLabel}
+                  type={activeRole === 'parent' ? 'tel' : 'email'}
+                  inputMode={activeRole === 'parent' ? 'numeric' : 'email'}
+                  placeholder={roleMeta.identifierPlaceholder}
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  startIcon={roleMeta.identifierIcon}
+                  helperText={roleMeta.identifierHelper}
+                  autoComplete={activeRole === 'parent' ? 'tel' : 'email'}
+                  required
+                />
+              </div>
+
+              <div>
                 <Input
                   label="Password"
                   type={showPassword ? 'text' : 'password'}
@@ -393,7 +397,7 @@ export const LoginPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-slate-400 hover:text-slate-600 focus:outline-none p-1 pointer-events-auto"
+                      className="text-[#8A9BB0] hover:text-[#0B1F4D] focus:outline-hidden p-1 pointer-events-auto"
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -403,164 +407,128 @@ export const LoginPage: React.FC = () => {
                   autoComplete="current-password"
                   required
                 />
+
+                {/* Forgot Password link */}
+                <div className="flex justify-end mt-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowForgotModal(true)}
+                    className="text-xs font-bold text-[#155EEF] hover:text-[#0E4FD6] transition-colors focus:outline-hidden"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
               </div>
 
-              {/* Forgot Password Link */}
-              <div className="flex justify-end mt-1.5">
-                <button
-                  type="button"
-                  onClick={() => setShowForgotModal(true)}
-                  className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors focus:outline-none"
+              {/* Login Button */}
+              <div className="pt-2">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="w-full py-2.5 font-bold text-sm"
+                  isLoading={isLoading}
                 >
-                  Forgot Password?
-                </button>
+                  Sign In to {activeRole.toUpperCase()} Portal
+                </Button>
               </div>
-            </div>
+            </form>
 
-            {/* Login Submit Button */}
-            <div className="pt-2">
-              <Button
-                type="submit"
-                variant="primary"
-                className={`w-full py-2.5 font-semibold text-sm ${roleMeta.btnClass}`}
-                isLoading={isLoading}
+            {/* Quick Demo Credential Helper */}
+            <div className="mt-6 pt-5 border-t border-[#F0F4FA]">
+              <button
+                type="button"
+                onClick={() => setShowDemoTools(!showDemoTools)}
+                className="w-full flex items-center justify-between text-[11px] font-bold text-[#5B6B82] hover:text-[#0B1F4D] transition-colors"
               >
-                Login
-              </Button>
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#F7931E]" />
+                  Demo Mode: Quick Auto-Fill
+                </span>
+                <span className="text-[10px] bg-[#F5F8FC] border border-[#DCE5F2] px-2 py-0.5 rounded text-[#0B1F4D]">
+                  {showDemoTools ? 'Hide' : 'Show'}
+                </span>
+              </button>
+
+              {showDemoTools && (
+                <div className="mt-3 space-y-2 pt-1 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => fillDemo(activeRole)}
+                    className="w-full py-2 px-3 rounded-xl border border-[#DCE5F2] bg-[#F5F8FC] hover:bg-[#EEF4FF] hover:border-[#155EEF] text-xs font-bold text-[#0B1F4D] transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span>Auto-Fill {activeRole === 'teacher' ? 'Faculty Teacher' : activeRole === 'admin' ? 'Admin' : 'Parent'} Credentials</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => enterDirectRole(activeRole.toUpperCase() as 'ADMIN' | 'TEACHER' | 'PARENT')}
+                    className="w-full py-2 px-3 rounded-xl bg-[#155EEF] hover:bg-[#0E4FD6] text-white text-xs font-bold shadow-2xs transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span>Direct Launch {activeRole === 'teacher' ? 'Teacher' : activeRole === 'admin' ? 'Admin' : 'Parent'} Portal</span>
+                  </button>
+                </div>
+              )}
             </div>
-          </form>
+          </div>
 
-          {/* Quick Demo Credential Helper (Discreet Accordion for Evaluation) */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <button
-              type="button"
-              onClick={() => setShowDemoTools(!showDemoTools)}
-              className="w-full flex items-center justify-between text-[11px] font-semibold text-slate-500 hover:text-slate-800 transition-colors"
+          {/* Switch Portal Option */}
+          <div className="mt-4 text-center">
+            <Link
+              to="/select-role"
+              className="inline-flex items-center gap-1.5 text-xs text-[#5B6B82] hover:text-[#155EEF] transition-colors font-medium"
             >
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                Demo Credentials &amp; Direct Shell Preview
-              </span>
-              <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-600">
-                {showDemoTools ? 'Hide' : 'Show'}
-              </span>
-            </button>
-
-            {showDemoTools && (
-              <div className="mt-3 space-y-3 pt-2 text-xs">
-                <div>
-                  <p className="text-[11px] font-medium text-slate-500 mb-1.5">
-                    1-Click Auto-Fill Demo Credentials:
-                  </p>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => fillDemo('parent')}
-                      className="py-1.5 px-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-medium text-slate-700 transition-colors"
-                    >
-                      Parent Demo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => fillDemo('teacher')}
-                      className="py-1.5 px-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-medium text-slate-700 transition-colors"
-                    >
-                      Teacher Demo
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => fillDemo('admin')}
-                      className="py-1.5 px-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-medium text-slate-700 transition-colors"
-                    >
-                      Admin Demo
-                    </button>
-                  </div>
-                </div>
-
-                <div className="p-3 bg-blue-50/70 border border-blue-100 rounded-xl space-y-2">
-                  <p className="text-[11px] font-bold text-blue-900">
-                    Direct UI Shell Preview (No database required):
-                  </p>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => enterDirectRole('PARENT')}
-                      className="py-1.5 px-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-2xs transition-colors"
-                    >
-                      Parent Shell
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => enterDirectRole('TEACHER')}
-                      className="py-1.5 px-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-2xs transition-colors"
-                    >
-                      Teacher Shell
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => enterDirectRole('ADMIN')}
-                      className="py-1.5 px-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-2xs transition-colors"
-                    >
-                      Admin Shell
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+              <span>Not logging in as {activeRole === 'teacher' ? 'Faculty Teacher' : activeRole === 'admin' ? 'Administrator' : 'Parent / Student'}?</span>
+              <span className="font-bold underline">Change Portal</span>
+            </Link>
           </div>
         </div>
-      </main>
 
-      {/* Clean Professional Footer */}
-      <footer className="w-full px-6 py-4 sm:px-8 text-center border-t border-slate-200/70 bg-white/70 backdrop-blur-xs text-xs text-slate-500">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p>&copy; {new Date().getFullYear()} Infinite Tutorial. All rights reserved.</p>
-          <p className="text-[11px] text-slate-400">
-            Tuition Management &amp; Academic Record System
-          </p>
+        {/* Bottom copyright in form column */}
+        <div className="w-full text-center text-xs text-[#8A9BB0] pt-6 relative z-10">
+          <p>Protected by Infinite Tutorial Academic Security &bull; SSL Secured</p>
         </div>
-      </footer>
+      </div>
 
       {/* Forgot Password Guidance Modal */}
       {showForgotModal && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
+          className="fixed inset-0 z-50 bg-[#071633]/50 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
         >
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-sm w-full p-6 space-y-4">
-            <div className="flex items-center gap-2.5 text-slate-900">
-              <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
+          <div className="bg-white rounded-2xl border border-[#DCE5F2] shadow-xl max-w-sm w-full p-6 space-y-4">
+            <div className="flex items-center gap-2.5 text-[#0B1F4D]">
+              <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] border border-[#DCE5F2] flex items-center justify-center text-[#155EEF]">
                 <HelpCircle className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-base">Reset Your Password</h3>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
-              To ensure data protection and verify identity, credential resets for{' '}
-              <strong className="text-slate-800 font-semibold">{roleMeta.title}</strong>{' '}
-              are assisted by the institute administration office.
+            <p className="text-xs text-[#5B6B82] leading-relaxed">
+              To ensure student data protection and verify identity, credential resets for{' '}
+              <strong className="text-[#0B1F4D] font-bold">{roleMeta.title}</strong>{' '}
+              are assisted by the institute administration desk.
             </p>
 
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 text-xs space-y-1.5 text-slate-700">
+            <div className="p-3 bg-[#F5F8FC] rounded-xl border border-[#DCE5F2] text-xs space-y-1.5 text-[#0B1F4D]">
               <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-slate-400" />
+                <Phone className="w-3.5 h-3.5 text-[#155EEF]" />
                 <span>Call Administration: <strong>+91 98765 43210</strong></span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-slate-400" />
+                <Mail className="w-3.5 h-3.5 text-[#155EEF]" />
                 <span>Email: <strong>admin@infinitetutorial.com</strong></span>
               </div>
             </div>
 
             <div className="pt-2">
-              <button
-                type="button"
+              <Button
+                variant="primary"
                 onClick={() => setShowForgotModal(false)}
-                className="w-full py-2 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors"
+                className="w-full py-2 text-xs"
               >
                 Understood
-              </button>
+              </Button>
             </div>
           </div>
         </div>

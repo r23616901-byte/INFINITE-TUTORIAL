@@ -140,7 +140,7 @@ export const AdminBatchesPage: React.FC = () => {
       {/* Header Banner */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-800 flex items-center justify-center text-white shadow-md flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0B1F4D] to-blue-800 flex items-center justify-center text-white shadow-md flex-shrink-0">
             <Layers className="w-7 h-7" />
           </div>
           <div>
@@ -148,7 +148,7 @@ export const AdminBatchesPage: React.FC = () => {
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 Batch Management
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#1048B5] border border-[#DCE5F2]">
                 CLASS & BATCH SCHEDULER
               </span>
             </div>
@@ -163,7 +163,7 @@ export const AdminBatchesPage: React.FC = () => {
           variant="primary"
           onClick={() => setIsAddModalOpen(true)}
           leftIcon={<Plus className="w-4 h-4" />}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
+          className="bg-[#155EEF] hover:bg-[#1048B5] text-white font-bold"
         >
           Create New Batch
         </Button>
@@ -175,8 +175,8 @@ export const AdminBatchesPage: React.FC = () => {
           title="Total Batches"
           value={batches.length.toString()}
           subtitle="Configured batches"
-          icon={<Layers className="w-5 h-5 text-indigo-600" />}
-          iconBg="bg-indigo-50"
+          icon={<Layers className="w-5 h-5 text-[#155EEF]" />}
+          iconBg="bg-[#EEF4FF]"
           isLoading={isLoading}
         />
         <StatCard
@@ -191,8 +191,8 @@ export const AdminBatchesPage: React.FC = () => {
           title="Evening Batches"
           value={batches.filter((b) => b.session === 'EVENING').length.toString()}
           subtitle="5:00 PM – 7:00 PM"
-          icon={<Moon className="w-5 h-5 text-purple-600" />}
-          iconBg="bg-purple-50"
+          icon={<Moon className="w-5 h-5 text-[#0B1F4D]" />}
+          iconBg="bg-[#EEF4FF]"
           isLoading={isLoading}
         />
         <StatCard
@@ -273,7 +273,7 @@ export const AdminBatchesPage: React.FC = () => {
           {filtered.map((b) => (
             <div
               key={b.id}
-              className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:border-indigo-300 transition-all space-y-3"
+              className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:border-[#B2CCFF] transition-all space-y-3"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -288,13 +288,13 @@ export const AdminBatchesPage: React.FC = () => {
                   className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                     b.session === 'MORNING'
                       ? 'bg-amber-100 text-amber-800 border border-amber-200'
-                      : 'bg-indigo-100 text-indigo-800 border border-indigo-200'
+                      : 'bg-[#EEF4FF] text-[#0B1F4D] border border-[#DCE5F2]'
                   }`}
                 >
                   {b.session === 'MORNING' ? (
                     <Sun className="w-3 h-3 text-amber-600" />
                   ) : (
-                    <Moon className="w-3 h-3 text-indigo-600" />
+                    <Moon className="w-3 h-3 text-[#155EEF]" />
                   )}
                   {b.session}
                 </span>
@@ -319,7 +319,7 @@ export const AdminBatchesPage: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Assigned Teacher:</span>
-                  <span className="font-semibold text-indigo-700">
+                  <span className="font-semibold text-[#1048B5]">
                     {b.assignedTeacherName || 'Prof. Rajesh Sharma'}
                   </span>
                 </div>
@@ -344,7 +344,7 @@ export const AdminBatchesPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center">
                   <Plus className="w-5 h-5" />
                 </div>
                 <div>
@@ -504,7 +504,7 @@ export const AdminBatchesPage: React.FC = () => {
                   size="sm"
                   variant="primary"
                   isLoading={isSubmitting}
-                  className="bg-indigo-600 hover:bg-indigo-700"
+                  className="bg-[#155EEF] hover:bg-[#1048B5]"
                 >
                   Save Batch
                 </Button>

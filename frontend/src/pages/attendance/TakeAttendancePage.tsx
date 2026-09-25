@@ -239,21 +239,21 @@ export const TakeAttendancePage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl border border-[#DCE5F2] p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center text-white shadow-md flex-shrink-0">
-            <CheckCircle2 className="w-7 h-7" />
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0B1F4D] to-[#155EEF] flex items-center justify-center text-white shadow-md flex-shrink-0">
+            <CheckCircle2 className="w-7 h-7 text-[#00B8F8]" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-black text-[#0B1F4D] tracking-tight">
                 Batch Attendance
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
                 DAILY ATTENDANCE MODULE
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-[#5B6B82] mt-1">
               Select date, session, and batch to mark Present (🟢 Green) or Absent (🔴 Red). Duplicate entries are automatically prevented.
             </p>
           </div>
@@ -345,10 +345,10 @@ export const TakeAttendancePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedSession('MORNING')}
-                className={`flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-bold transition-all ${
+                className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   selectedSession === 'MORNING'
-                    ? 'bg-amber-500 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-[#F7931E] text-white shadow-xs'
+                    : 'text-[#5B6B82] hover:text-[#0B1F4D]'
                 }`}
               >
                 <Sun className="w-3.5 h-3.5" />
@@ -357,10 +357,10 @@ export const TakeAttendancePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedSession('EVENING')}
-                className={`flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-bold transition-all ${
+                className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   selectedSession === 'EVENING'
-                    ? 'bg-indigo-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-[#0B1F4D] text-white shadow-xs'
+                    : 'text-[#5B6B82] hover:text-[#0B1F4D]'
                 }`}
               >
                 <Moon className="w-3.5 h-3.5" />
@@ -461,8 +461,8 @@ export const TakeAttendancePage: React.FC = () => {
           title="Session Turnout"
           value={`${attendanceRate}%`}
           subtitle={isMarked ? '✓ Already Recorded' : '⏳ Pending Save'}
-          icon={<Percent className="w-5 h-5 text-purple-600" />}
-          iconBg="bg-purple-50"
+          icon={<Percent className="w-5 h-5 text-[#00B8F8]" />}
+          iconBg="bg-[#E0F8FF]"
           badge={isMarked ? 'Saved' : 'Draft'}
           badgeVariant={isMarked ? 'emerald' : 'slate'}
           isLoading={isLoading}
@@ -736,7 +736,7 @@ export const TakeAttendancePage: React.FC = () => {
             {/* Modal Header */}
             <div className="p-5 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2] flex items-center justify-center">
                   <CalendarCheck className="w-5 h-5" />
                 </div>
                 <div>

@@ -151,7 +151,7 @@ export const ParentProfilePage: React.FC = () => {
               <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-semibold border border-blue-100">
                 {student.className}
               </span>
-              <span className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-semibold border border-indigo-100">
+              <span className="px-2.5 py-1 rounded-lg bg-[#EEF4FF] text-[#1048B5] font-semibold border border-[#DCE5F2]">
                 {student.boardName}
               </span>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-semibold border border-emerald-100">

@@ -1,4 +1,27 @@
 @import "tailwindcss";
+@import "./styles/theme.css";
+
+@theme {
+  --color-brand-navy: #0B1F4D;
+  --color-brand-navy-dark: #071633;
+  --color-brand-navy-light: #142C68;
+  --color-brand-blue: #155EEF;
+  --color-brand-blue-bright: #1677FF;
+  --color-brand-blue-light: #EEF4FF;
+  --color-brand-cyan: #00B8F8;
+  --color-brand-cyan-light: #E0F8FF;
+  --color-brand-orange: #F7931E;
+  --color-brand-orange-light: #FFF4E5;
+  --color-brand-gold: #FFB52E;
+  --color-brand-white: #FFFFFF;
+  --color-brand-background: #F5F8FC;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-border: #DCE5F2;
+  --color-brand-border-light: #E9F0FA;
+  --color-brand-text: #0B1F4D;
+  --color-brand-text-secondary: #5B6B82;
+  --color-brand-text-muted: #8A9BB0;
+}
 
 :root {
   --sat: env(safe-area-inset-top, 0px);
@@ -10,8 +33,8 @@
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: var(--brand-background, #F5F8FC);
+  color: var(--brand-text, #0B1F4D);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   padding-top: var(--sat);
@@ -42,7 +65,7 @@ body {
     color: #000000 !important;
     padding: 0 !important;
   }
-  .no-print, header, nav, footer, .mobile-bottom-nav {
+  .no-print, header, nav, footer, .mobile-bottom-nav, .brand-watermark {
     display: none !important;
   }
 }

@@ -298,7 +298,7 @@ export const AdminTeachersPage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
               Faculty & Teacher Management
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#1048B5] border border-[#DCE5F2]">
               ADMIN CONTROL
             </span>
           </div>
@@ -318,9 +318,9 @@ export const AdminTeachersPage: React.FC = () => {
       </div>
 
       {/* Admin Protection Policy */}
-      <div className="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 flex items-center justify-between text-xs text-indigo-900 gap-3">
+      <div className="bg-[#EEF4FF]/70 border border-[#DCE5F2] rounded-xl p-3.5 flex items-center justify-between text-xs text-[#071633] gap-3">
         <div className="flex items-center gap-2.5">
-          <Shield className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+          <Shield className="w-4 h-4 text-[#155EEF] flex-shrink-0" />
           <span>
             <strong>System Security:</strong> Teachers are granted role-based access to enter marks, take attendance, and review student tests strictly for their assigned subjects and batches.
           </span>
@@ -333,8 +333,8 @@ export const AdminTeachersPage: React.FC = () => {
           title="Total Teachers"
           value={teachers.length}
           subtitle="Registered staff"
-          icon={<Users className="w-5 h-5 text-indigo-600" />}
-          iconBg="bg-indigo-50"
+          icon={<Users className="w-5 h-5 text-[#155EEF]" />}
+          iconBg="bg-[#EEF4FF]"
         />
         <StatCard
           title="Active Faculty"
@@ -370,7 +370,7 @@ export const AdminTeachersPage: React.FC = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search teacher by Name, Email, or Phone..."
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800 placeholder-slate-400"
+                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#155EEF]/20 focus:border-[#155EEF] transition-all text-slate-800 placeholder-slate-400"
               />
             </div>
 
@@ -378,7 +378,7 @@ export const AdminTeachersPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 text-xs text-[#155EEF] hover:text-[#0B1F4D] font-semibold transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />
                 Reset Filters
@@ -394,7 +394,7 @@ export const AdminTeachersPage: React.FC = () => {
               <select
                 value={selectedSubject}
                 onChange={(e) => setSelectedSubject(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Subjects</option>
                 {ALL_SUBJECTS.map((s) => (
@@ -410,7 +410,7 @@ export const AdminTeachersPage: React.FC = () => {
               <select
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Batches</option>
                 {ALL_BATCHES.map((b) => (
@@ -426,7 +426,7 @@ export const AdminTeachersPage: React.FC = () => {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-hidden focus:border-[#155EEF]"
               >
                 <option value="">All Statuses</option>
                 <option value="ACTIVE">Active</option>
@@ -472,7 +472,7 @@ export const AdminTeachersPage: React.FC = () => {
                     {/* Name */}
                     <td className="px-6 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 flex-shrink-0 flex items-center justify-center font-bold text-indigo-700">
+                        <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] border border-[#DCE5F2] flex-shrink-0 flex items-center justify-center font-bold text-[#1048B5]">
                           {teacher.name.charAt(0)}
                         </div>
                         <div>
@@ -564,7 +564,7 @@ export const AdminTeachersPage: React.FC = () => {
                           type="button"
                           onClick={() => handleOpenStudentsModal(teacher)}
                           title="View Assigned Students"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-[#155EEF] hover:bg-[#EEF4FF] transition-colors"
                         >
                           <GraduationCap className="w-4 h-4" />
                         </button>
@@ -588,7 +588,7 @@ export const AdminTeachersPage: React.FC = () => {
                           type="button"
                           onClick={() => handleOpenActivityModal(teacher)}
                           title="View Activity Log"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-[#155EEF] hover:bg-[#EEF4FF] transition-colors"
                         >
                           <Activity className="w-4 h-4" />
                         </button>
@@ -616,7 +616,7 @@ export const AdminTeachersPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-xl w-full p-6 space-y-4 my-8">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] text-[#1048B5] flex items-center justify-center font-bold">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
@@ -691,12 +691,12 @@ export const AdminTeachersPage: React.FC = () => {
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {ALL_SUBJECTS.map((sub) => (
-                    <label key={sub} className="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-indigo-300">
+                    <label key={sub} className="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-[#B2CCFF]">
                       <input
                         type="checkbox"
                         checked={formData.subjects.includes(sub)}
                         onChange={() => toggleSubjectSelection(sub)}
-                        className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                        className="rounded border-slate-300 text-[#155EEF] focus:ring-[#155EEF]"
                       />
                       <span className="font-medium text-slate-800">{sub}</span>
                     </label>
@@ -711,12 +711,12 @@ export const AdminTeachersPage: React.FC = () => {
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {ALL_BATCHES.map((batch) => (
-                    <label key={batch} className="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-indigo-300">
+                    <label key={batch} className="flex items-center gap-2 p-2 bg-white border border-slate-200 rounded-lg cursor-pointer hover:border-[#B2CCFF]">
                       <input
                         type="checkbox"
                         checked={formData.batches.includes(batch)}
                         onChange={() => toggleBatchSelection(batch)}
-                        className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                        className="rounded border-slate-300 text-[#155EEF] focus:ring-[#155EEF]"
                       />
                       <span className="font-medium text-slate-800">{batch}</span>
                     </label>
@@ -960,7 +960,7 @@ export const AdminTeachersPage: React.FC = () => {
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
               <p className="text-slate-500">A temporary password has been generated:</p>
-              <div className="p-2.5 bg-white border border-slate-200 rounded-lg font-mono font-bold text-sm text-center text-indigo-700 select-all">
+              <div className="p-2.5 bg-white border border-slate-200 rounded-lg font-mono font-bold text-sm text-center text-[#1048B5] select-all">
                 {tempPassword}
               </div>
               <p className="text-[11px] text-slate-400">
@@ -987,7 +987,7 @@ export const AdminTeachersPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-md w-full p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2] flex items-center justify-center font-bold">
                   <Activity className="w-5 h-5" />
                 </div>
                 <div>
@@ -1008,7 +1008,7 @@ export const AdminTeachersPage: React.FC = () => {
               {activeTeacher.activityLog && activeTeacher.activityLog.length > 0 ? (
                 activeTeacher.activityLog.map((act, idx) => (
                   <div key={idx} className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0" />
+                    <span className="w-2 h-2 rounded-full bg-[#155EEF] flex-shrink-0" />
                     <span className="font-medium text-slate-700">{act}</span>
                   </div>
                 ))
@@ -1049,7 +1049,7 @@ export const AdminTeachersPage: React.FC = () => {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-2xl w-full p-6 space-y-4 my-8">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] text-[#1048B5] flex items-center justify-center font-bold">
                   <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
@@ -1094,7 +1094,7 @@ export const AdminTeachersPage: React.FC = () => {
                     {assignedStudents.map((stu) => (
                       <tr key={stu.id} className="hover:bg-slate-50/50">
                         <td className="px-6 py-3 font-bold text-slate-900">{stu.name}</td>
-                        <td className="px-6 py-3 font-mono text-indigo-600 font-semibold">{stu.studentId}</td>
+                        <td className="px-6 py-3 font-mono text-[#155EEF] font-semibold">{stu.studentId}</td>
                         <td className="px-6 py-3 text-slate-600">{stu.className} ({stu.boardName})</td>
                         <td className="px-6 py-3 font-medium text-slate-700">{stu.batchName}</td>
                         <td className="px-6 py-3">

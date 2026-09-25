@@ -124,7 +124,7 @@ export const ParentAttendancePage: React.FC = () => {
       {/* Top Banner */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-800 flex items-center justify-center text-white shadow-md flex-shrink-0">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-[#0B1F4D] flex items-center justify-center text-white shadow-md flex-shrink-0">
             <CalendarCheck className="w-8 h-8" />
           </div>
           <div>
@@ -437,18 +437,18 @@ export const ParentAttendancePage: React.FC = () => {
               </div>
 
               {/* Evening */}
-              <div className="p-3.5 rounded-xl border border-indigo-200 bg-indigo-50/50">
-                <div className="flex items-center justify-between text-xs font-bold text-indigo-900 mb-1">
+              <div className="p-3.5 rounded-xl border border-[#DCE5F2] bg-[#EEF4FF]/50">
+                <div className="flex items-center justify-between text-xs font-bold text-[#071633] mb-1">
                   <span className="flex items-center gap-1.5">
-                    <Moon className="w-4 h-4 text-indigo-600" /> Evening Sessions
+                    <Moon className="w-4 h-4 text-[#155EEF]" /> Evening Sessions
                   </span>
                   <span>
                     {data?.eveningPresent ?? 14} / {data?.eveningTotal ?? 16}
                   </span>
                 </div>
-                <div className="w-full h-2 bg-indigo-100 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-[#EEF4FF] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-indigo-600 rounded-full"
+                    className="h-full bg-[#155EEF] rounded-full"
                     style={{
                       width: `${
                         data?.eveningTotal
@@ -458,7 +458,7 @@ export const ParentAttendancePage: React.FC = () => {
                     }}
                   />
                 </div>
-                <span className="text-[10px] text-indigo-700 font-semibold block mt-1">
+                <span className="text-[10px] text-[#1048B5] font-semibold block mt-1">
                   {data?.eveningTotal
                     ? ((data.eveningPresent / data.eveningTotal) * 100).toFixed(1)
                     : '87.5'}
@@ -572,7 +572,7 @@ export const ParentAttendancePage: React.FC = () => {
                         className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${
                           r.session === 'MORNING'
                             ? 'bg-amber-100 text-amber-800'
-                            : 'bg-indigo-100 text-indigo-800'
+                            : 'bg-[#EEF4FF] text-[#0B1F4D]'
                         }`}
                       >
                         {r.session}

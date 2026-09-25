@@ -123,7 +123,7 @@ export const ParentDailyUpdatesPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center gap-1.5">
+                  <span className="px-3 py-1 rounded-lg text-xs font-bold bg-[#EEF4FF] text-[#1048B5] border border-[#DCE5F2] flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5" />
                     {update.date}
                   </span>
@@ -144,9 +144,9 @@ export const ParentDailyUpdatesPage: React.FC = () => {
                     {update.subjectUpdates.map((sub, sIdx) => (
                       <div
                         key={sIdx}
-                        className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1 hover:border-indigo-200 transition-colors"
+                        className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1 hover:border-[#DCE5F2] transition-colors"
                       >
-                        <span className="font-bold text-indigo-700 text-xs uppercase tracking-wide">
+                        <span className="font-bold text-[#1048B5] text-xs uppercase tracking-wide">
                           {sub.subject}:
                         </span>
                         <p className="font-semibold text-slate-800 text-xs leading-relaxed">
@@ -170,9 +170,9 @@ export const ParentDailyUpdatesPage: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-purple-50/50 border border-purple-100">
-                  <div className="flex items-center gap-1.5 font-bold text-purple-900 mb-1.5 text-xs">
-                    <FileText className="w-4 h-4 text-purple-600" />
+                <div className="p-3.5 rounded-xl bg-[#EEF4FF]/70 border border-[#DCE5F2]">
+                  <div className="flex items-center gap-1.5 font-bold text-[#0B1F4D] mb-1.5 text-xs">
+                    <FileText className="w-4 h-4 text-[#155EEF]" />
                     Topics Covered
                   </div>
                   <p className="text-slate-700 leading-relaxed font-medium">
@@ -199,8 +199,8 @@ export const ParentDailyUpdatesPage: React.FC = () => {
 
               {/* Important Instructions (Step 19) */}
               {update.instructions && (
-                <div className="p-3.5 rounded-xl bg-indigo-50/50 border border-indigo-200 text-xs flex items-start gap-3">
-                  <Info className="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-[#EEF4FF]/50 border border-[#DCE5F2] text-xs flex items-start gap-3">
+                  <Info className="w-4 h-4 text-[#155EEF] flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="font-bold text-indigo-950 text-xs block">
                       Teacher's Special Instructions:

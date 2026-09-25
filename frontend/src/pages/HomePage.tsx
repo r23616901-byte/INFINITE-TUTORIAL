@@ -25,7 +25,7 @@ export const HomePage: React.FC = () => {
               <Layers className="w-3.5 h-3.5" />
               Frontend: React + Vite + TS
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
               <Database className="w-3.5 h-3.5" />
               Backend: Express + Prisma (PostgreSQL)
             </span>

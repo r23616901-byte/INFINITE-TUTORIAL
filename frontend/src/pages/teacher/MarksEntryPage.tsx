@@ -252,7 +252,7 @@ export const MarksEntryPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
               <Award className="w-6 h-6" />
             </div>
             <div>
@@ -277,7 +277,7 @@ export const MarksEntryPage: React.FC = () => {
           </button>
           <button
             onClick={() => setIsEntryModalOpen(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-semibold rounded-lg text-white bg-[#155EEF] hover:bg-[#1048B5] transition-colors"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Marks Entry
@@ -322,14 +322,14 @@ export const MarksEntryPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && loadData()}
-              className="pl-9 pr-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 w-52"
+              className="pl-9 pr-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF] w-52"
             />
           </div>
 
           <select
             value={selectedSubjectFilter}
             onChange={(e) => setSelectedSubjectFilter(e.target.value)}
-            className="text-xs px-2.5 py-1.5 border border-gray-300 rounded-lg bg-white focus:ring-indigo-500 focus:border-indigo-500"
+            className="text-xs px-2.5 py-1.5 border border-gray-300 rounded-lg bg-white focus:ring-[#155EEF] focus:border-[#155EEF]"
           >
             <option value="ALL">All Subjects</option>
             <option value="Physics">Physics</option>
@@ -363,7 +363,7 @@ export const MarksEntryPage: React.FC = () => {
                     <div className="text-xs text-gray-500 font-mono">{mark.studentRoll}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-600">
-                    <div className="font-semibold text-indigo-700">{mark.subjectName}</div>
+                    <div className="font-semibold text-[#1048B5]">{mark.subjectName}</div>
                     <div className="text-gray-900 font-medium">{mark.testName}</div>
                     <div className="text-gray-400 font-mono text-[11px]">{mark.testCode}</div>
                   </td>
@@ -391,7 +391,7 @@ export const MarksEntryPage: React.FC = () => {
                           setPreviewSheetUrl(mark.answerSheetUrl!);
                           setPreviewSheetTitle(`${mark.studentName} - ${mark.testName}`);
                         }}
-                        className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium"
+                        className="inline-flex items-center text-[#155EEF] hover:text-[#0B1F4D] font-medium"
                       >
                         <FileText className="w-3.5 h-3.5 mr-1" />
                         Scanned Sheet
@@ -415,7 +415,7 @@ export const MarksEntryPage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-right text-xs space-x-2">
                     <button
                       onClick={() => openEditModal(mark)}
-                      className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-md border border-indigo-200"
+                      className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF] rounded-md border border-[#DCE5F2]"
                       title="Edit marks with audit record"
                     >
                       <Edit3 className="w-3 h-3 mr-1" /> Edit
@@ -447,7 +447,7 @@ export const MarksEntryPage: React.FC = () => {
             </button>
 
             <div className="flex items-center space-x-2 mb-5 border-b border-gray-100 pb-3">
-              <Award className="w-5 h-5 text-indigo-600" />
+              <Award className="w-5 h-5 text-[#155EEF]" />
               <h3 className="text-lg font-bold text-gray-900">Sequential Marks Entry</h3>
             </div>
 
@@ -460,7 +460,7 @@ export const MarksEntryPage: React.FC = () => {
                 <select
                   value={formStudentId}
                   onChange={(e) => setFormStudentId(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF] bg-white"
                   required
                 >
                   {students.map((st) => (
@@ -479,7 +479,7 @@ export const MarksEntryPage: React.FC = () => {
                 <select
                   value={formSubjectId}
                   onChange={(e) => setFormSubjectId(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF] bg-white"
                   required
                 >
                   {subjects.map((sub) => (
@@ -500,7 +500,7 @@ export const MarksEntryPage: React.FC = () => {
                 <select
                   value={formTestId}
                   onChange={(e) => handleTestSelection(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF] bg-white"
                   required
                 >
                   {tests.map((t) => (
@@ -526,7 +526,7 @@ export const MarksEntryPage: React.FC = () => {
                     value={formMarksObtained}
                     onChange={(e) => setFormMarksObtained(e.target.value === '' ? '' : Number(e.target.value))}
                     placeholder="e.g. 42"
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF]"
                     required
                   />
                 </div>
@@ -546,9 +546,9 @@ export const MarksEntryPage: React.FC = () => {
 
               {/* Live percentage preview */}
               {formMarksObtained !== '' && (
-                <div className="p-3 bg-indigo-50 rounded-lg flex items-center justify-between text-xs">
-                  <span className="font-semibold text-indigo-900">Computed Percentage:</span>
-                  <span className="font-bold text-indigo-700 text-sm">
+                <div className="p-3 bg-[#EEF4FF] rounded-lg flex items-center justify-between text-xs">
+                  <span className="font-semibold text-[#071633]">Computed Percentage:</span>
+                  <span className="font-bold text-[#1048B5] text-sm">
                     {((Number(formMarksObtained) / formMaxMarks) * 100).toFixed(1)}%
                   </span>
                 </div>
@@ -560,8 +560,8 @@ export const MarksEntryPage: React.FC = () => {
                   5. Upload Scanned Answer Sheet (Cloudinary / Storage)
                 </label>
                 <div className="flex items-center space-x-3">
-                  <label className="flex-1 cursor-pointer flex items-center justify-center border-2 border-dashed border-gray-300 hover:border-indigo-400 rounded-lg p-3 text-xs text-gray-600 transition-colors">
-                    <UploadCloud className="w-4 h-4 mr-2 text-indigo-600" />
+                  <label className="flex-1 cursor-pointer flex items-center justify-center border-2 border-dashed border-gray-300 hover:border-[#155EEF] rounded-lg p-3 text-xs text-gray-600 transition-colors">
+                    <UploadCloud className="w-4 h-4 mr-2 text-[#155EEF]" />
                     <span>{answerSheetFile ? answerSheetFile.name : 'Choose scanned PDF or image'}</span>
                     <input
                       type="file"
@@ -571,7 +571,7 @@ export const MarksEntryPage: React.FC = () => {
                     />
                   </label>
                 </div>
-                {uploadingFile && <span className="text-xs text-indigo-600 mt-1 block">Uploading to storage...</span>}
+                {uploadingFile && <span className="text-xs text-[#155EEF] mt-1 block">Uploading to storage...</span>}
               </div>
 
               {/* Step 6: Remarks */}
@@ -584,7 +584,7 @@ export const MarksEntryPage: React.FC = () => {
                   value={formRemarks}
                   onChange={(e) => setFormRemarks(e.target.value)}
                   placeholder="e.g. Excellent presentation in Section B"
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF]"
                 />
               </div>
 
@@ -595,7 +595,7 @@ export const MarksEntryPage: React.FC = () => {
                   type="checkbox"
                   checked={formIsPublished}
                   onChange={(e) => setFormIsPublished(e.target.checked)}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-[#155EEF] focus:ring-[#155EEF] border-gray-300 rounded"
                 />
                 <label htmlFor="publish-check" className="text-xs text-gray-700 cursor-pointer">
                   Make marks and answer sheet available to parent & student immediately
@@ -613,7 +613,7 @@ export const MarksEntryPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={submitting || uploadingFile}
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-sm transition-colors"
+                  className="px-5 py-2 bg-[#155EEF] hover:bg-[#1048B5] text-white rounded-lg text-sm font-semibold shadow-sm transition-colors"
                 >
                   {submitting ? 'Saving...' : 'Save Marks'}
                 </button>
@@ -635,14 +635,14 @@ export const MarksEntryPage: React.FC = () => {
             </button>
 
             <div className="flex items-center space-x-2 mb-4 border-b border-gray-100 pb-3">
-              <Edit3 className="w-5 h-5 text-indigo-600" />
+              <Edit3 className="w-5 h-5 text-[#155EEF]" />
               <h3 className="text-lg font-bold text-gray-900">Edit Marks & Log Audit</h3>
             </div>
 
             <div className="mb-4 bg-gray-50 p-3 rounded-lg text-xs space-y-1">
               <div><span className="font-semibold text-gray-700">Student:</span> {editingMark.studentName} ({editingMark.studentRoll})</div>
               <div><span className="font-semibold text-gray-700">Test:</span> {editingMark.testName} ({editingMark.subjectName})</div>
-              <div><span className="font-semibold text-gray-700">Current Marks:</span> <span className="font-bold text-indigo-700">{editingMark.marksObtained}</span> / {editingMark.maxMarks}</div>
+              <div><span className="font-semibold text-gray-700">Current Marks:</span> <span className="font-bold text-[#1048B5]">{editingMark.marksObtained}</span> / {editingMark.maxMarks}</div>
             </div>
 
             <form onSubmit={handleSaveEdit} className="space-y-4">
@@ -657,7 +657,7 @@ export const MarksEntryPage: React.FC = () => {
                   step="0.5"
                   value={editMarksValue}
                   onChange={(e) => setEditMarksValue(e.target.value === '' ? '' : Number(e.target.value))}
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 font-bold"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF] font-bold"
                   required
                 />
               </div>
@@ -671,7 +671,7 @@ export const MarksEntryPage: React.FC = () => {
                   value={editReason}
                   onChange={(e) => setEditReason(e.target.value)}
                   placeholder="e.g. Rechecking, Totalling correction"
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF]"
                   required
                 />
                 <span className="text-[11px] text-gray-400 mt-0.5 block">
@@ -688,7 +688,7 @@ export const MarksEntryPage: React.FC = () => {
                   value={editRemarks}
                   onChange={(e) => setEditRemarks(e.target.value)}
                   placeholder="e.g. Rechecked question 4 (+4 marks)"
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF]"
                 />
               </div>
 
@@ -703,7 +703,7 @@ export const MarksEntryPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={submittingEdit}
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-sm transition-colors"
+                  className="px-5 py-2 bg-[#155EEF] hover:bg-[#1048B5] text-white rounded-lg text-sm font-semibold shadow-sm transition-colors"
                 >
                   {submittingEdit ? 'Saving...' : 'Update & Log Audit'}
                 </button>
@@ -725,7 +725,7 @@ export const MarksEntryPage: React.FC = () => {
             </button>
 
             <div className="flex items-center space-x-2 mb-4 border-b border-gray-100 pb-3">
-              <History className="w-5 h-5 text-indigo-600" />
+              <History className="w-5 h-5 text-[#155EEF]" />
               <h3 className="text-lg font-bold text-gray-900">Marks Revision Audit Trail</h3>
             </div>
 
@@ -740,7 +740,7 @@ export const MarksEntryPage: React.FC = () => {
                 {auditLogs.map((log) => (
                   <div key={log.id} className="p-3 bg-gray-50 rounded-xl border border-gray-200 text-xs space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-indigo-700">
+                      <span className="font-bold text-[#1048B5]">
                         Marks Changed: {log.oldMarks} → {log.newMarks}
                       </span>
                       <span className="text-[11px] text-gray-400">
@@ -767,7 +767,7 @@ export const MarksEntryPage: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] p-6 shadow-2xl flex flex-col relative">
             <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
               <div className="flex items-center space-x-2">
-                <FileCheck className="w-5 h-5 text-indigo-600" />
+                <FileCheck className="w-5 h-5 text-[#155EEF]" />
                 <h3 className="font-bold text-gray-900 text-base">{previewSheetTitle}</h3>
               </div>
               <div className="flex items-center space-x-2">
@@ -775,7 +775,7 @@ export const MarksEntryPage: React.FC = () => {
                   href={previewSheetUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100"
+                  className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF]"
                 >
                   <ExternalLink className="w-3.5 h-3.5 mr-1" /> Open External
                 </a>

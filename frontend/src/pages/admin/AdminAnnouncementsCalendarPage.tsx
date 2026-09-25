@@ -256,7 +256,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
         </div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-indigo-400/20 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#155EEF]/20 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
               Institutional Broadcast & Academic Calendar
             </div>
@@ -272,7 +272,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
             {activeTab === 'announcements' ? (
               <Button
                 onClick={() => setIsAnnModalOpen(true)}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold shadow-md"
+                className="bg-[#155EEF] hover:bg-[#155EEF] text-white font-semibold shadow-md"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Publish Announcement
@@ -280,7 +280,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
             ) : (
               <Button
                 onClick={() => setIsEventModalOpen(true)}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold shadow-md"
+                className="bg-[#155EEF] hover:bg-[#155EEF] text-white font-semibold shadow-md"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Calendar Event
@@ -303,7 +303,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
           title="Active Announcements"
           value={announcements.length}
           subtitle="Broadcasting to Portals"
-          icon={<Bell className="w-5 h-5 text-indigo-600" />}
+          icon={<Bell className="w-5 h-5 text-[#155EEF]" />}
         />
         <StatCard
           title="Calendar Events"
@@ -321,7 +321,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
           title="Total Audience Reach"
           value="84 Enrolled"
           subtitle="Parents & Students"
-          icon={<Users className="w-5 h-5 text-purple-600" />}
+          icon={<Users className="w-5 h-5 text-[#00B8F8]" />}
         />
       </div>
 
@@ -331,7 +331,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
           onClick={() => setActiveTab('announcements')}
           className={`px-4 py-2 text-sm font-bold rounded-lg transition-all flex items-center gap-2 ${
             activeTab === 'announcements'
-              ? 'bg-indigo-600 text-white shadow-sm'
+              ? 'bg-[#155EEF] text-white shadow-sm'
               : 'text-gray-600 hover:bg-gray-100'
           }`}
         >
@@ -342,7 +342,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
           onClick={() => setActiveTab('calendar')}
           className={`px-4 py-2 text-sm font-bold rounded-lg transition-all flex items-center gap-2 ${
             activeTab === 'calendar'
-              ? 'bg-indigo-600 text-white shadow-sm'
+              ? 'bg-[#155EEF] text-white shadow-sm'
               : 'text-gray-600 hover:bg-gray-100'
           }`}
         >
@@ -359,7 +359,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
               key={ann.id}
               className={`p-6 border transition-all ${
                 ann.isPinned
-                  ? 'border-indigo-200 bg-indigo-50/20 shadow-sm'
+                  ? 'border-[#DCE5F2] bg-[#EEF4FF]/20 shadow-sm'
                   : 'border-gray-100 hover:shadow-md'
               }`}
             >
@@ -367,7 +367,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                 <div className="space-y-2 max-w-3xl">
                   <div className="flex flex-wrap items-center gap-2">
                     {ann.isPinned && (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[#1048B5] bg-[#EEF4FF] px-2 py-0.5 rounded-full">
                         <Pin className="w-3 h-3" /> Pinned
                       </span>
                     )}
@@ -396,13 +396,13 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   <p className="text-sm text-gray-700 leading-relaxed">{ann.content}</p>
 
                   {ann.hasAttachment && (
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-medium mt-2">
-                      <FileText className="w-4 h-4 text-indigo-600" />
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#EEF4FF] border border-[#DCE5F2] text-[#0B1F4D] text-xs font-medium mt-2">
+                      <FileText className="w-4 h-4 text-[#155EEF]" />
                       <span>Attachment: {ann.attachmentName}</span>
                       <a
                         href={`/uploads/documents/${ann.attachmentName}`}
                         download
-                        className="text-indigo-700 hover:text-indigo-900 ml-2 font-bold flex items-center gap-0.5"
+                        className="text-[#1048B5] hover:text-[#071633] ml-2 font-bold flex items-center gap-0.5"
                       >
                         <Download className="w-3 h-3" /> Download
                       </a>
@@ -442,7 +442,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                       ev.category === 'EXAM'
                         ? 'bg-red-100 text-red-700'
                         : ev.category === 'PTM'
-                        ? 'bg-purple-100 text-purple-700'
+                        ? 'bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]'
                         : ev.category === 'HOLIDAY'
                         ? 'bg-amber-100 text-amber-700'
                         : 'bg-emerald-100 text-emerald-700'
@@ -501,7 +501,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   value={newAnnTitle}
                   onChange={(e) => setNewAnnTitle(e.target.value)}
                   placeholder="e.g. Term 1 Progress Review Meeting"
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 />
               </div>
 
@@ -511,7 +511,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   <select
                     value={newAnnCategory}
                     onChange={(e) => setNewAnnCategory(e.target.value as any)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   >
                     <option value="CIRCULAR">General Circular</option>
                     <option value="PTM">Parent-Teacher Meeting</option>
@@ -525,7 +525,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   <select
                     value={newAnnPriority}
                     onChange={(e) => setNewAnnPriority(e.target.value as any)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   >
                     <option value="NORMAL">Normal</option>
                     <option value="HIGH">High Priority</option>
@@ -539,7 +539,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                 <select
                   value={newAnnAudience}
                   onChange={(e) => setNewAnnAudience(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 >
                   <option value="All Students & Parents">All Students & Parents</option>
                   <option value="Batch 10A Morning & Evening Parents">Batch 10A Morning & Evening Parents</option>
@@ -555,7 +555,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   value={newAnnContent}
                   onChange={(e) => setNewAnnContent(e.target.value)}
                   placeholder="Enter details..."
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 />
               </div>
 
@@ -566,7 +566,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   value={newAnnAttachment}
                   onChange={(e) => setNewAnnAttachment(e.target.value)}
                   placeholder="e.g. Schedule_Notice.pdf"
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 />
               </div>
 
@@ -574,7 +574,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsAnnModalOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button type="submit" size="sm" className="bg-[#155EEF] hover:bg-[#1048B5] text-white">
                   Publish Circular
                 </Button>
               </div>
@@ -603,7 +603,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   value={newEventTitle}
                   onChange={(e) => setNewEventTitle(e.target.value)}
                   placeholder="e.g. CBSE 10 Mock Board Practical Test"
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 />
               </div>
 
@@ -613,7 +613,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   <select
                     value={newEventCategory}
                     onChange={(e) => setNewEventCategory(e.target.value as any)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   >
                     <option value="ACADEMIC">Academic Session</option>
                     <option value="EXAM">Examination</option>
@@ -629,7 +629,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                     required
                     value={newEventDate}
                     onChange={(e) => setNewEventDate(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                 </div>
               </div>
@@ -641,7 +641,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                     type="text"
                     value={newEventVenue}
                     onChange={(e) => setNewEventVenue(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -650,7 +650,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                     type="text"
                     value={newEventAudience}
                     onChange={(e) => setNewEventAudience(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                 </div>
               </div>
@@ -662,7 +662,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                     type="text"
                     value={newEventStartTime}
                     onChange={(e) => setNewEventStartTime(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -671,7 +671,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                     type="text"
                     value={newEventEndTime}
                     onChange={(e) => setNewEventEndTime(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                 </div>
               </div>
@@ -682,7 +682,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                   rows={3}
                   value={newEventDesc}
                   onChange={(e) => setNewEventDesc(e.target.value)}
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 />
               </div>
 
@@ -690,7 +690,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsEventModalOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button type="submit" size="sm" className="bg-[#155EEF] hover:bg-[#1048B5] text-white">
                   Add to Calendar
                 </Button>
               </div>

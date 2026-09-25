@@ -1,6 +1,17 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Users, GraduationCap, ShieldCheck, ArrowRight, Sparkles, BookOpen, Award, CheckCircle2 } from 'lucide-react';
+import {
+  Users,
+  GraduationCap,
+  ShieldCheck,
+  ArrowRight,
+  Sparkles,
+  BookOpen,
+  Award,
+  CheckCircle2,
+} from 'lucide-react';
+import { BrandLogo } from '../../components/common/BrandLogo';
+import { BrandWatermark } from '../../components/common/BrandWatermark';
 
 interface RoleCardData {
   id: 'parent' | 'teacher' | 'admin';
@@ -10,11 +21,6 @@ interface RoleCardData {
   buttonText: string;
   icon: React.ReactNode;
   badge: string;
-  accentBorder: string;
-  accentBg: string;
-  iconBg: string;
-  iconColor: string;
-  buttonClass: string;
   features: string[];
 }
 
@@ -24,47 +30,35 @@ export const RoleSelectionPage: React.FC = () => {
   const roles: RoleCardData[] = [
     {
       id: 'parent',
-      title: 'Parent',
+      title: 'Parent / Student',
       roleName: 'Parent Portal',
-      description: "View your child's attendance, performance, scorecards, tests, announcements and academic progress.",
-      buttonText: 'Continue as Parent',
-      icon: <Users className="w-7 h-7 sm:w-8 sm:h-8" aria-hidden="true" />,
+      description:
+        "View attendance records, performance analytics, scorecards, question papers, and official tuition notices.",
+      buttonText: 'Enter Parent Portal',
+      icon: <Users className="w-7 h-7" />,
       badge: 'Student Records',
-      accentBorder: 'hover:border-blue-400 group-hover:border-blue-400',
-      accentBg: 'hover:bg-blue-50/30',
-      iconBg: 'bg-blue-50 border-blue-100',
-      iconColor: 'text-blue-600',
-      buttonClass: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500 shadow-xs',
       features: ['Attendance & Leaves', 'Performance Scorecards', 'Test Results & Notices'],
     },
     {
       id: 'teacher',
-      title: 'Teacher',
+      title: 'Faculty Teacher',
       roleName: 'Educator Portal',
-      description: 'Manage students, attendance, tests, marks, answer sheets, announcements and academic updates.',
-      buttonText: 'Continue as Teacher',
-      icon: <GraduationCap className="w-7 h-7 sm:w-8 sm:h-8" aria-hidden="true" />,
-      badge: 'Academic Management',
-      accentBorder: 'hover:border-emerald-400 group-hover:border-emerald-400',
-      accentBg: 'hover:bg-emerald-50/30',
-      iconBg: 'bg-emerald-50 border-emerald-100',
-      iconColor: 'text-emerald-600',
-      buttonClass: 'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-xs',
+      description:
+        'Manage classes, mark daily attendance, create tests, enter examination scores, and upload syllabus updates.',
+      buttonText: 'Enter Teacher Portal',
+      icon: <GraduationCap className="w-7 h-7" />,
+      badge: 'Academic Desk',
       features: ['Daily Attendance', 'Marks & Answer Sheets', 'Class Announcements'],
     },
     {
       id: 'admin',
-      title: 'Admin',
+      title: 'Institute Admin',
       roleName: 'Institute Administration',
-      description: 'Manage students, teachers, batches, attendance, tests, results, reports and system settings.',
-      buttonText: 'Continue as Admin',
-      icon: <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8" aria-hidden="true" />,
+      description:
+        'Manage students, teachers, batches, timetables, portion progress, audit logs, and complete center operations.',
+      buttonText: 'Enter Admin Portal',
+      icon: <ShieldCheck className="w-7 h-7" />,
       badge: 'Full Institute Control',
-      accentBorder: 'hover:border-indigo-400 group-hover:border-indigo-400',
-      accentBg: 'hover:bg-indigo-50/30',
-      iconBg: 'bg-indigo-50 border-indigo-100',
-      iconColor: 'text-indigo-600',
-      buttonClass: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500 shadow-xs',
       features: ['Batches & Teachers', 'Audit Logs & Analytics', 'Institute Operations'],
     },
   ];
@@ -74,62 +68,48 @@ export const RoleSelectionPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-      {/* Top Header with Infinite Tutorial Logo positioned at top-left with generous breathing room */}
-      <header className="w-full px-6 py-5 sm:px-8 sm:py-6 md:px-12 md:py-8 flex items-center justify-between z-20">
+    <div className="min-h-screen flex flex-col justify-between bg-[#F5F8FC] text-[#0B1F4D] relative overflow-hidden select-none">
+      {/* Background Brand Watermark */}
+      <BrandWatermark opacity={0.04} size="xl" position="center" />
+
+      {/* Top Header */}
+      <header className="w-full px-6 py-5 sm:px-8 sm:py-6 md:px-12 md:py-7 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
         <Link
           to="/"
-          className="group inline-flex items-center gap-3 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+          className="group inline-flex items-center gap-3 transition-opacity duration-200 focus:outline-hidden"
           aria-label="Infinite Tutorial Home"
         >
-          {/* Official Infinite Tutorial Logo Graphic Asset */}
-          <div className="flex items-center">
-            <img
-              src="/logo-transparent.png"
-              alt="Infinite Tutorial Logo"
-              className="h-9 sm:h-11 md:h-12 w-auto max-w-[200px] sm:max-w-[240px] md:max-w-[280px] object-contain transition-transform duration-200 group-hover:scale-[1.02]"
-              onError={(e) => {
-                // Fallback to emblem or svg if full transparent image is unavailable
-                const target = e.currentTarget;
-                if (!target.src.includes('logo.svg')) {
-                  target.src = '/logo.svg';
-                }
-              }}
-            />
-          </div>
+          <BrandLogo size="md" />
         </Link>
 
-        {/* Subtle institute badge in top right */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 border border-slate-200/60 text-[11px] font-medium text-slate-600">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          Academic Portal 2026
+        {/* Institute badge in top right */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-xs font-bold text-[#155EEF]">
+          <span className="w-2 h-2 rounded-full bg-[#00B8F8] animate-pulse" />
+          Academic Year 2024–25
         </div>
       </header>
 
-      {/* Main Hero & Role Selection Container (Centered vertically and horizontally on desktop) */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4 sm:py-8 max-w-6xl w-full mx-auto">
+      {/* Main Hero & Role Selection Container */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-6xl w-full mx-auto relative z-10">
         {/* Welcome Hero Section */}
-        <section className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/60 text-blue-700 text-xs font-semibold tracking-wide uppercase shadow-2xs">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-            Digital Tuition &amp; Academic Management
+        <section className="text-center max-w-3xl mx-auto space-y-3.5">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[#155EEF] text-xs font-bold tracking-wide uppercase shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#00B8F8]" />
+            Digital Tuition &amp; Academic Management System
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Welcome to <span className="text-blue-600">Infinite Tutorial</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0B1F4D] tracking-tight leading-tight">
+            Welcome to <span className="text-[#155EEF]">Infinite Tutorial</span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto font-normal">
-            Your complete digital platform for managing student attendance, academic performance, tests, scorecards, announcements, and tuition activities.
+          <p className="text-sm sm:text-base text-[#5B6B82] leading-relaxed max-w-2xl mx-auto font-normal">
+            Your unified academic workspace for tracking student attendance, test performance, syllabus completion, verified scorecards, and tuition safety.
           </p>
         </section>
 
-        {/* Role Selection Section with 3 Cards */}
-        <section
-          className="w-full mt-8 sm:mt-12"
-          aria-label="Select your role to sign in"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+        {/* Role Selection Section with 3 Unified Cards */}
+        <section className="w-full mt-10 sm:mt-12" aria-label="Select your role to sign in">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {roles.map((role) => (
               <div
                 key={role.id}
@@ -143,36 +123,34 @@ export const RoleSelectionPage: React.FC = () => {
                     handleSelectRole(role.id);
                   }
                 }}
-                className={`group relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl transition-all duration-300 ease-out cursor-pointer hover:-translate-y-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${role.accentBorder}`}
+                className="group relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-white border border-[#DCE5F2] shadow-xs hover:shadow-xl transition-all duration-300 ease-out cursor-pointer hover:-translate-y-1.5 hover:border-[#155EEF] focus:outline-hidden focus:ring-2 focus:ring-[#155EEF]"
               >
-                {/* Top Badge & Icon */}
                 <div>
+                  {/* Top Badge & Icon */}
                   <div className="flex items-center justify-between mb-5">
-                    <div
-                      className={`w-13 h-13 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center border transition-all duration-300 group-hover:scale-105 shadow-2xs ${role.iconBg} ${role.iconColor}`}
-                    >
+                    <div className="w-14 h-14 rounded-2xl bg-[#EEF4FF] border border-[#DCE5F2] text-[#155EEF] flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:bg-[#155EEF] group-hover:text-white shadow-2xs">
                       {role.icon}
                     </div>
-                    <span className="text-[11px] font-semibold text-slate-500 bg-slate-100/80 px-2.5 py-1 rounded-md border border-slate-200/50">
+                    <span className="text-[11px] font-bold text-[#5B6B82] bg-[#F5F8FC] px-2.5 py-1 rounded-lg border border-[#DCE5F2]">
                       {role.badge}
                     </span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-xl sm:text-2xl font-black text-[#0B1F4D] group-hover:text-[#155EEF] transition-colors">
                     {role.title}
                   </h3>
 
-                  <p className="mt-2.5 text-xs sm:text-sm text-slate-500 leading-relaxed min-h-[60px] sm:min-h-[72px]">
+                  <p className="mt-2.5 text-xs sm:text-sm text-[#5B6B82] leading-relaxed min-h-[60px]">
                     {role.description}
                   </p>
 
                   {/* Feature Highlights */}
-                  <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
+                  <div className="mt-5 pt-4 border-t border-[#F0F4FA] space-y-2.5">
                     {role.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-600">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-500 transition-colors flex-shrink-0" />
-                        <span>{feature}</span>
+                      <div key={idx} className="flex items-center gap-2.5 text-xs text-[#5B6B82]">
+                        <CheckCircle2 className="w-4 h-4 text-[#00B8F8] flex-shrink-0" />
+                        <span className="font-medium text-[#0B1F4D]">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -180,14 +158,10 @@ export const RoleSelectionPage: React.FC = () => {
 
                 {/* Continue Action Button */}
                 <div className="mt-6 pt-2">
-                  <button
-                    type="button"
-                    tabIndex={-1}
-                    className={`w-full py-2.5 px-4 rounded-xl font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 ${role.buttonClass}`}
-                  >
+                  <div className="w-full py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 btn-brand-primary">
                     <span>{role.buttonText}</span>
                     <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -195,24 +169,24 @@ export const RoleSelectionPage: React.FC = () => {
         </section>
 
         {/* Informational reassurance banner */}
-        <aside className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 text-center">
-          <span className="inline-flex items-center gap-1.5">
-            <BookOpen className="w-3.5 h-3.5 text-slate-400" />
+        <aside className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-6 text-xs text-[#5B6B82] text-center">
+          <span className="inline-flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-[#155EEF]" />
             Empowering students with structured mentoring
           </span>
-          <span className="hidden sm:inline text-slate-300">•</span>
-          <span className="inline-flex items-center gap-1.5">
-            <Award className="w-3.5 h-3.5 text-slate-400" />
-            Transparent performance tracking &amp; scorecards
+          <span className="hidden sm:inline text-[#DCE5F2]">•</span>
+          <span className="inline-flex items-center gap-2">
+            <Award className="w-4 h-4 text-[#F7931E]" />
+            Transparent performance tracking &amp; official scorecards
           </span>
         </aside>
       </main>
 
-      {/* Clean Professional Footer */}
-      <footer className="w-full px-6 py-4 sm:px-8 text-center border-t border-slate-200/70 bg-white/70 backdrop-blur-xs text-xs text-slate-500">
+      {/* Clean Branded Footer */}
+      <footer className="w-full px-6 py-4 sm:px-8 text-center border-t border-[#DCE5F2] bg-white/80 backdrop-blur-xs text-xs text-[#5B6B82] relative z-20">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p>&copy; {new Date().getFullYear()} Infinite Tutorial. All rights reserved.</p>
-          <p className="text-[11px] text-slate-400">
+          <p className="font-medium">&copy; {new Date().getFullYear()} Infinite Tutorial. All rights reserved.</p>
+          <p className="text-[11px] text-[#8A9BB0]">
             Secure Academic &amp; Tuition Management System
           </p>
         </div>

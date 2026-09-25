@@ -300,13 +300,14 @@ export const TeacherTimetablePage: React.FC = () => {
           title="Classroom Venues"
           value="3 Venues"
           subtitle="Room 101, Room 102, Hall A"
-          icon={<MapPin className="w-5 h-5 text-purple-600" />}
+          icon={<MapPin className="w-5 h-5 text-[#00B8F8]" />}
+          iconBg="bg-[#E0F8FF]"
         />
         <StatCard
           title="Total Students Taught"
           value="80 Students"
           subtitle="Active Roster Across Classes"
-          icon={<BookOpen className="w-5 h-5 text-indigo-600" />}
+          icon={<BookOpen className="w-5 h-5 text-[#00B8F8]" />}
         />
       </div>
 
@@ -379,7 +380,7 @@ export const TeacherTimetablePage: React.FC = () => {
                       {slot.batch}
                     </span>
                     <span className="text-xs text-gray-400">&bull;</span>
-                    <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">
+                    <span className="text-xs font-semibold text-[#155EEF] bg-[#EEF4FF] border border-[#DCE5F2] px-2 py-0.5 rounded">
                       {slot.subject}
                     </span>
                     <span className="text-xs text-gray-400">&bull;</span>
@@ -390,7 +391,7 @@ export const TeacherTimetablePage: React.FC = () => {
                           : slot.type === 'PROBLEM_SOLVING'
                           ? 'bg-amber-50 text-amber-700'
                           : slot.type === 'TEST_INVIGILATION'
-                          ? 'bg-purple-50 text-purple-700'
+                          ? 'bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]'
                           : 'bg-emerald-50 text-emerald-700'
                       }`}
                     >

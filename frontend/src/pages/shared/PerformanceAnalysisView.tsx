@@ -43,8 +43,8 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
     { key: 'physics', name: 'Physics', icon: '⚛️', color: '#3b82f6', bg: 'bg-blue-50 text-blue-700 border-blue-200' },
     { key: 'chemistry', name: 'Chemistry', icon: '🧪', color: '#f59e0b', bg: 'bg-amber-50 text-amber-700 border-amber-200' },
     { key: 'biology', name: 'Biology', icon: '🧬', color: '#10b981', bg: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-    { key: 'mathematics', name: 'Mathematics', icon: '📐', color: '#8b5cf6', bg: 'bg-purple-50 text-purple-700 border-purple-200' },
-    { key: 'overview', name: 'Multi-Subject Overview', icon: '📊', color: '#6366f1', bg: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+    { key: 'mathematics', name: 'Mathematics', icon: '📐', color: '#00B8F8', bg: 'bg-[#EEF4FF] text-[#155EEF] border-[#DCE5F2]' },
+    { key: 'overview', name: 'Multi-Subject Overview', icon: '📊', color: '#0B1F4D', bg: 'bg-[#F5F8FC] text-[#0B1F4D] border-[#DCE5F2]' },
   ];
 
   const currentSubjectData: SubjectPerformanceBreakdown | null =
@@ -73,7 +73,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
   return (
     <div className="space-y-6 max-w-6xl mx-auto print:p-0">
       {/* 1. STUDENT HEADER & KPI SUMMARY */}
-      <div className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:bg-white print:text-black print:border print:border-gray-300">
+      <div className="brand-sidebar-bg rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:bg-white print:text-black print:border print:border-[#DCE5F2]">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center space-x-5">
             <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-3xl font-extrabold text-white shadow-inner overflow-hidden print:border-gray-400 print:text-gray-900">
@@ -90,14 +90,14 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
                   {data.studentRoll}
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-y-1 gap-x-3 mt-2 text-sm text-indigo-200 print:text-gray-700 font-medium">
+              <div className="flex flex-wrap items-center gap-y-1 gap-x-3 mt-2 text-sm text-[#A0B3D1] print:text-gray-700 font-medium">
                 <span className="flex items-center">
-                  <GraduationCap className="w-4 h-4 mr-1 text-indigo-300 print:text-gray-700" />
+                  <GraduationCap className="w-4 h-4 mr-1 text-[#00B8F8] print:text-gray-700" />
                   <strong>Class:</strong>&nbsp;{data.className}
                 </span>
                 <span>•</span>
                 <span className="flex items-center">
-                  <BookOpen className="w-4 h-4 mr-1 text-indigo-300 print:text-gray-700" />
+                  <BookOpen className="w-4 h-4 mr-1 text-[#00B8F8] print:text-gray-700" />
                   <strong>Board:</strong>&nbsp;{data.boardName}
                 </span>
                 <span>•</span>
@@ -128,7 +128,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
         </div>
 
         {/* Ambient Gradient glow */}
-        <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -right-16 -top-16 w-64 h-64 bg-[#155EEF]/20 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       {/* KPI STATS GRID: Average Marks, Percentage, Attendance, Total Tests */}
@@ -136,7 +136,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
         <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Overall Percentage</span>
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
               <Award className="w-4 h-4" />
             </div>
           </div>
@@ -182,20 +182,20 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
         <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Tests Evaluated</span>
-            <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg border border-[#DCE5F2]">
               <BarChart3 className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline space-x-2 mt-2">
             <span className="text-3xl font-black text-gray-900">{data.totalTestsConducted}</span>
-            <span className="text-xs text-purple-600 font-medium">Conducted</span>
+            <span className="text-xs text-[#155EEF] font-semibold">Conducted</span>
           </div>
           <span className="text-xs text-gray-500 mt-1 block">Physics, Chem, Bio & Maths</span>
         </div>
       </div>
 
       {/* 2. SUBJECT TABS SELECTOR */}
-      <div className="flex flex-wrap gap-2 border-b border-gray-200 pb-2 print:hidden">
+      <div className="flex flex-wrap gap-2 border-b border-[#DCE5F2] pb-2 print:hidden">
         {subjectTabs.map((tab) => {
           const isActive = activeSubject === tab.key;
           return (
@@ -204,8 +204,8 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
               onClick={() => setActiveSubject(tab.key as any)}
               className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                  ? 'bg-gradient-to-r from-[#155EEF] to-[#1677FF] text-white shadow-md'
+                  : 'bg-white text-[#0B1F4D] hover:bg-[#EEF4FF] border border-[#DCE5F2]'
               }`}
             >
               <span>{tab.icon}</span>
@@ -219,30 +219,30 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
       {currentSubjectData ? (
         <div className="space-y-6">
           {/* STEP 22: SUBJECT GRAPH (LINE GRAPH) */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-6">
+          <div className="bg-white rounded-2xl border border-[#DCE5F2] p-6 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#F0F4FA] pb-4 mb-6">
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="text-xl">
                     {subjectTabs.find((t) => t.key === activeSubject)?.icon}
                   </span>
-                  <h2 className="text-lg font-bold text-gray-900">
+                  <h2 className="text-lg font-bold text-[#0B1F4D]">
                     {currentSubjectData.subjectName} — Test Performance Progression (Line Graph)
                   </h2>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-[#5B6B82] mt-1">
                   Chronological test-by-test percentage evolution showing learning trajectory.
                 </p>
               </div>
 
               <div className="flex items-center space-x-3">
                 <div className="bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl text-center">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block">Peak Score</span>
-                  <span className="text-sm font-black text-emerald-700">{currentSubjectData.highestPercentage}%</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 block">Peak Score</span>
+                  <span className="text-sm font-black text-emerald-800">{currentSubjectData.highestPercentage}%</span>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-xl text-center">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 block">Subject Avg</span>
-                  <span className="text-sm font-black text-blue-700">{currentSubjectData.averagePercentage}%</span>
+                <div className="bg-[#EEF4FF] border border-[#DCE5F2] px-3 py-1.5 rounded-xl text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#155EEF] block">Subject Avg</span>
+                  <span className="text-sm font-black text-[#155EEF]">{currentSubjectData.averagePercentage}%</span>
                 </div>
               </div>
             </div>
@@ -254,33 +254,33 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
                   data={currentSubjectData.testProgression}
                   margin={{ top: 20, right: 30, left: 0, bottom: 10 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#F0F4FA" vertical={false} />
                   <XAxis
                     dataKey="testNumber"
-                    stroke="#64748b"
+                    stroke="#5B6B82"
                     fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: '#e2e8f0' }}
+                    axisLine={{ stroke: '#DCE5F2' }}
                   />
                   <YAxis
                     domain={[50, 100]}
-                    stroke="#64748b"
+                    stroke="#5B6B82"
                     fontSize={12}
                     tickFormatter={(val) => `${val}%`}
                     tickLine={false}
-                    axisLine={{ stroke: '#e2e8f0' }}
+                    axisLine={{ stroke: '#DCE5F2' }}
                   />
                   <Tooltip
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                         const item = payload[0].payload;
                         return (
-                          <div className="bg-slate-900 text-white p-3 rounded-xl shadow-xl text-xs space-y-1 border border-slate-700">
-                            <p className="font-bold text-sm text-indigo-300">{item.testNumber}: {item.testName}</p>
-                            <p className="text-gray-300">Date: {item.date}</p>
+                          <div className="bg-[#0B1F4D] text-white p-3 rounded-xl shadow-xl text-xs space-y-1 border border-[#142C68]">
+                            <p className="font-bold text-sm text-[#00B8F8]">{item.testNumber}: {item.testName}</p>
+                            <p className="text-[#A0B3D1]">Date: {item.date}</p>
                             <div className="flex items-baseline space-x-2 pt-1">
                               <span className="text-lg font-black text-emerald-400">{item.percentage}%</span>
-                              <span className="text-gray-400">({item.marksObtained} / {item.maxMarks} Marks)</span>
+                              <span className="text-[#DCE5F2]">({item.marksObtained} / {item.maxMarks} Marks)</span>
                             </div>
                           </div>
                         );
@@ -293,10 +293,10 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
                     type="monotone"
                     dataKey="percentage"
                     name={`${currentSubjectData.subjectName} Score (%)`}
-                    stroke="#4f46e5"
+                    stroke="#155EEF"
                     strokeWidth={3}
-                    dot={{ fill: '#4f46e5', r: 5, strokeWidth: 2, stroke: '#ffffff' }}
-                    activeDot={{ r: 8, stroke: '#818cf8', strokeWidth: 3 }}
+                    dot={{ fill: '#155EEF', r: 5, strokeWidth: 2, stroke: '#ffffff' }}
+                    activeDot={{ r: 8, stroke: '#00B8F8', strokeWidth: 3 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -308,7 +308,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
                 <div key={test.testNumber} className="bg-gray-50 rounded-xl p-3 border border-gray-100">
                   <span className="text-xs font-bold text-gray-500 block">{test.testNumber}</span>
                   <div className="flex items-baseline justify-between mt-1">
-                    <span className="text-lg font-black text-indigo-700">{test.percentage}%</span>
+                    <span className="text-lg font-black text-[#1048B5]">{test.percentage}%</span>
                     <span className="text-[11px] text-gray-400 font-medium">{test.marksObtained}/{test.maxMarks}m</span>
                   </div>
                   <span className="text-[11px] text-gray-500 truncate block mt-0.5">{test.testName}</span>
@@ -322,7 +322,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-6">
               <div>
                 <div className="flex items-center space-x-2">
-                  <BarChart3 className="w-5 h-5 text-indigo-600" />
+                  <BarChart3 className="w-5 h-5 text-[#155EEF]" />
                   <h2 className="text-lg font-bold text-gray-900">
                     {currentSubjectData.subjectName} — Chapter-Wise Performance (Bar Graph)
                   </h2>
@@ -376,7 +376,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
                         const item = payload[0].payload;
                         return (
                           <div className="bg-slate-900 text-white p-3 rounded-xl shadow-xl text-xs space-y-1 border border-slate-700">
-                            <p className="font-bold text-sm text-indigo-300">{item.chapterName}</p>
+                            <p className="font-bold text-sm text-[#B2CCFF]">{item.chapterName}</p>
                             <div className="flex items-baseline space-x-2 pt-1">
                               <span className="text-lg font-black text-emerald-400">{item.percentage}%</span>
                               <span className="text-gray-400 font-medium">({item.avgMarks} / {item.maxMarks} Marks)</span>
@@ -457,7 +457,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
                         const item = payload[0].payload;
                         return (
                           <div className="bg-slate-900 text-white p-3 rounded-xl shadow-xl text-xs space-y-1 border border-slate-700">
-                            <p className="font-bold text-sm text-indigo-300">{item.subject}</p>
+                            <p className="font-bold text-sm text-[#B2CCFF]">{item.subject}</p>
                             <p className="text-emerald-400 font-bold">Student Avg: {item.averagePercentage}%</p>
                             <p className="text-blue-400 font-bold">Tuition Benchmark: {item.benchmarkAvg}%</p>
                             <p className="text-gray-300">Attendance Rate: {item.attendanceRate}%</p>
@@ -478,9 +478,9 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
       )}
 
       {/* 4. ATTENDANCE & ACADEMIC CORRELATION INSIGHT */}
-      <div className="bg-gradient-to-br from-indigo-50 to-white rounded-2xl border border-indigo-100 p-6 shadow-sm">
+      <div className="bg-gradient-to-br from-indigo-50 to-white rounded-2xl border border-[#DCE5F2] p-6 shadow-sm">
         <div className="flex items-center space-x-3 mb-2">
-          <div className="p-2 bg-indigo-600 text-white rounded-xl shadow-sm">
+          <div className="p-2 bg-[#155EEF] text-white rounded-xl shadow-sm">
             <Zap className="w-5 h-5" />
           </div>
           <div>
@@ -489,23 +489,23 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-3 border-t border-indigo-100">
-          <div className="bg-white p-4 rounded-xl border border-indigo-100/80">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-3 border-t border-[#DCE5F2]">
+          <div className="bg-white p-4 rounded-xl border border-[#DCE5F2]/80">
             <span className="text-xs text-gray-400 font-medium block">Tuition Attendance Rate</span>
             <span className="text-2xl font-black text-emerald-600 mt-1 block">{data.attendancePercentage}%</span>
             <span className="text-[11px] text-emerald-700 mt-0.5 block font-medium">Monday to Saturday Consistency</span>
           </div>
 
-          <div className="bg-white p-4 rounded-xl border border-indigo-100/80">
+          <div className="bg-white p-4 rounded-xl border border-[#DCE5F2]/80">
             <span className="text-xs text-gray-400 font-medium block">Strongest Subject Mastery</span>
             <span className="text-base font-bold text-gray-900 mt-1 block">{data.strongestSubject}</span>
             <span className="text-[11px] text-gray-500 mt-0.5 block">Consistent 85%+ Chapter Averages</span>
           </div>
 
-          <div className="bg-white p-4 rounded-xl border border-indigo-100/80">
+          <div className="bg-white p-4 rounded-xl border border-[#DCE5F2]/80">
             <span className="text-xs text-gray-400 font-medium block">Key Trajectory Milestone</span>
-            <span className="text-base font-bold text-indigo-700 mt-1 block">{data.needsFocusSubject}</span>
-            <span className="text-[11px] text-indigo-600 mt-0.5 block">+16% gain from Test 1 to Test 4</span>
+            <span className="text-base font-bold text-[#1048B5] mt-1 block">{data.needsFocusSubject}</span>
+            <span className="text-[11px] text-[#155EEF] mt-0.5 block">+16% gain from Test 1 to Test 4</span>
           </div>
         </div>
       </div>

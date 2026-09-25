@@ -379,13 +379,13 @@ export const ParentPortionCompletionPage: React.FC = () => {
         <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Target Syllabus End</span>
-            <span className="p-2 bg-purple-50 text-purple-600 rounded-xl">
+            <span className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2]">
               <Calendar className="w-4 h-4" />
             </span>
           </div>
           <div className="mt-3">
             <span className="text-xl font-bold text-gray-900">15 Nov 2026</span>
-            <span className="text-xs text-purple-600 font-semibold block mt-1">
+            <span className="text-xs text-[#155EEF] font-semibold block mt-1">
               Before Pre-Board Mock Exams
             </span>
           </div>
@@ -443,7 +443,7 @@ export const ParentPortionCompletionPage: React.FC = () => {
                     <span className="font-medium text-gray-800 block">{ch.subject}</span>
                     <span className="text-[11px] text-gray-500 block">{ch.teacher}</span>
                   </td>
-                  <td className="px-6 py-4 font-bold text-indigo-700">{ch.weightage}</td>
+                  <td className="px-6 py-4 font-bold text-[#1048B5]">{ch.weightage}</td>
                   <td className="px-6 py-4">
                     {ch.status === 'COMPLETED' && (
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -474,7 +474,7 @@ export const ParentPortionCompletionPage: React.FC = () => {
                         ch.revisionStatus === 'REVISED'
                           ? 'bg-blue-100 text-blue-800'
                           : ch.revisionStatus === 'SCHEDULED'
-                          ? 'bg-purple-100 text-purple-800'
+                          ? 'bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]'
                           : 'bg-gray-100 text-gray-500'
                       }`}
                     >

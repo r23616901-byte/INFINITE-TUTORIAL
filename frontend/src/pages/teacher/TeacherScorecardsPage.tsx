@@ -68,7 +68,7 @@ export const TeacherScorecardsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
               <Award className="w-6 h-6" />
             </div>
             <div>
@@ -93,7 +93,7 @@ export const TeacherScorecardsPage: React.FC = () => {
           </button>
           <button
             onClick={() => window.print()}
-            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-[#155EEF] hover:bg-[#1048B5] transition-colors"
           >
             <Printer className="w-4 h-4 mr-2" />
             Print Report
@@ -125,7 +125,7 @@ export const TeacherScorecardsPage: React.FC = () => {
                 value={selectedStudentId}
                 onChange={(e) => setSelectedStudentId(e.target.value)}
                 disabled={loadingStudents}
-                className="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all appearance-none cursor-pointer"
+                className="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-[#155EEF] focus:bg-white transition-all appearance-none cursor-pointer"
               >
                 {students.map((stu) => (
                   <option key={stu.id || stu.studentId} value={stu.id || stu.studentId}>
@@ -151,7 +151,7 @@ export const TeacherScorecardsPage: React.FC = () => {
                     onClick={() => setSelectedStudentId(stu.id || stu.studentId)}
                     className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                       isSelected
-                        ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-300'
+                        ? 'bg-[#155EEF] text-white shadow-sm ring-2 ring-[#B2CCFF]'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -168,7 +168,7 @@ export const TeacherScorecardsPage: React.FC = () => {
       {/* RENDER SCORECARD VIEWER */}
       {loadingScorecard ? (
         <div className="bg-white rounded-3xl border border-gray-200 p-12 text-center shadow-sm">
-          <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin mx-auto mb-3" />
+          <RefreshCw className="w-8 h-8 text-[#155EEF] animate-spin mx-auto mb-3" />
           <h3 className="text-base font-bold text-gray-900">Compiling 4-Subject Scorecard...</h3>
           <p className="text-xs text-gray-500 mt-1">Aggregating Physics, Chemistry, Biology and Mathematics results.</p>
         </div>

@@ -37,7 +37,7 @@ export const ParentPerformanceGraphsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
               <TrendingUp className="w-6 h-6" />
             </div>
             <div>
@@ -75,7 +75,7 @@ export const ParentPerformanceGraphsPage: React.FC = () => {
 
       {loading && !data ? (
         <div className="bg-white rounded-3xl border border-gray-200 p-12 text-center shadow-sm">
-          <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin mx-auto mb-3" />
+          <RefreshCw className="w-8 h-8 text-[#155EEF] animate-spin mx-auto mb-3" />
           <h3 className="text-base font-bold text-gray-900">Loading Performance Analytics...</h3>
           <p className="text-xs text-gray-500 mt-1">Generating subject line graphs and chapter mastery charts.</p>
         </div>

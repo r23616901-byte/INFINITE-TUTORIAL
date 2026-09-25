@@ -482,20 +482,20 @@ export const TeacherPortionProgressPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-emerald-700 via-teal-800 to-indigo-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#071633] via-[#0B1F4D] to-[#155EEF] rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-[#155EEF]/30">
         <div className="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
           <BookOpen className="w-80 h-80 text-white" />
         </div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-emerald-400/20 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/30 text-[#00B8F8] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#00B8F8]/30 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
               CBSE Class 10 Syllabus & Portion Milestone Tracker
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               Syllabus & Portion Progress
             </h1>
-            <p className="text-emerald-100/90 text-sm mt-1 max-w-2xl">
+            <p className="text-blue-100/90 text-sm mt-1 max-w-2xl">
               Track lecture delivery, chapter completion milestones, and topic coverage for Batch 10A (Morning & Evening sessions). Synchronized in real time with parent scorecards.
             </p>
           </div>
@@ -543,7 +543,8 @@ export const TeacherPortionProgressPage: React.FC = () => {
           title="Scheduled / Upcoming"
           value={scheduledChapters}
           subtitle="Planned for Term 2 Final Stretch"
-          icon={<Layers className="w-5 h-5 text-purple-600" />}
+          icon={<Layers className="w-5 h-5 text-[#00B8F8]" />}
+          iconBg="bg-[#E0F8FF]"
         />
       </div>
 
@@ -597,7 +598,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
               <span className="text-xs text-emerald-600 font-medium">3/5 Ch</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1.5">
-              <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '90%' }} />
+              <div className="bg-[#00B8F8] h-1.5 rounded-full" style={{ width: '90%' }} />
             </div>
           </div>
           <div>
@@ -607,7 +608,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
               <span className="text-xs text-emerald-600 font-medium">5/6 Ch</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-1.5 mt-1.5">
-              <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: '88%' }} />
+              <div className="bg-[#155EEF] h-1.5 rounded-full" style={{ width: '88%' }} />
             </div>
           </div>
         </div>
@@ -678,7 +679,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
                         ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : ch.status === 'IN_PROGRESS'
                         ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                        : 'bg-purple-50 text-purple-700 border border-purple-200'
+                        : 'bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]'
                     }`}
                   >
                     Ch {ch.chapterNumber}
@@ -691,7 +692,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
                       <span className="text-xs text-gray-400">&bull;</span>
                       <span className="text-xs text-gray-500">{ch.facultyName}</span>
                       <span className="text-xs text-gray-400">&bull;</span>
-                      <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                      <span className="text-xs font-semibold text-[#155EEF] bg-[#EEF4FF] border border-[#DCE5F2] px-2 py-0.5 rounded">
                         Weightage: {ch.weightageMarks} Marks
                       </span>
                     </div>
@@ -724,7 +725,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
                         ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                         : ch.status === 'IN_PROGRESS'
                         ? 'bg-amber-50 text-amber-700 border-amber-200'
-                        : 'bg-purple-50 text-purple-700 border-purple-200'
+                        : 'bg-[#EEF4FF] text-[#155EEF] border-[#DCE5F2]'
                     }`}
                   >
                     {ch.status === 'COMPLETED' && <CheckCircle2 className="w-3.5 h-3.5" />}
@@ -796,7 +797,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
                       ? 'bg-emerald-500'
                       : ch.status === 'IN_PROGRESS'
                       ? 'bg-amber-500'
-                      : 'bg-purple-300'
+                      : 'bg-[#155EEF]'
                   }`}
                   style={{ width: `${pct}%` }}
                 />

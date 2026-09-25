@@ -134,7 +134,7 @@ export const AdminHomeReachPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
@@ -223,10 +223,10 @@ export const AdminHomeReachPage: React.FC = () => {
       </div>
 
       {/* Admin Feature Configuration Card (Requirement: "This feature should be configurable by Admin") */}
-      <div className="bg-white rounded-2xl border border-indigo-100 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-[#DCE5F2] shadow-sm p-6">
         <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-5">
           <div className="flex items-center space-x-2">
-            <Settings className="w-5 h-5 text-indigo-600" />
+            <Settings className="w-5 h-5 text-[#155EEF]" />
             <h2 className="text-base font-bold text-gray-900">
               Admin Feature Configuration
             </h2>
@@ -252,7 +252,7 @@ export const AdminHomeReachPage: React.FC = () => {
                 type="checkbox"
                 checked={isEnabled}
                 onChange={(e) => setIsEnabled(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-0.5"
+                className="h-4 w-4 text-[#155EEF] focus:ring-[#155EEF] border-gray-300 rounded mt-0.5"
               />
               <label htmlFor="module-toggle" className="cursor-pointer">
                 <span className="text-sm font-semibold text-gray-900 block">
@@ -276,7 +276,7 @@ export const AdminHomeReachPage: React.FC = () => {
                   max="180"
                   value={alertThreshold}
                   onChange={(e) => setAlertThreshold(Number(e.target.value))}
-                  className="w-28 text-sm px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-28 text-sm px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF]"
                   required
                 />
                 <span className="text-xs text-gray-500">
@@ -292,7 +292,7 @@ export const AdminHomeReachPage: React.FC = () => {
                 type="checkbox"
                 checked={autoNotifyParents}
                 onChange={(e) => setAutoNotifyParents(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-0.5"
+                className="h-4 w-4 text-[#155EEF] focus:ring-[#155EEF] border-gray-300 rounded mt-0.5"
               />
               <label htmlFor="notify-toggle" className="cursor-pointer">
                 <span className="text-sm font-semibold text-gray-900 block">
@@ -311,7 +311,7 @@ export const AdminHomeReachPage: React.FC = () => {
                 type="checkbox"
                 checked={allowParentSelfConfirm}
                 onChange={(e) => setAllowParentSelfConfirm(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-0.5"
+                className="h-4 w-4 text-[#155EEF] focus:ring-[#155EEF] border-gray-300 rounded mt-0.5"
               />
               <label htmlFor="confirm-toggle" className="cursor-pointer">
                 <span className="text-sm font-semibold text-gray-900 block">
@@ -328,7 +328,7 @@ export const AdminHomeReachPage: React.FC = () => {
             <button
               type="submit"
               disabled={savingConfig}
-              className="inline-flex items-center px-5 py-2.5 border border-transparent shadow-sm text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none transition-colors"
+              className="inline-flex items-center px-5 py-2.5 border border-transparent shadow-sm text-sm font-semibold rounded-lg text-white bg-[#155EEF] hover:bg-[#1048B5] focus:outline-none transition-colors"
             >
               <Save className="w-4 h-4 mr-2" />
               {savingConfig ? 'Saving Settings...' : 'Save Configuration'}
@@ -356,14 +356,14 @@ export const AdminHomeReachPage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && loadData()}
-                className="pl-9 pr-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 w-48"
+                className="pl-9 pr-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:ring-[#155EEF] focus:border-[#155EEF] w-48"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-xs px-2.5 py-1.5 border border-gray-300 rounded-lg bg-white focus:ring-indigo-500 focus:border-indigo-500"
+              className="text-xs px-2.5 py-1.5 border border-gray-300 rounded-lg bg-white focus:ring-[#155EEF] focus:border-[#155EEF]"
             >
               <option value="ALL">All Statuses</option>
               <option value="REACHED_HOME">Reached Home</option>
@@ -407,7 +407,7 @@ export const AdminHomeReachPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-700">
                     {rec.transitMinutes ? (
-                      <span className="font-semibold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">
+                      <span className="font-semibold bg-[#EEF4FF] text-[#1048B5] px-2 py-0.5 rounded">
                         {rec.transitMinutes} mins
                       </span>
                     ) : (

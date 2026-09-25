@@ -33,8 +33,8 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
     { name: 'Physics', icon: '⚛️', color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200' },
     { name: 'Chemistry', icon: '🧪', color: 'text-amber-600', bg: 'bg-amber-50 border-amber-200' },
     { name: 'Biology', icon: '🧬', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
-    { name: 'Mathematics', icon: '📐', color: 'text-purple-600', bg: 'bg-purple-50 border-purple-200' },
-    { name: 'ALL', label: 'All Subjects View', icon: '📊', color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-200' },
+    { name: 'Mathematics', icon: '📐', color: 'text-[#00B8F8]', bg: 'bg-[#EEF4FF] border-[#DCE5F2]' },
+    { name: 'ALL', label: 'All Subjects View', icon: '📊', color: 'text-[#0B1F4D]', bg: 'bg-[#F5F8FC] border-[#DCE5F2]' },
   ];
 
   const getPercentageColor = (pct: number) => {
@@ -64,7 +64,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
       </div>
 
       {/* 1. STUDENT PROFILE HEADER (Step 21 Requirement: Student, Class, Board) */}
-      <div className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:bg-white print:text-black print:border print:border-gray-300">
+      <div className="brand-sidebar-bg rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:bg-white print:text-black print:border print:border-[#DCE5F2]">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center space-x-5">
             <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-3xl font-extrabold text-white shadow-inner overflow-hidden print:border-gray-400 print:text-gray-900">
@@ -80,19 +80,19 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-white/20 text-white border border-white/30 print:text-black">
                   {scorecard.studentRoll}
                 </span>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 print:border-emerald-600 print:text-emerald-800">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#155EEF]/30 text-[#00B8F8] border border-[#00B8F8]/40 print:border-emerald-600 print:text-emerald-800">
                   <ShieldCheck className="w-3.5 h-3.5 mr-1" />
                   Read-Only Record
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-y-1 gap-x-3 mt-2 text-sm text-indigo-200 print:text-gray-700 font-medium">
+              <div className="flex flex-wrap items-center gap-y-1 gap-x-3 mt-2 text-sm text-[#A0B3D1] print:text-gray-700 font-medium">
                 <span className="flex items-center">
-                  <GraduationCap className="w-4 h-4 mr-1 text-indigo-300 print:text-gray-700" />
+                  <GraduationCap className="w-4 h-4 mr-1 text-[#00B8F8] print:text-gray-700" />
                   <strong>Class:</strong>&nbsp;{scorecard.className}
                 </span>
                 <span>•</span>
                 <span className="flex items-center">
-                  <BookOpen className="w-4 h-4 mr-1 text-indigo-300 print:text-gray-700" />
+                  <BookOpen className="w-4 h-4 mr-1 text-[#00B8F8] print:text-gray-700" />
                   <strong>Board:</strong>&nbsp;{scorecard.boardName}
                 </span>
                 <span>•</span>
@@ -103,12 +103,12 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
 
           <div className="flex items-center space-x-4">
             <div className="bg-white/10 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/20 text-center print:border-gray-400">
-              <span className="text-xs uppercase tracking-wider text-indigo-200 font-bold block print:text-gray-600">
+              <span className="text-xs uppercase tracking-wider text-[#A0B3D1] font-bold block print:text-gray-600">
                 Overall GPA
               </span>
               <div className="flex items-baseline justify-center space-x-1 mt-0.5">
                 <span className="text-3xl font-black">{scorecard.overallPercentage}%</span>
-                <span className="text-xs font-bold text-emerald-300 print:text-emerald-700">({scorecard.overallGrade})</span>
+                <span className="text-xs font-bold text-[#00B8F8] print:text-emerald-700">({scorecard.overallGrade})</span>
               </div>
             </div>
 
@@ -130,16 +130,15 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
             >
               <Printer className="w-5 h-5" />
             </button>
-
           </div>
         </div>
 
         {/* Ambient Gradient glow */}
-        <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -right-16 -top-16 w-64 h-64 bg-[#155EEF]/20 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       {/* 2. SUBJECT TABS (Physics, Chemistry, Biology, Mathematics) */}
-      <div className="print:hidden flex flex-wrap gap-2 border-b border-gray-200 pb-2">
+      <div className="print:hidden flex flex-wrap gap-2 border-b border-[#DCE5F2] pb-2">
         {subjectTabs.map((tab) => {
           const isActive = activeTab === tab.name;
           return (
@@ -148,8 +147,8 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
               onClick={() => setActiveTab(tab.name as any)}
               className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-gradient-to-r from-[#155EEF] to-[#1677FF] text-white shadow-md'
+                  : 'bg-white text-[#0B1F4D] hover:bg-[#EEF4FF] border border-[#DCE5F2]'
               }`}
             >
               <span>{tab.icon}</span>
@@ -197,7 +196,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
                 </div>
                 <div className="bg-white px-3.5 py-2 rounded-xl border border-gray-200 text-center">
                   <span className="text-[11px] font-semibold text-gray-400 block uppercase">Average Score</span>
-                  <span className="text-sm font-bold text-indigo-700">{subScorecard.averagePercentage}%</span>
+                  <span className="text-sm font-bold text-[#1048B5]">{subScorecard.averagePercentage}%</span>
                 </div>
                 <div className="bg-white px-3.5 py-2 rounded-xl border border-gray-200 text-center">
                   <span className="text-[11px] font-semibold text-gray-400 block uppercase">Highest Score</span>
@@ -299,9 +298,9 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
                               setPreviewDocUrl(testItem.answerSheetUrl!);
                               setPreviewDocTitle(`Scanned Answer Sheet • ${testItem.testName} (${scorecard.studentName})`);
                             }}
-                            className="inline-flex items-center px-2.5 py-1 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 font-semibold border border-indigo-200 transition-colors"
+                            className="inline-flex items-center px-2.5 py-1 rounded-lg text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF] font-semibold border border-[#DCE5F2] transition-colors"
                           >
-                            <FileCheck className="w-3.5 h-3.5 mr-1 text-indigo-600" />
+                            <FileCheck className="w-3.5 h-3.5 mr-1 text-[#155EEF]" />
                             Answer Sheet
                           </button>
                         ) : (
@@ -340,7 +339,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
           <div className="bg-white rounded-3xl max-w-4xl w-full h-[85vh] p-6 shadow-2xl flex flex-col relative animate-in fade-in duration-200">
             <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
               <div className="flex items-center space-x-2">
-                <FileCheck className="w-5 h-5 text-indigo-600" />
+                <FileCheck className="w-5 h-5 text-[#155EEF]" />
                 <h3 className="font-bold text-gray-900 text-base">{previewDocTitle}</h3>
               </div>
               <div className="flex items-center space-x-2">
@@ -348,7 +347,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
                   href={previewDocUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100"
+                  className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF]"
                 >
                   <ExternalLink className="w-3.5 h-3.5 mr-1" /> Open External
                 </a>

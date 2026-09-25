@@ -152,7 +152,7 @@ export const ParentCalendarPage: React.FC = () => {
   const getBadgeStyle = (type: CalendarEvent['type']) => {
     switch (type) {
       case 'EXAM':
-        return 'bg-indigo-50 text-indigo-700 border-indigo-200';
+        return 'bg-[#EEF4FF] text-[#1048B5] border-[#DCE5F2]';
       case 'PTM':
         return 'bg-rose-50 text-rose-700 border-rose-200';
       case 'HOLIDAY':

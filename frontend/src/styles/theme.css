@@ -1,0 +1,257 @@
+/* ==========================================================================
+   INFINITE TUTORIAL - UNIFIED BRAND DESIGN SYSTEM TOKENS
+   Primary Reference: Infinite Tutorial Brand Logo
+   Palette: Deep Navy, Royal Blue, Electric Bright Blue, Cyan, Orange, Gold, White
+   ========================================================================== */
+
+:root {
+  /* Brand Core Palette */
+  --brand-navy: #0B1F4D;
+  --brand-navy-dark: #071633;
+  --brand-navy-light: #142C68;
+  --brand-blue: #155EEF;
+  --brand-blue-bright: #1677FF;
+  --brand-blue-light: #EEF4FF;
+  --brand-cyan: #00B8F8;
+  --brand-cyan-light: #E0F8FF;
+  --brand-orange: #F7931E;
+  --brand-orange-light: #FFF4E5;
+  --brand-gold: #FFB52E;
+  --brand-white: #FFFFFF;
+
+  /* Layout, Surface & Surfaces */
+  --brand-background: #F5F8FC;
+  --brand-surface: #FFFFFF;
+  --brand-surface-subtle: #F8FAFD;
+  --brand-border: #DCE5F2;
+  --brand-border-light: #E9F0FA;
+  --brand-border-focus: #155EEF;
+
+  /* Typography Colors */
+  --brand-text: #0B1F4D;
+  --brand-text-secondary: #5B6B82;
+  --brand-text-muted: #8A9BB0;
+  --brand-text-inverse: #FFFFFF;
+
+  /* Semantic Status Colors (Used Strictly for Functional States) */
+  --status-success: #10B981;
+  --status-success-bg: #ECFDF5;
+  --status-success-border: #A7F3D0;
+  --status-success-text: #065F46;
+
+  --status-error: #EF4444;
+  --status-error-bg: #FEF2F2;
+  --status-error-border: #FECACA;
+  --status-error-text: #991B1B;
+
+  --status-warning: #F59E0B;
+  --status-warning-bg: #FFFBEB;
+  --status-warning-border: #FDE68A;
+  --status-warning-text: #92400E;
+
+  --status-info: #00B8F8;
+  --status-info-bg: #E0F8FF;
+  --status-info-border: #BAE6FD;
+  --status-info-text: #0369A1;
+
+  /* Shadows */
+  --shadow-brand-sm: 0 1px 3px 0 rgba(11, 31, 77, 0.05), 0 1px 2px -1px rgba(11, 31, 77, 0.05);
+  --shadow-brand-md: 0 4px 6px -1px rgba(11, 31, 77, 0.07), 0 2px 4px -2px rgba(11, 31, 77, 0.05);
+  --shadow-brand-lg: 0 10px 15px -3px rgba(11, 31, 77, 0.08), 0 4px 6px -4px rgba(11, 31, 77, 0.04);
+  --shadow-brand-glow: 0 4px 20px -2px rgba(21, 94, 239, 0.25);
+  --shadow-brand-orange-glow: 0 4px 20px -2px rgba(247, 147, 30, 0.25);
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+}
+
+/* Glassmorphism and brand surface utilities */
+.brand-card {
+  background-color: var(--brand-surface);
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-brand-sm);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-card:hover {
+  box-shadow: var(--shadow-brand-md);
+  border-color: #CAD7EB;
+}
+
+.brand-card-interactive {
+  background-color: var(--brand-surface);
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-brand-sm);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.brand-card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-brand-lg);
+  border-color: var(--brand-blue);
+}
+
+/* Deep Navy Sidebar Gradient */
+.brand-sidebar-bg {
+  background: linear-gradient(180deg, #071633 0%, #0B1F4D 60%, #081736 100%);
+}
+
+/* Brand Accent Bar on Active Nav */
+.brand-nav-active {
+  background: linear-gradient(90deg, rgba(21, 94, 239, 0.9) 0%, rgba(22, 119, 255, 0.85) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(21, 94, 239, 0.3);
+  position: relative;
+}
+
+.brand-nav-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  bottom: 15%;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background-color: var(--brand-cyan);
+}
+
+/* Brand Button Styles */
+.btn-brand-primary {
+  background: linear-gradient(135deg, #155EEF 0%, #1677FF 100%);
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 6px rgba(21, 94, 239, 0.25);
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-brand-primary:hover {
+  background: linear-gradient(135deg, #0E4FD6 0%, #0E68E8 100%);
+  box-shadow: 0 4px 12px rgba(21, 94, 239, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-brand-primary:active {
+  transform: translateY(0);
+}
+
+.btn-brand-secondary {
+  background-color: #FFFFFF;
+  color: var(--brand-navy);
+  border: 1px solid var(--brand-border);
+  box-shadow: 0 1px 2px rgba(11, 31, 77, 0.05);
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-brand-secondary:hover {
+  background-color: var(--brand-blue-light);
+  border-color: var(--brand-blue);
+  color: var(--brand-blue);
+}
+
+.btn-brand-accent {
+  background: linear-gradient(135deg, #F7931E 0%, #FFB52E 100%);
+  color: #0B1F4D;
+  font-weight: 700;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 6px rgba(247, 147, 30, 0.25);
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-brand-accent:hover {
+  background: linear-gradient(135deg, #E6820D 0%, #EAA21D 100%);
+  box-shadow: 0 4px 12px rgba(247, 147, 30, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Brand Form Elements */
+.brand-input {
+  background-color: #FFFFFF;
+  border: 1px solid var(--brand-border);
+  border-radius: var(--radius-md);
+  color: var(--brand-text);
+  transition: all 0.15s ease-in-out;
+}
+
+.brand-input:focus {
+  border-color: var(--brand-blue);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21, 94, 239, 0.15);
+}
+
+.brand-input::placeholder {
+  color: var(--brand-text-muted);
+}
+
+/* Table Standardization */
+.brand-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.brand-table th {
+  background-color: #F8FAFD;
+  color: var(--brand-navy);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--brand-border);
+}
+
+.brand-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--brand-border-light);
+  color: var(--brand-text);
+  font-size: 0.8125rem;
+  background-color: #FFFFFF;
+}
+
+.brand-table tr:hover td {
+  background-color: #F5F8FC;
+}
+
+/* Scrollbar polish */
+.scrollbar-brand::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-brand::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-brand::-webkit-scrollbar-thumb {
+  background: rgba(11, 31, 77, 0.15);
+  border-radius: 9999px;
+}
+
+.scrollbar-brand::-webkit-scrollbar-thumb:hover {
+  background: rgba(11, 31, 77, 0.3);
+}
+
+/* Dark sidebar scrollbar */
+.scrollbar-brand-dark::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-brand-dark::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-brand-dark::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+
+.scrollbar-brand-dark::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}

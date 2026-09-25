@@ -296,7 +296,7 @@ export const AdminTimetablePage: React.FC = () => {
         </div>
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-indigo-400/20 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/20 text-indigo-200 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#155EEF]/20 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
               Master Timetable & Classroom Allocation
             </div>
@@ -318,7 +318,7 @@ export const AdminTimetablePage: React.FC = () => {
             </Button>
             <Button
               onClick={() => setIsAddOpen(true)}
-              className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold shadow-md"
+              className="bg-[#155EEF] hover:bg-[#155EEF] text-white font-semibold shadow-md"
             >
               <Plus className="w-4 h-4 mr-2" />
               Schedule Session
@@ -340,7 +340,7 @@ export const AdminTimetablePage: React.FC = () => {
           title="Active Batches"
           value="3 Batches"
           subtitle="Batch 10A Morn, 10A Eve, 9A Morn"
-          icon={<Layers className="w-5 h-5 text-indigo-600" />}
+          icon={<Layers className="w-5 h-5 text-[#155EEF]" />}
         />
         <StatCard
           title="Weekly Class Sessions"
@@ -358,7 +358,7 @@ export const AdminTimetablePage: React.FC = () => {
           title="Allocated Rooms"
           value="4 Rooms"
           subtitle="Room 101, 102, 103, Halls A/B"
-          icon={<MapPin className="w-5 h-5 text-purple-600" />}
+          icon={<MapPin className="w-5 h-5 text-[#00B8F8]" />}
         />
       </div>
 
@@ -375,7 +375,7 @@ export const AdminTimetablePage: React.FC = () => {
                 onClick={() => setSelectedDay(day)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   selectedDay === day
-                    ? 'bg-indigo-600 text-white shadow-sm'
+                    ? 'bg-[#155EEF] text-white shadow-sm'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -390,7 +390,7 @@ export const AdminTimetablePage: React.FC = () => {
               <select
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
-                className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#155EEF]"
               >
                 <option value="ALL">All Batches</option>
                 <option value="Batch 10A Morning">Batch 10A Morning</option>
@@ -404,7 +404,7 @@ export const AdminTimetablePage: React.FC = () => {
               <select
                 value={selectedFaculty}
                 onChange={(e) => setSelectedFaculty(e.target.value)}
-                className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#155EEF]"
               >
                 <option value="ALL">All Faculty</option>
                 <option value="Mrs. Priya Sundaram">Mrs. Priya Sundaram</option>
@@ -425,8 +425,8 @@ export const AdminTimetablePage: React.FC = () => {
             className="p-5 border border-gray-100 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
           >
             <div className="flex items-start gap-4">
-              <div className="w-24 text-center py-2 px-3 bg-indigo-50 border border-indigo-100 rounded-xl flex-shrink-0">
-                <span className="block text-[11px] font-bold uppercase tracking-wider text-indigo-700">
+              <div className="w-24 text-center py-2 px-3 bg-[#EEF4FF] border border-[#DCE5F2] rounded-xl flex-shrink-0">
+                <span className="block text-[11px] font-bold uppercase tracking-wider text-[#1048B5]">
                   {slot.day}
                 </span>
                 <span className="block text-xs font-extrabold text-gray-900 mt-0.5">
@@ -441,7 +441,7 @@ export const AdminTimetablePage: React.FC = () => {
                     {slot.batchName}
                   </span>
                   <span className="text-xs text-gray-400">&bull;</span>
-                  <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">
+                  <span className="text-xs font-semibold text-[#1048B5] bg-[#EEF4FF] px-2 py-0.5 rounded">
                     {slot.subject}
                   </span>
                   <span className="text-xs text-gray-400">&bull;</span>
@@ -450,7 +450,7 @@ export const AdminTimetablePage: React.FC = () => {
                 <h3 className="text-base font-bold text-gray-900">{slot.topic}</h3>
                 <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-gray-500">
                   <span className="flex items-center gap-1 text-gray-600 font-medium">
-                    <MapPin className="w-3.5 h-3.5 text-indigo-600" />
+                    <MapPin className="w-3.5 h-3.5 text-[#155EEF]" />
                     {slot.room}
                   </span>
                   <span className="flex items-center gap-1">
@@ -496,7 +496,7 @@ export const AdminTimetablePage: React.FC = () => {
                   <select
                     value={newDay}
                     onChange={(e) => setNewDay(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   >
                     {DAYS.filter((d) => d !== 'ALL').map((d) => (
                       <option key={d} value={d}>{d}</option>
@@ -508,7 +508,7 @@ export const AdminTimetablePage: React.FC = () => {
                   <select
                     value={newBatchName}
                     onChange={(e) => setNewBatchName(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   >
                     <option value="Batch 10A Morning">Batch 10A Morning</option>
                     <option value="Batch 10A Evening">Batch 10A Evening</option>
@@ -522,7 +522,7 @@ export const AdminTimetablePage: React.FC = () => {
                 <select
                   value={newSession}
                   onChange={(e) => setNewSession(e.target.value as any)}
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 >
                   <option value="MORNING">Morning (06:30 - 09:00)</option>
                   <option value="AFTERNOON">Afternoon (04:00 - 05:00)</option>
@@ -537,7 +537,7 @@ export const AdminTimetablePage: React.FC = () => {
                     type="text"
                     value={newStartTime}
                     onChange={(e) => setNewStartTime(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -546,7 +546,7 @@ export const AdminTimetablePage: React.FC = () => {
                     type="text"
                     value={newEndTime}
                     onChange={(e) => setNewEndTime(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   />
                 </div>
               </div>
@@ -557,7 +557,7 @@ export const AdminTimetablePage: React.FC = () => {
                   <select
                     value={newSubject}
                     onChange={(e) => setNewSubject(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   >
                     <option value="Physics">Physics</option>
                     <option value="Chemistry">Chemistry</option>
@@ -570,7 +570,7 @@ export const AdminTimetablePage: React.FC = () => {
                   <select
                     value={newFaculty}
                     onChange={(e) => setNewFaculty(e.target.value)}
-                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                   >
                     <option value="Mrs. Priya Sundaram">Mrs. Priya Sundaram</option>
                     <option value="Dr. Anita Joshi">Dr. Anita Joshi</option>
@@ -588,7 +588,7 @@ export const AdminTimetablePage: React.FC = () => {
                   value={newTopic}
                   onChange={(e) => setNewTopic(e.target.value)}
                   placeholder="e.g. Chapter 12: Electric Power & Commercial Units"
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 />
               </div>
 
@@ -599,7 +599,7 @@ export const AdminTimetablePage: React.FC = () => {
                   value={newRoom}
                   onChange={(e) => setNewRoom(e.target.value)}
                   placeholder="Room 101"
-                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="w-full text-xs px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#155EEF] focus:outline-none"
                 />
               </div>
 
@@ -607,7 +607,7 @@ export const AdminTimetablePage: React.FC = () => {
                 <Button type="button" variant="outline" size="sm" onClick={() => setIsAddOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button type="submit" size="sm" className="bg-[#155EEF] hover:bg-[#1048B5] text-white">
                   Save Schedule
                 </Button>
               </div>

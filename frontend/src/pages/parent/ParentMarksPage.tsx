@@ -68,7 +68,7 @@ export const ParentMarksPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
         <div>
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
               <Award className="w-6 h-6" />
             </div>
             <div>
@@ -89,7 +89,7 @@ export const ParentMarksPage: React.FC = () => {
               onClick={() => setActiveView('SCORECARD')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center ${
                 activeView === 'SCORECARD'
-                  ? 'bg-white text-indigo-600 shadow-sm'
+                  ? 'bg-white text-[#155EEF] shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -100,7 +100,7 @@ export const ParentMarksPage: React.FC = () => {
               onClick={() => setActiveView('TEST_LIST')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center ${
                 activeView === 'TEST_LIST'
-                  ? 'bg-white text-indigo-600 shadow-sm'
+                  ? 'bg-white text-[#155EEF] shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -134,7 +134,7 @@ export const ParentMarksPage: React.FC = () => {
       {activeView === 'SCORECARD' ? (
         loading && !scorecard ? (
           <div className="bg-white rounded-3xl border border-gray-200 p-12 text-center shadow-sm">
-            <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin mx-auto mb-3" />
+            <RefreshCw className="w-8 h-8 text-[#155EEF] animate-spin mx-auto mb-3" />
             <h3 className="text-base font-bold text-gray-900">Compiling 4-Subject Scorecard...</h3>
             <p className="text-xs text-gray-500 mt-1">Aggregating Physics, Chemistry, Biology and Mathematics results.</p>
           </div>
@@ -152,10 +152,10 @@ export const ParentMarksPage: React.FC = () => {
         <div className="space-y-6">
           {/* PROMINENT SPOTLIGHT SCORECARD (Fulfilling Prompt Example) */}
           {rahulPhysicsMark && (
-            <div className="bg-gradient-to-br from-white to-indigo-50/50 rounded-2xl border border-indigo-100 shadow-sm p-6 overflow-hidden">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-indigo-100/80 pb-4">
+            <div className="bg-gradient-to-br from-white to-indigo-50/50 rounded-2xl border border-[#DCE5F2] shadow-sm p-6 overflow-hidden">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#DCE5F2]/80 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                  <div className="w-12 h-12 rounded-xl bg-[#155EEF] text-white flex items-center justify-center font-bold text-lg shadow-sm">
                     {rahulPhysicsMark.studentName.charAt(0)}
                   </div>
                   <div>
@@ -181,7 +181,7 @@ export const ParentMarksPage: React.FC = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-5">
                 <div className="bg-white p-4 rounded-xl border border-gray-100">
                   <span className="text-xs font-medium text-gray-500 block">Subject</span>
-                  <span className="text-base font-bold text-indigo-700 mt-1 block">
+                  <span className="text-base font-bold text-[#1048B5] mt-1 block">
                     {rahulPhysicsMark.subjectName}
                   </span>
                   <span className="text-[11px] text-gray-400 mt-0.5 block">Secondary Science</span>
@@ -214,11 +214,11 @@ export const ParentMarksPage: React.FC = () => {
               </div>
 
               {/* Audit trail indicator & answer sheet button */}
-              <div className="pt-4 border-t border-indigo-100/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/70 p-4 rounded-xl">
+              <div className="pt-4 border-t border-[#DCE5F2]/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/70 p-4 rounded-xl">
                 <div>
                   {rahulPhysicsMark.auditLogs && rahulPhysicsMark.auditLogs.length > 0 && (
-                    <div className="flex items-center text-xs text-indigo-700 font-medium">
-                      <History className="w-3.5 h-3.5 mr-1.5 text-indigo-600" />
+                    <div className="flex items-center text-xs text-[#1048B5] font-medium">
+                      <History className="w-3.5 h-3.5 mr-1.5 text-[#155EEF]" />
                       <span>
                         Official Audit: Rechecked by faculty ({rahulPhysicsMark.auditLogs[0].oldMarks} → {rahulPhysicsMark.auditLogs[0].newMarks} marks on {new Date(rahulPhysicsMark.auditLogs[0].changedAt).toLocaleDateString()})
                       </span>
@@ -237,7 +237,7 @@ export const ParentMarksPage: React.FC = () => {
                       setPreviewUrl(rahulPhysicsMark.answerSheetUrl!);
                       setPreviewTitle(`${rahulPhysicsMark.studentName} — ${rahulPhysicsMark.testName} (${rahulPhysicsMark.subjectName})`);
                     }}
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors flex-shrink-0"
+                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-xs font-semibold rounded-lg text-white bg-[#155EEF] hover:bg-[#1048B5] transition-colors flex-shrink-0"
                   >
                     <FileText className="w-4 h-4 mr-1.5" />
                     View Evaluated Answer Sheet
@@ -261,7 +261,7 @@ export const ParentMarksPage: React.FC = () => {
               <EmptyState
                 title="No published test scorecards yet"
                 description="Evaluated papers and published test scorecards will be displayed here once released by the teacher."
-                icon={<Award className="w-8 h-8 text-indigo-500 stroke-[1.5]" />}
+                icon={<Award className="w-8 h-8 text-[#155EEF] stroke-[1.5]" />}
                 compact
               />
             ) : (
@@ -318,7 +318,7 @@ export const ParentMarksPage: React.FC = () => {
                                 setPreviewUrl(m.answerSheetUrl!);
                                 setPreviewTitle(`${m.studentName} — ${m.testName} (${m.subjectName})`);
                               }}
-                              className="inline-flex items-center px-3 py-1.5 border border-indigo-200 text-xs font-medium rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors"
+                              className="inline-flex items-center px-3 py-1.5 border border-[#DCE5F2] text-xs font-medium rounded-lg text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF] transition-colors"
                             >
                               <ExternalLink className="w-3.5 h-3.5 mr-1" />
                               View Sheet
@@ -343,7 +343,7 @@ export const ParentMarksPage: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
               <div className="flex items-center space-x-2">
-                <FileText className="w-5 h-5 text-indigo-600" />
+                <FileText className="w-5 h-5 text-[#155EEF]" />
                 <h3 className="font-bold text-gray-900 text-sm">{previewTitle}</h3>
               </div>
               <button
@@ -370,7 +370,7 @@ export const ParentMarksPage: React.FC = () => {
                 href={previewUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center text-indigo-600 font-semibold hover:underline"
+                className="inline-flex items-center text-[#155EEF] font-semibold hover:underline"
               >
                 Open in Full Window
                 <ExternalLink className="w-3.5 h-3.5 ml-1" />
