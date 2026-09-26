@@ -185,8 +185,8 @@ export const AppLoadingAnimation: React.FC<AppLoadingAnimationProps> = ({
   onComplete,
   autoStart = true,
 }) => {
-  // 6.8 Seconds cinematic video-like duration as requested ("6 to 7 seconds video like")
-  const TOTAL_DURATION = 6800;
+  // 7.0 Seconds total: Assembly completes at ~5.0s, then STAYS fully visible for 2.0 seconds!
+  const TOTAL_DURATION = 7000;
   const [elapsed, setElapsed] = useState(0);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -223,19 +223,19 @@ export const AppLoadingAnimation: React.FC<AppLoadingAnimationProps> = ({
           playedRef.current.whoosh = true;
           audioRef.current.playWhoosh();
         }
-        if (diff >= 1800 && !playedRef.current.sparkle) {
+        if (diff >= 1400 && !playedRef.current.sparkle) {
           playedRef.current.sparkle = true;
           audioRef.current.playSparkle();
         }
-        if (diff >= 3100 && !playedRef.current.cap) {
+        if (diff >= 2600 && !playedRef.current.cap) {
           playedRef.current.cap = true;
           audioRef.current.playCapDrop();
         }
-        if (diff >= 4300 && !playedRef.current.bulb) {
+        if (diff >= 3700 && !playedRef.current.bulb) {
           playedRef.current.bulb = true;
           audioRef.current.playBulbClick();
         }
-        if (diff >= 5500 && !playedRef.current.chime) {
+        if (diff >= 4800 && !playedRef.current.chime) {
           playedRef.current.chime = true;
           audioRef.current.playCompletionChime();
         }
@@ -256,17 +256,18 @@ export const AppLoadingAnimation: React.FC<AppLoadingAnimationProps> = ({
     };
   }, [autoStart, handleFinish]);
 
-  // Stage progress calculations across 6.8 seconds:
-  // Scene 1: 0 - 1600ms (Infinity drawing)
-  const s1 = Math.min(Math.max(elapsed / 1600, 0), 1);
-  // Scene 2: 1600 - 3000ms (Energy loops + sparkles)
-  const s2 = Math.min(Math.max((elapsed - 1600) / 1400, 0), 1);
-  // Scene 3: 3000 - 4300ms (Graduation cap descent & golden rays)
-  const s3 = Math.min(Math.max((elapsed - 3000) / 1300, 0), 1);
-  // Scene 4: 4300 - 5400ms (Light bulb forming and illuminating)
-  const s4 = Math.min(Math.max((elapsed - 4300) / 1100, 0), 1);
-  // Scene 5: 5400 - 6800ms (Clear logo & prominent wordings assembly)
-  const s5 = Math.min(Math.max((elapsed - 5400) / 1400, 0), 1);
+  // Stage progress calculations:
+  // Scene 1: 0 - 1300ms (Infinity drawing)
+  const s1 = Math.min(Math.max(elapsed / 1300, 0), 1);
+  // Scene 2: 1300 - 2500ms (Energy loops + sparkles)
+  const s2 = Math.min(Math.max((elapsed - 1300) / 1200, 0), 1);
+  // Scene 3: 2500 - 3700ms (Graduation cap descent & golden rays)
+  const s3 = Math.min(Math.max((elapsed - 2500) / 1200, 0), 1);
+  // Scene 4: 3700 - 4700ms (Light bulb forming and illuminating)
+  const s4 = Math.min(Math.max((elapsed - 3700) / 1000, 0), 1);
+  // Scene 5: 4700 - 5200ms (Full logo & wordings complete assembly)
+  // STAYS FULLY VISIBLE & COMPLETE from 5200ms to 7000ms (~1.8 to 2.0s hold!)
+  const s5 = Math.min(Math.max((elapsed - 4700) / 500, 0), 1);
 
   const PATH_LENGTH = 560;
   const strokeOffset = PATH_LENGTH * (1 - s1);
