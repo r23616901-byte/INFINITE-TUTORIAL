@@ -1,225 +1,89 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 
 type RoleId = 'parent' | 'teacher' | 'admin';
 
-interface RoleCard {
+interface RoleItem {
   id: RoleId;
   emoji: string;
   title: string;
   tag: string;
 }
 
-const ROLES: RoleCard[] = [
-  {
-    id: 'parent',
-    emoji: '👨‍🎓',
-    title: 'Parent / Student',
-    tag: 'Student Records',
-  },
-  {
-    id: 'teacher',
-    emoji: '👩‍🏫',
-    title: 'Faculty Teacher',
-    tag: 'Academic Desk',
-  },
-  {
-    id: 'admin',
-    emoji: '🛡️',
-    title: 'Institute Admin',
-    tag: 'Control Center',
-  },
+const ROLES: RoleItem[] = [
+  { id: 'parent', emoji: '👨‍🎓', title: 'Parent', tag: 'Student Records' },
+  { id: 'teacher', emoji: '👩‍🏫', title: 'Teacher', tag: 'Academic Desk' },
+  { id: 'admin', emoji: '🛡️', title: 'Admin', tag: 'Control Center' },
 ];
 
 export const RoleSelectionPage: React.FC = () => {
   const navigate = useNavigate();
-  const [hovered, setHovered] = useState<RoleId | null>(null);
-
-  const handleSelect = (id: RoleId) => navigate(`/login/${id}`);
 
   return (
     <div
-      className="min-h-screen flex flex-col"
-      style={{ background: '#F8FAFC', fontFamily: 'Inter, system-ui, sans-serif' }}
+      className="min-h-screen flex flex-col justify-between"
+      style={{
+        background: '#F8FAFC',
+        fontFamily: 'Inter, system-ui, sans-serif',
+      }}
     >
-      {/* ── Header ── */}
+      {/* ── Compact Mobile Header ── */}
       <header
-        className="w-full flex items-center justify-between px-6 py-4 sm:px-10"
-        style={{
-          background: '#ffffff',
-          borderBottom: '1px solid #E5E7EB',
-          height: '64px',
-        }}
+        className="w-full flex items-center justify-between px-5 py-3.5 bg-white border-b border-slate-200"
       >
         <Link to="/" aria-label="Infinite Tutorial">
-          <BrandLogo size="md" />
+          <BrandLogo size="sm" />
         </Link>
-
-        <div
-          className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold"
-          style={{
-            background: '#EFF6FF',
-            border: '1px solid #BFDBFE',
-            color: '#2563EB',
-          }}
-        >
-          <span
-            className="w-2 h-2 rounded-full animate-pulse"
-            style={{ background: '#2563EB' }}
-          />
-          Academic Year 2024–25
-        </div>
+        <span className="text-[11px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
+          AY 2024–25
+        </span>
       </header>
 
-      {/* ── Main ── */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-12 sm:py-16">
-        {/* Hero text */}
-        <div className="text-center mb-10 sm:mb-12">
-          <h1
-            className="text-3xl sm:text-4xl font-black tracking-tight mb-2"
-            style={{ color: '#0F172A' }}
-          >
-            Welcome to{' '}
-            <span style={{ color: '#2563EB' }}>Infinite Tutorial</span>
+      {/* ── Main Mobile-First Center ── */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 max-w-md w-full mx-auto">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            Infinite <span className="text-blue-600">Tutorial</span>
           </h1>
-          <p className="text-sm sm:text-base font-medium" style={{ color: '#64748B' }}>
+          <p className="text-xs font-semibold text-slate-500 mt-1">
             Select Your Portal
           </p>
         </div>
 
-        {/* Role cards */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          style={{ maxWidth: '860px', width: '100%' }}
-        >
-          {ROLES.map((role) => {
-            const isHovered = hovered === role.id;
-
-            return (
-              <button
-                key={role.id}
-                onClick={() => handleSelect(role.id)}
-                onMouseEnter={() => setHovered(role.id)}
-                onMouseLeave={() => setHovered(null)}
-                onFocus={() => setHovered(role.id)}
-                onBlur={() => setHovered(null)}
-                aria-label={`Enter ${role.title} portal`}
-                style={{
-                  width: '100%',
-                  maxWidth: '260px',
-                  height: '220px',
-                  margin: '0 auto',
-                  borderRadius: '24px',
-                  background: '#ffffff',
-                  border: isHovered ? '2px solid #2563EB' : '2px solid #E5E7EB',
-                  boxShadow: isHovered
-                    ? '0 12px 40px rgba(37,99,235,0.18), 0 2px 8px rgba(37,99,235,0.08)'
-                    : '0 2px 12px rgba(15,23,42,0.06)',
-                  transform: isHovered ? 'scale(1.04)' : 'scale(1)',
-                  transition: 'all 0.22s cubic-bezier(.4,0,.2,1)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '12px',
-                  padding: '24px 20px',
-                  outline: 'none',
-                }}
-              >
-                {/* Emoji icon */}
-                <span
-                  style={{
-                    fontSize: '56px',
-                    lineHeight: 1,
-                    display: 'block',
-                    transform: isHovered ? 'scale(1.12) translateY(-2px)' : 'scale(1)',
-                    transition: 'transform 0.22s cubic-bezier(.4,0,.2,1)',
-                    userSelect: 'none',
-                  }}
-                >
-                  {role.emoji}
-                </span>
-
-                {/* Role title */}
-                <span
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    color: isHovered ? '#2563EB' : '#0F172A',
-                    transition: 'color 0.18s ease',
-                    letterSpacing: '-0.01em',
-                    textAlign: 'center',
-                  }}
-                >
+        {/* 3 Beautiful Minimal Cards */}
+        <div className="w-full flex flex-col sm:flex-row gap-3.5 justify-center items-stretch">
+          {ROLES.map((role) => (
+            <button
+              key={role.id}
+              onClick={() => navigate(`/login/${role.id}`)}
+              className="flex-1 bg-white border-2 border-slate-200 hover:border-blue-600 rounded-[20px] p-5 flex flex-col items-center justify-center gap-2.5 shadow-xs hover:shadow-md transition-all active:scale-98 cursor-pointer group text-center"
+              style={{ minHeight: '160px' }}
+            >
+              <span className="text-4xl group-hover:scale-110 transition-transform">
+                {role.emoji}
+              </span>
+              <div>
+                <span className="block text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                   {role.title}
                 </span>
-
-                {/* Tag */}
-                <span
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    color: isHovered ? '#2563EB' : '#64748B',
-                    background: isHovered ? '#EFF6FF' : '#F1F5F9',
-                    border: isHovered ? '1px solid #BFDBFE' : '1px solid #E2E8F0',
-                    borderRadius: '999px',
-                    padding: '2px 10px',
-                    letterSpacing: '0.02em',
-                    transition: 'all 0.18s ease',
-                  }}
-                >
+                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
                   {role.tag}
                 </span>
-
-                {/* Enter button */}
-                <div
-                  style={{
-                    marginTop: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    fontSize: '13px',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    background: isHovered
-                      ? '#1D4ED8'
-                      : '#2563EB',
-                    borderRadius: '10px',
-                    padding: '7px 18px',
-                    transition: 'all 0.18s ease',
-                    boxShadow: isHovered
-                      ? '0 4px 16px rgba(37,99,235,0.35)'
-                      : '0 2px 6px rgba(37,99,235,0.2)',
-                  }}
-                >
-                  Enter Portal
-                  <ArrowRight
-                    size={13}
-                    style={{
-                      transform: isHovered ? 'translateX(3px)' : 'translateX(0)',
-                      transition: 'transform 0.18s ease',
-                    }}
-                  />
-                </div>
-              </button>
-            );
-          })}
+              </div>
+              <div className="mt-1 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 group-hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs">
+                <span>Enter</span>
+                <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </button>
+          ))}
         </div>
       </main>
 
-      {/* ── Footer ── */}
-      <footer
-        className="w-full text-center py-4 text-xs"
-        style={{
-          borderTop: '1px solid #E5E7EB',
-          background: '#ffffff',
-          color: '#94A3B8',
-        }}
-      >
-        © {new Date().getFullYear()} Infinite Tutorial. All rights reserved.
+      {/* ── Minimal Footer ── */}
+      <footer className="text-center py-3 text-[11px] font-medium text-slate-400">
+        © {new Date().getFullYear()} Infinite Tutorial
       </footer>
     </div>
   );

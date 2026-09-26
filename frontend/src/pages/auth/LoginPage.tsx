@@ -4,92 +4,53 @@ import { useAuth } from '../../hooks/useAuth';
 import { loginApi } from '../../services/api';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
-import {
-  Phone,
-  Mail,
-  Lock,
-  AlertCircle,
-  ArrowLeft,
-  Sparkles,
-  HelpCircle,
-  Eye,
-  EyeOff,
-  Play,
-} from 'lucide-react';
+import { Phone, Mail, Lock, AlertCircle, Eye, EyeOff, Sparkles, HelpCircle } from 'lucide-react';
+import { BrandLogo } from '../../components/common/BrandLogo';
 import { AppLoadingAnimation } from '../../components/common/AppLoadingAnimation';
 
 export type RoleType = 'parent' | 'teacher' | 'admin';
 
-// ── Portal theme config ──────────────────────────────────────────────────────
 const ROLE_CONFIG: Record<
   RoleType,
   {
     emoji: string;
-    badge: string;
-    title: string;
+    portalName: string;
     color: string;
-    colorLight: string;
-    colorBorder: string;
     identifierLabel: string;
     identifierPlaceholder: string;
     identifierType: 'tel' | 'email';
     identifierMode: 'numeric' | 'email';
-    identifierHelper: string;
-    passwordHelper: string;
   }
 > = {
   parent: {
     emoji: '👨‍🎓',
-    badge: 'Student Records',
-    title: 'Parent Portal Login',
+    portalName: 'Parent Portal',
     color: '#10B981',
-    colorLight: '#ECFDF5',
-    colorBorder: '#A7F3D0',
-    identifierLabel: 'Registered Mobile Number',
+    identifierLabel: 'Mobile Number',
     identifierPlaceholder: 'e.g. 6361085188',
     identifierType: 'tel',
     identifierMode: 'numeric',
-    identifierHelper: 'Enter your registered 10-digit mobile number',
-    passwordHelper: 'Initial password is student Date of Birth (DDMMYY)',
   },
   teacher: {
     emoji: '👩‍🏫',
-    badge: 'Academic Desk',
-    title: 'Teacher Portal Login',
+    portalName: 'Teacher Portal',
     color: '#2563EB',
-    colorLight: '#EFF6FF',
-    colorBorder: '#BFDBFE',
-    identifierLabel: 'Faculty Email Address',
-    identifierPlaceholder: 'e.g. teacher@infinite.com',
+    identifierLabel: 'Faculty Email',
+    identifierPlaceholder: 'teacher@infinite.com',
     identifierType: 'email',
     identifierMode: 'email',
-    identifierHelper: 'Enter your registered faculty email address',
-    passwordHelper: 'Enter your assigned educator password',
   },
   admin: {
     emoji: '🛡️',
-    badge: 'Control Center',
-    title: 'Admin Portal Login',
+    portalName: 'Admin Portal',
     color: '#F59E0B',
-    colorLight: '#FFFBEB',
-    colorBorder: '#FDE68A',
-    identifierLabel: 'Admin Email Address',
-    identifierPlaceholder: 'e.g. admin@infinite.com',
+    identifierLabel: 'Admin Email',
+    identifierPlaceholder: 'admin@infinite.com',
     identifierType: 'email',
     identifierMode: 'email',
-    identifierHelper: 'Enter your registered administrator email address',
-    passwordHelper: 'Enter your secure administrative password',
   },
 };
 
-// ── Feature highlights for left panel ────────────────────────────────────────
-const FEATURES = [
-  { emoji: '📊', label: 'Academic Analytics' },
-  { emoji: '📚', label: 'Smart Learning Management' },
-  { emoji: '🔔', label: 'Real-time Notifications' },
-];
-
-// ── Mock users for demo / offline fallback ───────────────────────────────────
 const MOCK_USERS = {
   ADMIN: {
     id: 'admin-preview-1',
@@ -115,7 +76,6 @@ const MOCK_USERS = {
   },
 };
 
-// ── Component ─────────────────────────────────────────────────────────────────
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -123,11 +83,7 @@ export const LoginPage: React.FC = () => {
   const { login } = useAuth();
 
   const getInitialRole = (): RoleType => {
-    const raw = (
-      params.role ||
-      new URLSearchParams(location.search).get('role') ||
-      ''
-    ).toLowerCase();
+    const raw = (params.role || new URLSearchParams(location.search).get('role') || '').toLowerCase();
     if (raw === 'teacher') return 'teacher';
     if (raw === 'admin') return 'admin';
     return 'parent';
@@ -143,13 +99,8 @@ export const LoginPage: React.FC = () => {
   const [showDemoTools, setShowDemoTools] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
 
-  // Sync role when URL param changes
   useEffect(() => {
-    const raw = (
-      params.role ||
-      new URLSearchParams(location.search).get('role') ||
-      ''
-    ).toLowerCase();
+    const raw = (params.role || new URLSearchParams(location.search).get('role') || '').toLowerCase();
     if (!raw) {
       navigate('/select-role', { replace: true });
       return;
@@ -161,7 +112,6 @@ export const LoginPage: React.FC = () => {
 
   const cfg = ROLE_CONFIG[activeRole];
 
-  // ── Auth handlers ─────────────────────────────────────────────────────────
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
@@ -169,11 +119,7 @@ export const LoginPage: React.FC = () => {
     const cleanPw = password.trim();
 
     if (!cleanId || !cleanPw) {
-      setErrorMessage(
-        activeRole === 'parent'
-          ? 'Please enter both your phone number and password.'
-          : 'Please enter both your email address and password.'
-      );
+      setErrorMessage(activeRole === 'parent' ? 'Please enter phone and password.' : 'Please enter email and password.');
       return;
     }
 
@@ -182,18 +128,12 @@ export const LoginPage: React.FC = () => {
     const normalizedPhone = cleanId.replace(/\D/g, '');
     const isParentMatch =
       activeRole === 'parent' &&
-      (normalizedPhone === '6361085188' ||
-        cleanId === '6361085188' ||
-        normalizedPhone.length === 10) &&
-      (cleanPw === '260906' ||
-        cleanPw === '26/09/2006' ||
-        cleanPw === '26092006' ||
-        cleanPw.length >= 6);
+      (normalizedPhone === '6361085188' || cleanId === '6361085188' || normalizedPhone.length === 10) &&
+      (cleanPw === '260906' || cleanPw === '26/09/2006' || cleanPw === '26092006' || cleanPw.length >= 6);
 
     const isTeacherMatch =
       activeRole === 'teacher' &&
-      (cleanId.toLowerCase().includes('teacher') ||
-        cleanId.toLowerCase().includes('priya')) &&
+      (cleanId.toLowerCase().includes('teacher') || cleanId.toLowerCase().includes('priya')) &&
       cleanPw.toLowerCase() === 'teacher@123';
 
     const isAdminMatch =
@@ -206,8 +146,7 @@ export const LoginPage: React.FC = () => {
       if (res && res.success && res.data) {
         login(res.data.token, res.data.user);
         const role = res.data.user.role;
-        const from = (location.state as { from?: { pathname?: string } })?.from
-          ?.pathname;
+        const from = (location.state as { from?: { pathname?: string } })?.from?.pathname;
         if (from && !from.startsWith('/login')) {
           navigate(from, { replace: true });
         } else if (role === 'ADMIN') {
@@ -221,10 +160,7 @@ export const LoginPage: React.FC = () => {
       }
     } catch {
       if (isParentMatch) {
-        login('dev-token-parent', {
-          ...MOCK_USERS.PARENT,
-          phone: normalizedPhone || '6361085188',
-        });
+        login('dev-token-parent', { ...MOCK_USERS.PARENT, phone: normalizedPhone || '6361085188' });
         navigate('/parent', { replace: true });
         return;
       }
@@ -238,22 +174,18 @@ export const LoginPage: React.FC = () => {
         navigate('/admin', { replace: true });
         return;
       }
-      setErrorMessage(
-        activeRole === 'parent'
-          ? 'Invalid phone number or password. Please try again.'
-          : 'Invalid email address or password. Please try again.'
-      );
+      setErrorMessage('Invalid credentials. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const fillDemo = (role: RoleType) => {
+  const fillDemo = () => {
     setErrorMessage('');
-    if (role === 'parent') {
+    if (activeRole === 'parent') {
       setIdentifier('6361085188');
       setPassword('260906');
-    } else if (role === 'teacher') {
+    } else if (activeRole === 'teacher') {
       setIdentifier('teacher@infinite.com');
       setPassword('Teacher@123');
     } else {
@@ -262,308 +194,58 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const enterDirectRole = (role: 'ADMIN' | 'TEACHER' | 'PARENT') => {
-    login(`dev-token-${role.toLowerCase()}`, MOCK_USERS[role]);
-    navigate(`/${role.toLowerCase()}`);
-  };
-
-  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div
+      className="min-h-screen flex flex-col justify-between"
       style={{
-        height: '100vh',
-        display: 'flex',
-        overflow: 'hidden',
-        fontFamily: 'Inter, system-ui, sans-serif',
         background: '#F8FAFC',
+        fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >
-      {/* 5-Second Premium App Loading Animation */}
+      {/* 2.5s Snappy Mobile Loader */}
       {showIntro && (
         <AppLoadingAnimation onComplete={() => setShowIntro(false)} />
       )}
 
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {/* LEFT PANEL — Brand Showcase                                     */}
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      <div
-        className="hidden lg:flex"
-        style={{
-          width: '50%',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '48px',
-          position: 'relative',
-          overflow: 'hidden',
-          background: 'linear-gradient(145deg, #0F172A 0%, #1E3A8A 60%, #1E40AF 100%)',
-          color: '#fff',
-        }}
-      >
-        {/* Floating blobs */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '-80px',
-            left: '-80px',
-            width: '320px',
-            height: '320px',
-            borderRadius: '50%',
-            background: 'rgba(37,99,235,0.25)',
-            filter: 'blur(80px)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '-60px',
-            right: '-60px',
-            width: '280px',
-            height: '280px',
-            borderRadius: '50%',
-            background: 'rgba(16,185,129,0.18)',
-            filter: 'blur(70px)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: '45%',
-            right: '-40px',
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            background: 'rgba(245,158,11,0.12)',
-            filter: 'blur(60px)',
-            pointerEvents: 'none',
-          }}
-        />
+      {/* ── Top Bar ── */}
+      <header className="w-full flex items-center justify-between px-5 py-3.5 bg-white border-b border-slate-200">
+        <Link to="/select-role" aria-label="Infinite Tutorial">
+          <BrandLogo size="sm" />
+        </Link>
+        <Link
+          to="/select-role"
+          className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100"
+        >
+          Change Role
+        </Link>
+      </header>
 
-        {/* Logo */}
-        <div style={{ position: 'relative', zIndex: 10 }}>
-          <Link to="/" style={{ display: 'inline-block' }}>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '10px 18px',
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '16px',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
-              <img
-                src="/logo-transparent.png"
-                alt="Infinite Tutorial"
-                style={{ height: '36px', width: 'auto', objectFit: 'contain' }}
-                onError={(e) => {
-                  const t = e.currentTarget;
-                  if (!t.src.includes('logo.png')) t.src = '/logo.png';
-                }}
-              />
+      {/* ── Centered Mobile-First Login Card (Zero Extra Text) ── */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 max-w-sm w-full mx-auto">
+        <div className="w-full bg-white rounded-[20px] border border-slate-200 shadow-sm p-6">
+          {/* Portal Header */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="text-3xl">{cfg.emoji}</span>
+            <div>
+              <h1 className="text-xl font-black text-slate-900 leading-tight">
+                {cfg.portalName}
+              </h1>
+              <span className="text-[11px] font-semibold text-slate-400">
+                Sign in to continue
+              </span>
             </div>
-          </Link>
-        </div>
-
-        {/* Center content */}
-        <div style={{ position: 'relative', zIndex: 10 }}>
-          {/* Glow pulse ring */}
-          <div
-            style={{
-              width: '72px',
-              height: '72px',
-              borderRadius: '50%',
-              background: 'rgba(37,99,235,0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '28px',
-              boxShadow: '0 0 0 16px rgba(37,99,235,0.1)',
-              animation: 'logoPulse 3s ease-in-out infinite',
-            }}
-          >
-            <span style={{ fontSize: '32px', lineHeight: 1 }}>🎓</span>
           </div>
 
-          <h1
-            style={{
-              fontSize: '36px',
-              fontWeight: 900,
-              letterSpacing: '-0.03em',
-              lineHeight: 1.1,
-              marginBottom: '8px',
-            }}
-          >
-            Infinite Tutorial
-          </h1>
-          <p
-            style={{
-              fontSize: '18px',
-              fontWeight: 500,
-              color: 'rgba(255,255,255,0.7)',
-              marginBottom: '36px',
-              letterSpacing: '0.02em',
-            }}
-          >
-            Learn. Track. Grow.
-          </p>
-
-          {/* Feature highlights */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {FEATURES.map((f) => (
-              <div
-                key={f.label}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  padding: '10px 16px',
-                  background: 'rgba(255,255,255,0.07)',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  borderRadius: '12px',
-                  backdropFilter: 'blur(6px)',
-                }}
-              >
-                <span style={{ fontSize: '18px', lineHeight: 1 }}>{f.emoji}</span>
-                <span
-                  style={{
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    color: 'rgba(255,255,255,0.88)',
-                  }}
-                >
-                  {f.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 10,
-            fontSize: '11px',
-            color: 'rgba(255,255,255,0.35)',
-          }}
-        >
-          © {new Date().getFullYear()} Infinite Tutorial · All Rights Reserved
-        </div>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {/* RIGHT PANEL — Login Card                                        */}
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '24px 20px',
-          overflowY: 'auto',
-          background: '#F8FAFC',
-          position: 'relative',
-        }}
-      >
-        {/* Mobile-only logo */}
-        <div
-          className="flex lg:hidden"
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginBottom: '24px',
-          }}
-        >
-          <Link to="/">
-            <img
-              src="/logo-transparent.png"
-              alt="Infinite Tutorial"
-              style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
-              onError={(e) => {
-                const t = e.currentTarget;
-                if (!t.src.includes('logo.png')) t.src = '/logo.png';
-              }}
-            />
-          </Link>
-        </div>
-
-        {/* ── Login card ── */}
-        <div
-          style={{
-            width: '100%',
-            maxWidth: '460px',
-            background: '#ffffff',
-            borderRadius: '24px',
-            boxShadow:
-              '0 4px 6px rgba(15,23,42,0.04), 0 20px 48px rgba(15,23,42,0.10)',
-            padding: '36px 32px',
-            border: '1px solid #E5E7EB',
-          }}
-        >
-          {/* Portal badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-            <span style={{ fontSize: '28px', lineHeight: 1 }}>{cfg.emoji}</span>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 700,
-                color: cfg.color,
-                background: cfg.colorLight,
-                border: `1px solid ${cfg.colorBorder}`,
-                borderRadius: '999px',
-                padding: '3px 12px',
-                letterSpacing: '0.03em',
-                textTransform: 'uppercase',
-              }}
-            >
-              {cfg.badge}
-            </span>
-          </div>
-
-          {/* Title */}
-          <h2
-            style={{
-              fontSize: '24px',
-              fontWeight: 800,
-              color: '#0F172A',
-              letterSpacing: '-0.02em',
-              marginBottom: '24px',
-            }}
-          >
-            {cfg.title}
-          </h2>
-
-          {/* Error */}
+          {/* Error message */}
           {errorMessage && (
-            <div
-              role="alert"
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '10px',
-                padding: '12px 14px',
-                borderRadius: '12px',
-                background: '#FEF2F2',
-                border: '1px solid #FECACA',
-                marginBottom: '16px',
-                fontSize: '13px',
-                color: '#B91C1C',
-                fontWeight: 500,
-              }}
-            >
-              <AlertCircle size={16} style={{ flexShrink: 0, marginTop: '1px', color: '#EF4444' }} />
-              {errorMessage}
+            <div className="mb-4 p-2.5 rounded-xl bg-red-50 border border-red-200 flex items-center gap-2 text-xs text-red-700 font-medium">
+              <AlertCircle size={14} className="text-red-500 shrink-0" />
+              <span>{errorMessage}</span>
             </div>
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <Input
               label={cfg.identifierLabel}
               type={cfg.identifierType}
@@ -571,12 +253,7 @@ export const LoginPage: React.FC = () => {
               placeholder={cfg.identifierPlaceholder}
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              startIcon={
-                activeRole === 'parent'
-                  ? <Phone className="w-4 h-4" />
-                  : <Mail className="w-4 h-4" />
-              }
-              helperText={cfg.identifierHelper}
+              startIcon={activeRole === 'parent' ? <Phone className="w-4 h-4" /> : <Mail className="w-4 h-4" />}
               autoComplete={activeRole === 'parent' ? 'tel' : 'email'}
               required
             />
@@ -593,350 +270,102 @@ export const LoginPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      color: '#94A3B8',
-                      padding: '4px',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className="text-slate-400 hover:text-slate-600 p-1"
+                    aria-label="Toggle password"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 }
-                helperText={cfg.passwordHelper}
                 autoComplete="current-password"
                 required
               />
-
-              {/* Forgot password */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '6px' }}>
+              <div className="flex justify-end mt-1">
                 <button
                   type="button"
                   onClick={() => setShowForgotModal(true)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    color: cfg.color,
-                    padding: 0,
-                  }}
+                  className="text-[11px] font-bold text-blue-600 hover:underline"
                 >
                   Forgot Password?
                 </button>
               </div>
             </div>
 
-            {/* Login button */}
-            <div style={{ marginTop: '4px' }}>
-              <Button
-                type="submit"
-                variant="primary"
-                className="w-full py-2.5 font-bold text-sm"
-                isLoading={isLoading}
-                style={{ background: cfg.color, borderColor: cfg.color }}
-              >
-                Sign In to {activeRole.charAt(0).toUpperCase() + activeRole.slice(1)} Portal
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              variant="primary"
+              className="w-full py-2.5 font-bold text-sm rounded-xl mt-1"
+              isLoading={isLoading}
+              style={{ background: cfg.color, borderColor: cfg.color }}
+            >
+              Sign In
+            </Button>
           </form>
 
-          {/* Demo tools */}
-          <div
-            style={{
-              marginTop: '20px',
-              paddingTop: '16px',
-              borderTop: '1px solid #F1F5F9',
-            }}
-          >
+          {/* Quick Demo Helper */}
+          <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+            <button
+              type="button"
+              onClick={fillDemo}
+              className="text-[11px] font-bold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 cursor-pointer"
+            >
+              <Sparkles size={12} className="text-amber-500" />
+              <span>Fill Demo Credentials</span>
+            </button>
             <button
               type="button"
               onClick={() => setShowDemoTools(!showDemoTools)}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '11px',
-                fontWeight: 700,
-                color: '#64748B',
-                padding: 0,
-              }}
+              className="text-[10px] text-slate-400 font-medium"
             >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={13} style={{ color: '#F59E0B' }} />
-                Demo Mode: Quick Auto-Fill
-              </span>
-              <span
-                style={{
-                  fontSize: '10px',
-                  background: '#F1F5F9',
-                  border: '1px solid #E2E8F0',
-                  borderRadius: '6px',
-                  padding: '2px 8px',
-                  color: '#0F172A',
-                }}
-              >
-                {showDemoTools ? 'Hide' : 'Show'}
-              </span>
+              {showDemoTools ? 'Hide' : 'Auto Login'}
             </button>
-
-            {showDemoTools && (
-              <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <button
-                  type="button"
-                  onClick={() => fillDemo(activeRole)}
-                  style={{
-                    padding: '9px 12px',
-                    borderRadius: '10px',
-                    border: '1px solid #E2E8F0',
-                    background: '#F8FAFC',
-                    cursor: 'pointer',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    color: '#0F172A',
-                    width: '100%',
-                  }}
-                >
-                  Auto-Fill{' '}
-                  {activeRole === 'teacher'
-                    ? 'Faculty Teacher'
-                    : activeRole === 'admin'
-                    ? 'Admin'
-                    : 'Parent'}{' '}
-                  Credentials
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    enterDirectRole(
-                      activeRole.toUpperCase() as 'ADMIN' | 'TEACHER' | 'PARENT'
-                    )
-                  }
-                  style={{
-                    padding: '9px 12px',
-                    borderRadius: '10px',
-                    border: 'none',
-                    background: cfg.color,
-                    cursor: 'pointer',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    width: '100%',
-                  }}
-                >
-                  Direct Launch{' '}
-                  {activeRole === 'teacher'
-                    ? 'Teacher'
-                    : activeRole === 'admin'
-                    ? 'Admin'
-                    : 'Parent'}{' '}
-                  Portal
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowIntro(true)}
-                  style={{
-                    padding: '8px 12px',
-                    borderRadius: '10px',
-                    border: '1px dashed #CBD5E1',
-                    background: '#FFFFFF',
-                    cursor: 'pointer',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    color: '#475569',
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                  }}
-                >
-                  <Play size={12} fill="#2563EB" color="#2563EB" />
-                  Replay 5s Intro Animation
-                </button>
-              </div>
-            )}
           </div>
-        </div>
 
-        {/* Change portal + back link */}
-        <div
-          style={{
-            marginTop: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '8px',
-          }}
-        >
-          <Link
-            to="/select-role"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '12px',
-              color: '#64748B',
-              fontWeight: 500,
-              textDecoration: 'none',
-            }}
-          >
-            <span>
-              Not logging in as{' '}
-              {activeRole === 'teacher'
-                ? 'Faculty Teacher'
-                : activeRole === 'admin'
-                ? 'Administrator'
-                : 'Parent / Student'}
-              ?
-            </span>
-            <span style={{ fontWeight: 700, textDecoration: 'underline', color: cfg.color }}>
-              Change Portal
-            </span>
-          </Link>
-
-          <Link
-            to="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '11px',
-              color: '#94A3B8',
-              textDecoration: 'none',
-            }}
-          >
-            <ArrowLeft size={11} />
-            Back to role selection
-          </Link>
-        </div>
-
-        {/* Footer note */}
-        <p
-          style={{
-            marginTop: '16px',
-            fontSize: '11px',
-            color: '#CBD5E1',
-            textAlign: 'center',
-          }}
-        >
-          © {new Date().getFullYear()} Infinite Tutorial · SSL Secured
-        </p>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {/* FORGOT PASSWORD MODAL                                           */}
-      {/* ═══════════════════════════════════════════════════════════════ */}
-      {showForgotModal && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 50,
-            background: 'rgba(15,23,42,0.55)',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px',
-          }}
-        >
-          <div
-            style={{
-              background: '#ffffff',
-              borderRadius: '20px',
-              border: '1px solid #E5E7EB',
-              boxShadow: '0 20px 60px rgba(15,23,42,0.18)',
-              maxWidth: '360px',
-              width: '100%',
-              padding: '28px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '12px',
-                  background: cfg.colorLight,
-                  border: `1px solid ${cfg.colorBorder}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: cfg.color,
-                  flexShrink: 0,
-                }}
-              >
-                <HelpCircle size={20} />
-              </div>
-              <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A' }}>
-                Reset Your Password
-              </h3>
-            </div>
-
-            <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.6 }}>
-              Credential resets for{' '}
-              <strong style={{ color: '#0F172A' }}>{cfg.title}</strong> are
-              managed by the institute administration desk.
-            </p>
-
-            <div
-              style={{
-                background: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                borderRadius: '12px',
-                padding: '12px 14px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
+          {showDemoTools && (
+            <button
+              type="button"
+              onClick={() => {
+                const roleKey = activeRole.toUpperCase() as 'ADMIN' | 'TEACHER' | 'PARENT';
+                login(`dev-token-${activeRole}`, MOCK_USERS[roleKey]);
+                navigate(`/${activeRole}`);
               }}
+              className="mt-2 w-full py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#0F172A' }}>
-                <Phone size={13} style={{ color: cfg.color, flexShrink: 0 }} />
-                <span>
-                  Call Admin: <strong>+91 98765 43210</strong>
-                </span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#0F172A' }}>
-                <Mail size={13} style={{ color: cfg.color, flexShrink: 0 }} />
-                <span>
-                  Email: <strong>admin@infinitetutorial.com</strong>
-                </span>
-              </div>
-            </div>
+              Instant 1-Click Launch →
+            </button>
+          )}
+        </div>
+      </main>
 
+      {/* ── Footer ── */}
+      <footer className="text-center py-3 text-[11px] text-slate-400">
+        © {new Date().getFullYear()} Infinite Tutorial
+      </footer>
+
+      {/* Forgot Password Modal */}
+      {showForgotModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-xs w-full p-5 space-y-3">
+            <div className="flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-blue-600" />
+              <h3 className="font-bold text-sm text-slate-900">Need Help Signing In?</h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Contact the tuition desk for instant password resets:
+            </p>
+            <div className="p-2.5 bg-slate-50 rounded-xl text-xs space-y-1 font-semibold text-slate-700">
+              <div>📞 +91 98765 43210</div>
+              <div>✉️ admin@infinitetutorial.com</div>
+            </div>
             <Button
               variant="primary"
               onClick={() => setShowForgotModal(false)}
-              className="w-full py-2 text-sm"
+              className="w-full py-1.5 text-xs rounded-xl"
             >
-              Understood
+              Close
             </Button>
           </div>
         </div>
       )}
-
-      {/* ── Keyframe for logo glow pulse ── */}
-      <style>{`
-        @keyframes logoPulse {
-          0%, 100% { box-shadow: 0 0 0 16px rgba(37,99,235,0.10); }
-          50%       { box-shadow: 0 0 0 24px rgba(37,99,235,0.05); }
-        }
-      `}</style>
     </div>
   );
 };
