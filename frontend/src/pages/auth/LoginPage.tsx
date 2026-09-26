@@ -97,7 +97,7 @@ export const LoginPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [showDemoTools, setShowDemoTools] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
 
   useEffect(() => {
     const raw = (params.role || new URLSearchParams(location.search).get('role') || '').toLowerCase();
