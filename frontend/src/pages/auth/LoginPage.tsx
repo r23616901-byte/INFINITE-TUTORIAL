@@ -14,7 +14,9 @@ import {
   HelpCircle,
   Eye,
   EyeOff,
+  Play,
 } from 'lucide-react';
+import { AppLoadingAnimation } from '../../components/common/AppLoadingAnimation';
 
 export type RoleType = 'parent' | 'teacher' | 'admin';
 
@@ -139,6 +141,7 @@ export const LoginPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [showDemoTools, setShowDemoTools] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
 
   // Sync role when URL param changes
   useEffect(() => {
@@ -275,6 +278,11 @@ export const LoginPage: React.FC = () => {
         background: '#F8FAFC',
       }}
     >
+      {/* 5-Second Premium App Loading Animation */}
+      {showIntro && (
+        <AppLoadingAnimation onComplete={() => setShowIntro(false)} />
+      )}
+
       {/* ═══════════════════════════════════════════════════════════════ */}
       {/* LEFT PANEL — Brand Showcase                                     */}
       {/* ═══════════════════════════════════════════════════════════════ */}
@@ -732,6 +740,28 @@ export const LoginPage: React.FC = () => {
                     ? 'Admin'
                     : 'Parent'}{' '}
                   Portal
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowIntro(true)}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '10px',
+                    border: '1px dashed #CBD5E1',
+                    background: '#FFFFFF',
+                    cursor: 'pointer',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    color: '#475569',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <Play size={12} fill="#2563EB" color="#2563EB" />
+                  Replay 5s Intro Animation
                 </button>
               </div>
             )}
