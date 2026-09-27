@@ -51,6 +51,7 @@ import { AdminPasswordManagementPage } from './pages/admin/AdminPasswordManageme
 import { AdminSettingsSecurityPage } from './pages/admin/AdminSettingsSecurityPage';
 import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
+import { StartupVideo } from './components/common/StartupVideo';
 import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
 
 // Smart Home / Root route: Shows RoleSelectionPage for visitors, or redirects to dashboard if authenticated
@@ -87,6 +88,7 @@ export const App: React.FC = () => {
   return (
     <AuthProvider>
       <LoadingProvider>
+        <StartupVideo />
         <BrowserRouter>
           <Routes>
             {/* Public Landing & Role Selection Routes */}
