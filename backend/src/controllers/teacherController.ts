@@ -17,7 +17,7 @@ export const getTeachersHandler = async (req: Request, res: Response) => {
 
 export const getTeacherByIdHandler = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const teacher = await teacherService.getTeacherById(id);
     return res.status(200).json({ success: true, data: teacher });
   } catch (error: any) {
@@ -40,7 +40,7 @@ export const createTeacherHandler = async (req: Request, res: Response) => {
 
 export const updateTeacherHandler = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const teacher = await teacherService.updateTeacher(id, req.body);
     return res.status(200).json({
       success: true,
@@ -54,7 +54,7 @@ export const updateTeacherHandler = async (req: Request, res: Response) => {
 
 export const toggleTeacherStatusHandler = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status } = req.body;
     const teacher = await teacherService.toggleTeacherStatus(id, status);
     return res.status(200).json({
@@ -69,7 +69,7 @@ export const toggleTeacherStatusHandler = async (req: Request, res: Response) =>
 
 export const assignSubjectsAndBatchesHandler = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { subjects, batches } = req.body;
     const teacher = await teacherService.assignSubjectsAndBatches(id, subjects, batches);
     return res.status(200).json({
@@ -84,7 +84,7 @@ export const assignSubjectsAndBatchesHandler = async (req: Request, res: Respons
 
 export const resetTeacherPasswordHandler = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const result = await teacherService.resetTeacherPassword(id);
     const user = (req as any).user;
 
@@ -119,7 +119,7 @@ export const resetTeacherPasswordHandler = async (req: Request, res: Response) =
 
 export const getAssignedStudentsHandler = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const result = await teacherService.getAssignedStudents(id);
     return res.status(200).json({ success: true, data: result });
   } catch (error: any) {

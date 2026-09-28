@@ -39,7 +39,7 @@ export const getDailyUpdates = async (req: AuthenticatedRequest, res: Response):
  */
 export const getDailyUpdateById = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const item = await dailyUpdateService.getDailyUpdateById(id);
 
     if (!item) {
@@ -93,7 +93,7 @@ export const createDailyUpdate = async (req: AuthenticatedRequest, res: Response
     };
 
     const created = await dailyUpdateService.createDailyUpdate(payload, {
-      id: user.userId,
+      id: user.id,
       name: user.name || 'Instructor',
       role: user.role,
     });
@@ -122,11 +122,11 @@ export const updateDailyUpdate = async (req: AuthenticatedRequest, res: Response
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     const payload: UpdateDailyUpdateDto = req.body;
 
     const updated = await dailyUpdateService.updateDailyUpdate(id, payload, {
-      id: user.userId,
+      id: user.id,
       name: user.name || 'Instructor',
       role: user.role,
     });
@@ -156,9 +156,9 @@ export const deleteDailyUpdate = async (req: AuthenticatedRequest, res: Response
       return;
     }
 
-    const { id } = req.params;
+    const id = req.params.id as string;
     await dailyUpdateService.deleteDailyUpdate(id, {
-      id: user.userId,
+      id: user.id,
       name: user.name || 'Instructor',
       role: user.role,
     });

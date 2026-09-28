@@ -8,7 +8,7 @@ import * as scorecardService from '../services/scorecardService';
 export const getStudentScorecardHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = (req as any).user || { id: 'admin-001', role: 'ADMIN' };
-    const { studentId } = req.params;
+    const studentId = req.params.studentId as string;
 
     const scorecard = await scorecardService.getStudentScorecard(studentId, user);
     res.status(200).json({

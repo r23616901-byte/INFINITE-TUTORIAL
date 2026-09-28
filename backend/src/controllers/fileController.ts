@@ -78,7 +78,7 @@ export const listFiles = async (req: AuthenticatedRequest, res: Response): Promi
  */
 export const getFileById = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const file = await fileProcessingService.getFileById(id);
 
     if (!file) {
@@ -103,7 +103,7 @@ export const getFileById = async (req: AuthenticatedRequest, res: Response): Pro
  */
 export const deleteFile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     await fileProcessingService.deleteFile(id);
 
     res.json({

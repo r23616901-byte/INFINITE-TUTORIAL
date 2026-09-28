@@ -4,7 +4,7 @@ import { getStudentForParent, isStudentAuthorizedForUser } from '../services/stu
 
 export const getStudentAnalyticsHandler = async (req: Request, res: Response) => {
   try {
-    const { studentId } = req.params;
+    const studentId = req.params.studentId as string;
     if (!studentId) {
       return res.status(400).json({ success: false, message: 'Student ID is required.' });
     }

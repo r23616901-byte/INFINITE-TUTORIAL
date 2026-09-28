@@ -40,7 +40,7 @@ export const getMarksHandler = async (req: Request, res: Response): Promise<void
 export const getMarkByIdHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = (req as any).user || { id: 'admin-001', role: 'ADMIN' };
-    const mark = await markService.getMarkById(req.params.id, user);
+    const mark = await markService.getMarkById(req.params.id as string, user);
     res.status(200).json({
       success: true,
       data: mark,
@@ -164,11 +164,11 @@ export const updateMarkHandler = async (req: Request, res: Response): Promise<vo
 
     let previous: any = null;
     try {
-      previous = await markService.getMarkById(req.params.id, user);
+      previous = await markService.getMarkById(req.params.id as string, user);
     } catch (_) {}
 
     const updated = await markService.updateMark(
-      req.params.id,
+      req.params.id as string,
       {
         marksObtained: marksObtained !== undefined ? Number(marksObtained) : undefined,
         reason: reason.trim(),
@@ -265,7 +265,7 @@ export const uploadAnswerSheetHandler = async (req: Request, res: Response): Pro
  */
 export const getAuditTrailHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const logs = await markService.getAuditTrail(req.params.id);
+    const logs = await markService.getAuditTrail(req.params.id as string);
     res.status(200).json({
       success: true,
       data: logs,
@@ -296,7 +296,7 @@ export const toggleVisibilityHandler = async (req: Request, res: Response): Prom
       return;
     }
 
-    const updated = await markService.togglePublishStatus(req.params.id, Boolean(isPublished), user);
+    const updated = await markService.togglePublishStatus(req.params.id as string, Boolean(isPublished), user);
     res.status(200).json({
       success: true,
       data: updated,

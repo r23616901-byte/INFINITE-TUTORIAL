@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { AuthRequest, RoleType } from '../types';
+export type AuthenticatedRequest = AuthRequest;
 import { verifyJwt } from '../utils/jwt';
 import { findUserById } from '../services/userService';
 

@@ -43,7 +43,7 @@ export const getAuditLogsHandler = async (req: AuthRequest, res: Response): Prom
  */
 export const getAuditLogByIdHandler = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const log = await auditService.getAuditLogById(id);
 
     if (!log) {
