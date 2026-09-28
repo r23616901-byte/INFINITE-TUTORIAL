@@ -21,73 +21,246 @@ import {
   FolderOpen,
   History,
   BookOpen,
-  FileCheck,
+  ClipboardCheck,
   BarChart3,
-  Bell,
-  Calendar,
-  Home,
+  CalendarDays,
   FileSpreadsheet,
   Settings,
-  X,
-  BookmarkCheck,
-  CheckCircle2,
+  BookMarked,
+  FileClock,
+  ShieldCheck,
+  PenLine,
+  Files,
+  Megaphone,
+  KeyRound,
+  Bell,
+  type LucideIcon,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+interface AdminModuleItem {
+  id: string;
+  title: string;
+  description: string;
+  route: string;
+  icon: LucideIcon;
+  iconStyle: string;
+}
 
 export const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [viewState, setViewState] = useState<DashboardViewState>('default');
 
-  // Modal for quick announcements or info items
-  const [infoModal, setInfoModal] = useState<{ title: string; content: string } | null>(null);
-
   const isLoading = viewState === 'loading';
   const isEmpty = viewState === 'empty';
 
-  // Navigation Items with unified brand color palette
-  const navSections = [
+  // 24 Admin Navigation Modules mapping directly to existing application routes
+  const adminModules: AdminModuleItem[] = [
+    // STUDENTS & FACULTY
     {
-      title: 'Academic Core & Users',
-      items: [
-        { label: 'Students', path: '/admin/students', icon: GraduationCap, color: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Directory, enrollment, student lifecycle' },
-        { label: 'Teachers', path: '/admin/teachers', icon: Users, color: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Faculty profiles, subjects, batches, reset passwords' },
-        { label: 'Parents', path: '/admin/students', icon: UserCheck, color: 'text-[#00B8F8] bg-[#E0F8FF] border-[#BAE6FD]', desc: 'Parent accounts, phone links & communications' },
-        { label: 'Classes', path: '/admin/batches', icon: Layers, color: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Grade 9 & 10 curriculum levels' },
-        { label: 'Boards', path: '/admin/batches', icon: Award, color: 'text-[#F7931E] bg-[#FFF4E5] border-[#FDE68A]', desc: 'CBSE and Karnataka State Board management' },
-        { label: 'Subjects', path: '/admin/subjects', icon: BookOpen, color: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Physics, Chemistry, Biology, Mathematics' },
-        { label: 'Batches', path: '/admin/batches', icon: Layers, color: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Morning & evening batch schedules' },
-      ],
+      id: 'students-directory',
+      title: 'Students Directory',
+      description: 'Manage student records & profiles',
+      route: '/admin/students',
+      icon: GraduationCap,
+      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
     },
     {
-      title: 'Daily Operations & Attendance',
-      items: [
-        { label: 'Attendance', path: '/admin/attendance', icon: Clock, color: 'text-emerald-700 bg-emerald-50 border-emerald-200', desc: 'Live morning & evening batch attendance rolls' },
-        { label: 'Leave Requests', path: '/admin/leave-requests', icon: CalendarCheck, color: 'text-amber-800 bg-amber-50 border-amber-200', desc: 'Review & approve submitted parent leave requests' },
-        { label: 'Home Reach', path: '/admin/home-reach', icon: Home, color: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Tuition departure & safe home arrival logs' },
-        { label: 'Daily Updates', path: '/admin/daily-updates', icon: Bell, color: 'text-[#00B8F8] bg-[#E0F8FF] border-[#BAE6FD]', desc: 'Syllabus delivered across daily sessions' },
-        { label: 'Portion Completion', action: () => setInfoModal({ title: 'Portion Completion Tracker', content: 'Term 1 Syllabi: Physics 85% completed, Mathematics 88% completed, Chemistry 80% completed, Biology 90% completed.' }), icon: BookmarkCheck, color: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Term syllabus and chapter milestone tracker' },
-      ],
+      id: 'parents-management',
+      title: 'Parents Management',
+      description: 'Parent accounts & contacts',
+      route: '/admin/parents',
+      icon: Users,
+      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
     },
     {
-      title: 'Assessments & Performance',
-      items: [
-        { label: 'Tests', path: '/admin/tests', icon: FileQuestion, color: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Test creation, question papers, syllabus schedules' },
-        { label: 'Marks', path: '/admin/marks', icon: FileCheck, color: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Marks recording, answer sheets, audit trail' },
-        { label: 'Scorecards', path: '/admin/scorecards', icon: Award, color: 'text-[#F7931E] bg-[#FFF4E5] border-[#FDE68A]', desc: 'Official subject-wise student report cards' },
-        { label: 'Performance', path: '/admin/performance', icon: BarChart3, color: 'text-[#00B8F8] bg-[#E0F8FF] border-[#BAE6FD]', desc: 'Graphical analytics, line charts & chapter bar charts' },
-      ],
+      id: 'teachers-staff',
+      title: 'Teachers & Staff',
+      description: 'Faculty profiles & subject allocations',
+      route: '/admin/teachers',
+      icon: UserCheck,
+      iconStyle: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+
+    // ACADEMIC STRUCTURE
+    {
+      id: 'batches-classes',
+      title: 'Batches & Classes',
+      description: 'Grade levels & batch schedules',
+      route: '/admin/batches',
+      icon: Layers,
+      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
     },
     {
-      title: 'Administration & Governance',
-      items: [
-        { label: 'Announcements', action: () => setInfoModal({ title: 'System Noticeboard', content: 'Notice: Parent-Teacher Meeting scheduled for Saturday, 20 September. Term 1 Revision Tests commence next Monday.' }), icon: Bell, color: 'text-[#F7931E] bg-[#FFF4E5] border-[#FDE68A]', desc: 'Broadcast notices to parents and teachers' },
-        { label: 'Timetable', path: '/admin/batches', icon: Clock, color: 'text-[#00B8F8] bg-[#E0F8FF] border-[#BAE6FD]', desc: 'Class weekly schedules and teacher allocations' },
-        { label: 'Calendar', action: () => setInfoModal({ title: 'Academic Calendar', content: 'Academic Year 2024-25: Term 1 Exams (Oct 10-18), Diwali Break (Nov 1-4), Pre-Board 1 (Dec 15-24).' }), icon: Calendar, color: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]', desc: 'Academic calendar, exam schedules & holidays' },
-        { label: 'Reports', action: () => setInfoModal({ title: 'Institutional Reports', content: 'Available reports: 1. Monthly Attendance Register, 2. Student Mark Summary, 3. Batch Performance Analytics, 4. Faculty Activity Report.' }), icon: FileSpreadsheet, color: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Attendance, fee summaries & academic reports' },
-        { label: 'Settings', action: () => setInfoModal({ title: 'System Settings', content: 'Infinite Tutorial v2.4: Safe Home-Reach updates active, automated SMS notifications enabled, strict role-based access enforced.' }), icon: Settings, color: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]', desc: 'System configuration, notifications & roles' },
-        { label: 'Audit Logs', path: '/admin/audit-logs', icon: History, color: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]', desc: 'Immutable security log for all mark edits & actions' },
-      ],
+      id: 'boards-subjects',
+      title: 'Boards & Subjects',
+      description: 'CBSE & State Board curriculums',
+      route: '/admin/subjects',
+      icon: BookOpen,
+      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+    {
+      id: 'timetable-sessions',
+      title: 'Timetable & Sessions',
+      description: 'Class weekly schedules & timings',
+      route: '/admin/timetable',
+      icon: Clock,
+      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+    },
+    {
+      id: 'portion-completion',
+      title: 'Portion Completion',
+      description: 'Syllabus tracker & milestones',
+      route: '/admin/portion-completion',
+      icon: BookMarked,
+      iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+    },
+
+    // ATTENDANCE & STUDENT OPERATIONS
+    {
+      id: 'take-attendance',
+      title: 'Take Attendance',
+      description: 'Live batch attendance rolls',
+      route: '/admin/attendance',
+      icon: ClipboardCheck,
+      iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+    },
+    {
+      id: 'attendance-history',
+      title: 'Attendance History',
+      description: 'Historical registers & reports',
+      route: '/admin/attendance-history',
+      icon: CalendarCheck,
+      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+    {
+      id: 'leave-reports',
+      title: 'Leave Reports',
+      description: 'Review student leave applications',
+      route: '/admin/leave-requests',
+      icon: FileClock,
+      iconStyle: 'text-amber-800 bg-amber-50 border-amber-200',
+    },
+    {
+      id: 'homework-safety-desk',
+      title: 'Homework / Safety Desk',
+      description: 'Arrival & departure home-reach logs',
+      route: '/admin/home-reach',
+      icon: ShieldCheck,
+      iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+    },
+    {
+      id: 'daily-updates',
+      title: 'Daily Updates',
+      description: 'Daily syllabus & session updates',
+      route: '/admin/daily-updates',
+      icon: Bell,
+      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+    },
+
+    // TESTS & MARKS
+    {
+      id: 'tests-question-papers',
+      title: 'Tests & Question Papers',
+      description: 'Exam scheduling & question papers',
+      route: '/admin/tests',
+      icon: FileQuestion,
+      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+    {
+      id: 'enter-edit-marks',
+      title: 'Enter / Edit Marks',
+      description: 'Student scores & grade entries',
+      route: '/admin/marks',
+      icon: PenLine,
+      iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+    },
+    {
+      id: 'student-scorecard',
+      title: 'Student Scorecard',
+      description: 'Official academic report cards',
+      route: '/admin/scorecards',
+      icon: Award,
+      iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+    },
+    {
+      id: 'answer-sheet-repository',
+      title: 'Answer Sheet Repository',
+      description: 'Uploaded paper answer scans',
+      route: '/admin/answer-sheets',
+      icon: Files,
+      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+
+    // COMMUNICATION
+    {
+      id: 'announcements',
+      title: 'Announcements',
+      description: 'Broadcast notices to parents & staff',
+      route: '/admin/announcements',
+      icon: Megaphone,
+      iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+    },
+    {
+      id: 'calendar',
+      title: 'Calendar',
+      description: 'Academic calendar & event schedules',
+      route: '/admin/announcements',
+      icon: CalendarDays,
+      iconStyle: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]',
+    },
+
+    // ANALYTICS & REPORTING
+    {
+      id: 'performance-analytics',
+      title: 'Performance Analytics',
+      description: 'Graphical trends & subject insights',
+      route: '/admin/analytics',
+      icon: BarChart3,
+      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+    },
+    {
+      id: 'reports',
+      title: 'Reports',
+      description: 'Consolidated institutional reports',
+      route: '/admin/analytics',
+      icon: FileSpreadsheet,
+      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+
+    // FILES & SECURITY
+    {
+      id: 'uploaded-files',
+      title: 'Uploaded Files',
+      description: 'Study resources & institutional files',
+      route: '/admin/files',
+      icon: FolderOpen,
+      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+    {
+      id: 'audit-logs',
+      title: 'Audit Logs',
+      description: 'Immutable security & activity logs',
+      route: '/admin/audit-logs',
+      icon: History,
+      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+    {
+      id: 'password-management',
+      title: 'Password Management',
+      description: 'Reset credentials & secure logins',
+      route: '/admin/passwords',
+      icon: KeyRound,
+      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+    },
+    {
+      id: 'system-security',
+      title: 'System & Security',
+      description: 'Access policies & system config',
+      route: '/admin/settings',
+      icon: Settings,
+      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
     },
   ];
 
@@ -96,7 +269,7 @@ export const AdminDashboard: React.FC = () => {
       {/* State Switcher */}
       <StateToggleBar viewState={viewState} onViewStateChange={setViewState} />
 
-      {/* Top Welcome Header */}
+      {/* Top Profile / Header Section */}
       <div className="bg-white rounded-2xl border border-[#DCE5F2] p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0B1F4D] to-[#155EEF] flex items-center justify-center text-white shadow-md flex-shrink-0">
@@ -105,7 +278,7 @@ export const AdminDashboard: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-xl sm:text-2xl font-black text-[#0B1F4D] tracking-tight">
-                {user?.name || 'Administrator'}
+                {user?.name || 'Dr. Ramesh Sharma'}
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
                 INSTITUTE CONTROLLER
@@ -138,7 +311,7 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* ========================================================= */}
-      {/* 8 DASHBOARD SUMMARY CARDS */}
+      {/* 8 DASHBOARD SUMMARY CARDS (PRESERVED) */}
       {/* ========================================================= */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Total Students */}
@@ -190,7 +363,7 @@ export const AdminDashboard: React.FC = () => {
           isLoading={isLoading}
         />
 
-        {/* Card 5: Today's Attendance (Semantic Green Status) */}
+        {/* Card 5: Today's Attendance */}
         <StatCard
           title="Today's Attendance"
           value={isEmpty ? '0.0%' : '91.3%'}
@@ -202,7 +375,7 @@ export const AdminDashboard: React.FC = () => {
           isLoading={isLoading}
         />
 
-        {/* Card 6: Pending Leaves (Semantic Amber Status) */}
+        {/* Card 6: Pending Leaves / Action Items */}
         <StatCard
           title="Pending Leaves"
           value={isEmpty ? '0' : '4'}
@@ -226,7 +399,7 @@ export const AdminDashboard: React.FC = () => {
           isLoading={isLoading}
         />
 
-        {/* Card 8: Recent Tests (Accent Gold) */}
+        {/* Card 8: Recent Tests */}
         <StatCard
           title="Recent Tests"
           value={isEmpty ? '0' : '4'}
@@ -240,52 +413,69 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* ========================================================= */}
-      {/* ADMIN NAVIGATION HUB */}
+      {/* ADMIN COMMAND CENTER / NAVIGATION HUB */}
       {/* ========================================================= */}
-      <Card
-        title="Admin Command & Navigation Hub"
-        subtitle="Complete system control navigation across all academic and institutional modules"
-      >
-        <div className="space-y-6">
-          {navSections.map((sec, sIdx) => (
-            <div key={sIdx} className="space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#5B6B82] border-b border-[#F0F4FA] pb-1.5">
-                {sec.title}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                {sec.items.map((item, iIdx) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={iIdx}
-                      onClick={() => {
-                        if (item.path) navigate(item.path);
-                        else if (item.action) item.action();
-                      }}
-                      className="p-3.5 rounded-2xl border border-[#DCE5F2] bg-white hover:bg-[#F5F8FC] hover:border-[#155EEF] transition-all cursor-pointer group shadow-2xs flex flex-col justify-between"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center border ${item.color}`}>
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <ArrowUpRight className="w-4 h-4 text-[#8A9BB0] group-hover:text-[#155EEF] transition-colors" />
-                      </div>
-                      <div className="mt-2.5">
-                        <h4 className="font-bold text-[#0B1F4D] text-xs">{item.label}</h4>
-                        <p className="text-[11px] text-[#5B6B82] mt-0.5 line-clamp-2 leading-relaxed">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+      <div className="bg-white rounded-2xl border border-[#DCE5F2] p-5 sm:p-6 shadow-xs space-y-4">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F0F4FA]">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <h2 className="text-lg font-bold text-[#0B1F4D] tracking-tight">
+                Admin Command Center
+              </h2>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
+                {adminModules.length} Modules
+              </span>
             </div>
-          ))}
+            <p className="text-xs text-[#5B6B82] mt-0.5">
+              Quick access to all administrative modules
+            </p>
+          </div>
+          <span className="text-[11px] font-medium text-[#8A9BB0] hidden sm:inline-block">
+            Click any module card to navigate
+          </span>
         </div>
-      </Card>
 
-      {/* Recent Audit Activities Feed */}
+        {/* Responsive Grid: Desktop (4 cols), Tablet (3 cols), Mobile (2 cols), Extra Small (1 col) */}
+        <div className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-3.5">
+          {adminModules.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => navigate(item.route)}
+                aria-label={`Open ${item.title}`}
+                className="group relative text-left p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-[#DCE5F2] hover:border-[#155EEF] hover:bg-[#F8FAFD] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#155EEF] focus:ring-offset-2 flex flex-col justify-between"
+              >
+                <div className="flex items-start justify-between w-full">
+                  <div
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border transition-transform duration-200 group-hover:scale-105 ${item.iconStyle}`}
+                  >
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </div>
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center text-[#8A9BB0] group-hover:text-[#155EEF] group-hover:bg-[#EEF4FF] transition-all">
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                </div>
+
+                <div className="mt-3">
+                  <h3 className="font-bold text-[#0B1F4D] text-xs sm:text-sm group-hover:text-[#155EEF] transition-colors line-clamp-1 leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="text-[11px] text-[#5B6B82] mt-0.5 line-clamp-1 leading-normal">
+                    {item.description}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* RECENT SECURITY & ACADEMIC AUDIT FEED */}
+      {/* ========================================================= */}
       <Card
         title="Recent Security & Academic Audit Feed"
         subtitle="Real-time log of faculty actions, attendance submissions, and test records"
@@ -355,35 +545,6 @@ export const AdminDashboard: React.FC = () => {
           </div>
         )}
       </Card>
-
-      {/* Info Modal */}
-      {infoModal && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] shadow-xl max-w-md w-full p-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-[#F0F4FA] pb-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center font-bold">
-                  <CheckCircle2 className="w-4 h-4" />
-                </div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">{infoModal.title}</h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setInfoModal(null)}
-                className="p-1.5 text-[#8A9BB0] hover:text-[#0B1F4D] rounded-lg hover:bg-[#F5F8FC]"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <p className="text-xs text-[#5B6B82] leading-relaxed">{infoModal.content}</p>
-            <div className="flex justify-end pt-2 border-t border-[#F0F4FA]">
-              <Button size="sm" variant="primary" onClick={() => setInfoModal(null)}>
-                Close
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
