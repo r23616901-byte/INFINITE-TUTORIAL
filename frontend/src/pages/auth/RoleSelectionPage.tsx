@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, BookOpen, Award } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { BrandWatermark } from '../../components/common/BrandWatermark';
 import {
@@ -158,19 +158,6 @@ export const RoleSelectionPage: React.FC = () => {
             })}
           </div>
         </section>
-
-        {/* Informational reassurance banner */}
-        <aside className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-6 text-xs text-[#5B6B82] text-center">
-          <span className="inline-flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-[#155EEF]" />
-            Empowering students with structured mentoring
-          </span>
-          <span className="hidden sm:inline text-[#DCE5F2]">•</span>
-          <span className="inline-flex items-center gap-2">
-            <Award className="w-4 h-4 text-[#F7931E]" />
-            Transparent performance tracking &amp; verified scorecards
-          </span>
-        </aside>
       </main>
 
       {/* Clean Branded Footer */}
