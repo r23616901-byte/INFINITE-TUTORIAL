@@ -1,12 +1,16 @@
 import { Response } from 'express';
-import { AuthenticatedRequest } from '../middleware/authMiddleware';
 import * as dailyUpdateService from '../services/dailyUpdateService';
-import { CreateDailyUpdateDto, UpdateDailyUpdateDto, DailyUpdateFilters } from '../types';
+import {
+  AuthRequest,
+  CreateDailyUpdateDto,
+  UpdateDailyUpdateDto,
+  DailyUpdateFilters,
+} from '../types';
 
 /**
  * GET /api/daily-updates
  */
-export const getDailyUpdates = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getDailyUpdates = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { batchId, date, search, page, limit } = req.query;
 
@@ -37,7 +41,7 @@ export const getDailyUpdates = async (req: AuthenticatedRequest, res: Response):
 /**
  * GET /api/daily-updates/:id
  */
-export const getDailyUpdateById = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getDailyUpdateById = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const id = req.params.id as string;
     const item = await dailyUpdateService.getDailyUpdateById(id);
@@ -65,7 +69,7 @@ export const getDailyUpdateById = async (req: AuthenticatedRequest, res: Respons
 /**
  * POST /api/daily-updates
  */
-export const createDailyUpdate = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const createDailyUpdate = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user;
     if (!user) {
@@ -114,7 +118,7 @@ export const createDailyUpdate = async (req: AuthenticatedRequest, res: Response
 /**
  * PUT /api/daily-updates/:id
  */
-export const updateDailyUpdate = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const updateDailyUpdate = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user;
     if (!user) {
@@ -148,7 +152,7 @@ export const updateDailyUpdate = async (req: AuthenticatedRequest, res: Response
 /**
  * DELETE /api/daily-updates/:id
  */
-export const deleteDailyUpdate = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const deleteDailyUpdate = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user;
     if (!user) {

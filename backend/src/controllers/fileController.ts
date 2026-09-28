@@ -1,12 +1,11 @@
 import { Response } from 'express';
-import { AuthenticatedRequest } from '../middleware/authMiddleware';
 import * as fileProcessingService from '../services/fileProcessingService';
-import { FileCategoryType, FileQueryFilters } from '../types';
+import { AuthRequest, FileCategoryType, FileQueryFilters } from '../types';
 
 /**
  * POST /api/files/upload
  */
-export const uploadFile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const uploadFile = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = req.user;
     if (!user) {
@@ -44,7 +43,7 @@ export const uploadFile = async (req: AuthenticatedRequest, res: Response): Prom
 /**
  * GET /api/files
  */
-export const listFiles = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const listFiles = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { category, search, uploaded_by, page, limit } = req.query;
 
@@ -76,7 +75,7 @@ export const listFiles = async (req: AuthenticatedRequest, res: Response): Promi
 /**
  * GET /api/files/:id
  */
-export const getFileById = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getFileById = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const id = req.params.id as string;
     const file = await fileProcessingService.getFileById(id);
@@ -101,7 +100,7 @@ export const getFileById = async (req: AuthenticatedRequest, res: Response): Pro
 /**
  * DELETE /api/files/:id
  */
-export const deleteFile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const deleteFile = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const id = req.params.id as string;
     await fileProcessingService.deleteFile(id);

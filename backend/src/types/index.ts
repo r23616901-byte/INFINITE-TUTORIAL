@@ -29,7 +29,11 @@ export interface AuthenticatedUser {
 
 export interface AuthRequest extends Request {
   user?: AuthenticatedUser;
+  file?: Express.Multer.File;
+  files?: Express.Multer.File[] | { [fieldname: string]: Express.Multer.File[] };
 }
+
+export type AuthenticatedRequest = AuthRequest;
 
 export interface LoginRequestBody {
   identifier?: string; // Phone number for Parents, or Gmail ID for Teacher/Admin
