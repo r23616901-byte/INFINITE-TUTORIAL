@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { loginApi } from '../../services/api';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
+import { BrandLogo } from '../../components/common/BrandLogo';
 import { BrandWatermark } from '../../components/common/BrandWatermark';
 import {
   Users,
@@ -18,9 +19,6 @@ import {
   HelpCircle,
   Eye,
   EyeOff,
-  BookOpen,
-  Award,
-  Shield,
 } from 'lucide-react';
 
 export type RoleType = 'parent' | 'teacher' | 'admin';
@@ -231,115 +229,38 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F5F8FC] text-[#0B1F4D]">
-      {/* ========================================================= */}
-      {/* BRAND SHOWCASE COLUMN (LEFT SIDE ON DESKTOP) */}
-      {/* ========================================================= */}
-      <div className="lg:w-5/12 xl:w-1/2 brand-sidebar-bg text-white p-8 sm:p-12 lg:p-16 flex flex-col justify-between relative overflow-hidden select-none">
-        {/* Subtle decorative glow in brand cyan/orange */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#155EEF]/30 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#F7931E]/20 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen flex flex-col justify-between bg-[#F5F8FC] text-[#0B1F4D] relative overflow-hidden select-none">
+      {/* Background Brand Watermark */}
+      <BrandWatermark opacity={0.035} size="xl" position="center" />
 
-        {/* Subtle Watermark inside the dark branding pane */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
-          <img
-            src="/logo-emblem-transparent.png"
-            alt=""
-            className="w-96 h-auto object-contain filter invert"
-          />
-        </div>
+      {/* Top Header */}
+      <header className="w-full px-6 py-4 sm:px-8 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
+        <Link
+          to="/"
+          className="group inline-flex items-center gap-3 transition-opacity duration-200 focus:outline-hidden"
+          aria-label="Infinite Tutorial Home"
+        >
+          <BrandLogo size="sm" />
+        </Link>
 
-        {/* Top Logo Slot */}
-        <div className="relative z-10">
-          <Link to="/" className="inline-flex items-center gap-3">
-            <div className="bg-white px-4 py-2 rounded-2xl shadow-sm border border-white/30 inline-flex items-center">
-              <img
-                src="/logo-transparent.png"
-                alt="Infinite Tutorial Logo"
-                className="h-9 sm:h-11 w-auto object-contain"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  if (!target.src.includes('logo.png')) {
-                    target.src = '/logo.png';
-                  }
-                }}
-              />
-            </div>
-          </Link>
-        </div>
-
-        {/* Center Educational Value Proposition */}
-        <div className="my-10 lg:my-0 space-y-6 relative z-10 max-w-lg">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-[#00B8F8] text-xs font-bold tracking-wide uppercase">
-            <Sparkles className="w-3.5 h-3.5 text-[#FFB52E]" />
-            Official Educational Portal
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl xl:text-5xl font-black text-white tracking-tight leading-tight">
-            Inspiring Academic Excellence,{' '}
-            <span className="text-[#00B8F8]">Boundless Potential</span>
-          </h1>
-
-          <p className="text-sm sm:text-base text-[#DCE5F2] leading-relaxed font-normal">
-            Infinite Tutorial provides structured mentoring, verified performance analytics, instant attendance notifications, and transparent tuition management.
-          </p>
-
-          {/* 3 Pillars */}
-          <div className="pt-4 space-y-3.5 text-xs sm:text-sm text-[#DCE5F2]">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#00B8F8]">
-                <Shield className="w-4 h-4" />
-              </div>
-              <span className="font-medium">Real-time attendance &amp; departure safety alerts</span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#FFB52E]">
-                <Award className="w-4 h-4" />
-              </div>
-              <span className="font-medium">Official verified scorecards &amp; analytics</span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#1677FF]">
-                <BookOpen className="w-4 h-4" />
-              </div>
-              <span className="font-medium">Syllabus progression &amp; daily class logs</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom copyright in showcase */}
-        <div className="relative z-10 text-xs text-[#8A9BB0] pt-6 border-t border-white/10">
-          <p>&copy; {new Date().getFullYear()} Infinite Tutorial &bull; All Rights Reserved</p>
-        </div>
-      </div>
-
-      {/* ========================================================= */}
-      {/* LOGIN CARD COLUMN (RIGHT SIDE ON DESKTOP) */}
-      {/* ========================================================= */}
-      <div className="flex-1 flex flex-col justify-between p-6 sm:p-10 lg:p-16 relative overflow-hidden">
-        {/* Subtle Watermark on right page background */}
-        <BrandWatermark opacity={0.035} size="lg" position="center" />
-
-        {/* Top bar back link */}
-        <div className="w-full flex items-center justify-between mb-6 relative z-10">
+        <div className="flex items-center gap-4">
           <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#5B6B82] hover:text-[#155EEF] transition-colors group"
+            to="/select-role"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#5B6B82] hover:text-[#155EEF] transition-colors group"
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" />
-            <span>Back to role selection</span>
+            <span>Switch Role</span>
           </Link>
 
-          <span className="text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] border border-[#DCE5F2] px-3 py-1 rounded-full">
+          <span className="hidden sm:inline-block text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] border border-[#DCE5F2] px-3 py-1 rounded-full">
             Secure SSL 256-Bit
           </span>
         </div>
+      </header>
 
-        {/* Centered Login Card */}
-        <div className="w-full max-w-md mx-auto my-auto relative z-10">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] shadow-sm p-6 sm:p-8">
+      {/* Main Centered Login Card */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12 relative z-10 w-full max-w-md mx-auto">
+        <div className="w-full bg-white rounded-3xl border border-[#DCE5F2] shadow-sm p-6 sm:p-8">
 
             {/* Header info */}
             <div className="mb-6 space-y-1.5">
@@ -481,13 +402,17 @@ export const LoginPage: React.FC = () => {
               <span className="font-bold underline">Change Portal</span>
             </Link>
           </div>
-        </div>
+      </main>
 
-        {/* Bottom copyright in form column */}
-        <div className="w-full text-center text-xs text-[#8A9BB0] pt-6 relative z-10">
-          <p>Protected by Infinite Tutorial Academic Security &bull; SSL Secured</p>
+      {/* Clean Branded Footer */}
+      <footer className="w-full px-6 py-4 sm:px-8 text-center border-t border-[#DCE5F2] bg-white/80 backdrop-blur-xs text-xs text-[#5B6B82] relative z-20">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="font-medium">&copy; {new Date().getFullYear()} Infinite Tutorial. All rights reserved.</p>
+          <p className="text-[11px] text-[#8A9BB0]">
+            Protected by Infinite Tutorial Academic Security &bull; SSL Secured
+          </p>
         </div>
-      </div>
+      </footer>
 
       {/* Forgot Password Guidance Modal */}
       {showForgotModal && (
