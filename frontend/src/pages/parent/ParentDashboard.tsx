@@ -4,30 +4,33 @@ import { useAuth } from '../../hooks/useAuth';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
+import { QuickAccessHub, QuickAccessCategory } from '../../components/common/QuickAccessHub';
 import {
   CalendarCheck,
   Award,
   FileText,
   FileCheck,
-  TrendingUp,
   Bell,
   Clock,
-  Calendar,
-  User,
   CheckCircle2,
   AlertTriangle,
   KeyRound,
-  ExternalLink,
-  X,
+  UserCheck,
+  Home,
+  ClipboardCheck,
+  FileSpreadsheet,
+  FileQuestion,
+  Files,
+  BookMarked,
+  BarChart3,
+  CalendarDays,
+  Megaphone,
 } from 'lucide-react';
 import api from '../../services/api';
 
 export const ParentDashboard: React.FC = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
-
-  // Modals for Quick Access items
-  const [activeModal, setActiveModal] = useState<'ANNOUNCEMENTS' | 'TIMETABLE' | 'CALENDAR' | null>(null);
 
   // Password change modal state
   const [showPasswordModal, setShowPasswordModal] = useState(user?.mustChangePassword || false);
@@ -77,16 +80,160 @@ export const ParentDashboard: React.FC = () => {
   const studentPhotoUrl =
     'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=300';
 
-  const quickAccessItems = [
-    { name: 'Profile', href: '/parent/profile', icon: <User className="w-5 h-5 text-[#155EEF]" />, bg: 'bg-[#EEF4FF] hover:bg-[#E0F8FF]', desc: 'Student info & enrollment' },
-    { name: 'Attendance', href: '/parent/attendance', icon: <CalendarCheck className="w-5 h-5 text-emerald-700" />, bg: 'bg-emerald-50 hover:bg-emerald-100/80', desc: 'Daily records & history' },
-    { name: 'Scorecard', href: '/parent/scorecards', icon: <Award className="w-5 h-5 text-[#155EEF]" />, bg: 'bg-[#EEF4FF] hover:bg-[#E0F8FF]', desc: '4-Subject term scorecard' },
-    { name: 'Daily Updates', href: '/parent/daily-updates', icon: <Bell className="w-5 h-5 text-[#F7931E]" />, bg: 'bg-[#FFF4E5] hover:bg-[#FFE8CC]', desc: 'Lessons & homework' },
-    { name: 'Performance', href: '/parent/performance-graphs', icon: <TrendingUp className="w-5 h-5 text-[#00B8F8]" />, bg: 'bg-[#E0F8FF] hover:bg-[#BAE6FD]', desc: 'Line & chapter bar graphs' },
-    { name: 'Leave Request', href: '/parent/leaves', icon: <FileCheck className="w-5 h-5 text-amber-700" />, bg: 'bg-amber-50 hover:bg-amber-100/80', desc: 'Submit & track leaves' },
-    { name: 'Announcements', action: () => setActiveModal('ANNOUNCEMENTS'), icon: <Bell className="w-5 h-5 text-[#F7931E]" />, bg: 'bg-[#FFF4E5] hover:bg-[#FFE8CC]', desc: 'Parent meetings & notices' },
-    { name: 'Timetable', action: () => setActiveModal('TIMETABLE'), icon: <Clock className="w-5 h-5 text-[#1677FF]" />, bg: 'bg-[#EEF4FF] hover:bg-[#E0F8FF]', desc: 'Weekly schedule & timing' },
-    { name: 'Calendar', action: () => setActiveModal('CALENDAR'), icon: <Calendar className="w-5 h-5 text-[#0B1F4D]" />, bg: 'bg-[#F5F8FC] hover:bg-[#EEF4FF]', desc: 'Monthly test & holidays' },
+  // Parent Quick Access categorized navigation modules
+  const parentCategories: QuickAccessCategory[] = [
+    {
+      title: 'Student',
+      items: [
+        {
+          id: 'parent-student-profile',
+          title: 'Student Profile',
+          description: 'Enrollment details & student bio',
+          route: '/parent/profile',
+          icon: UserCheck,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'parent-scorecard',
+          title: 'Scorecard',
+          description: '4-Subject term report cards',
+          route: '/parent/scorecards',
+          icon: Award,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+          badge: '84.7%',
+        },
+        {
+          id: 'parent-tests',
+          title: 'Tests',
+          description: 'Exam schedules & test papers',
+          route: '/parent/test-papers',
+          icon: FileQuestion,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'parent-answer-sheets',
+          title: 'Answer Sheets',
+          description: 'Scanned paper answer sheets',
+          route: '/parent/answer-sheets',
+          icon: Files,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
+    },
+    {
+      title: 'Attendance & Leave',
+      items: [
+        {
+          id: 'parent-attendance',
+          title: 'Attendance',
+          description: 'Live morning & evening roll status',
+          route: '/parent/attendance',
+          icon: ClipboardCheck,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+          badge: '91.3%',
+        },
+        {
+          id: 'parent-attendance-history',
+          title: 'Attendance History',
+          description: 'Monthly attendance registers & metrics',
+          route: '/parent/attendance',
+          icon: CalendarCheck,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'parent-leave-requests',
+          title: 'Leave Requests',
+          description: 'Submit & monitor leave status',
+          route: '/parent/leaves',
+          icon: FileCheck,
+          iconStyle: 'text-amber-800 bg-amber-50 border-amber-200',
+        },
+        {
+          id: 'parent-home-reach',
+          title: 'Home Reach',
+          description: 'Safe arrival & departure alerts',
+          route: '/parent/tuition-reach',
+          icon: Home,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+          badge: 'Safe',
+        },
+      ],
+    },
+    {
+      title: 'Academics',
+      items: [
+        {
+          id: 'parent-daily-updates',
+          title: 'Daily Updates',
+          description: 'Topics taught & homework assigned',
+          route: '/parent/daily-updates',
+          icon: FileSpreadsheet,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'parent-portion-completion',
+          title: 'Portion Completion',
+          description: 'Term syllabus progress & chapters',
+          route: '/parent/portion-completion',
+          icon: BookMarked,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'parent-performance',
+          title: 'Performance',
+          description: 'Line charts & chapter comparisons',
+          route: '/parent/performance-graphs',
+          icon: BarChart3,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'parent-timetable',
+          title: 'Timetable',
+          description: 'Weekly schedule & class timing',
+          route: '/parent/timetable',
+          icon: Clock,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
+    },
+    {
+      title: 'Communication & Security',
+      items: [
+        {
+          id: 'parent-announcements',
+          title: 'Announcements',
+          description: 'Institute circulars & notices',
+          route: '/parent/announcements',
+          icon: Megaphone,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+          badge: '2 New',
+        },
+        {
+          id: 'parent-calendar',
+          title: 'Calendar',
+          description: 'Exam dates, holidays & PTM dates',
+          route: '/parent/calendar',
+          icon: CalendarDays,
+          iconStyle: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]',
+        },
+        {
+          id: 'parent-notifications',
+          title: 'Notifications',
+          description: 'System reminders & faculty alerts',
+          route: '/parent/announcements',
+          icon: Bell,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'parent-change-password',
+          title: 'Change Password',
+          description: 'Manage account security credentials',
+          action: () => setShowPasswordModal(true),
+          icon: KeyRound,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
+    },
   ];
 
   return (
@@ -161,9 +308,9 @@ export const ParentDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* DASHBOARD CARDS */}
+      {/* DASHBOARD SUMMARY CARDS (PRESERVED) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        {/* Attendance: 91.3% (Semantic Green) */}
+        {/* Attendance: 91.3% */}
         <div
           onClick={() => navigate('/parent/attendance')}
           className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-emerald-400 transition-all cursor-pointer group"
@@ -240,7 +387,7 @@ export const ParentDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* RECENT INFORMATION & LIVE UPDATES */}
+      {/* RECENT INFORMATION & LIVE UPDATES (PRESERVED) */}
       <Card
         title="Recent Information & Live Updates"
         subtitle="Real-time tuition updates, test evaluations, announcements, and leaves"
@@ -318,140 +465,14 @@ export const ParentDashboard: React.FC = () => {
         </div>
       </Card>
 
-      {/* QUICK ACCESS SECTIONS */}
-      <Card
-        title="Quick Access"
-        subtitle="Jump directly into academic, attendance, and tuition modules"
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
-          {quickAccessItems.map((item) => (
-            <div
-              key={item.name}
-              onClick={() => {
-                if (item.href) navigate(item.href);
-                else if (item.action) item.action();
-              }}
-              className="p-4 rounded-2xl border border-[#DCE5F2] bg-white hover:border-[#155EEF] hover:bg-[#F5F8FC] transition-all cursor-pointer group shadow-2xs"
-            >
-              <div className="flex items-center justify-between">
-                <div className="p-2.5 rounded-xl bg-[#EEF4FF] border border-[#DCE5F2] group-hover:scale-105 transition-transform">
-                  {item.icon}
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 text-[#8A9BB0] group-hover:text-[#155EEF] transition-colors" />
-              </div>
-              <h3 className="font-bold text-[#0B1F4D] text-sm mt-3">{item.name}</h3>
-              <p className="text-[11px] text-[#5B6B82] mt-0.5 leading-snug line-clamp-1">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </Card>
-
-      {/* MODALS FOR QUICK ACCESS (Announcements, Timetable, Calendar) */}
-      {activeModal === 'ANNOUNCEMENTS' && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-lg w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-[#F0F4FA] pb-3">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#FFF4E5] text-[#F7931E] flex items-center justify-center">
-                  <Bell className="w-4 h-4" />
-                </div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Tuition Announcements</h3>
-              </div>
-              <button onClick={() => setActiveModal(null)} className="p-1 rounded-lg text-[#8A9BB0] hover:text-[#0B1F4D]">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="space-y-3">
-              <div className="p-4 bg-[#FFF4E5] rounded-xl border border-[#FDE68A]">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 block">Upcoming Notice</span>
-                <h4 className="font-bold text-[#0B1F4D] text-sm mt-0.5">Parent Meeting</h4>
-                <p className="text-xs text-[#5B6B82] mt-1">Saturday, 20 September at 10:00 AM in Tuitions Main Hall.</p>
-              </div>
-              <div className="p-4 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#155EEF] block">Exam Schedule</span>
-                <h4 className="font-bold text-[#0B1F4D] text-sm mt-0.5">Monthly Revision Tests</h4>
-                <p className="text-xs text-[#5B6B82] mt-1">Commencing 25 September across Physics, Chemistry, Biology &amp; Maths.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {activeModal === 'TIMETABLE' && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-lg w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-[#F0F4FA] pb-3">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center">
-                  <Clock className="w-4 h-4" />
-                </div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Weekly Class Timetable (10A Morning)</h3>
-              </div>
-              <button onClick={() => setActiveModal(null)} className="p-1 rounded-lg text-[#8A9BB0] hover:text-[#0B1F4D]">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Monday</span>
-                <span className="text-[#155EEF] font-bold">Physics (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Tuesday</span>
-                <span className="text-[#F7931E] font-bold">Chemistry (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Wednesday</span>
-                <span className="text-[#155EEF] font-bold">Mathematics (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Thursday</span>
-                <span className="text-emerald-700 font-bold">Biology (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Friday</span>
-                <span className="text-[#155EEF] font-bold">Physics Problem Solving (07:00 AM - 09:30 AM)</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#F8FAFD] rounded-xl border border-[#DCE5F2]">
-                <span className="font-bold text-[#0B1F4D]">Saturday</span>
-                <span className="text-[#00B8F8] font-bold">Weekly Test Session (07:00 AM - 09:30 AM)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {activeModal === 'CALENDAR' && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-lg w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-[#F0F4FA] pb-3">
-              <div className="flex items-center space-x-2.5">
-                <div className="w-8 h-8 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center">
-                  <Calendar className="w-4 h-4" />
-                </div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Academic Calendar (September 2026)</h3>
-              </div>
-              <button onClick={() => setActiveModal(null)} className="p-1 rounded-lg text-[#8A9BB0] hover:text-[#0B1F4D]">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="space-y-2.5 text-xs">
-              <div className="p-3 bg-emerald-50 text-emerald-900 rounded-xl border border-emerald-200">
-                <strong>01 - 06 Sept:</strong> Term 1 Chapter Diagnostic Assessments
-              </div>
-              <div className="p-3 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2]">
-                <strong>15 - 18 Sept:</strong> Mid-Term Unit Tests (Physics, Chem, Bio, Maths)
-              </div>
-              <div className="p-3 bg-[#FFF4E5] text-amber-950 rounded-xl border border-[#FDE68A]">
-                <strong>20 Sept (Sat):</strong> Parent-Teacher Meeting (10:00 AM)
-              </div>
-              <div className="p-3 bg-[#F8FAFD] text-[#0B1F4D] rounded-xl border border-[#DCE5F2]">
-                <strong>28 Sept:</strong> Revision Test &amp; Scorecard Distribution
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* ========================================================= */}
+      {/* PARENT QUICK ACCESS (CATEGORIZED QUICK ACCESS HUB) */}
+      {/* ========================================================= */}
+      <QuickAccessHub
+        sectionTitle="Parent Quick Access"
+        sectionSubtitle="Quick access to your child's academic information"
+        categories={parentCategories}
+      />
 
       {/* Password Change Dialog Modal */}
       {showPasswordModal && (

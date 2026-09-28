@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { QuickAccessHub, QuickAccessCategory } from '../../components/common/QuickAccessHub';
 import {
   BookOpen,
   FileText,
@@ -10,6 +11,20 @@ import {
   CalendarCheck,
   Bell,
   GraduationCap,
+  UserCheck,
+  Layers,
+  ClipboardCheck,
+  FileClock,
+  FileQuestion,
+  PenLine,
+  Award,
+  Files,
+  BarChart3,
+  CalendarDays,
+  KeyRound,
+  ShieldCheck,
+  BookMarked,
+  FileEdit,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,6 +39,211 @@ export const TeacherDashboard: React.FC = () => {
     pendingLeaves: 4,
     upcomingTests: 2,
   };
+
+  // Teacher Command Center categorized navigation modules
+  const teacherCategories: QuickAccessCategory[] = [
+    {
+      title: 'Students',
+      items: [
+        {
+          id: 'teacher-students',
+          title: 'Students',
+          description: 'Class rosters & assigned pupils',
+          route: '/teacher/students',
+          icon: GraduationCap,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+          badge: '82',
+        },
+        {
+          id: 'teacher-student-profiles',
+          title: 'Student Profiles',
+          description: 'Enrollment data & performance records',
+          route: '/teacher/students',
+          icon: UserCheck,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'teacher-batches',
+          title: 'Batches',
+          description: '10A Morning & 10B Evening batches',
+          route: '/teacher/timetable',
+          icon: Layers,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
+    },
+    {
+      title: 'Attendance & Leave',
+      items: [
+        {
+          id: 'teacher-take-attendance',
+          title: 'Take Attendance',
+          description: 'Mark live morning & evening rolls',
+          route: '/teacher/attendance',
+          icon: ClipboardCheck,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+          badge: 'Pending',
+        },
+        {
+          id: 'teacher-attendance-history',
+          title: 'Attendance History',
+          description: 'Past session logs & compliance',
+          route: '/teacher/attendance-history',
+          icon: CalendarCheck,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'teacher-leave-reports',
+          title: 'Leave Reports',
+          description: 'Review parent leave applications',
+          route: '/teacher/leave-requests',
+          icon: FileClock,
+          iconStyle: 'text-amber-800 bg-amber-50 border-amber-200',
+          badge: '4 Review',
+        },
+        {
+          id: 'teacher-home-reach',
+          title: 'Home-Reach / Departures',
+          description: 'Student dismissal & safe transit logs',
+          route: '/teacher/home-reach',
+          icon: ShieldCheck,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+        },
+      ],
+    },
+    {
+      title: 'Tests & Marks',
+      items: [
+        {
+          id: 'teacher-tests',
+          title: 'Tests',
+          description: 'Scheduled exams & syllabus dates',
+          route: '/teacher/tests',
+          icon: FileQuestion,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'teacher-create-test',
+          title: 'Create Test',
+          description: 'Draft unit & chapter evaluations',
+          route: '/teacher/tests',
+          icon: FileText,
+          iconStyle: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'teacher-question-papers',
+          title: 'Question Papers',
+          description: 'Upload & archive question papers',
+          route: '/teacher/test-papers',
+          icon: FileText,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'teacher-enter-marks',
+          title: 'Enter / Edit Marks',
+          description: 'Batch grading & score entry',
+          route: '/teacher/marks-entry',
+          icon: PenLine,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+        },
+        {
+          id: 'teacher-scorecards',
+          title: 'Student Scorecards',
+          description: 'Official academic report generation',
+          route: '/teacher/scorecards',
+          icon: Award,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+        },
+      ],
+    },
+    {
+      title: 'Answer Sheets & Performance',
+      items: [
+        {
+          id: 'teacher-answer-sheets',
+          title: 'Answer Sheet Repository',
+          description: 'Upload & verify paper answer scans',
+          route: '/teacher/answer-sheets',
+          icon: Files,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'teacher-performance',
+          title: 'Performance Analytics',
+          description: 'Batch trends & chapter distribution',
+          route: '/teacher/performance',
+          icon: BarChart3,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+      ],
+    },
+    {
+      title: 'Academic',
+      items: [
+        {
+          id: 'teacher-daily-updates',
+          title: 'Daily Updates',
+          description: 'Log topics taught & daily homework',
+          route: '/teacher/daily-updates',
+          icon: FileEdit,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'teacher-portion-completion',
+          title: 'Portion Completion',
+          description: 'Track syllabus chapters & milestones',
+          route: '/teacher/syllabus-progress',
+          icon: BookMarked,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+        },
+        {
+          id: 'teacher-timetable',
+          title: 'Timetable & Sessions',
+          description: 'Weekly schedule & classroom timings',
+          route: '/teacher/timetable',
+          icon: Clock,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
+    },
+    {
+      title: 'Communication & Security',
+      items: [
+        {
+          id: 'teacher-announcements',
+          title: 'Announcements',
+          description: 'Post circulars & notice alerts',
+          route: '/teacher/announcements',
+          icon: Bell,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+        },
+        {
+          id: 'teacher-calendar',
+          title: 'Calendar',
+          description: 'View academic events & exam dates',
+          route: '/teacher/announcements',
+          icon: CalendarDays,
+          iconStyle: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]',
+        },
+        {
+          id: 'teacher-notifications',
+          title: 'Notifications',
+          description: 'System notices & faculty broadcasts',
+          route: '/teacher/announcements',
+          icon: Bell,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'teacher-reset-password',
+          title: 'Reset Student Password',
+          description: 'Manage pupil credentials safely',
+          route: '/teacher/reset-student-password',
+          icon: KeyRound,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
@@ -80,7 +300,7 @@ export const TeacherDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 5 METRIC CARDS */}
+      {/* 5 METRIC CARDS (PRESERVED) */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         {/* Total Students */}
         <div
@@ -178,7 +398,16 @@ export const TeacherDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* RECENT RESULTS & ANNOUNCEMENTS */}
+      {/* ========================================================= */}
+      {/* TEACHER COMMAND CENTER (CATEGORIZED QUICK ACCESS HUB) */}
+      {/* ========================================================= */}
+      <QuickAccessHub
+        sectionTitle="Teacher Command Center"
+        sectionSubtitle="Quick access to teaching and student management tools"
+        categories={teacherCategories}
+      />
+
+      {/* RECENT RESULTS & ANNOUNCEMENTS (PRESERVED) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Results */}
         <Card
