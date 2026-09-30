@@ -8,7 +8,6 @@ import { QuickAccessHub, QuickAccessCategory } from '../../components/common/Qui
 import {
   CalendarCheck,
   Award,
-  FileText,
   FileCheck,
   Bell,
   Clock,
@@ -25,6 +24,8 @@ import {
   BarChart3,
   CalendarDays,
   Megaphone,
+  Calendar,
+  ChevronRight,
 } from 'lucide-react';
 import api from '../../services/api';
 
@@ -308,84 +309,54 @@ export const ParentDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* DASHBOARD SUMMARY CARDS (PRESERVED) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-        {/* Attendance: 91.3% */}
-        <div
-          onClick={() => navigate('/parent/attendance')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-emerald-400 transition-all cursor-pointer group"
+      {/* CATEGORY NAVIGATION CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+        {/* Student Tracking */}
+        <button
+          onClick={() => navigate('/parent/profile')}
+          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all cursor-pointer group flex items-center gap-4 text-left"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Attendance</span>
-            <div className="p-2 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-200 group-hover:scale-105 transition-transform">
-              <CalendarCheck className="w-4 h-4" />
-            </div>
+          <div className="p-3 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2] group-hover:scale-105 transition-transform shrink-0">
+            <UserCheck className="w-5 h-5" />
           </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-[#0B1F4D] group-hover:text-emerald-700 transition-colors">
-              91.3%
-            </span>
-            <span className="text-xs text-emerald-700 font-semibold block mt-1">42 Present / 4 Absent</span>
+          <div className="min-w-0 flex-1">
+            <span className="text-sm font-bold text-[#0B1F4D] block">Student Tracking</span>
+            <span className="text-xs text-[#5B6B82] font-medium">Profile & Attendance</span>
           </div>
-        </div>
+          <ChevronRight className="w-4 h-4 text-[#5B6B82] shrink-0" />
+        </button>
 
-        {/* Overall Score: 84.7% */}
-        <div
+        {/* Academic Performance */}
+        <button
           onClick={() => navigate('/parent/scorecards')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-[#155EEF] transition-all cursor-pointer group"
+          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all cursor-pointer group flex items-center gap-4 text-left"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Overall Score</span>
-            <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2] group-hover:scale-105 transition-transform">
-              <Award className="w-4 h-4" />
-            </div>
+          <div className="p-3 bg-[#FFF4E5] text-[#D97706] rounded-xl border border-[#FDE68A] group-hover:scale-105 transition-transform shrink-0">
+            <Award className="w-5 h-5" />
           </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-[#0B1F4D] group-hover:text-[#155EEF] transition-colors">
-              84.7%
-            </span>
-            <span className="text-xs text-[#155EEF] font-semibold block mt-1">4 Core Subjects (Grade A)</span>
+          <div className="min-w-0 flex-1">
+            <span className="text-sm font-bold text-[#0B1F4D] block">Academic Performance</span>
+            <span className="text-xs text-[#5B6B82] font-medium">Scores & Scorecards</span>
           </div>
-        </div>
+          <ChevronRight className="w-4 h-4 text-[#5B6B82] shrink-0" />
+        </button>
 
-        {/* Latest Test: 42/50 */}
-        <div
-          onClick={() => navigate('/parent/scorecards')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-[#1677FF] transition-all cursor-pointer group"
+        {/* Schedule & Updates */}
+        <button
+          onClick={() => navigate('/parent/daily-updates')}
+          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all cursor-pointer group flex items-center gap-4 text-left"
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Latest Test</span>
-            <div className="p-2 bg-[#EEF4FF] text-[#1677FF] rounded-xl border border-[#DCE5F2] group-hover:scale-105 transition-transform">
-              <FileText className="w-4 h-4" />
-            </div>
+          <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-200 group-hover:scale-105 transition-transform shrink-0">
+            <Calendar className="w-5 h-5" />
           </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-[#0B1F4D] group-hover:text-[#1677FF] transition-colors">
-              42/50
-            </span>
-            <span className="text-xs text-[#1677FF] font-semibold block mt-1">Physics Unit 4 (84%)</span>
+          <div className="min-w-0 flex-1">
+            <span className="text-sm font-bold text-[#0B1F4D] block">Schedule & Updates</span>
+            <span className="text-xs text-[#5B6B82] font-medium">Timetable & Notices</span>
           </div>
-        </div>
-
-        {/* Pending Leave: 1 */}
-        <div
-          onClick={() => navigate('/parent/leaves')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:border-amber-400 transition-all cursor-pointer group"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Pending Leave</span>
-            <div className="p-2 bg-amber-50 text-amber-700 rounded-xl border border-amber-200 group-hover:scale-105 transition-transform">
-              <FileCheck className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="mt-3">
-            <span className="text-2xl sm:text-3xl font-black text-amber-700">
-              1
-            </span>
-            <span className="text-xs text-amber-800 font-semibold block mt-1">Medical (18/09 Review)</span>
-          </div>
-        </div>
+          <ChevronRight className="w-4 h-4 text-[#5B6B82] shrink-0" />
+        </button>
       </div>
+
 
       {/* RECENT INFORMATION & LIVE UPDATES (PRESERVED) */}
       <Card
