@@ -24,8 +24,6 @@ import {
   BarChart3,
   CalendarDays,
   Megaphone,
-  Calendar,
-  ChevronRight,
 } from 'lucide-react';
 import api from '../../services/api';
 
@@ -309,53 +307,6 @@ export const ParentDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* CATEGORY NAVIGATION CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-        {/* Student Tracking */}
-        <button
-          onClick={() => navigate('/parent/profile')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all cursor-pointer group flex items-center gap-4 text-left"
-        >
-          <div className="p-3 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2] group-hover:scale-105 transition-transform shrink-0">
-            <UserCheck className="w-5 h-5" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <span className="text-sm font-bold text-[#0B1F4D] block">Student Tracking</span>
-            <span className="text-xs text-[#5B6B82] font-medium">Profile & Attendance</span>
-          </div>
-          <ChevronRight className="w-4 h-4 text-[#5B6B82] shrink-0" />
-        </button>
-
-        {/* Academic Performance */}
-        <button
-          onClick={() => navigate('/parent/scorecards')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all cursor-pointer group flex items-center gap-4 text-left"
-        >
-          <div className="p-3 bg-[#FFF4E5] text-[#D97706] rounded-xl border border-[#FDE68A] group-hover:scale-105 transition-transform shrink-0">
-            <Award className="w-5 h-5" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <span className="text-sm font-bold text-[#0B1F4D] block">Academic Performance</span>
-            <span className="text-xs text-[#5B6B82] font-medium">Scores & Scorecards</span>
-          </div>
-          <ChevronRight className="w-4 h-4 text-[#5B6B82] shrink-0" />
-        </button>
-
-        {/* Schedule & Updates */}
-        <button
-          onClick={() => navigate('/parent/daily-updates')}
-          className="bg-white rounded-2xl border border-[#DCE5F2] p-5 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all cursor-pointer group flex items-center gap-4 text-left"
-        >
-          <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-200 group-hover:scale-105 transition-transform shrink-0">
-            <Calendar className="w-5 h-5" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <span className="text-sm font-bold text-[#0B1F4D] block">Schedule & Updates</span>
-            <span className="text-xs text-[#5B6B82] font-medium">Timetable & Notices</span>
-          </div>
-          <ChevronRight className="w-4 h-4 text-[#5B6B82] shrink-0" />
-        </button>
-      </div>
 
 
       {/* RECENT INFORMATION & LIVE UPDATES (PRESERVED) */}
