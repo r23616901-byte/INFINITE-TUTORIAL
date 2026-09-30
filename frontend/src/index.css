@@ -69,3 +69,85 @@ body {
     display: none !important;
   }
 }
+
+/* Responsive safety net. These rules only apply below the desktop breakpoint and
+   keep existing components and business behaviour intact while allowing their
+   content to reflow instead of widening the document viewport. */
+html,
+body,
+#root {
+  min-width: 0;
+  max-width: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+@media (max-width: 1023px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Data-heavy screens remain fully usable through an inline scroll region,
+     rather than forcing the whole page to scroll horizontally. */
+  .brand-table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .brand-table th,
+  .brand-table td {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 639px) {
+  /* Prevent long identifiers, emails, URLs and labels from expanding cards. */
+  main,
+  section,
+  article,
+  form,
+  [role='dialog'] {
+    max-width: 100%;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  label,
+  button,
+  a {
+    overflow-wrap: anywhere;
+  }
+
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  /* Preserve the bottom navigation's safe-area clearance on compact screens. */
+  .mobile-bottom-nav {
+    padding-bottom: max(0.375rem, var(--sab));
+  }
+}
