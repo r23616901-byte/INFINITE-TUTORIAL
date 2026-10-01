@@ -3,13 +3,18 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { BrandWatermark } from '../../components/common/BrandWatermark';
+import {
+  ParentRoleIcon,
+  TeacherRoleIcon,
+  AdminRoleIcon,
+} from '../../components/common/RoleIcons';
 
 interface RoleOption {
   id: 'parent' | 'teacher' | 'admin';
   title: string;
   roleName: string;
   subtitleLines: [string, string];
-  image: string;
+  icon: React.ReactNode;
 }
 
 export const RoleSelectionPage: React.FC = () => {
@@ -24,21 +29,21 @@ export const RoleSelectionPage: React.FC = () => {
       title: 'Parent',
       roleName: 'Parent Portal',
       subtitleLines: ['STUDENT', 'RECORDS'],
-      image: `${import.meta.env.BASE_URL}images/roles/parent.jpg`,
+      icon: <ParentRoleIcon size={76} />,
     },
     {
       id: 'teacher',
       title: 'Teacher',
       roleName: 'Faculty Portal',
       subtitleLines: ['ACADEMIC', 'DESK'],
-      image: `${import.meta.env.BASE_URL}images/roles/teacher.jpg`,
+      icon: <TeacherRoleIcon size={76} />,
     },
     {
       id: 'admin',
       title: 'Admin',
       roleName: 'Administration Portal',
       subtitleLines: ['CONTROL', 'CENTER'],
-      image: `${import.meta.env.BASE_URL}images/roles/admin.jpg`,
+      icon: <AdminRoleIcon size={76} />,
     },
   ];
 
@@ -112,16 +117,9 @@ export const RoleSelectionPage: React.FC = () => {
                       : 'border border-[#E2E8F0] shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:border-[#155EEF]/60 hover:shadow-xl hover:-translate-y-1'
                   }`}
                 >
-                  {/* Top 3D Role Image */}
+                  {/* Top 3D Icon */}
                   <div className="pt-2 pb-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden flex items-center justify-center bg-transparent">
-                      <img
-                        src={role.image}
-                        alt={role.title}
-                        className="w-full h-full object-contain drop-shadow-sm"
-                        loading="eager"
-                      />
-                    </div>
+                    {role.icon}
                   </div>
 
                   {/* Title & 2-Line Subtitle */}

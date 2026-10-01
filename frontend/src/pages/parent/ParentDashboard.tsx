@@ -19,7 +19,6 @@ import {
   ClipboardCheck,
   FileSpreadsheet,
   FileQuestion,
-  Files,
   BookMarked,
   BarChart3,
   CalendarDays,
@@ -109,14 +108,6 @@ export const ParentDashboard: React.FC = () => {
           icon: FileQuestion,
           iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
         },
-        {
-          id: 'parent-answer-sheets',
-          title: 'Answer Sheets',
-          description: 'Scanned paper answer sheets',
-          route: '/parent/answer-sheets',
-          icon: Files,
-          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
-        },
       ],
     },
     {
@@ -130,14 +121,6 @@ export const ParentDashboard: React.FC = () => {
           icon: ClipboardCheck,
           iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
           badge: '91.3%',
-        },
-        {
-          id: 'parent-attendance-history',
-          title: 'Attendance History',
-          description: 'Monthly attendance registers & metrics',
-          route: '/parent/attendance',
-          icon: CalendarCheck,
-          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
         },
         {
           id: 'parent-leave-requests',

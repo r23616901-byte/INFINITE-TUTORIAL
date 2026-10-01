@@ -263,19 +263,12 @@ export const LoginPage: React.FC = () => {
         <div className="w-full bg-white rounded-3xl border border-[#DCE5F2] shadow-sm p-6 sm:p-8">
 
             {/* Header info */}
-            <div className="mb-6 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
+            <div className="mb-6 space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
                   {roleMeta.icon}
                   {roleMeta.badge}
                 </span>
-                <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-50 border border-[#DCE5F2] shadow-2xs flex items-center justify-center">
-                  <img
-                    src={`${import.meta.env.BASE_URL}images/roles/${activeRole}.jpg`}
-                    alt={roleMeta.title}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-[#0B1F4D] tracking-tight">
                 {roleMeta.title}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Award,
+  User,
   RefreshCw,
   AlertTriangle,
   Printer,
@@ -113,25 +114,53 @@ export const TeacherScorecardsPage: React.FC = () => {
       )}
 
       {/* STUDENT SELECTOR PANEL (Print hidden) */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm print:hidden">
-        <div className="max-w-md relative">
-          <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1.5">
-            Select Student to View Scorecard
-          </label>
-          <div className="relative">
-            <select
-              value={selectedStudentId}
-              onChange={(e) => setSelectedStudentId(e.target.value)}
-              disabled={loadingStudents}
-              className="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-[#155EEF] focus:bg-white transition-all appearance-none cursor-pointer"
-            >
-              {students.map((stu) => (
-                <option key={stu.id || stu.studentId} value={stu.id || stu.studentId}>
-                  {stu.name} ({stu.studentId}) — {stu.className} • {stu.boardName}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
+      <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm space-y-4 print:hidden">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex-1 max-w-md relative">
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1.5">
+              Select Student to View Scorecard
+            </label>
+            <div className="relative">
+              <select
+                value={selectedStudentId}
+                onChange={(e) => setSelectedStudentId(e.target.value)}
+                disabled={loadingStudents}
+                className="w-full pl-3 pr-10 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm font-medium text-gray-900 focus:ring-2 focus:ring-[#155EEF] focus:bg-white transition-all appearance-none cursor-pointer"
+              >
+                {students.map((stu) => (
+                  <option key={stu.id || stu.studentId} value={stu.id || stu.studentId}>
+                    {stu.name} ({stu.studentId}) — {stu.className} • {stu.boardName}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Quick Select Buttons */}
+          <div>
+            <span className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1.5">
+              Quick Select Candidates
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {students.slice(0, 4).map((stu) => {
+                const isSelected = selectedStudentId === stu.id || selectedStudentId === stu.studentId;
+                return (
+                  <button
+                    key={stu.id || stu.studentId}
+                    onClick={() => setSelectedStudentId(stu.id || stu.studentId)}
+                    className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                      isSelected
+                        ? 'bg-[#155EEF] text-white shadow-sm ring-2 ring-[#B2CCFF]'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    <User className="w-3 h-3 mr-1.5" />
+                    {stu.name.split(' ')[0]} ({stu.studentId})
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

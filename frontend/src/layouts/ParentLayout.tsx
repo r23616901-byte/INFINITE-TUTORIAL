@@ -67,7 +67,7 @@ export const ParentLayout: React.FC = () => {
           icon: <Award className="w-4 h-4" />,
         },
         {
-          name: 'Test Papers & Answer Sheets',
+          name: 'Test Papers',
           href: '/parent/test-papers',
           icon: <FileText className="w-4 h-4" />,
         },
