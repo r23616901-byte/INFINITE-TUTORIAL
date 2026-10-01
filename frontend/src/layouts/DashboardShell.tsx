@@ -53,6 +53,9 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const roleKey = user?.role ? (user.role.toLowerCase() as 'admin' | 'teacher' | 'parent') : null;
+  const roleImgSrc = roleKey ? `${import.meta.env.BASE_URL}images/roles/${roleKey}.jpg` : null;
+
   const handleLogout = async () => {
     await logout();
     navigate('/login');
@@ -178,8 +181,14 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         <div className="p-4 border-t border-white/10 bg-[#071633]/80">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs bg-gradient-to-tr from-[#155EEF] to-[#00B8F8] text-white shadow-xs flex-shrink-0">
-                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+              <div className="w-9 h-9 rounded-xl overflow-hidden bg-white/10 border border-white/20 shadow-xs flex-shrink-0 flex items-center justify-center">
+                {roleImgSrc ? (
+                  <img src={roleImgSrc} alt={roleTitle} className="w-full h-full object-contain" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center font-bold text-xs bg-gradient-to-tr from-[#155EEF] to-[#00B8F8] text-white">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                )}
               </div>
               <div className="truncate">
                 <p className="text-xs font-bold text-white truncate leading-tight">
@@ -239,9 +248,20 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
             <div className="p-4 border-t border-white/10 bg-[#071633]/90">
               <div className="flex items-center justify-between gap-2">
-                <div className="truncate min-w-0">
-                  <p className="text-xs font-bold text-white truncate">{user?.name}</p>
-                  <p className="text-[11px] text-[#8A9BB0] truncate">{user?.phone || user?.email}</p>
+                <div className="flex items-center gap-2.5 min-w-0 mr-2">
+                  <div className="w-8 h-8 rounded-xl overflow-hidden bg-white/10 border border-white/20 shadow-xs flex-shrink-0 flex items-center justify-center">
+                    {roleImgSrc ? (
+                      <img src={roleImgSrc} alt={roleTitle} className="w-full h-full object-contain" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center font-bold text-xs bg-gradient-to-tr from-[#155EEF] to-[#00B8F8] text-white">
+                        {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      </div>
+                    )}
+                  </div>
+                  <div className="truncate min-w-0">
+                    <p className="text-xs font-bold text-white truncate">{user?.name}</p>
+                    <p className="text-[11px] text-[#8A9BB0] truncate">{user?.phone || user?.email}</p>
+                  </div>
                 </div>
                 <button
                   onClick={handleLogout}
@@ -315,8 +335,14 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
               {/* User Pill Dropdown Shortcut */}
               <div className="hidden sm:flex items-center gap-2.5 pl-2 border-l border-[#DCE5F2] flex-shrink-0">
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs bg-gradient-to-tr from-[#155EEF] to-[#00B8F8] text-white shadow-2xs flex-shrink-0">
-                  {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                <div className="w-8 h-8 rounded-xl overflow-hidden border border-[#DCE5F2] bg-gray-50 shadow-2xs flex-shrink-0 flex items-center justify-center">
+                  {roleImgSrc ? (
+                    <img src={roleImgSrc} alt={roleTitle} className="w-full h-full object-contain" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center font-bold text-xs bg-gradient-to-tr from-[#155EEF] to-[#00B8F8] text-white">
+                      {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                  )}
                 </div>
                 <div className="hidden md:block text-left">
                   <p className="text-xs font-bold text-[#0B1F4D] leading-tight">

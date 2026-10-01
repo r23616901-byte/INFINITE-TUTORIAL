@@ -3,18 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { BrandWatermark } from '../../components/common/BrandWatermark';
-import {
-  ParentRoleIcon,
-  TeacherRoleIcon,
-  AdminRoleIcon,
-} from '../../components/common/RoleIcons';
 
 interface RoleOption {
   id: 'parent' | 'teacher' | 'admin';
   title: string;
   roleName: string;
   subtitleLines: [string, string];
-  icon: React.ReactNode;
+  image: string;
 }
 
 export const RoleSelectionPage: React.FC = () => {
@@ -29,21 +24,21 @@ export const RoleSelectionPage: React.FC = () => {
       title: 'Parent',
       roleName: 'Parent Portal',
       subtitleLines: ['STUDENT', 'RECORDS'],
-      icon: <ParentRoleIcon size={76} />,
+      image: `${import.meta.env.BASE_URL}images/roles/parent.jpg`,
     },
     {
       id: 'teacher',
       title: 'Teacher',
       roleName: 'Faculty Portal',
       subtitleLines: ['ACADEMIC', 'DESK'],
-      icon: <TeacherRoleIcon size={76} />,
+      image: `${import.meta.env.BASE_URL}images/roles/teacher.jpg`,
     },
     {
       id: 'admin',
       title: 'Admin',
       roleName: 'Administration Portal',
       subtitleLines: ['CONTROL', 'CENTER'],
-      icon: <AdminRoleIcon size={76} />,
+      image: `${import.meta.env.BASE_URL}images/roles/admin.jpg`,
     },
   ];
 
@@ -117,9 +112,16 @@ export const RoleSelectionPage: React.FC = () => {
                       : 'border border-[#E2E8F0] shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:border-[#155EEF]/60 hover:shadow-xl hover:-translate-y-1'
                   }`}
                 >
-                  {/* Top 3D Icon */}
+                  {/* Top 3D Role Image */}
                   <div className="pt-2 pb-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                    {role.icon}
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden flex items-center justify-center bg-transparent">
+                      <img
+                        src={role.image}
+                        alt={role.title}
+                        className="w-full h-full object-contain drop-shadow-sm"
+                        loading="eager"
+                      />
+                    </div>
                   </div>
 
                   {/* Title & 2-Line Subtitle */}
