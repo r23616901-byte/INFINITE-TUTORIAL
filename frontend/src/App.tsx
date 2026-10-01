@@ -48,7 +48,6 @@ import { AdminTimetablePage } from './pages/admin/AdminTimetablePage';
 import { AdminPortionCompletionPage } from './pages/admin/AdminPortionCompletionPage';
 import { AdminAnnouncementsCalendarPage } from './pages/admin/AdminAnnouncementsCalendarPage';
 import { AdminPasswordManagementPage } from './pages/admin/AdminPasswordManagementPage';
-import { AdminSettingsSecurityPage } from './pages/admin/AdminSettingsSecurityPage';
 import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { StartupVideo } from './components/common/StartupVideo';
@@ -126,7 +125,7 @@ export const App: React.FC = () => {
                 <Route path="/admin/files" element={<FileManagerPage />} />
                 <Route path="/admin/audit-logs" element={<AuditLogsPage />} />
                 <Route path="/admin/passwords" element={<AdminPasswordManagementPage />} />
-                <Route path="/admin/settings" element={<AdminSettingsSecurityPage />} />
+                <Route path="/admin/settings" element={<Navigate to="/admin" replace />} />
                 <Route path="/admin/*" element={<AdminDashboard />} />
               </Route>
             </Route>

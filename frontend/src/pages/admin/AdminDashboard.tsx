@@ -25,7 +25,6 @@ import {
   BarChart3,
   CalendarDays,
   FileSpreadsheet,
-  Settings,
   BookMarked,
   FileClock,
   ShieldCheck,
@@ -253,14 +252,6 @@ export const AdminDashboard: React.FC = () => {
       route: '/admin/passwords',
       icon: KeyRound,
       iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-    {
-      id: 'system-security',
-      title: 'System & Security',
-      description: 'Access policies & system config',
-      route: '/admin/settings',
-      icon: Settings,
-      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
     },
   ];
 
