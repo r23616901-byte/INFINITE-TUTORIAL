@@ -1,25 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Card } from '../../components/common/Card';
 import { SkeletonBlock } from '../../components/common/LoadingSkeleton';
-import { EmptyState } from '../../components/common/EmptyState';
 import { fetchParentAttendanceSummary } from '../../services/attendanceService';
 import { StudentAttendanceStats, AttendanceRecord } from '../../types/attendance';
 import {
   CalendarCheck,
   Sun,
   Moon,
-  Search,
   ShieldCheck,
 } from 'lucide-react';
 
 export const ParentAttendancePage: React.FC = () => {
   const [data, setData] = useState<StudentAttendanceStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Filters for History table
-  const [sessionFilter, setSessionFilter] = useState<string>('ALL');
-  const [statusFilter, setStatusFilter] = useState<string>('ALL');
-  const [searchTerm, setSearchTerm] = useState('');
 
   // Calendar month state
   const [selectedCalendarMonth, setSelectedCalendarMonth] = useState('2026-09');
@@ -38,30 +31,6 @@ export const ParentAttendancePage: React.FC = () => {
     };
     loadParentData();
   }, []);
-
-  // Filter history records
-  const filteredRecords = useMemo(() => {
-    if (!data) return [];
-    let list = data.history;
-
-    if (sessionFilter !== 'ALL') {
-      list = list.filter((r) => r.session === sessionFilter);
-    }
-    if (statusFilter !== 'ALL') {
-      list = list.filter((r) => r.status === statusFilter);
-    }
-    if (searchTerm.trim()) {
-      const q = searchTerm.toLowerCase();
-      list = list.filter(
-        (r) =>
-          r.dateStr.includes(q) ||
-          r.day.toLowerCase().includes(q) ||
-          r.session.toLowerCase().includes(q) ||
-          (r.remarks && r.remarks.toLowerCase().includes(q))
-      );
-    }
-    return list;
-  }, [data, sessionFilter, statusFilter, searchTerm]);
 
   // Calendar generator for operational days (Monday to Saturday)
   const calendarDays = useMemo(() => {
@@ -344,115 +313,6 @@ export const ParentAttendancePage: React.FC = () => {
       </Card>
     </div>
   </div>
-
-  {/* Complete Historical Attendance Log Table */}
-  <Card
-    title="Student Attendance History Log"
-    subtitle="Complete chronological timeline of attended and missed class sessions"
-    headerAction={
-      <div className="flex items-center gap-2 flex-wrap">
-        <div className="relative">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search date, remark..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="text-xs border border-slate-300 rounded-lg pl-8 pr-2.5 py-1 bg-slate-50 focus:bg-white"
-          />
-        </div>
-
-        <select
-          value={sessionFilter}
-          onChange={(e) => setSessionFilter(e.target.value)}
-          className="text-xs border border-slate-300 rounded-lg px-2.5 py-1 bg-slate-50 focus:bg-white"
-        >
-          <option value="ALL">All Sessions</option>
-          <option value="MORNING">Morning</option>
-          <option value="EVENING">Evening</option>
-        </select>
-
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="text-xs border border-slate-300 rounded-lg px-2.5 py-1 bg-slate-50 focus:bg-white"
-        >
-          <option value="ALL">All Status</option>
-          <option value="PRESENT">🟢 Present Only</option>
-          <option value="ABSENT">🔴 Absent Only</option>
-        </select>
-      </div>
-    }
-  >
-    {filteredRecords.length === 0 ? (
-      <EmptyState
-        title="No attendance sessions found for the selected period"
-        description="No class sessions match your selected session or status criteria."
-        icon={<CalendarCheck className="w-8 h-8 text-blue-500 stroke-[1.5]" />}
-        compact
-      />
-    ) : (
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs text-slate-600">
-          <thead className="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase border-y border-slate-200">
-            <tr>
-              <th className="py-3 px-4">Date</th>
-              <th className="py-3 px-4">Day</th>
-              <th className="py-3 px-4">Session</th>
-              <th className="py-3 px-4">Batch</th>
-              <th className="py-3 px-4 text-center">Status</th>
-              <th className="py-3 px-4">Teacher / Recorded By</th>
-              <th className="py-3 px-4">Notes / Remarks</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {filteredRecords.map((r) => {
-              const isPresent = r.status === 'PRESENT';
-              return (
-                <tr
-                  key={r.id}
-                  className={`hover:bg-slate-50/70 transition-colors ${!isPresent ? 'bg-red-50/20' : ''
-                    }`}
-                >
-                  <td className="py-3 px-4 font-mono font-bold text-slate-800">
-                    {r.dateStr}
-                  </td>
-                  <td className="py-3 px-4 font-medium text-slate-700">{r.day}</td>
-                  <td className="py-3 px-4">
-                    <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${r.session === 'MORNING'
-                        ? 'bg-amber-100 text-amber-800'
-                        : 'bg-[#EEF4FF] text-[#0B1F4D]'
-                        }`}
-                    >
-                      {r.session}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 font-medium text-slate-900">{r.batchName}</td>
-                  <td className="py-3 px-4 text-center">
-                    <span
-                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${isPresent
-                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                        : 'bg-red-100 text-red-800 border border-red-200'
-                        }`}
-                    >
-                      {isPresent ? '🟢 Present' : '🔴 Absent'}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-slate-600 text-[11px]">
-                    {r.recordedByName || 'Prof. Rajesh Sharma'}
-                  </td>
-                  <td className="py-3 px-4 text-slate-500 italic text-[11px]">
-                    {r.remarks || 'Regular class attendance'}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    )}
-  </Card>
     </div>
   );
 };
