@@ -49,18 +49,6 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto print:p-0 print:m-0">
-      {/* Official Institutional Report Header (Step 64: Logo in PDF / Reports) */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs print:border-b-2 print:border-slate-800 print:rounded-none print:shadow-none">
-        <div className="text-center sm:text-right">
-          <span className="inline-block text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full print:border-slate-400 print:text-black">
-            OFFICIAL ACADEMIC PROGRESS REPORT &bull; AY 2024–25
-          </span>
-          <p className="text-[11px] text-slate-500 mt-1">
-            Generated on {new Date().toLocaleDateString(undefined, { dateStyle: 'long' })}
-          </p>
-        </div>
-      </div>
-
       {/* 1. STUDENT PROFILE HEADER (Step 21 Requirement: Student, Class, Board) */}
       <div className="brand-sidebar-bg rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:bg-white print:text-black print:border print:border-[#DCE5F2]">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
