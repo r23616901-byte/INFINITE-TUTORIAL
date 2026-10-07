@@ -49,6 +49,15 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const expectedRole = (req.body.requiredRole || req.body.role || '').toString().toUpperCase();
+    if (expectedRole && user.role.toUpperCase() !== expectedRole) {
+      res.status(403).json({
+        success: false,
+        message: `Access denied. This account cannot access the ${expectedRole} portal. Please sign in through the correct portal.`,
+      });
+      return;
+    }
+
     const token = signToken({
       userId: user.id,
       role: user.role as RoleType,

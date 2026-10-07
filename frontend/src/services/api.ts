@@ -47,10 +47,15 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const loginApi = async (identifier: string, password: string): Promise<ApiResponse<LoginResponseData>> => {
+export const loginApi = async (
+  identifier: string,
+  password: string,
+  requiredRole?: string
+): Promise<ApiResponse<LoginResponseData>> => {
   const response = await api.post<ApiResponse<LoginResponseData>>('/auth/login', {
     identifier,
     password,
+    requiredRole,
   });
   return response.data;
 };

@@ -154,27 +154,47 @@ export const LoginPage: React.FC = () => {
       cleanPassword.toLowerCase() === 'admin@123';
 
     try {
-      const res = await loginApi(cleanIdentifier, cleanPassword);
+      const res = await loginApi(cleanIdentifier, cleanPassword, activeRole.toUpperCase());
       if (res && res.success && res.data) {
+        const userRole = (res.data.user.role || '').toUpperCase();
+        const expectedRole = activeRole.toUpperCase();
+
+        if (userRole !== expectedRole) {
+          setErrorMessage(
+            activeRole === 'teacher'
+              ? 'Access denied: You entered an Administrator account in the Teacher Portal. Please use the Admin Portal or enter your faculty teacher credentials.'
+              : activeRole === 'admin'
+              ? 'Access denied: Only administrator accounts can access the Admin Portal. Please use the correct portal.'
+              : 'Access denied: Only registered parent/student accounts can access the Parent Portal.'
+          );
+          return;
+        }
+
         login(res.data.token, res.data.user);
 
-        const role = res.data.user.role;
         const from = (location.state as { from?: { pathname?: string } })?.from?.pathname;
 
         if (from && !from.startsWith('/login')) {
           navigate(from, { replace: true });
-        } else if (role === 'ADMIN') {
+        } else if (expectedRole === 'ADMIN') {
           navigate('/admin', { replace: true });
-        } else if (role === 'TEACHER') {
+        } else if (expectedRole === 'TEACHER') {
           navigate('/teacher', { replace: true });
         } else {
           navigate('/parent', { replace: true });
         }
         return;
       }
-    } catch {
-      // Backend offline fallback to authenticated demo accounts
-      if (isParentMatch) {
+    } catch (err: any) {
+      // If backend returned a specific error (e.g. 401 Invalid credentials or 403 Role access denied)
+      const serverMessage = err?.response?.data?.message;
+      if (serverMessage) {
+        setErrorMessage(serverMessage);
+        return;
+      }
+
+      // Backend offline fallback: strictly only allow matching activeRole credentials
+      if (isParentMatch && activeRole === 'parent') {
         const parentUser = {
           ...mockUsers.PARENT,
           phone: normalizedPhone || '6361085188',
@@ -184,13 +204,13 @@ export const LoginPage: React.FC = () => {
         return;
       }
 
-      if (isTeacherMatch) {
+      if (isTeacherMatch && activeRole === 'teacher') {
         login('dev-token-teacher', mockUsers.TEACHER);
         navigate('/teacher', { replace: true });
         return;
       }
 
-      if (isAdminMatch) {
+      if (isAdminMatch && activeRole === 'admin') {
         login('dev-token-admin', mockUsers.ADMIN);
         navigate('/admin', { replace: true });
         return;
@@ -199,7 +219,9 @@ export const LoginPage: React.FC = () => {
       setErrorMessage(
         activeRole === 'parent'
           ? 'Invalid phone number or password. Please try again.'
-          : 'Invalid email address or password. Please try again.'
+          : activeRole === 'teacher'
+          ? 'Invalid faculty email address or password. Please try again.'
+          : 'Invalid administrator email address or password. Please try again.'
       );
     } finally {
       setIsLoading(false);
