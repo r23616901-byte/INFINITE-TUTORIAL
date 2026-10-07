@@ -15,7 +15,6 @@ import {
   Lock,
   AlertCircle,
   ArrowLeft,
-  Sparkles,
   HelpCircle,
   Eye,
   EyeOff,
@@ -44,7 +43,6 @@ export const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showForgotModal, setShowForgotModal] = useState(false);
-  const [showDemoTools, setShowDemoTools] = useState(false);
 
   // Sync state if URL route param changes
   useEffect(() => {
@@ -208,26 +206,6 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const fillDemo = (role: RoleType) => {
-    setErrorMessage('');
-    if (role === 'parent') {
-      setIdentifier('6361085188');
-      setPassword('260906');
-    } else if (role === 'teacher') {
-      setIdentifier('teacher@infinite.com');
-      setPassword('Teacher@123');
-    } else {
-      setIdentifier('admin@infinite.com');
-      setPassword('Admin@123');
-    }
-  };
-
-  const enterDirectRole = (role: 'ADMIN' | 'TEACHER' | 'PARENT') => {
-    const targetUser = mockUsers[role];
-    login(`dev-token-${role.toLowerCase()}`, targetUser);
-    navigate(`/${role.toLowerCase()}`);
-  };
-
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#F5F8FC] text-[#0B1F4D] relative overflow-hidden select-none">
       {/* Background Brand Watermark */}
@@ -377,43 +355,6 @@ export const LoginPage: React.FC = () => {
                 </Button>
               </div>
             </form>
-
-            {/* Quick Demo Credential Helper */}
-            <div className="mt-6 pt-5 border-t border-[#F0F4FA]">
-              <button
-                type="button"
-                onClick={() => setShowDemoTools(!showDemoTools)}
-                className="w-full flex items-center justify-between text-[11px] font-bold text-[#5B6B82] hover:text-[#0B1F4D] transition-colors"
-              >
-                <span className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#F7931E]" />
-                  Demo Mode: Quick Auto-Fill
-                </span>
-                <span className="text-[10px] bg-[#F5F8FC] border border-[#DCE5F2] px-2 py-0.5 rounded text-[#0B1F4D]">
-                  {showDemoTools ? 'Hide' : 'Show'}
-                </span>
-              </button>
-
-              {showDemoTools && (
-                <div className="mt-3 space-y-2 pt-1 text-xs">
-                  <button
-                    type="button"
-                    onClick={() => fillDemo(activeRole)}
-                    className="w-full py-2 px-3 rounded-xl border border-[#DCE5F2] bg-[#F5F8FC] hover:bg-[#EEF4FF] hover:border-[#155EEF] text-xs font-bold text-[#0B1F4D] transition-colors flex items-center justify-center gap-2"
-                  >
-                    <span>Auto-Fill {activeRole === 'teacher' ? 'Faculty Teacher' : activeRole === 'admin' ? 'Admin' : 'Parent'} Credentials</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => enterDirectRole(activeRole.toUpperCase() as 'ADMIN' | 'TEACHER' | 'PARENT')}
-                    className="w-full py-2 px-3 rounded-xl bg-[#155EEF] hover:bg-[#0E4FD6] text-white text-xs font-bold shadow-2xs transition-colors flex items-center justify-center gap-2"
-                  >
-                    <span>Direct Launch {activeRole === 'teacher' ? 'Teacher' : activeRole === 'admin' ? 'Admin' : 'Parent'} Portal</span>
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Switch Portal Option */}
