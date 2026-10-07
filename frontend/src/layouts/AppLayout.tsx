@@ -11,7 +11,7 @@ export const AppLayout: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/select-role');
   };
 
   return (

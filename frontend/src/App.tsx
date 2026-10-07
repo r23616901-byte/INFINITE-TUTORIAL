@@ -53,31 +53,23 @@ import { LoadingScreen } from './components/common/LoadingScreen';
 import { StartupVideo } from './components/common/StartupVideo';
 import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
 
-// Smart Home / Root route: Shows RoleSelectionPage for visitors, or redirects to dashboard if authenticated
+// Root route: Shows RoleSelectionPage after loader so the user can choose their portal
 const RootRoute: React.FC = () => {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { isLoading } = useAuth();
 
   if (isLoading) {
     return <LoadingScreen message="Loading Infinite Tutorial..." subMessage="Checking your portal permissions and records" />;
   }
 
-  if (isAuthenticated && user) {
-    if (user.role === 'ADMIN') return <Navigate to="/admin" replace />;
-    if (user.role === 'TEACHER') return <Navigate to="/teacher" replace />;
-    return <Navigate to="/parent" replace />;
-  }
-
   return <RoleSelectionPage />;
 };
 
-// Login Route wrapper (redirects logged-in user away from /login)
+// Login Route wrapper: Renders LoginPage so the user can sign in or switch roles
 const LoginRoute: React.FC = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { isLoading } = useAuth();
 
-  if (isAuthenticated && user) {
-    if (user.role === 'ADMIN') return <Navigate to="/admin" replace />;
-    if (user.role === 'TEACHER') return <Navigate to="/teacher" replace />;
-    return <Navigate to="/parent" replace />;
+  if (isLoading) {
+    return <LoadingScreen message="Loading Infinite Tutorial..." subMessage="Checking your portal permissions and records" />;
   }
 
   return <LoginPage />;

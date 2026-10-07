@@ -27,7 +27,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams<{ role?: string }>();
-  const { login } = useAuth();
+  const { login, user, isAuthenticated } = useAuth();
 
   // Determine active role from URL param (/login/:role) or query param (?role=) or default to 'parent'
   const getInitialRole = (): RoleType => {
@@ -293,6 +293,23 @@ export const LoginPage: React.FC = () => {
               >
                 <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
                 <div className="flex-1 font-medium">{errorMessage}</div>
+              </div>
+            )}
+
+            {/* Active Session Notice */}
+            {isAuthenticated && user && user.role.toLowerCase() === activeRole && (
+              <div className="mb-5 p-3.5 rounded-2xl bg-[#EEF4FF] border border-[#155EEF]/30 flex items-center justify-between gap-3 text-xs animate-fadeIn">
+                <div className="text-[#0B1F4D]">
+                  <span className="font-semibold block">Signed in as {user.name}</span>
+                  <span className="text-[#5B6B82] text-[11px]">Active {user.role} session available</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate(`/${activeRole}`)}
+                  className="px-3.5 py-1.5 bg-[#155EEF] hover:bg-[#004EEB] text-white rounded-xl font-bold text-xs shadow-xs transition-colors shrink-0 cursor-pointer"
+                >
+                  Open Portal &rarr;
+                </button>
               </div>
             )}
 

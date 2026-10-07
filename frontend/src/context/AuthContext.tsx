@@ -26,7 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setToken(savedToken);
         try {
           const res = await getMeApi();
-          if (res.success && res.data) {
+          if (res && res.success && res.data) {
             setUser(res.data);
           } else {
             // Token invalid or expired
@@ -35,14 +35,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setToken(null);
             setUser(null);
           }
-        } catch {
-          // Network issue or invalid token
-          const savedUser = localStorage.getItem('it_user');
-          if (savedUser) {
-            try {
-              setUser(JSON.parse(savedUser));
-            } catch {
+        } catch (error: any) {
+          // If server responded with 401/403 unauthorized, session is expired
+          if (error?.response?.status === 401 || error?.response?.status === 403) {
+            localStorage.removeItem('it_token');
+            localStorage.removeItem('it_user');
+            setToken(null);
+            setUser(null);
+          } else {
+            // Offline fallback for demo tokens or transient network disconnection
+            const savedUser = localStorage.getItem('it_user');
+            if (savedUser && (savedToken.startsWith('dev-token-') || error?.code === 'ERR_NETWORK')) {
+              try {
+                setUser(JSON.parse(savedUser));
+              } catch {
+                localStorage.removeItem('it_token');
+                localStorage.removeItem('it_user');
+                setToken(null);
+                setUser(null);
+              }
+            } else {
+              localStorage.removeItem('it_token');
               localStorage.removeItem('it_user');
+              setToken(null);
+              setUser(null);
             }
           }
         }

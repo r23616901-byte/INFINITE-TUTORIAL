@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, LogOut } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { BrandWatermark } from '../../components/common/BrandWatermark';
 
@@ -14,6 +15,7 @@ interface RoleOption {
 
 export const RoleSelectionPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
   // Admin is selected with the blue border by default as shown in the reference design,
   // and hovering/focusing any card highlights it dynamically.
   const [activeRole, setActiveRole] = useState<'parent' | 'teacher' | 'admin'>('admin');
@@ -61,10 +63,32 @@ export const RoleSelectionPage: React.FC = () => {
           <BrandLogo size="md" />
         </Link>
 
-        {/* Institute badge in top right */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-xs font-bold text-[#155EEF]">
-          <span className="w-2 h-2 rounded-full bg-[#00B8F8] animate-pulse" />
-          Academic Year 2024–25
+        {/* Right side header tools */}
+        <div className="flex items-center gap-3">
+          {isAuthenticated && user && (
+            <div className="flex items-center gap-2">
+              <span className="hidden sm:inline-block text-xs font-semibold text-[#5B6B82]">
+                Active: <strong className="text-[#0B1F4D]">{user.name}</strong> ({user.role})
+              </span>
+              <button
+                type="button"
+                onClick={async () => {
+                  await logout();
+                }}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors cursor-pointer"
+                title="Sign out of current account"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          )}
+
+          {/* Institute badge */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-xs font-bold text-[#155EEF]">
+            <span className="w-2 h-2 rounded-full bg-[#00B8F8] animate-pulse" />
+            Academic Year 2024–25
+          </div>
         </div>
       </header>
 

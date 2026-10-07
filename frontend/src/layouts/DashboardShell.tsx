@@ -58,7 +58,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/select-role');
   };
 
   // Canonical Mobile Navigation: Home, Attendance, Scorecard, Notifs, Profile, plus More
