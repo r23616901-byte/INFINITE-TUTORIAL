@@ -166,7 +166,7 @@ export const ParentTimetablePage: React.FC = () => {
   const currentSlots = activeSession === 'EVENING' ? eveningSlots : morningSlots;
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-12">
+    <div className="space-y-6 max-w-6xl mx-auto pb-12 print:space-y-0 print:pb-0">
       {/* Official Institutional Print Header */}
       <PrintTemplateHeader
         documentTitle="STUDENT TIMETABLE & WEEKLY TUITION SCHEDULE"
@@ -301,39 +301,39 @@ export const ParentTimetablePage: React.FC = () => {
       <div className="hidden print:block w-full">
         <table className="w-full text-left border-collapse border border-slate-300">
           <thead>
-            <tr className="bg-slate-100 text-black text-[10px] uppercase font-bold border-b border-slate-300">
-              <th className="p-2 border border-slate-300 w-24">Day</th>
-              <th className="p-2 border border-slate-300 w-36">Timing</th>
-              <th className="p-2 border border-slate-300 w-28">Subject</th>
-              <th className="p-2 border border-slate-300">Curriculum Topic / Module</th>
-              <th className="p-2 border border-slate-300 w-36">Faculty</th>
-              <th className="p-2 border border-slate-300 w-28">Room</th>
-              <th className="p-2 border border-slate-300 text-center w-24">Session Type</th>
+            <tr className="bg-slate-100 text-black text-[9pt] uppercase font-bold border-b border-slate-300">
+              <th className="p-1.5 border border-slate-300 w-24">Day</th>
+              <th className="p-1.5 border border-slate-300 w-36">Timing</th>
+              <th className="p-1.5 border border-slate-300 w-28">Subject</th>
+              <th className="p-1.5 border border-slate-300">Curriculum Topic / Module</th>
+              <th className="p-1.5 border border-slate-300 w-36">Faculty</th>
+              <th className="p-1.5 border border-slate-300 w-28">Room</th>
+              <th className="p-1.5 border border-slate-300 text-center w-24">Session Type</th>
             </tr>
           </thead>
-          <tbody className="text-[9.5pt] divide-y divide-slate-200">
+          <tbody className="text-[8.5pt] divide-y divide-slate-200">
             {currentSlots.map((slot, index) => (
               <tr key={slot.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
-                <td className="p-2 font-bold text-black border border-slate-300">
+                <td className="p-1.5 font-bold text-black border border-slate-300">
                   {slot.day}
                 </td>
-                <td className="p-2 font-mono font-semibold text-black border border-slate-300 whitespace-nowrap">
+                <td className="p-1.5 font-mono font-semibold text-black border border-slate-300 whitespace-nowrap">
                   {slot.time}
                 </td>
-                <td className="p-2 font-bold text-[#155EEF] border border-slate-300">
+                <td className="p-1.5 font-bold text-[#155EEF] border border-slate-300">
                   {slot.subject}
                 </td>
-                <td className="p-2 text-slate-800 border border-slate-300">
+                <td className="p-1.5 text-slate-800 border border-slate-300">
                   {slot.topic}
                 </td>
-                <td className="p-2 font-medium text-black border border-slate-300">
+                <td className="p-1.5 font-medium text-black border border-slate-300">
                   {slot.faculty}
                 </td>
-                <td className="p-2 text-slate-700 border border-slate-300">
+                <td className="p-1.5 text-slate-700 border border-slate-300">
                   {slot.room}
                 </td>
-                <td className="p-2 text-center border border-slate-300">
-                  <span className="text-[9px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">
+                <td className="p-1.5 text-center border border-slate-300">
+                  <span className="text-[8.5pt] font-bold text-slate-700 bg-slate-100 px-1 py-0.5 rounded">
                     {slot.sessionType}
                   </span>
                 </td>
@@ -343,7 +343,7 @@ export const ParentTimetablePage: React.FC = () => {
         </table>
 
         {/* Print Summary Metrics */}
-        <div className="mt-4 flex items-center justify-between text-[9pt] bg-slate-50 p-2.5 border border-slate-300 rounded">
+        <div className="mt-2.5 flex items-center justify-between text-[8.5pt] bg-slate-50 p-2 border border-slate-300 rounded">
           <span><strong>Current Batch:</strong> {activeSession === 'EVENING' ? 'Batch 10A Evening' : 'Batch 10A Morning'}</span>
           <span><strong>Weekly Cycles:</strong> Monday to Saturday</span>
           <span><strong>Infinite Tutorial:</strong> Academic Portal Verified</span>

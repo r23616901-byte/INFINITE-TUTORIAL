@@ -482,7 +482,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 print:space-y-0">
       {/* Official Institutional Print Header */}
       <PrintTemplateHeader
         documentTitle="SYLLABUS & PORTION COMPLETION TRACKING REPORT"
@@ -853,50 +853,50 @@ export const TeacherPortionProgressPage: React.FC = () => {
       <div className="hidden print:block w-full">
         <table className="w-full text-left border-collapse border border-slate-300">
           <thead>
-            <tr className="bg-slate-100 text-black text-[10px] uppercase font-bold border-b border-slate-300">
-              <th className="p-2 border border-slate-300 text-center w-12">Ch #</th>
-              <th className="p-2 border border-slate-300 w-24">Subject</th>
-              <th className="p-2 border border-slate-300">Chapter / Unit Title</th>
-              <th className="p-2 border border-slate-300 w-36">Faculty</th>
-              <th className="p-2 border border-slate-300 text-center w-28">Lectures Delivered</th>
-              <th className="p-2 border border-slate-300 text-center w-20">Weightage</th>
-              <th className="p-2 border border-slate-300 w-28">Target Date</th>
-              <th className="p-2 border border-slate-300 w-28">Delivered On</th>
-              <th className="p-2 border border-slate-300 text-center w-24">Status</th>
+            <tr className="bg-slate-100 text-black text-[9pt] uppercase font-bold border-b border-slate-300">
+              <th className="p-1.5 border border-slate-300 text-center w-12">Ch #</th>
+              <th className="p-1.5 border border-slate-300 w-24">Subject</th>
+              <th className="p-1.5 border border-slate-300">Chapter / Unit Title</th>
+              <th className="p-1.5 border border-slate-300 w-32">Faculty</th>
+              <th className="p-1.5 border border-slate-300 text-center w-24">Lectures</th>
+              <th className="p-1.5 border border-slate-300 text-center w-20">Weightage</th>
+              <th className="p-1.5 border border-slate-300 w-24">Target Date</th>
+              <th className="p-1.5 border border-slate-300 w-24">Delivered On</th>
+              <th className="p-1.5 border border-slate-300 text-center w-20">Status</th>
             </tr>
           </thead>
-          <tbody className="text-[9.5pt] divide-y divide-slate-200">
+          <tbody className="text-[8.5pt] divide-y divide-slate-200">
             {filteredChapters.map((ch, index) => {
               const pct = Math.round((ch.completedLectures / ch.totalLectures) * 100);
               return (
                 <tr key={ch.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
-                  <td className="p-2 text-center font-bold text-black border border-slate-300">
+                  <td className="p-1.5 text-center font-bold text-black border border-slate-300">
                     {ch.chapterNumber}
                   </td>
-                  <td className="p-2 font-bold text-[#155EEF] border border-slate-300">
+                  <td className="p-1.5 font-bold text-[#155EEF] border border-slate-300">
                     {ch.subject}
                   </td>
-                  <td className="p-2 font-bold text-slate-900 border border-slate-300">
+                  <td className="p-1.5 font-bold text-slate-900 border border-slate-300">
                     {ch.title}
                   </td>
-                  <td className="p-2 text-slate-800 border border-slate-300">
+                  <td className="p-1.5 text-slate-800 border border-slate-300">
                     {ch.facultyName}
                   </td>
-                  <td className="p-2 text-center font-mono font-semibold text-black border border-slate-300">
+                  <td className="p-1.5 text-center font-mono font-semibold text-black border border-slate-300">
                     {ch.completedLectures} / {ch.totalLectures} ({pct}%)
                   </td>
-                  <td className="p-2 text-center font-semibold text-slate-800 border border-slate-300">
+                  <td className="p-1.5 text-center font-semibold text-slate-800 border border-slate-300">
                     {ch.weightageMarks} Marks
                   </td>
-                  <td className="p-2 text-slate-700 border border-slate-300">
+                  <td className="p-1.5 text-slate-700 border border-slate-300">
                     {ch.targetDate}
                   </td>
-                  <td className="p-2 text-slate-700 border border-slate-300">
+                  <td className="p-1.5 text-slate-700 border border-slate-300">
                     {ch.completionDate || '—'}
                   </td>
-                  <td className="p-2 text-center border border-slate-300">
+                  <td className="p-1.5 text-center border border-slate-300">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded text-[9px] font-bold ${
+                      className={`inline-block px-1.5 py-0.5 rounded text-[8.5pt] font-bold ${
                         ch.status === 'COMPLETED'
                           ? 'bg-emerald-100 text-emerald-800'
                           : ch.status === 'IN_PROGRESS'
@@ -914,7 +914,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
         </table>
 
         {/* Print Summary Metrics */}
-        <div className="mt-4 flex items-center justify-between text-[9pt] bg-slate-50 p-2.5 border border-slate-300 rounded">
+        <div className="mt-2.5 flex items-center justify-between text-[8.5pt] bg-slate-50 p-2 border border-slate-300 rounded">
           <span><strong>Delivered Syllabus:</strong> {overallPercentage}% Complete ({completedLecturesCount} Lectures)</span>
           <span><strong>Completed Modules:</strong> {completedChapters} Chapters Verified</span>
           <span><strong>Academic Delivery:</strong> On-Track for Board Prep</span>

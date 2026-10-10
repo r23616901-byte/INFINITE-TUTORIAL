@@ -10,21 +10,21 @@ export const PrintTemplateFooter: React.FC<PrintTemplateFooterProps> = ({
   showSignatures = true,
 }) => {
   return (
-    <div className="hidden print:block w-full mt-10 pt-4 border-t-2 border-slate-300 text-black select-none break-inside-avoid">
+    <div className="hidden print:block w-full mt-3 pt-2 border-t-2 border-slate-300 text-black select-none break-inside-avoid">
       {/* Signatures Row */}
       {showSignatures && (
-        <div className="grid grid-cols-3 gap-8 pt-8 pb-4 text-center">
-          <div className="border-t border-slate-400 pt-1">
-            <p className="text-[10px] font-bold text-slate-800 uppercase">Faculty In-Charge</p>
-            <p className="text-[9px] text-slate-500">Signature &amp; Date</p>
+        <div className="grid grid-cols-3 gap-6 pt-3 pb-1 text-center">
+          <div className="border-t border-slate-400 pt-0.5">
+            <p className="text-[9.5px] font-bold text-slate-800 uppercase">Faculty In-Charge</p>
+            <p className="text-[8.5px] text-slate-500">Signature &amp; Date</p>
           </div>
-          <div className="border-t border-slate-400 pt-1">
-            <p className="text-[10px] font-bold text-slate-800 uppercase">Academic Coordinator</p>
-            <p className="text-[9px] text-slate-500">Verified &amp; Authenticated</p>
+          <div className="border-t border-slate-400 pt-0.5">
+            <p className="text-[9.5px] font-bold text-slate-800 uppercase">Academic Coordinator</p>
+            <p className="text-[8.5px] text-slate-500">Verified &amp; Authenticated</p>
           </div>
-          <div className="border-t border-slate-400 pt-1">
-            <p className="text-[10px] font-bold text-slate-800 uppercase">Director / Principal</p>
-            <p className="text-[9px] text-slate-500">Institutional Seal</p>
+          <div className="border-t border-slate-400 pt-0.5">
+            <p className="text-[9.5px] font-bold text-slate-800 uppercase">Director / Principal</p>
+            <p className="text-[8.5px] text-slate-500">Institutional Seal</p>
           </div>
         </div>
       )}

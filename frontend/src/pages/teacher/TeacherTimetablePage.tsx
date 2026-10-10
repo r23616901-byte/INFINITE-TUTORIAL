@@ -252,7 +252,7 @@ export const TeacherTimetablePage: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 print:space-y-0">
       {/* Official Institutional Print Header */}
       <PrintTemplateHeader
         documentTitle="FACULTY TEACHING TIMETABLE & CLASS ALLOCATIONS"
@@ -456,45 +456,45 @@ export const TeacherTimetablePage: React.FC = () => {
       <div className="hidden print:block w-full">
         <table className="w-full text-left border-collapse border border-slate-300">
           <thead>
-            <tr className="bg-slate-100 text-black text-[10px] uppercase font-bold border-b border-slate-300">
-              <th className="p-2 border border-slate-300 w-24">Day</th>
-              <th className="p-2 border border-slate-300 w-28">Timing</th>
-              <th className="p-2 border border-slate-300 w-32">Batch</th>
-              <th className="p-2 border border-slate-300 w-28">Subject</th>
-              <th className="p-2 border border-slate-300">Curriculum Topic / Module</th>
-              <th className="p-2 border border-slate-300 w-28">Venue / Room</th>
-              <th className="p-2 border border-slate-300 text-center w-20">Session Type</th>
-              <th className="p-2 border border-slate-300 text-center w-16">Enrolled</th>
+            <tr className="bg-slate-100 text-black text-[9pt] uppercase font-bold border-b border-slate-300">
+              <th className="p-1.5 border border-slate-300 w-24">Day</th>
+              <th className="p-1.5 border border-slate-300 w-28">Timing</th>
+              <th className="p-1.5 border border-slate-300 w-32">Batch</th>
+              <th className="p-1.5 border border-slate-300 w-24">Subject</th>
+              <th className="p-1.5 border border-slate-300">Curriculum Topic / Module</th>
+              <th className="p-1.5 border border-slate-300 w-28">Venue / Room</th>
+              <th className="p-1.5 border border-slate-300 text-center w-20">Session Type</th>
+              <th className="p-1.5 border border-slate-300 text-center w-14">Enrolled</th>
             </tr>
           </thead>
-          <tbody className="text-[9.5pt] divide-y divide-slate-200">
+          <tbody className="text-[8.5pt] divide-y divide-slate-200">
             {filteredSlots.map((slot, index) => (
               <tr key={slot.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
-                <td className="p-2 font-bold text-black border border-slate-300">
+                <td className="p-1.5 font-bold text-black border border-slate-300">
                   {slot.day}
-                  <span className="block text-[8px] font-normal text-slate-500 uppercase">{slot.session}</span>
+                  <span className="block text-[7.5pt] font-normal text-slate-500 uppercase">{slot.session}</span>
                 </td>
-                <td className="p-2 font-mono font-semibold text-black border border-slate-300 whitespace-nowrap">
+                <td className="p-1.5 font-mono font-semibold text-black border border-slate-300 whitespace-nowrap">
                   {slot.startTime} – {slot.endTime}
                 </td>
-                <td className="p-2 font-bold text-slate-900 border border-slate-300">
+                <td className="p-1.5 font-bold text-slate-900 border border-slate-300">
                   {slot.batch}
                 </td>
-                <td className="p-2 font-bold text-[#155EEF] border border-slate-300">
+                <td className="p-1.5 font-bold text-[#155EEF] border border-slate-300">
                   {slot.subject}
                 </td>
-                <td className="p-2 text-slate-800 border border-slate-300">
+                <td className="p-1.5 text-slate-800 border border-slate-300">
                   {slot.topic}
                 </td>
-                <td className="p-2 text-slate-700 border border-slate-300">
+                <td className="p-1.5 text-slate-700 border border-slate-300">
                   {slot.room}
                 </td>
-                <td className="p-2 text-center border border-slate-300">
-                  <span className="text-[9px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">
+                <td className="p-1.5 text-center border border-slate-300">
+                  <span className="text-[8.5pt] font-bold text-slate-700 bg-slate-100 px-1 py-0.5 rounded">
                     {slot.type.replace('_', ' ')}
                   </span>
                 </td>
-                <td className="p-2 text-center font-bold text-black border border-slate-300">
+                <td className="p-1.5 text-center font-bold text-black border border-slate-300">
                   {slot.studentCount}
                 </td>
               </tr>
@@ -503,7 +503,7 @@ export const TeacherTimetablePage: React.FC = () => {
         </table>
 
         {/* Print Summary Metrics */}
-        <div className="mt-4 flex items-center justify-between text-[9pt] bg-slate-50 p-2.5 border border-slate-300 rounded">
+        <div className="mt-2.5 flex items-center justify-between text-[8.5pt] bg-slate-50 p-2 border border-slate-300 rounded">
           <span><strong>Total Weekly Teaching Load:</strong> 26 Hours / 13 Sessions</span>
           <span><strong>Faculty Status:</strong> Active &bull; Verified Evaluation</span>
           <span><strong>ERP Authentication:</strong> Infinite Tutorial Controller</span>

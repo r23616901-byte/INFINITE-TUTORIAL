@@ -71,9 +71,26 @@ body {
     color: #000000 !important;
     padding: 0 !important;
     margin: 0 !important;
-    font-size: 10pt !important;
+    font-size: 9.5pt !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  /* Reset outer application flex shells so print pagination flows naturally without blank gaps */
+  html,
+  #root,
+  #root > div,
+  main,
+  div[class*="min-h-screen"],
+  .brand-sidebar-bg {
+    min-height: 0 !important;
+    height: auto !important;
+    display: block !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
   }
 
   /* Universal print hide for navigation, controls, and interactive elements */
@@ -122,32 +139,48 @@ body {
     box-shadow: none !important;
   }
 
-  /* Page break rules for systematic, classy pagination */
-  table, tr, td, th, .print-card, .print-avoid-break {
+  /* Page break rules: Tables flow across pages starting immediately on page 1 without pushing to page 2 */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+    margin-top: 0 !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tfoot {
+    display: table-footer-group !important;
+  }
+
+  tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-card, .print-avoid-break {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
 
   /* Professional print table styling */
-  table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-  }
-
   th {
     background-color: #f1f5f9 !important;
     color: #0b1f4d !important;
     border: 1px solid #cbd5e1 !important;
-    padding: 6px 8px !important;
+    padding: 4px 6px !important;
     font-weight: 700 !important;
-    font-size: 9.5pt !important;
+    font-size: 8.5pt !important;
     text-transform: uppercase !important;
   }
 
   td {
     border: 1px solid #e2e8f0 !important;
-    padding: 6px 8px !important;
-    font-size: 9pt !important;
+    padding: 4px 6px !important;
+    font-size: 8.5pt !important;
     color: #1e293b !important;
   }
 }

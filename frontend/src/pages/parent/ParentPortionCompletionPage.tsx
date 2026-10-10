@@ -299,7 +299,7 @@ export const ParentPortionCompletionPage: React.FC = () => {
   const completionPercentage = Math.round((completedCount / totalCount) * 100);
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-12">
+    <div className="space-y-6 max-w-6xl mx-auto pb-12 print:space-y-0 print:pb-0">
       {/* Official Institutional Print Header */}
       <PrintTemplateHeader
         documentTitle="STUDENT SYLLABUS & PORTION COMPLETION REPORT"

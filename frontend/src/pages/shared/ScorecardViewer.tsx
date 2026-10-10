@@ -51,7 +51,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto print:p-0 print:m-0">
+    <div className="space-y-6 max-w-6xl mx-auto print:p-0 print:m-0 print:space-y-0">
       {/* Official Institutional Print Header */}
       <PrintTemplateHeader
         documentTitle="OFFICIAL STUDENT ACADEMIC SCORECARD & EVALUATION REPORT"
@@ -78,7 +78,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
       </div>
 
       {/* 1. STUDENT PROFILE HEADER (Step 21 Requirement: Student, Class, Board) */}
-      <div className="brand-sidebar-bg rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:bg-white print:text-black print:border print:border-[#DCE5F2]">
+      <div className="brand-sidebar-bg rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center space-x-5">
             <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-3xl font-extrabold text-white shadow-inner overflow-hidden print:border-gray-400 print:text-gray-900">
