@@ -8,7 +8,6 @@ import {
   LogOut,
   Shield,
   GraduationCap,
-  Calendar,
   Home,
   CalendarCheck,
   Award,
@@ -155,7 +154,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       {/* ========================================================= */}
       {/* DESKTOP FIXED DEEP NAVY SIDEBAR */}
       {/* ========================================================= */}
-      <aside className="hidden lg:flex flex-col w-64 xl:w-72 brand-sidebar-bg border-r border-[#142C68] sticky top-0 h-screen z-30 flex-shrink-0 shadow-lg select-none">
+      <aside className="hidden lg:flex flex-col w-64 xl:w-72 brand-sidebar-bg border-r border-[#142C68] sticky top-0 h-screen z-30 flex-shrink-0 shadow-lg select-none print:hidden">
         {/* Sidebar Brand Header */}
         <div className="p-5 border-b border-white/10">
           <Link to="/" className="block">
@@ -279,9 +278,9 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       {/* ========================================================= */}
       {/* MAIN VIEWPORT WRAPPER */}
       {/* ========================================================= */}
-      <div className="flex-1 flex flex-col min-w-0 w-full relative">
+      <div className="flex-1 flex flex-col min-w-0 w-full relative print:w-full print:m-0 print:p-0">
         {/* Top Header / Navbar */}
-        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-[#DCE5F2] shadow-2xs">
+        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-[#DCE5F2] shadow-2xs print:hidden">
           <div className="px-3 sm:px-4 md:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4">
             {/* Mobile Menu Trigger & Logo */}
             <div className="flex items-center gap-2 sm:gap-3 lg:hidden min-w-0">
@@ -308,22 +307,10 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
                   className="w-full pl-9 pr-3 py-1.5 text-xs bg-[#F5F8FC] border border-[#DCE5F2] rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#155EEF]/20 focus:border-[#155EEF] transition-all"
                 />
               </div>
-
-              <div className="hidden xl:flex items-center gap-2 text-xs text-[#5B6B82] flex-shrink-0">
-                <span className="flex items-center gap-1.5 px-3 py-1 bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2] rounded-lg font-bold text-[11px] whitespace-nowrap">
-                  <Calendar className="w-3.5 h-3.5 text-[#155EEF] flex-shrink-0" />
-                  AY 2024–25 (Term 2)
-                </span>
-              </div>
             </div>
 
             {/* Topbar Right Actions */}
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              {/* Academic Session indicator on mobile/tablet */}
-              <span className="hidden sm:inline-flex lg:hidden text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2] whitespace-nowrap">
-                AY 2024–25
-              </span>
-
               {/* Notification Button */}
               <button
                 title="Academic Notifications"
@@ -358,17 +345,17 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         </header>
 
         {/* Content Body with SUBTLE BRAND WATERMARK ALWAYS PRESENT */}
-        <div className="relative flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div className="relative flex-1 flex flex-col min-w-0 overflow-hidden print:overflow-visible print:w-full">
           {/* Subtle Infinite Tutorial Logo Watermark across every dashboard page */}
           <BrandWatermark opacity={0.045} size="lg" position="center" />
 
-          <main className="relative z-10 flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 pb-20 lg:pb-6 max-w-7xl w-full mx-auto">
+          <main className="relative z-10 flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 pb-20 lg:pb-6 max-w-7xl w-full mx-auto print:p-0 print:m-0 print:max-w-none print:w-full">
             {children || <Outlet />}
           </main>
         </div>
 
         {/* Mobile Bottom Navigation Bar (Touch-friendly 44px+ hit targets & Safe-Area Padding) */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#DCE5F2] px-1 py-1 flex items-center justify-around shadow-lg pb-[max(0.375rem,env(safe-area-inset-bottom))]">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#DCE5F2] px-1 py-1 flex items-center justify-around shadow-lg pb-[max(0.375rem,env(safe-area-inset-bottom))] print:hidden">
           {defaultMobileNav.map((item) => {
             const isActive = location.pathname === item.href;
             return (

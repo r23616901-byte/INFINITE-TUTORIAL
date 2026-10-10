@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { StatCard } from '../../components/common/StatCard';
-import { EmptyState } from '../../components/common/EmptyState';
-import { SkeletonBlock } from '../../components/common/LoadingSkeleton';
-import { StateToggleBar, DashboardViewState } from '../../components/common/StateToggleBar';
 import {
   Shield,
   GraduationCap,
@@ -49,10 +45,6 @@ interface AdminModuleItem {
 export const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [viewState, setViewState] = useState<DashboardViewState>('default');
-
-  const isLoading = viewState === 'loading';
-  const isEmpty = viewState === 'empty';
 
   // 24 Admin Navigation Modules mapping directly to existing application routes
   const adminModules: AdminModuleItem[] = [
@@ -257,9 +249,6 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* State Switcher */}
-      <StateToggleBar viewState={viewState} onViewStateChange={setViewState} />
-
       {/* Top Profile / Header Section */}
       <div className="bg-white rounded-2xl border border-[#DCE5F2] p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
@@ -302,104 +291,96 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* ========================================================= */}
-      {/* 8 DASHBOARD SUMMARY CARDS (PRESERVED) */}
+      {/* 8 DASHBOARD SUMMARY CARDS */}
       {/* ========================================================= */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Total Students */}
         <StatCard
           title="Total Students"
-          value={isEmpty ? '0' : '84'}
+          value="84"
           subtitle="9th & 10th grades"
           icon={<GraduationCap className="w-5 h-5 text-[#155EEF]" />}
           iconBg="bg-[#EEF4FF] border border-[#DCE5F2]"
           badge="Enrolled"
           badgeVariant="blue"
           trend={{ text: '+12% this term', type: 'positive', icon: <TrendingUp className="w-3 h-3" /> }}
-          isLoading={isLoading}
         />
 
         {/* Card 2: Total Teachers */}
         <StatCard
           title="Total Teachers"
-          value={isEmpty ? '0' : '8'}
+          value="8"
           subtitle="Active faculty staff"
           icon={<Users className="w-5 h-5 text-[#1677FF]" />}
           iconBg="bg-[#EEF4FF] border border-[#DCE5F2]"
           badge="Verified"
           badgeVariant="blue"
-          isLoading={isLoading}
         />
 
         {/* Card 3: Total Parents */}
         <StatCard
           title="Total Parents"
-          value={isEmpty ? '0' : '78'}
+          value="78"
           subtitle="Linked parent accounts"
           icon={<UserCheck className="w-5 h-5 text-[#00B8F8]" />}
           iconBg="bg-[#E0F8FF] border border-[#BAE6FD]"
           badge="Active Portals"
           badgeVariant="cyan"
-          isLoading={isLoading}
         />
 
         {/* Card 4: Total Batches */}
         <StatCard
           title="Total Batches"
-          value={isEmpty ? '0' : '6'}
+          value="6"
           subtitle="CBSE & State Board"
           icon={<Layers className="w-5 h-5 text-[#0B1F4D]" />}
           iconBg="bg-[#EEF4FF] border border-[#DCE5F2]"
           badge="Active Batches"
           badgeVariant="navy"
-          isLoading={isLoading}
         />
 
         {/* Card 5: Today's Attendance */}
         <StatCard
           title="Today's Attendance"
-          value={isEmpty ? '0.0%' : '91.3%'}
-          subtitle={isEmpty ? 'No records' : '79 / 84 students present'}
+          value="91.3%"
+          subtitle="79 / 84 students present"
           icon={<Clock className="w-5 h-5 text-emerald-600" />}
           iconBg="bg-emerald-50 border border-emerald-200"
           badge="Live Status"
           badgeVariant="emerald"
-          isLoading={isLoading}
         />
 
         {/* Card 6: Pending Leaves / Action Items */}
         <StatCard
           title="Pending Leaves"
-          value={isEmpty ? '0' : '4'}
+          value="4"
           subtitle="Awaiting admin review"
           icon={<CalendarCheck className="w-5 h-5 text-amber-600" />}
           iconBg="bg-amber-50 border border-amber-200"
           badge="Action Needed"
           badgeVariant="amber"
-          isLoading={isLoading}
         />
 
         {/* Card 7: Upcoming Tests */}
         <StatCard
           title="Upcoming Tests"
-          value={isEmpty ? '0' : '2'}
+          value="2"
           subtitle="Scheduled this week"
           icon={<FileQuestion className="w-5 h-5 text-[#155EEF]" />}
           iconBg="bg-[#EEF4FF] border border-[#DCE5F2]"
           badge="This Week"
           badgeVariant="blue"
-          isLoading={isLoading}
         />
 
         {/* Card 8: Recent Tests */}
         <StatCard
           title="Recent Tests"
-          value={isEmpty ? '0' : '4'}
+          value="4"
           subtitle="Evaluated recently"
           icon={<Award className="w-5 h-5 text-[#F7931E]" />}
           iconBg="bg-[#FFF4E5] border border-[#FDE68A]"
           badge="Published"
           badgeVariant="amber"
-          isLoading={isLoading}
         />
       </div>
 
@@ -463,79 +444,6 @@ export const AdminDashboard: React.FC = () => {
           })}
         </div>
       </div>
-
-      {/* ========================================================= */}
-      {/* RECENT SECURITY & ACADEMIC AUDIT FEED */}
-      {/* ========================================================= */}
-      <Card
-        title="Recent Security & Academic Audit Feed"
-        subtitle="Real-time log of faculty actions, attendance submissions, and test records"
-      >
-        {isLoading ? (
-          <div className="space-y-3">
-            <SkeletonBlock height="h-10" />
-            <SkeletonBlock height="h-10" />
-            <SkeletonBlock height="h-10" />
-          </div>
-        ) : isEmpty ? (
-          <EmptyState
-            title="No Audit Activities Yet"
-            description="System operations and faculty submissions will appear here."
-            icon={<FolderOpen className="w-6 h-6 text-[#155EEF]" />}
-          />
-        ) : (
-          <div className="overflow-x-auto -mx-6">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#F8FAFD] border-b border-[#DCE5F2] text-[#0B1F4D] uppercase tracking-wider font-bold">
-                <tr>
-                  <th className="px-6 py-3">Event / Operation</th>
-                  <th className="px-6 py-3">Actor</th>
-                  <th className="px-6 py-3">Entity</th>
-                  <th className="px-6 py-3 text-right">Timestamp</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#F0F4FA]">
-                <tr className="hover:bg-[#F5F8FC] transition-colors">
-                  <td className="px-6 py-3 font-semibold text-[#0B1F4D] flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    Attendance Batch Submitted
-                  </td>
-                  <td className="px-6 py-3 text-[#5B6B82]">Mrs. Priya (Science)</td>
-                  <td className="px-6 py-3 text-[#5B6B82]">10th A Morning</td>
-                  <td className="px-6 py-3 text-right text-[#8A9BB0]">10 mins ago</td>
-                </tr>
-                <tr className="hover:bg-[#F5F8FC] transition-colors">
-                  <td className="px-6 py-3 font-semibold text-[#0B1F4D] flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#155EEF]" />
-                    Test Paper Uploaded
-                  </td>
-                  <td className="px-6 py-3 text-[#5B6B82]">Mr. Anand (Maths)</td>
-                  <td className="px-6 py-3 text-[#5B6B82]">Algebra Unit 3</td>
-                  <td className="px-6 py-3 text-right text-[#8A9BB0]">45 mins ago</td>
-                </tr>
-                <tr className="hover:bg-[#F5F8FC] transition-colors">
-                  <td className="px-6 py-3 font-semibold text-[#0B1F4D] flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#00B8F8]" />
-                    Teacher Password Reset
-                  </td>
-                  <td className="px-6 py-3 text-[#5B6B82]">Admin</td>
-                  <td className="px-6 py-3 text-[#5B6B82]">Prof. Rajesh Sharma</td>
-                  <td className="px-6 py-3 text-right text-[#8A9BB0]">1 hour ago</td>
-                </tr>
-                <tr className="hover:bg-[#F5F8FC] transition-colors">
-                  <td className="px-6 py-3 font-semibold text-[#0B1F4D] flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#F7931E]" />
-                    Student Enrollment Verified
-                  </td>
-                  <td className="px-6 py-3 text-[#5B6B82]">Admin</td>
-                  <td className="px-6 py-3 text-[#5B6B82]">Rahul Kumar (IT10025)</td>
-                  <td className="px-6 py-3 text-right text-[#8A9BB0]">2 hours ago</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-      </Card>
     </div>
   );
 };

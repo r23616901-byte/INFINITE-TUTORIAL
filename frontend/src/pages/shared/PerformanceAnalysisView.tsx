@@ -25,6 +25,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { StudentOverallPerformance, SubjectPerformanceBreakdown } from '../../types/analytics';
+import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
+import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
 
 interface PerformanceAnalysisViewProps {
   data: StudentOverallPerformance;
@@ -72,8 +74,20 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto print:p-0">
+      {/* Print Official Header */}
+      <PrintTemplateHeader
+        documentTitle="Student Academic Diagnostic & Performance Report"
+        documentSubtitle="Official Curriculum Mastery, Benchmark Analysis & Attendance Correlation"
+        reportCategory="ACADEMIC PERFORMANCE REPORT"
+        studentName={data.studentName}
+        studentId={data.studentRoll}
+        className={`${data.className} (${data.boardName})`}
+        batchName={data.batchName}
+        subject="Physics, Chemistry, Biology & Maths"
+      />
+
       {/* 1. STUDENT HEADER & KPI SUMMARY */}
-      <div className="brand-sidebar-bg rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:bg-white print:text-black print:border print:border-[#DCE5F2]">
+      <div className="brand-sidebar-bg rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center space-x-5">
             <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-3xl font-extrabold text-white shadow-inner overflow-hidden print:border-gray-400 print:text-gray-900">
@@ -509,6 +523,9 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
           </div>
         </div>
       </div>
+
+      {/* Official Print Footer */}
+      <PrintTemplateFooter />
     </div>
   );
 };

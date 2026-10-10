@@ -19,6 +19,8 @@ import {
   Save,
   X,
 } from 'lucide-react';
+import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
+import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
 
 interface SyllabusChapter {
   id: string;
@@ -481,8 +483,18 @@ export const TeacherPortionProgressPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Official Institutional Print Header */}
+      <PrintTemplateHeader
+        documentTitle="SYLLABUS & PORTION COMPLETION TRACKING REPORT"
+        documentSubtitle="Official Lecture Delivery, Milestone Logs & Topic Coverage Tracker"
+        reportCategory="PORTION COMPLETION REPORT"
+        academicYear="AY 2024–25 (Term 2)"
+        subject={selectedSubject !== 'ALL' ? selectedSubject : 'Physics, Chemistry, Biology & Mathematics'}
+        batchName="Batch 10A (CBSE)"
+      />
+
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-[#071633] via-[#0B1F4D] to-[#155EEF] rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-[#155EEF]/30">
+      <div className="bg-gradient-to-r from-[#071633] via-[#0B1F4D] to-[#155EEF] rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-[#155EEF]/30 print:hidden">
         <div className="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
           <BookOpen className="w-80 h-80 text-white" />
         </div>
@@ -513,14 +525,14 @@ export const TeacherPortionProgressPage: React.FC = () => {
       </div>
 
       {notification && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm animate-fadeIn">
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl flex items-center gap-3 shadow-sm animate-fadeIn print:hidden">
           <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
           <span className="text-sm font-medium">{notification}</span>
         </div>
       )}
 
       {/* Overview Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 print:hidden">
         <StatCard
           title="Overall Syllabus Progress"
           value={`${overallPercentage}%`}
@@ -549,7 +561,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
       </div>
 
       {/* Progress Bar Header Card */}
-      <Card className="p-6">
+      <Card className="p-6 print:hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <div>
             <h3 className="text-base font-bold text-gray-900">
@@ -615,7 +627,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
       </Card>
 
       {/* Filters and Search Bar */}
-      <Card className="p-4">
+      <Card className="p-4 print:hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold text-gray-500 mr-1 flex items-center gap-1">
@@ -662,8 +674,8 @@ export const TeacherPortionProgressPage: React.FC = () => {
         </div>
       </Card>
 
-      {/* Chapters Table & Cards */}
-      <div className="space-y-4">
+      {/* Chapters Table & Cards (Screen Interactive View) */}
+      <div className="space-y-4 print:hidden">
         {filteredChapters.map((ch) => {
           const isEditing = editingChapterId === ch.id;
           const pct = Math.round((ch.completedLectures / ch.totalLectures) * 100);
@@ -833,6 +845,83 @@ export const TeacherPortionProgressPage: React.FC = () => {
             </Card>
           );
         })}
+      </div>
+
+      {/* ========================================================= */}
+      {/* SYSTEMATIC INSTITUTIONAL PRINTABLE TABLE (Print Only)     */}
+      {/* ========================================================= */}
+      <div className="hidden print:block w-full">
+        <table className="w-full text-left border-collapse border border-slate-300">
+          <thead>
+            <tr className="bg-slate-100 text-black text-[10px] uppercase font-bold border-b border-slate-300">
+              <th className="p-2 border border-slate-300 text-center w-12">Ch #</th>
+              <th className="p-2 border border-slate-300 w-24">Subject</th>
+              <th className="p-2 border border-slate-300">Chapter / Unit Title</th>
+              <th className="p-2 border border-slate-300 w-36">Faculty</th>
+              <th className="p-2 border border-slate-300 text-center w-28">Lectures Delivered</th>
+              <th className="p-2 border border-slate-300 text-center w-20">Weightage</th>
+              <th className="p-2 border border-slate-300 w-28">Target Date</th>
+              <th className="p-2 border border-slate-300 w-28">Delivered On</th>
+              <th className="p-2 border border-slate-300 text-center w-24">Status</th>
+            </tr>
+          </thead>
+          <tbody className="text-[9.5pt] divide-y divide-slate-200">
+            {filteredChapters.map((ch, index) => {
+              const pct = Math.round((ch.completedLectures / ch.totalLectures) * 100);
+              return (
+                <tr key={ch.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
+                  <td className="p-2 text-center font-bold text-black border border-slate-300">
+                    {ch.chapterNumber}
+                  </td>
+                  <td className="p-2 font-bold text-[#155EEF] border border-slate-300">
+                    {ch.subject}
+                  </td>
+                  <td className="p-2 font-bold text-slate-900 border border-slate-300">
+                    {ch.title}
+                  </td>
+                  <td className="p-2 text-slate-800 border border-slate-300">
+                    {ch.facultyName}
+                  </td>
+                  <td className="p-2 text-center font-mono font-semibold text-black border border-slate-300">
+                    {ch.completedLectures} / {ch.totalLectures} ({pct}%)
+                  </td>
+                  <td className="p-2 text-center font-semibold text-slate-800 border border-slate-300">
+                    {ch.weightageMarks} Marks
+                  </td>
+                  <td className="p-2 text-slate-700 border border-slate-300">
+                    {ch.targetDate}
+                  </td>
+                  <td className="p-2 text-slate-700 border border-slate-300">
+                    {ch.completionDate || '—'}
+                  </td>
+                  <td className="p-2 text-center border border-slate-300">
+                    <span
+                      className={`inline-block px-2 py-0.5 rounded text-[9px] font-bold ${
+                        ch.status === 'COMPLETED'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : ch.status === 'IN_PROGRESS'
+                          ? 'bg-amber-100 text-amber-800'
+                          : 'bg-slate-100 text-slate-700'
+                      }`}
+                    >
+                      {ch.status === 'COMPLETED' ? 'COMPLETED' : ch.status === 'IN_PROGRESS' ? 'IN PROGRESS' : 'SCHEDULED'}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        {/* Print Summary Metrics */}
+        <div className="mt-4 flex items-center justify-between text-[9pt] bg-slate-50 p-2.5 border border-slate-300 rounded">
+          <span><strong>Delivered Syllabus:</strong> {overallPercentage}% Complete ({completedLecturesCount} Lectures)</span>
+          <span><strong>Completed Modules:</strong> {completedChapters} Chapters Verified</span>
+          <span><strong>Academic Delivery:</strong> On-Track for Board Prep</span>
+        </div>
+
+        {/* Official Letterhead Footer with Signatures */}
+        <PrintTemplateFooter customNote="Official Curriculum Progress Report of Infinite Tutorial. Teacher and Parent record verified." />
       </div>
     </div>
   );

@@ -7,6 +7,8 @@ import {
   Download,
   TrendingUp,
 } from 'lucide-react';
+import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
+import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
 
 interface ChapterItem {
   id: string;
@@ -298,8 +300,18 @@ export const ParentPortionCompletionPage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
+      {/* Official Institutional Print Header */}
+      <PrintTemplateHeader
+        documentTitle="STUDENT SYLLABUS & PORTION COMPLETION REPORT"
+        documentSubtitle="Official Curriculum Delivery & Board Chapter Progress Tracker"
+        reportCategory="PORTION COMPLETION REPORT"
+        academicYear="AY 2024–25 (Term 2)"
+        subject={selectedSubject !== 'ALL' ? selectedSubject : 'Physics, Chemistry, Biology & Mathematics'}
+        className="Class 10 (CBSE)"
+      />
+
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 print:hidden">
         <div className="flex items-center space-x-3">
           <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
             <BookOpen className="w-6 h-6" />
@@ -324,7 +336,7 @@ export const ParentPortionCompletionPage: React.FC = () => {
       </div>
 
       {/* Top Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 print:hidden">
         <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Total Completion</span>
@@ -393,7 +405,7 @@ export const ParentPortionCompletionPage: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-3">
+      <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-3 print:hidden">
         {['ALL', 'Physics', 'Chemistry', 'Biology', 'Mathematics'].map((subj) => (
           <button
             key={subj}
@@ -487,6 +499,9 @@ export const ParentPortionCompletionPage: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* Official Letterhead Footer with Signatures */}
+      <PrintTemplateFooter customNote="Official Curriculum Record of Infinite Tutorial. Parent Portal Verified." />
     </div>
   );
 };

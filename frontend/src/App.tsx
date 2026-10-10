@@ -9,6 +9,7 @@ import { LoginPage } from './pages/auth/LoginPage';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminStudentsPage } from './pages/admin/AdminStudentsPage';
+import { AdminParentsPage } from './pages/admin/AdminParentsPage';
 import { AdminTeachersPage } from './pages/admin/AdminTeachersPage';
 import { TeacherDashboard } from './pages/teacher/TeacherDashboard';
 import { TeacherStudentsPage } from './pages/teacher/TeacherStudentsPage';
@@ -95,7 +96,7 @@ export const App: React.FC = () => {
               <Route element={<AdminLayout />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/students" element={<AdminStudentsPage />} />
-                <Route path="/admin/parents" element={<AdminStudentsPage />} />
+                <Route path="/admin/parents" element={<AdminParentsPage />} />
                 <Route path="/admin/teachers" element={<AdminTeachersPage />} />
                 <Route path="/admin/attendance" element={<TakeAttendancePage />} />
                 <Route path="/admin/attendance-history" element={<AttendanceHistoryPage />} />

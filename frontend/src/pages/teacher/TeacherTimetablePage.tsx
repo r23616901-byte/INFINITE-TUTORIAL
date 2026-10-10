@@ -13,6 +13,8 @@ import {
   Calendar,
   ChevronRight,
 } from 'lucide-react';
+import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
+import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
 
 interface FacultySlot {
   id: string;
@@ -251,8 +253,18 @@ export const TeacherTimetablePage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Official Institutional Print Header */}
+      <PrintTemplateHeader
+        documentTitle="FACULTY TEACHING TIMETABLE & CLASS ALLOCATIONS"
+        documentSubtitle="Official Institutional Weekly Teaching Schedule for Mrs. Priya Sundaram"
+        reportCategory="FACULTY TIMETABLE ROSTER"
+        academicYear="AY 2024–25 (Term 2)"
+        facultyName="Mrs. Priya Sundaram (Senior Faculty, Physics & Mathematics)"
+        batchName="Batch 10A Morning, Batch 10A Evening, Batch 9A"
+      />
+
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-emerald-800 via-teal-800 to-cyan-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+      <div className="bg-gradient-to-r from-emerald-800 via-teal-800 to-cyan-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden print:hidden">
         <div className="absolute right-0 top-0 bottom-0 opacity-10 pointer-events-none flex items-center pr-10">
           <Clock className="w-80 h-80 text-white" />
         </div>
@@ -283,7 +295,7 @@ export const TeacherTimetablePage: React.FC = () => {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 print:hidden">
         <StatCard
           title="Weekly Teaching Hours"
           value="26 Hours"
@@ -312,7 +324,7 @@ export const TeacherTimetablePage: React.FC = () => {
       </div>
 
       {/* Filters Card */}
-      <Card className="p-4">
+      <Card className="p-4 print:hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold text-gray-500 mr-1 flex items-center gap-1">
@@ -349,8 +361,8 @@ export const TeacherTimetablePage: React.FC = () => {
         </div>
       </Card>
 
-      {/* Slots List */}
-      <div className="space-y-3">
+      {/* Slots List (Screen Interactive View) */}
+      <div className="space-y-3 print:hidden">
         {filteredSlots.length === 0 ? (
           <Card className="p-12 text-center">
             <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
@@ -436,6 +448,69 @@ export const TeacherTimetablePage: React.FC = () => {
             </Card>
           ))
         )}
+      </div>
+
+      {/* ========================================================= */}
+      {/* SYSTEMATIC INSTITUTIONAL PRINTABLE TABLE (Print Only)     */}
+      {/* ========================================================= */}
+      <div className="hidden print:block w-full">
+        <table className="w-full text-left border-collapse border border-slate-300">
+          <thead>
+            <tr className="bg-slate-100 text-black text-[10px] uppercase font-bold border-b border-slate-300">
+              <th className="p-2 border border-slate-300 w-24">Day</th>
+              <th className="p-2 border border-slate-300 w-28">Timing</th>
+              <th className="p-2 border border-slate-300 w-32">Batch</th>
+              <th className="p-2 border border-slate-300 w-28">Subject</th>
+              <th className="p-2 border border-slate-300">Curriculum Topic / Module</th>
+              <th className="p-2 border border-slate-300 w-28">Venue / Room</th>
+              <th className="p-2 border border-slate-300 text-center w-20">Session Type</th>
+              <th className="p-2 border border-slate-300 text-center w-16">Enrolled</th>
+            </tr>
+          </thead>
+          <tbody className="text-[9.5pt] divide-y divide-slate-200">
+            {filteredSlots.map((slot, index) => (
+              <tr key={slot.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
+                <td className="p-2 font-bold text-black border border-slate-300">
+                  {slot.day}
+                  <span className="block text-[8px] font-normal text-slate-500 uppercase">{slot.session}</span>
+                </td>
+                <td className="p-2 font-mono font-semibold text-black border border-slate-300 whitespace-nowrap">
+                  {slot.startTime} – {slot.endTime}
+                </td>
+                <td className="p-2 font-bold text-slate-900 border border-slate-300">
+                  {slot.batch}
+                </td>
+                <td className="p-2 font-bold text-[#155EEF] border border-slate-300">
+                  {slot.subject}
+                </td>
+                <td className="p-2 text-slate-800 border border-slate-300">
+                  {slot.topic}
+                </td>
+                <td className="p-2 text-slate-700 border border-slate-300">
+                  {slot.room}
+                </td>
+                <td className="p-2 text-center border border-slate-300">
+                  <span className="text-[9px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">
+                    {slot.type.replace('_', ' ')}
+                  </span>
+                </td>
+                <td className="p-2 text-center font-bold text-black border border-slate-300">
+                  {slot.studentCount}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Print Summary Metrics */}
+        <div className="mt-4 flex items-center justify-between text-[9pt] bg-slate-50 p-2.5 border border-slate-300 rounded">
+          <span><strong>Total Weekly Teaching Load:</strong> 26 Hours / 13 Sessions</span>
+          <span><strong>Faculty Status:</strong> Active &bull; Verified Evaluation</span>
+          <span><strong>ERP Authentication:</strong> Infinite Tutorial Controller</span>
+        </div>
+
+        {/* Official Letterhead Footer with Signatures */}
+        <PrintTemplateFooter customNote="Official Faculty Teaching Roster. Issued by Infinite Tutorial Academic Directorate." />
       </div>
     </div>
   );

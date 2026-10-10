@@ -64,7 +64,7 @@ export const TeacherScorecardsPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Page Title & Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 print:hidden">
         <div>
           <div className="flex items-center space-x-2">
             <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
@@ -101,7 +101,7 @@ export const TeacherScorecardsPage: React.FC = () => {
       </div>
 
       {errorMsg && (
-        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl flex items-center justify-between">
+        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl flex items-center justify-between print:hidden">
           <div className="flex items-center space-x-2">
             <AlertTriangle className="w-5 h-5 text-rose-600 flex-shrink-0" />
             <span className="text-sm font-medium">{errorMsg}</span>

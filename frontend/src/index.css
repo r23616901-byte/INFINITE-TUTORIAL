@@ -58,15 +58,97 @@ body {
   min-width: 44px;
 }
 
-/* Print optimizations for scorecards and official reports */
+/* Print optimizations for official reports, timetables, and scorecards */
 @media print {
+  @page {
+    margin: 10mm 12mm;
+    size: auto;
+  }
+
   body {
+    background: #ffffff !important;
     background-color: #ffffff !important;
     color: #000000 !important;
     padding: 0 !important;
+    margin: 0 !important;
+    font-size: 10pt !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
-  .no-print, header, nav, footer, .mobile-bottom-nav, .brand-watermark {
+
+  /* Universal print hide for navigation, controls, and interactive elements */
+  aside,
+  header,
+  nav,
+  footer,
+  .no-print,
+  button,
+  input,
+  select,
+  textarea,
+  .mobile-bottom-nav,
+  .brand-watermark,
+  [role="dialog"],
+  [role="alert"] {
     display: none !important;
+  }
+
+  /* Remove interactive action buttons and action columns from printed documents */
+  .action-column,
+  .btn-action,
+  .action-controls,
+  [data-print="hide"],
+  button[title*="Edit"],
+  button[title*="edit"],
+  button[title*="Delete"],
+  button[title*="delete"],
+  button[title*="Verify"],
+  button[title*="verify"],
+  button[title*="Schedule"],
+  button[title*="schedule"],
+  button[title*="Add"],
+  button[title*="add"] {
+    display: none !important;
+  }
+
+  /* Remove noisy background gradients and drop shadows on paper */
+  .print-clean,
+  .bg-gradient-to-r,
+  .bg-gradient-to-br,
+  .bg-gradient-to-tr {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+
+  /* Page break rules for systematic, classy pagination */
+  table, tr, td, th, .print-card, .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Professional print table styling */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  th {
+    background-color: #f1f5f9 !important;
+    color: #0b1f4d !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 6px 8px !important;
+    font-weight: 700 !important;
+    font-size: 9.5pt !important;
+    text-transform: uppercase !important;
+  }
+
+  td {
+    border: 1px solid #e2e8f0 !important;
+    padding: 6px 8px !important;
+    font-size: 9pt !important;
+    color: #1e293b !important;
   }
 }
 
