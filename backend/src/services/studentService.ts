@@ -430,24 +430,28 @@ export const getStudentById = async (id: string): Promise<StudentDto | null> => 
 export const getStudentForParent = async (parentUserId: string, parentPhone?: string): Promise<StudentDto | null> => {
   if (await checkDbAvailability()) {
     try {
-      const parent = await prisma.parent.findFirst({
-      where: {
-        OR: [
-          { userId: parentUserId },
-          ...(parentPhone ? [{ phone: parentPhone }] : []),
-        ],
-      },
-      include: {
-        students: {
-          include: {
-            class: true,
-            board: true,
-            batch: true,
-            photo: true,
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(parentUserId);
+      const orConditions: any[] = [];
+      if (isObjectId) {
+        orConditions.push({ userId: parentUserId });
+      }
+      if (parentPhone) {
+        orConditions.push({ phone: parentPhone });
+      }
+
+      const parent = orConditions.length > 0 ? await prisma.parent.findFirst({
+        where: { OR: orConditions },
+        include: {
+          students: {
+            include: {
+              class: true,
+              board: true,
+              batch: true,
+              photo: true,
+            },
           },
         },
-      },
-    });
+      }) : null;
 
     if (parent && parent.students.length > 0) {
       const s = parent.students[0];
@@ -486,7 +490,7 @@ export const getStudentForParent = async (parentUserId: string, parentPhone?: st
     if (found) return found;
   }
   if (parentUserId) {
-    const found = inMemoryStudents.find((s) => s.parentId === parentUserId);
+    const found = inMemoryStudents.find((s) => s.parentId === parentUserId || (parentUserId === 'parent-001' && s.parentId === 'parent-1'));
     if (found) return found;
   }
   return null;

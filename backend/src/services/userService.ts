@@ -89,8 +89,8 @@ const checkDbAvailability = async (): Promise<boolean> => {
   }
 
   try {
-    // Quick probe
-    await prisma.$queryRaw`SELECT 1`;
+    // Quick probe compatible with MongoDB Atlas and relational databases
+    await prisma.user.findFirst({ select: { id: true } });
     isDbAvailable = true;
   } catch {
     isDbAvailable = false;

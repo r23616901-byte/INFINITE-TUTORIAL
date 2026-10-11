@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -31,7 +31,7 @@ enum StudentStatus {
 // CENTRAL USER / ACCOUNT MODEL
 // ------------------------------------------------------
 model User {
-  id                 String    @id @default(uuid())
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
   phone              String    @unique
   email              String?   @unique
   passwordHash       String
@@ -46,7 +46,6 @@ model User {
   teacher            Teacher?
   parent             Parent?
 
-  @@index([phone])
   @@index([role])
 }
 
@@ -54,42 +53,39 @@ model User {
 // ADMIN PROFILE
 // ------------------------------------------------------
 model Admin {
-  id        String   @id @default(uuid())
-  userId    String   @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   name      String
   phone     String
   email     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([userId])
 }
 
 // ------------------------------------------------------
 // TEACHER PROFILE
 // ------------------------------------------------------
 model Teacher {
-  id        String   @id @default(uuid())
-  userId    String   @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   name      String
   phone     String
   email     String?
   status    String   @default("ACTIVE")
-  batches   Batch[]  // Assigned teaching batches
+  batchIds  String[] @db.ObjectId
+  batches   Batch[]  @relation(fields: [batchIds], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([userId])
 }
 
 // ------------------------------------------------------
 // PARENT PROFILE
 // ------------------------------------------------------
 model Parent {
-  id             String    @id @default(uuid())
-  userId         String    @unique
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String    @unique @db.ObjectId
   user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   name           String
   phone          String
@@ -100,7 +96,6 @@ model Parent {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  @@index([userId])
   @@index([phone])
 }
 
@@ -108,7 +103,7 @@ model Parent {
 // ACADEMIC CLASS / GRADE MODEL
 // ------------------------------------------------------
 model Class {
-  id          String    @id @default(uuid())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String    @unique // e.g. "Class 10", "Class 9"
   grade       Int       // 10, 9
   description String?
@@ -123,7 +118,7 @@ model Class {
 // ACADEMIC BOARD MODEL
 // ------------------------------------------------------
 model Board {
-  id        String    @id @default(uuid())
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String    @unique // e.g. "CBSE", "Karnataka State Board"
   code      String    @unique // "CBSE", "KSB"
   students  Student[]
@@ -138,10 +133,10 @@ model Board {
 // ACADEMIC SUBJECT MODEL
 // ------------------------------------------------------
 model Subject {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   // e.g. "Mathematics", "Science - Physics"
   code      String   // "MATH10"
-  boardId   String?
+  boardId   String?  @db.ObjectId
   board     Board?   @relation(fields: [boardId], references: [id])
   tests     Test[]
   createdAt DateTime @default(now())
@@ -154,25 +149,26 @@ model Subject {
 // BATCH MODEL
 // ------------------------------------------------------
 model Batch {
-  id           String        @id @default(uuid())
-  name         String        // e.g. "10-A Morning", "10-B Evening"
-  timing       String        // e.g. "07:00 AM - 09:30 AM"
-  session      String        @default("MORNING") // "MORNING", "EVENING"
-  startTime    String?       // "07:00 AM"
-  endTime      String?       // "08:30 AM"
-  days         String        @default("Monday-Saturday")
-  status       String        @default("ACTIVE")  // "ACTIVE", "INACTIVE"
-  classId      String
-  class        Class         @relation(fields: [classId], references: [id])
-  boardId      String
-  board        Board         @relation(fields: [boardId], references: [id])
-  academicYear String        @default("2024-2025")
-  students     Student[]
-  teachers     Teacher[]
-  attendances  Attendance[]
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  name             String            // e.g. "10-A Morning", "10-B Evening"
+  timing           String            // e.g. "07:00 AM - 09:30 AM"
+  session          String            @default("MORNING") // "MORNING", "EVENING"
+  startTime        String?           // "07:00 AM"
+  endTime          String?           // "08:30 AM"
+  days             String            @default("Monday-Saturday")
+  status           String            @default("ACTIVE")  // "ACTIVE", "INACTIVE"
+  classId          String            @db.ObjectId
+  class            Class             @relation(fields: [classId], references: [id])
+  boardId          String            @db.ObjectId
+  board            Board             @relation(fields: [boardId], references: [id])
+  academicYear     String            @default("2024-2025")
+  students         Student[]
+  teacherIds       String[]          @db.ObjectId
+  teachers         Teacher[]         @relation(fields: [teacherIds], references: [id])
+  attendances      Attendance[]
   homeReachRecords HomeReachRecord[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
   @@index([classId])
   @@index([boardId])
@@ -182,7 +178,7 @@ model Batch {
 // UPLOADED FILE / PHOTO MODEL
 // ------------------------------------------------------
 model File {
-  id         String   @id @default(uuid())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   fileName   String
   fileUrl    String
   fileType   String?
@@ -196,36 +192,35 @@ model File {
 // STUDENT MODEL
 // ------------------------------------------------------
 model Student {
-  id           String        @id @default(uuid())
-  studentId    String        @unique // e.g. IT10025
-  name         String
-  photoId      String?       @unique
-  photo        File?         @relation(fields: [photoId], references: [id])
-  photoUrl     String?       // Direct image URL or placeholder
-  school       String        // e.g. ABC Public School
-  parentId     String
-  parent       Parent        @relation(fields: [parentId], references: [id], onDelete: Cascade)
-  parentName   String?       // Denormalized for fast filtering
-  parentPhone  String?       // Denormalized for fast filtering
-  studentPhone String?
-  dateOfBirth  DateTime
-  classId      String
-  class        Class         @relation(fields: [classId], references: [id])
-  boardId      String
-  board        Board         @relation(fields: [boardId], references: [id])
-  batchId      String
-  batch        Batch         @relation(fields: [batchId], references: [id])
-  academicYear String        @default("2024-2025")
-  admissionDate DateTime     @default(now())
-  status       StudentStatus @default(ACTIVE)
-  attendances  Attendance[]
-  leaveRequests LeaveRequest[]
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  studentId        String            @unique // e.g. IT10025
+  name             String
+  photoId          String?           @unique @db.ObjectId
+  photo            File?             @relation(fields: [photoId], references: [id])
+  photoUrl         String?           // Direct image URL or placeholder
+  school           String            // e.g. ABC Public School
+  parentId         String            @db.ObjectId
+  parent           Parent            @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  parentName       String?           // Denormalized for fast filtering
+  parentPhone      String?           // Denormalized for fast filtering
+  studentPhone     String?
+  dateOfBirth      DateTime
+  classId          String            @db.ObjectId
+  class            Class             @relation(fields: [classId], references: [id])
+  boardId          String            @db.ObjectId
+  board            Board             @relation(fields: [boardId], references: [id])
+  batchId          String            @db.ObjectId
+  batch            Batch             @relation(fields: [batchId], references: [id])
+  academicYear     String            @default("2024-2025")
+  admissionDate    DateTime          @default(now())
+  status           StudentStatus     @default(ACTIVE)
+  attendances      Attendance[]
+  leaveRequests    LeaveRequest[]
   homeReachRecords HomeReachRecord[]
-  marks        StudentMark[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  marks            StudentMark[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
-  @@index([studentId])
   @@index([name])
   @@index([school])
   @@index([parentId])
@@ -249,14 +244,14 @@ enum AttendanceStatus {
 }
 
 model Attendance {
-  id             String            @id @default(uuid())
+  id             String            @id @default(auto()) @map("_id") @db.ObjectId
   date           DateTime
   dateStr        String            // "YYYY-MM-DD"
   day            String            // "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
   session        AttendanceSession @default(MORNING)
-  batchId        String
+  batchId        String            @db.ObjectId
   batch          Batch             @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  studentId      String
+  studentId      String            @db.ObjectId
   student        Student           @relation(fields: [studentId], references: [id], onDelete: Cascade)
   status         AttendanceStatus  @default(PRESENT)
   recordedById   String?
@@ -282,10 +277,10 @@ enum LeaveStatus {
 }
 
 model LeaveRequest {
-  id             String      @id @default(uuid())
-  studentId      String
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  studentId      String      @db.ObjectId
   student        Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  parentId       String
+  parentId       String      @db.ObjectId
   parent         Parent      @relation(fields: [parentId], references: [id], onDelete: Cascade)
   fromDate       String      // YYYY-MM-DD
   toDate         String      // YYYY-MM-DD
@@ -310,7 +305,7 @@ model LeaveRequest {
 // TEST MANAGEMENT & TEST TYPES
 // ------------------------------------------------------
 model TestType {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   @unique // "Test 1", "Chapter-wise Test", etc.
   isDefault Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -318,32 +313,32 @@ model TestType {
 }
 
 model Test {
-  id              String   @id @default(uuid())
-  testId          String   @unique // "TST-10-MAT-001"
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  testId          String        @unique // "TST-10-MAT-001"
   name            String
-  classId         String
-  class           Class    @relation(fields: [classId], references: [id])
-  boardId         String
-  board           Board    @relation(fields: [boardId], references: [id])
-  subjectId       String
-  subject         Subject  @relation(fields: [subjectId], references: [id])
-  chapter         String   // e.g. "Chapter 1: Real Numbers"
-  testType        String   // "Test 1", "Unit Test", etc.
+  classId         String        @db.ObjectId
+  class           Class         @relation(fields: [classId], references: [id])
+  boardId         String        @db.ObjectId
+  board           Board         @relation(fields: [boardId], references: [id])
+  subjectId       String        @db.ObjectId
+  subject         Subject       @relation(fields: [subjectId], references: [id])
+  chapter         String        // e.g. "Chapter 1: Real Numbers"
+  testType        String        // "Test 1", "Unit Test", etc.
   date            DateTime
-  dateStr         String   // "YYYY-MM-DD"
-  maxMarks        Int      // 25, 40, 50, 100
-  duration        String   // "90 mins"
-  durationMinutes Int      @default(90)
-  testPaperUrl    String?  // Storage URL / identifier
-  testPaperName   String?  // Original file name
-  testPaperSize   Int?     // Size in bytes
-  mimeType        String?  // "application/pdf", "image/png", etc.
+  dateStr         String        // "YYYY-MM-DD"
+  maxMarks        Int           // 25, 40, 50, 100
+  duration        String        // "90 mins"
+  durationMinutes Int           @default(90)
+  testPaperUrl    String?       // Storage URL / identifier
+  testPaperName   String?       // Original file name
+  testPaperSize   Int?          // Size in bytes
+  mimeType        String?       // "application/pdf", "image/png", etc.
   instructions    String?
   createdById     String
   createdByName   String
   marks           StudentMark[]
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   @@index([classId])
   @@index([boardId])
@@ -353,7 +348,7 @@ model Test {
 }
 
 // ------------------------------------------------------
-// HOME-REACH / STUDENT REACHED HOME TRACKING (STEP 13 & 21)
+// HOME-REACH / STUDENT REACHED HOME TRACKING
 // ------------------------------------------------------
 enum HomeReachStatus {
   IN_CLASS
@@ -363,12 +358,12 @@ enum HomeReachStatus {
 }
 
 model HomeReachRecord {
-  id              String          @id @default(uuid())
-  studentId       String
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  studentId       String          @db.ObjectId
   student         Student         @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentName     String
   studentRoll     String
-  batchId         String
+  batchId         String          @db.ObjectId
   batch           Batch           @relation(fields: [batchId], references: [id], onDelete: Cascade)
   batchName       String
   date            DateTime
@@ -396,7 +391,8 @@ model HomeReachRecord {
 }
 
 model HomeReachConfig {
-  id                      String   @id @default("default-config")
+  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  configKey               String   @unique @default("default-config")
   isEnabled               Boolean  @default(true)
   alertThresholdMinutes   Int      @default(45)
   autoNotifyParents       Boolean  @default(true)
@@ -406,15 +402,15 @@ model HomeReachConfig {
 }
 
 // ------------------------------------------------------
-// STUDENT MARKS & EVALUATED ANSWER SHEETS (STEPS 18, 19, 20)
+// STUDENT MARKS & EVALUATED ANSWER SHEETS
 // ------------------------------------------------------
 model StudentMark {
-  id              String         @id @default(uuid())
-  studentId       String
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  studentId       String         @db.ObjectId
   student         Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentName     String
   studentRoll     String
-  testId          String
+  testId          String         @db.ObjectId
   test            Test           @relation(fields: [testId], references: [id], onDelete: Cascade)
   testCode        String         // e.g. "TST-10-PHY-003"
   testName        String         // e.g. "Chapter 3 Test"
@@ -443,8 +439,8 @@ model StudentMark {
 }
 
 model MarkAuditLog {
-  id            String      @id @default(uuid())
-  markId        String
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  markId        String      @db.ObjectId
   mark          StudentMark @relation(fields: [markId], references: [id], onDelete: Cascade)
   oldMarks      Float
   newMarks      Float
@@ -461,5 +457,3 @@ model MarkAuditLog {
   @@index([changedById])
   @@index([changedAt])
 }
-
-

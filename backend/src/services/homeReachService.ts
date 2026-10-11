@@ -110,9 +110,7 @@ let inMemoryHomeReachRecords: HomeReachRecordDto[] = [
 export const getHomeReachConfig = async (): Promise<HomeReachConfigDto> => {
   if (await checkDbAvailability()) {
     try {
-      const dbConfig = await (prisma as any).homeReachConfig.findUnique({
-        where: { id: 'default-config' },
-      });
+      const dbConfig = await (prisma as any).homeReachConfig.findFirst();
       if (dbConfig) {
         return {
           id: dbConfig.id,
@@ -152,24 +150,30 @@ export const updateHomeReachConfig = async (
 
   if (await checkDbAvailability()) {
     try {
-      await (prisma as any).homeReachConfig.upsert({
-        where: { id: 'default-config' },
-        create: {
-          id: 'default-config',
-          isEnabled: updated.isEnabled,
-          alertThresholdMinutes: updated.alertThresholdMinutes,
-          autoNotifyParents: updated.autoNotifyParents,
-          allowParentSelfConfirm: updated.allowParentSelfConfirm,
-          allowStudentSelfConfirm: updated.allowStudentSelfConfirm,
-        },
-        update: {
-          isEnabled: updated.isEnabled,
-          alertThresholdMinutes: updated.alertThresholdMinutes,
-          autoNotifyParents: updated.autoNotifyParents,
-          allowParentSelfConfirm: updated.allowParentSelfConfirm,
-          allowStudentSelfConfirm: updated.allowStudentSelfConfirm,
-        },
-      });
+      const existing = await (prisma as any).homeReachConfig.findFirst();
+      if (existing) {
+        await (prisma as any).homeReachConfig.update({
+          where: { id: existing.id },
+          data: {
+            isEnabled: updated.isEnabled,
+            alertThresholdMinutes: updated.alertThresholdMinutes,
+            autoNotifyParents: updated.autoNotifyParents,
+            allowParentSelfConfirm: updated.allowParentSelfConfirm,
+            allowStudentSelfConfirm: updated.allowStudentSelfConfirm,
+          },
+        });
+      } else {
+        await (prisma as any).homeReachConfig.create({
+          data: {
+            configKey: 'default-config',
+            isEnabled: updated.isEnabled,
+            alertThresholdMinutes: updated.alertThresholdMinutes,
+            autoNotifyParents: updated.autoNotifyParents,
+            allowParentSelfConfirm: updated.allowParentSelfConfirm,
+            allowStudentSelfConfirm: updated.allowStudentSelfConfirm,
+          },
+        });
+      }
     } catch {}
   }
 
