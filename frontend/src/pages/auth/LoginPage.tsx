@@ -261,12 +261,12 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#F5F8FC] text-[#0B1F4D] relative overflow-x-hidden select-none">
+    <div className="min-h-dvh min-h-screen flex flex-col justify-between bg-[#F5F8FC] text-[#0B1F4D] relative overflow-x-hidden select-none">
       {/* Background Brand Watermark */}
       <BrandWatermark opacity={0.035} size="xl" position="center" />
 
       {/* Top Header */}
-      <header className="w-full px-6 py-3.5 sm:px-8 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
+      <header className="w-full px-4 sm:px-6 py-2.5 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
         <Link
           to="/"
           className="group inline-flex items-center gap-3 transition-opacity duration-200 focus:outline-hidden"
@@ -275,45 +275,45 @@ export const LoginPage: React.FC = () => {
           <BrandLogo size="sm" />
         </Link>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[11px] font-bold text-[#155EEF]">
-          <span className="w-2 h-2 rounded-full bg-[#00B8F8] animate-pulse" />
+        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[11px] font-bold text-[#155EEF]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00B8F8] animate-pulse" />
           <span>Academic Session 2024–25</span>
         </div>
       </header>
 
       {/* Main Centered Login Dashboard */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12 relative z-10 w-full max-w-lg mx-auto">
-        <div className="w-full bg-white rounded-3xl border border-[#DCE5F2] shadow-[0_12px_40px_rgba(11,31,77,0.08)] p-6 sm:p-8 transition-all">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-3 sm:py-4 relative z-10 w-full max-w-lg mx-auto">
+        <div className="w-full bg-white rounded-2xl sm:rounded-3xl border border-[#DCE5F2] shadow-[0_12px_40px_rgba(11,31,77,0.08)] p-5 sm:p-6 transition-all">
 
           {/* 1. Logo Centered at Top */}
-          <div className="flex justify-center mb-3">
+          <div className="flex justify-center mb-2 sm:mb-2.5">
             <BrandLogo size="md" mode="full" />
           </div>
 
           {/* 2. Small Badge */}
-          <div className="flex justify-center mb-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[#155EEF] text-[10px] sm:text-[11px] font-bold tracking-wider uppercase shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5 text-[#00B8F8]" />
+          <div className="flex justify-center mb-1.5">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[#155EEF] text-[10px] font-bold tracking-wider uppercase shadow-2xs">
+              <Sparkles className="w-3 h-3 text-[#00B8F8]" />
               <span>DIGITAL TUITION &amp; ACADEMIC MANAGEMENT SYSTEM</span>
             </span>
           </div>
 
           {/* 3. Heading */}
-          <h1 className="text-2xl sm:text-3xl font-black text-[#0B1F4D] tracking-tight text-center">
+          <h1 className="text-xl sm:text-2xl font-black text-[#0B1F4D] tracking-tight text-center">
             Welcome to <span className="text-[#155EEF]">Infinite Tutorial</span>
           </h1>
 
           {/* 4. Subtitle */}
-          <p className="text-xs sm:text-sm text-[#5B6B82] leading-relaxed text-center mt-1.5 mb-5 max-w-sm mx-auto">
+          <p className="text-xs text-[#5B6B82] leading-relaxed text-center mt-1 mb-3.5 max-w-sm mx-auto">
             Select your portal and sign in to access your academic workspace.
           </p>
 
           {/* 5. Compact Segmented Portal Selector (Parent / Teacher / Admin) */}
-          <div className="mb-5">
+          <div className="mb-3">
             <div
               role="tablist"
               aria-label="Portal Selection"
-              className="p-1 bg-[#EEF4FF] border border-[#DCE5F2] rounded-2xl grid grid-cols-3 gap-1 shadow-2xs"
+              className="p-1 bg-[#EEF4FF] border border-[#DCE5F2] rounded-xl sm:rounded-2xl grid grid-cols-3 gap-1 shadow-2xs"
             >
               {PORTALS.map((portal) => {
                 const isSelected = activeRole === portal.id;
@@ -325,7 +325,7 @@ export const LoginPage: React.FC = () => {
                     aria-selected={isSelected}
                     id={`portal-tab-${portal.id}`}
                     onClick={() => handleRoleSelect(portal.id)}
-                    className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-200 select-none cursor-pointer ${
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg sm:rounded-xl text-xs font-bold transition-all duration-200 select-none cursor-pointer ${
                       isSelected
                         ? 'bg-[#155EEF] text-white shadow-sm shadow-blue-500/25'
                         : 'text-[#5B6B82] hover:text-[#0B1F4D] hover:bg-white/70'
@@ -340,21 +340,16 @@ export const LoginPage: React.FC = () => {
           </div>
 
           {/* Portal Context Indicator */}
-          <div className="mb-4 flex items-center justify-between px-1">
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
-                {roleMeta.icon}
-              </span>
-              <div>
-                <h2 className="text-xs sm:text-sm font-bold text-[#0B1F4D] leading-tight">
-                  {roleMeta.title}
-                </h2>
-                <p className="text-[11px] text-[#5B6B82] leading-none mt-0.5">
-                  {roleMeta.badge}
-                </p>
-              </div>
+          <div className="mb-3 flex items-center justify-between px-1">
+            <div>
+              <h2 className="text-xs sm:text-sm font-bold text-[#0B1F4D] leading-tight">
+                {roleMeta.title}
+              </h2>
+              <p className="text-[11px] text-[#5B6B82] leading-none mt-0.5">
+                {roleMeta.badge}
+              </p>
             </div>
-            <span className="text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] px-2.5 py-0.5 rounded-full border border-[#DCE5F2]">
+            <span className="text-[10px] sm:text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] px-2.5 py-0.5 rounded-full border border-[#DCE5F2]">
               {activeRole.toUpperCase()}
             </span>
           </div>
@@ -363,7 +358,7 @@ export const LoginPage: React.FC = () => {
           {errorMessage && (
             <div
               role="alert"
-              className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-xs text-red-700 animate-fadeIn"
+              className="mb-3 p-2.5 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2 text-xs text-red-700 animate-fadeIn"
             >
               <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
               <div className="flex-1 font-medium">{errorMessage}</div>
@@ -372,7 +367,7 @@ export const LoginPage: React.FC = () => {
 
           {/* Active Session Notice */}
           {isAuthenticated && user && user.role.toLowerCase() === activeRole && (
-            <div className="mb-4 p-3 rounded-2xl bg-[#EEF4FF] border border-[#155EEF]/30 flex items-center justify-between gap-3 text-xs animate-fadeIn">
+            <div className="mb-3 p-2.5 rounded-xl bg-[#EEF4FF] border border-[#155EEF]/30 flex items-center justify-between gap-3 text-xs animate-fadeIn">
               <div className="text-[#0B1F4D]">
                 <span className="font-semibold block">Signed in as {user.name}</span>
                 <span className="text-[#5B6B82] text-[11px]">Active {user.role} session available</span>
@@ -380,7 +375,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate(`/${activeRole}`)}
-                className="px-3.5 py-1.5 bg-[#155EEF] hover:bg-[#004EEB] text-white rounded-xl font-bold text-xs shadow-xs transition-colors shrink-0 cursor-pointer"
+                className="px-3 py-1 bg-[#155EEF] hover:bg-[#004EEB] text-white rounded-lg font-bold text-xs shadow-xs transition-colors shrink-0 cursor-pointer"
               >
                 Open Portal &rarr;
               </button>
@@ -388,7 +383,7 @@ export const LoginPage: React.FC = () => {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {/* 6. Identifier field */}
             <div>
               <Input
@@ -402,6 +397,7 @@ export const LoginPage: React.FC = () => {
                 startIcon={roleMeta.identifierIcon}
                 helperText={roleMeta.identifierHelper}
                 autoComplete={activeRole === 'parent' ? 'tel' : 'email'}
+                className="py-2"
                 required
               />
             </div>
@@ -426,17 +422,20 @@ export const LoginPage: React.FC = () => {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 }
-                helperText={roleMeta.passwordHelper}
                 autoComplete="current-password"
+                className="py-2"
                 required
               />
 
-              {/* 8. Forgot Password link */}
-              <div className="flex justify-end mt-1.5">
+              {/* 8. Password Helper & Forgot Password Link */}
+              <div className="flex items-center justify-between mt-1 px-0.5 text-[11px]">
+                <span className="text-[#5B6B82] truncate pr-2">
+                  {roleMeta.passwordHelper}
+                </span>
                 <button
                   type="button"
                   onClick={() => setShowForgotModal(true)}
-                  className="text-xs font-bold text-[#155EEF] hover:text-[#0E4FD6] transition-colors focus:outline-hidden cursor-pointer"
+                  className="font-bold text-[#155EEF] hover:text-[#0E4FD6] transition-colors whitespace-nowrap cursor-pointer focus:outline-hidden"
                 >
                   Forgot Password?
                 </button>
@@ -444,12 +443,12 @@ export const LoginPage: React.FC = () => {
             </div>
 
             {/* 9. Prominent Blue Login Button */}
-            <div className="pt-1">
+            <div className="pt-0.5">
               <Button
                 id="login-submit-btn"
                 type="submit"
                 variant="primary"
-                className="w-full py-3 font-bold text-sm sm:text-base rounded-xl shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/35 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-2.5 font-bold text-sm sm:text-base rounded-xl shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/35 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 isLoading={isLoading}
               >
                 <span>Login</span>
@@ -459,7 +458,7 @@ export const LoginPage: React.FC = () => {
           </form>
 
           {/* 10. Footer within Card */}
-          <div className="mt-5 pt-4 border-t border-[#DCE5F2] flex items-center justify-center gap-2 text-center text-xs font-semibold text-[#5B6B82]">
+          <div className="mt-3.5 pt-3 border-t border-[#DCE5F2] flex items-center justify-center gap-2 text-center text-xs font-semibold text-[#5B6B82]">
             <ShieldCheck className="w-4 h-4 text-[#155EEF]" />
             <span>Secure Academic &amp; Tuition Management System</span>
           </div>
@@ -467,8 +466,8 @@ export const LoginPage: React.FC = () => {
       </main>
 
       {/* Outer Clean Branded Footer */}
-      <footer className="w-full px-6 py-4 sm:px-8 text-center border-t border-[#DCE5F2] bg-white/70 backdrop-blur-xs text-xs text-[#5B6B82] relative z-20">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <footer className="w-full px-4 sm:px-6 py-2.5 text-center border-t border-[#DCE5F2] bg-white/70 backdrop-blur-xs text-xs text-[#5B6B82] relative z-20">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 sm:gap-2">
           <p className="font-medium">&copy; {new Date().getFullYear()} Infinite Tutorial. All rights reserved.</p>
           <p className="text-[11px] text-[#8A9BB0]">
             Protected by Infinite Academic Security &bull; SSL Secured 256-Bit
