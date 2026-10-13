@@ -52,9 +52,8 @@ import { AdminPasswordManagementPage } from './pages/admin/AdminPasswordManageme
 import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { StartupVideo } from './components/common/StartupVideo';
-import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
 
-// Root route: Shows RoleSelectionPage after loader so the user can choose their portal
+// Root route: Shows unified LoginPage so the user can sign in or select their portal
 const RootRoute: React.FC = () => {
   const { isLoading } = useAuth();
 
@@ -62,7 +61,7 @@ const RootRoute: React.FC = () => {
     return <LoadingScreen message="Loading Infinite Tutorial..." subMessage="Checking your portal permissions and records" />;
   }
 
-  return <RoleSelectionPage />;
+  return <LoginPage />;
 };
 
 // Login Route wrapper: Renders LoginPage so the user can sign in or switch roles

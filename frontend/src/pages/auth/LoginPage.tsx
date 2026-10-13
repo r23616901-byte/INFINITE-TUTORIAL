@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
@@ -14,13 +15,36 @@ import {
   Mail,
   Lock,
   AlertCircle,
-  ArrowLeft,
   HelpCircle,
   Eye,
   EyeOff,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 
 export type RoleType = 'parent' | 'teacher' | 'admin';
+
+// Safe demo credentials configured for development/testing
+const DEMO_CREDENTIALS: Record<RoleType, { identifier: string; password: string }> = {
+  parent: {
+    identifier: import.meta.env.VITE_PARENT_DEMO_PHONE || '6361085188',
+    password: import.meta.env.VITE_PARENT_DEMO_PASSWORD || '260906',
+  },
+  teacher: {
+    identifier: import.meta.env.VITE_TEACHER_DEMO_EMAIL || 'teacher@infinite.com',
+    password: import.meta.env.VITE_TEACHER_DEMO_PASSWORD || 'Teacher@123',
+  },
+  admin: {
+    identifier: '',
+    password: '',
+  },
+};
+
+const PORTALS: { id: RoleType; label: string; icon: React.ReactNode }[] = [
+  { id: 'parent', label: 'Parent', icon: <Users className="w-4 h-4" /> },
+  { id: 'teacher', label: 'Teacher', icon: <GraduationCap className="w-4 h-4" /> },
+  { id: 'admin', label: 'Admin', icon: <ShieldCheck className="w-4 h-4" /> },
+];
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,8 +61,8 @@ export const LoginPage: React.FC = () => {
   };
 
   const [activeRole, setActiveRole] = useState<RoleType>(getInitialRole);
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
+  const [identifier, setIdentifier] = useState(() => DEMO_CREDENTIALS[getInitialRole()]?.identifier || '');
+  const [password, setPassword] = useState(() => DEMO_CREDENTIALS[getInitialRole()]?.password || '');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -48,20 +72,28 @@ export const LoginPage: React.FC = () => {
   useEffect(() => {
     const rawRole = (params.role || new URLSearchParams(location.search).get('role') || '').toLowerCase();
     if (!rawRole) {
-      navigate('/select-role', { replace: true });
+      navigate('/login/parent', { replace: true });
       return;
     }
     const nextRole = getInitialRole();
     setActiveRole(nextRole);
+    setIdentifier(DEMO_CREDENTIALS[nextRole]?.identifier || '');
+    setPassword(DEMO_CREDENTIALS[nextRole]?.password || '');
+    setShowPassword(false);
     setErrorMessage('');
   }, [params.role, location.search, navigate]);
+
+  const handleRoleSelect = (newRole: RoleType) => {
+    if (newRole === activeRole) return;
+    navigate(`/login/${newRole}`);
+  };
 
   const roleMeta = {
     parent: {
       title: 'Parent Portal Login',
       badge: 'Parent & Student Access',
       subtitle: "Sign in with your registered phone number to view attendance, marks & tests.",
-      icon: <Users className="w-5 h-5 text-[#155EEF]" />,
+      icon: <Users className="w-4 h-4 text-[#155EEF]" />,
       identifierLabel: 'Registered Mobile Number',
       identifierPlaceholder: 'e.g. 6361085188',
       identifierIcon: <Phone className="w-4 h-4" />,
@@ -72,7 +104,7 @@ export const LoginPage: React.FC = () => {
       title: 'Teacher Portal Login',
       badge: 'Faculty Educator Desk',
       subtitle: 'Sign in with your faculty email to record attendance, exams & updates.',
-      icon: <GraduationCap className="w-5 h-5 text-[#155EEF]" />,
+      icon: <GraduationCap className="w-4 h-4 text-[#155EEF]" />,
       identifierLabel: 'Faculty Email Address',
       identifierPlaceholder: 'e.g. teacher@infinite.com',
       identifierIcon: <Mail className="w-4 h-4" />,
@@ -83,7 +115,7 @@ export const LoginPage: React.FC = () => {
       title: 'Admin Portal Login',
       badge: 'Administration Portal',
       subtitle: 'Sign in to manage tuition operations, teachers, and system records.',
-      icon: <ShieldCheck className="w-5 h-5 text-[#155EEF]" />,
+      icon: <ShieldCheck className="w-4 h-4 text-[#155EEF]" />,
       identifierLabel: 'Admin Email Address',
       identifierPlaceholder: 'e.g. admin@infinite.com',
       identifierIcon: <Mail className="w-4 h-4" />,
@@ -104,9 +136,9 @@ export const LoginPage: React.FC = () => {
     TEACHER: {
       id: 'teacher-preview-1',
       role: 'TEACHER' as const,
-      name: 'Mrs. Priya Sundaram',
-      email: 'priya@infinitetutorial.com',
-      phone: '+91 9812345678',
+      name: 'Prof. Rajesh Sharma (Physics)',
+      email: 'teacher@infinite.com',
+      phone: '+91 9800000002',
     },
     PARENT: {
       id: 'parent-preview-1',
@@ -229,12 +261,12 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#F5F8FC] text-[#0B1F4D] relative overflow-hidden select-none">
+    <div className="min-h-screen flex flex-col justify-between bg-[#F5F8FC] text-[#0B1F4D] relative overflow-x-hidden select-none">
       {/* Background Brand Watermark */}
       <BrandWatermark opacity={0.035} size="xl" position="center" />
 
       {/* Top Header */}
-      <header className="w-full px-6 py-4 sm:px-8 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
+      <header className="w-full px-6 py-3.5 sm:px-8 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
         <Link
           to="/"
           className="group inline-flex items-center gap-3 transition-opacity duration-200 focus:outline-hidden"
@@ -243,160 +275,203 @@ export const LoginPage: React.FC = () => {
           <BrandLogo size="sm" />
         </Link>
 
-        <div className="flex items-center gap-4">
-          <Link
-            to="/select-role"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#5B6B82] hover:text-[#155EEF] transition-colors group"
-          >
-            <ArrowLeft className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" />
-            <span>Switch Role</span>
-          </Link>
-
-          <span className="hidden sm:inline-block text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] border border-[#DCE5F2] px-3 py-1 rounded-full">
-            Secure SSL 256-Bit
-          </span>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[11px] font-bold text-[#155EEF]">
+          <span className="w-2 h-2 rounded-full bg-[#00B8F8] animate-pulse" />
+          <span>Academic Session 2024–25</span>
         </div>
       </header>
 
-      {/* Main Centered Login Card */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12 relative z-10 w-full max-w-md mx-auto">
-        <div className="w-full bg-white rounded-3xl border border-[#DCE5F2] shadow-sm p-6 sm:p-8">
+      {/* Main Centered Login Dashboard */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12 relative z-10 w-full max-w-lg mx-auto">
+        <div className="w-full bg-white rounded-3xl border border-[#DCE5F2] shadow-[0_12px_40px_rgba(11,31,77,0.08)] p-6 sm:p-8 transition-all">
 
-            {/* Header info */}
-            <div className="mb-6 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
-                  {roleMeta.icon}
+          {/* 1. Logo Centered at Top */}
+          <div className="flex justify-center mb-3">
+            <BrandLogo size="md" mode="full" />
+          </div>
+
+          {/* 2. Small Badge */}
+          <div className="flex justify-center mb-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[#155EEF] text-[10px] sm:text-[11px] font-bold tracking-wider uppercase shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#00B8F8]" />
+              <span>DIGITAL TUITION &amp; ACADEMIC MANAGEMENT SYSTEM</span>
+            </span>
+          </div>
+
+          {/* 3. Heading */}
+          <h1 className="text-2xl sm:text-3xl font-black text-[#0B1F4D] tracking-tight text-center">
+            Welcome to <span className="text-[#155EEF]">Infinite Tutorial</span>
+          </h1>
+
+          {/* 4. Subtitle */}
+          <p className="text-xs sm:text-sm text-[#5B6B82] leading-relaxed text-center mt-1.5 mb-5 max-w-sm mx-auto">
+            Select your portal and sign in to access your academic workspace.
+          </p>
+
+          {/* 5. Compact Segmented Portal Selector (Parent / Teacher / Admin) */}
+          <div className="mb-5">
+            <div
+              role="tablist"
+              aria-label="Portal Selection"
+              className="p-1 bg-[#EEF4FF] border border-[#DCE5F2] rounded-2xl grid grid-cols-3 gap-1 shadow-2xs"
+            >
+              {PORTALS.map((portal) => {
+                const isSelected = activeRole === portal.id;
+                return (
+                  <button
+                    key={portal.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isSelected}
+                    id={`portal-tab-${portal.id}`}
+                    onClick={() => handleRoleSelect(portal.id)}
+                    className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-bold transition-all duration-200 select-none cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#155EEF] text-white shadow-sm shadow-blue-500/25'
+                        : 'text-[#5B6B82] hover:text-[#0B1F4D] hover:bg-white/70'
+                    }`}
+                  >
+                    {portal.icon}
+                    <span>{portal.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Portal Context Indicator */}
+          <div className="mb-4 flex items-center justify-between px-1">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
+                {roleMeta.icon}
+              </span>
+              <div>
+                <h2 className="text-xs sm:text-sm font-bold text-[#0B1F4D] leading-tight">
+                  {roleMeta.title}
+                </h2>
+                <p className="text-[11px] text-[#5B6B82] leading-none mt-0.5">
                   {roleMeta.badge}
-                </span>
-                <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-50 border border-[#DCE5F2] shadow-2xs flex items-center justify-center">
-                  <img
-                    src={`${import.meta.env.BASE_URL}images/roles/${activeRole}.jpg`}
-                    alt={roleMeta.title}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
+                </p>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#0B1F4D] tracking-tight">
-                {roleMeta.title}
-              </h2>
-              <p className="text-xs sm:text-sm text-[#5B6B82] leading-relaxed">
-                {roleMeta.subtitle}
-              </p>
+            </div>
+            <span className="text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] px-2.5 py-0.5 rounded-full border border-[#DCE5F2]">
+              {activeRole.toUpperCase()}
+            </span>
+          </div>
+
+          {/* Error Alert */}
+          {errorMessage && (
+            <div
+              role="alert"
+              className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-xs text-red-700 animate-fadeIn"
+            >
+              <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+              <div className="flex-1 font-medium">{errorMessage}</div>
+            </div>
+          )}
+
+          {/* Active Session Notice */}
+          {isAuthenticated && user && user.role.toLowerCase() === activeRole && (
+            <div className="mb-4 p-3 rounded-2xl bg-[#EEF4FF] border border-[#155EEF]/30 flex items-center justify-between gap-3 text-xs animate-fadeIn">
+              <div className="text-[#0B1F4D]">
+                <span className="font-semibold block">Signed in as {user.name}</span>
+                <span className="text-[#5B6B82] text-[11px]">Active {user.role} session available</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate(`/${activeRole}`)}
+                className="px-3.5 py-1.5 bg-[#155EEF] hover:bg-[#004EEB] text-white rounded-xl font-bold text-xs shadow-xs transition-colors shrink-0 cursor-pointer"
+              >
+                Open Portal &rarr;
+              </button>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* 6. Identifier field */}
+            <div>
+              <Input
+                id="login-identifier"
+                label={roleMeta.identifierLabel}
+                type={activeRole === 'parent' ? 'tel' : 'email'}
+                inputMode={activeRole === 'parent' ? 'numeric' : 'email'}
+                placeholder={roleMeta.identifierPlaceholder}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
+                startIcon={roleMeta.identifierIcon}
+                helperText={roleMeta.identifierHelper}
+                autoComplete={activeRole === 'parent' ? 'tel' : 'email'}
+                required
+              />
             </div>
 
-            {/* Error Alert */}
-            {errorMessage && (
-              <div
-                role="alert"
-                className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-xs text-red-700 animate-fadeIn"
-              >
-                <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1 font-medium">{errorMessage}</div>
-              </div>
-            )}
-
-            {/* Active Session Notice */}
-            {isAuthenticated && user && user.role.toLowerCase() === activeRole && (
-              <div className="mb-5 p-3.5 rounded-2xl bg-[#EEF4FF] border border-[#155EEF]/30 flex items-center justify-between gap-3 text-xs animate-fadeIn">
-                <div className="text-[#0B1F4D]">
-                  <span className="font-semibold block">Signed in as {user.name}</span>
-                  <span className="text-[#5B6B82] text-[11px]">Active {user.role} session available</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => navigate(`/${activeRole}`)}
-                  className="px-3.5 py-1.5 bg-[#155EEF] hover:bg-[#004EEB] text-white rounded-xl font-bold text-xs shadow-xs transition-colors shrink-0 cursor-pointer"
-                >
-                  Open Portal &rarr;
-                </button>
-              </div>
-            )}
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Input
-                  label={roleMeta.identifierLabel}
-                  type={activeRole === 'parent' ? 'tel' : 'email'}
-                  inputMode={activeRole === 'parent' ? 'numeric' : 'email'}
-                  placeholder={roleMeta.identifierPlaceholder}
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  startIcon={roleMeta.identifierIcon}
-                  helperText={roleMeta.identifierHelper}
-                  autoComplete={activeRole === 'parent' ? 'tel' : 'email'}
-                  required
-                />
-              </div>
-
-              <div>
-                <Input
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  startIcon={<Lock className="w-4 h-4" />}
-                  endIcon={
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="text-[#8A9BB0] hover:text-[#0B1F4D] focus:outline-hidden p-1 pointer-events-auto"
-                      aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  }
-                  helperText={roleMeta.passwordHelper}
-                  autoComplete="current-password"
-                  required
-                />
-
-                {/* Forgot Password link */}
-                <div className="flex justify-end mt-1.5">
+            {/* 7. Password field with show/hide icon */}
+            <div>
+              <Input
+                id="login-password"
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                startIcon={<Lock className="w-4 h-4" />}
+                endIcon={
                   <button
                     type="button"
-                    onClick={() => setShowForgotModal(true)}
-                    className="text-xs font-bold text-[#155EEF] hover:text-[#0E4FD6] transition-colors focus:outline-hidden"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[#8A9BB0] hover:text-[#0B1F4D] focus:outline-hidden p-1 pointer-events-auto cursor-pointer"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    Forgot Password?
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
-                </div>
-              </div>
+                }
+                helperText={roleMeta.passwordHelper}
+                autoComplete="current-password"
+                required
+              />
 
-              {/* Login Button */}
-              <div className="pt-2">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className="w-full py-2.5 font-bold text-sm"
-                  isLoading={isLoading}
+              {/* 8. Forgot Password link */}
+              <div className="flex justify-end mt-1.5">
+                <button
+                  type="button"
+                  onClick={() => setShowForgotModal(true)}
+                  className="text-xs font-bold text-[#155EEF] hover:text-[#0E4FD6] transition-colors focus:outline-hidden cursor-pointer"
                 >
-                  Sign In to {activeRole.toUpperCase()} Portal
-                </Button>
+                  Forgot Password?
+                </button>
               </div>
-            </form>
-          </div>
+            </div>
 
-          {/* Switch Portal Option */}
-          <div className="mt-4 text-center">
-            <Link
-              to="/select-role"
-              className="inline-flex items-center gap-1.5 text-xs text-[#5B6B82] hover:text-[#155EEF] transition-colors font-medium"
-            >
-              <span>Not logging in as {activeRole === 'teacher' ? 'Faculty Teacher' : activeRole === 'admin' ? 'Administrator' : 'Parent / Student'}?</span>
-              <span className="font-bold underline">Change Portal</span>
-            </Link>
+            {/* 9. Prominent Blue Login Button */}
+            <div className="pt-1">
+              <Button
+                id="login-submit-btn"
+                type="submit"
+                variant="primary"
+                className="w-full py-3 font-bold text-sm sm:text-base rounded-xl shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/35 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                isLoading={isLoading}
+              >
+                <span>Login</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </form>
+
+          {/* 10. Footer within Card */}
+          <div className="mt-5 pt-4 border-t border-[#DCE5F2] flex items-center justify-center gap-2 text-center text-xs font-semibold text-[#5B6B82]">
+            <ShieldCheck className="w-4 h-4 text-[#155EEF]" />
+            <span>Secure Academic &amp; Tuition Management System</span>
           </div>
+        </div>
       </main>
 
-      {/* Clean Branded Footer */}
-      <footer className="w-full px-6 py-4 sm:px-8 text-center border-t border-[#DCE5F2] bg-white/80 backdrop-blur-xs text-xs text-[#5B6B82] relative z-20">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      {/* Outer Clean Branded Footer */}
+      <footer className="w-full px-6 py-4 sm:px-8 text-center border-t border-[#DCE5F2] bg-white/70 backdrop-blur-xs text-xs text-[#5B6B82] relative z-20">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="font-medium">&copy; {new Date().getFullYear()} Infinite Tutorial. All rights reserved.</p>
           <p className="text-[11px] text-[#8A9BB0]">
-            Protected by Infinite Tutorial Academic Security &bull; SSL Secured
+            Protected by Infinite Academic Security &bull; SSL Secured 256-Bit
           </p>
         </div>
       </footer>
