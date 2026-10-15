@@ -27,7 +27,7 @@ export const HomePage: React.FC = () => {
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
               <Database className="w-3.5 h-3.5" />
-              Backend: Express + Prisma (PostgreSQL)
+              Backend: Express + Prisma (MongoDB)
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
               <Cloud className="w-3.5 h-3.5" />

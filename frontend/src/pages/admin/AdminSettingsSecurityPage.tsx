@@ -121,7 +121,7 @@ export const AdminSettingsSecurityPage: React.FC = () => {
         />
         <StatCard
           title="Database Cluster"
-          value="PostgreSQL"
+          value="MongoDB"
           subtitle="Prisma ORM Synchronized"
           icon={<Database className="w-5 h-5 text-[#00B8F8]" />}
         />
