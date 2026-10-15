@@ -1,6 +1,6 @@
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:5432/infinite_tutorial?schema=public"
 }
 
 generator client {

@@ -34,7 +34,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
 
   // Status mapping
   let variant: 'green' | 'red' | 'amber' | 'blue' | 'gray' = 'gray';
-  let displayLabel = label || status;
+  const displayLabel = label || status;
 
   if (['present', 'approved', 'active', 'completed', 'verified', 'passed'].includes(normalized)) {
     variant = 'green';
