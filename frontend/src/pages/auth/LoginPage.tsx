@@ -18,8 +18,8 @@ import {
   HelpCircle,
   Eye,
   EyeOff,
-  Sparkles,
   ArrowRight,
+  ArrowLeft,
 } from 'lucide-react';
 
 export type RoleType = 'parent' | 'teacher' | 'admin';
@@ -39,12 +39,6 @@ const DEMO_CREDENTIALS: Record<RoleType, { identifier: string; password: string 
     password: '',
   },
 };
-
-const PORTALS: { id: RoleType; label: string; icon: React.ReactNode }[] = [
-  { id: 'parent', label: 'Parent', icon: <Users className="w-4 h-4" /> },
-  { id: 'teacher', label: 'Teacher', icon: <GraduationCap className="w-4 h-4" /> },
-  { id: 'admin', label: 'Admin', icon: <ShieldCheck className="w-4 h-4" /> },
-];
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -72,7 +66,7 @@ export const LoginPage: React.FC = () => {
   useEffect(() => {
     const rawRole = (params.role || new URLSearchParams(location.search).get('role') || '').toLowerCase();
     if (!rawRole) {
-      navigate('/login/parent', { replace: true });
+      navigate('/select-role', { replace: true });
       return;
     }
     const nextRole = getInitialRole();
@@ -82,11 +76,6 @@ export const LoginPage: React.FC = () => {
     setShowPassword(false);
     setErrorMessage('');
   }, [params.role, location.search, navigate]);
-
-  const handleRoleSelect = (newRole: RoleType) => {
-    if (newRole === activeRole) return;
-    navigate(`/login/${newRole}`);
-  };
 
   const roleMeta = {
     parent: {
@@ -285,74 +274,37 @@ export const LoginPage: React.FC = () => {
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-3 sm:py-4 relative z-10 w-full max-w-lg mx-auto">
         <div className="w-full bg-white rounded-2xl sm:rounded-3xl border border-[#DCE5F2] shadow-[0_12px_40px_rgba(11,31,77,0.08)] p-5 sm:p-6 transition-all">
 
+          {/* Top Bar with Back/Change Portal button & Dedicated Portal Indicator */}
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#DCE5F2]">
+            <button
+              type="button"
+              onClick={() => navigate('/select-role')}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#5B6B82] hover:text-[#155EEF] transition-colors cursor-pointer group"
+              title="Return to portal selection"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
+              <span>Change Portal</span>
+            </button>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
+              {roleMeta.icon}
+              <span>{roleMeta.badge}</span>
+            </span>
+          </div>
+
           {/* 1. Logo Centered at Top */}
-          <div className="flex justify-center mb-2 sm:mb-2.5">
+          <div className="flex justify-center mb-2">
             <BrandLogo size="md" mode="full" />
           </div>
 
-          {/* 2. Small Badge */}
-          <div className="flex justify-center mb-1.5">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[#155EEF] text-[10px] font-bold tracking-wider uppercase shadow-2xs">
-              <Sparkles className="w-3 h-3 text-[#00B8F8]" />
-              <span>DIGITAL TUITION &amp; ACADEMIC MANAGEMENT SYSTEM</span>
-            </span>
-          </div>
-
-          {/* 3. Heading */}
+          {/* 2. Portal-Specific Heading */}
           <h1 className="text-xl sm:text-2xl font-black text-[#0B1F4D] tracking-tight text-center">
-            Welcome to <span className="text-[#155EEF]">Infinite Tutorial</span>
+            {roleMeta.title}
           </h1>
 
-          {/* 4. Subtitle */}
-          <p className="text-xs text-[#5B6B82] leading-relaxed text-center mt-1 mb-3.5 max-w-sm mx-auto">
-            Select your portal and sign in to access your academic workspace.
+          {/* 3. Portal-Specific Subtitle */}
+          <p className="text-xs text-[#5B6B82] leading-relaxed text-center mt-1 mb-4 max-w-sm mx-auto">
+            {roleMeta.subtitle}
           </p>
-
-          {/* 5. Compact Segmented Portal Selector (Parent / Teacher / Admin) */}
-          <div className="mb-3">
-            <div
-              role="tablist"
-              aria-label="Portal Selection"
-              className="p-1 bg-[#EEF4FF] border border-[#DCE5F2] rounded-xl sm:rounded-2xl grid grid-cols-3 gap-1 shadow-2xs"
-            >
-              {PORTALS.map((portal) => {
-                const isSelected = activeRole === portal.id;
-                return (
-                  <button
-                    key={portal.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isSelected}
-                    id={`portal-tab-${portal.id}`}
-                    onClick={() => handleRoleSelect(portal.id)}
-                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg sm:rounded-xl text-xs font-bold transition-all duration-200 select-none cursor-pointer ${
-                      isSelected
-                        ? 'bg-[#155EEF] text-white shadow-sm shadow-blue-500/25'
-                        : 'text-[#5B6B82] hover:text-[#0B1F4D] hover:bg-white/70'
-                    }`}
-                  >
-                    {portal.icon}
-                    <span>{portal.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Portal Context Indicator */}
-          <div className="mb-3 flex items-center justify-between px-1">
-            <div>
-              <h2 className="text-xs sm:text-sm font-bold text-[#0B1F4D] leading-tight">
-                {roleMeta.title}
-              </h2>
-              <p className="text-[11px] text-[#5B6B82] leading-none mt-0.5">
-                {roleMeta.badge}
-              </p>
-            </div>
-            <span className="text-[10px] sm:text-[11px] font-bold text-[#155EEF] bg-[#EEF4FF] px-2.5 py-0.5 rounded-full border border-[#DCE5F2]">
-              {activeRole.toUpperCase()}
-            </span>
-          </div>
 
           {/* Error Alert */}
           {errorMessage && (

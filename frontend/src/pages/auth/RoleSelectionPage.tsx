@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, LogOut } from 'lucide-react';
+import { ArrowRight, Sparkles, LogOut, Users, GraduationCap, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { BrandWatermark } from '../../components/common/BrandWatermark';
@@ -9,38 +9,44 @@ interface RoleOption {
   id: 'parent' | 'teacher' | 'admin';
   title: string;
   roleName: string;
-  subtitleLines: [string, string];
+  subtitleBadge: string;
+  description: string;
   image: string;
+  icon: React.ReactNode;
 }
 
 export const RoleSelectionPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
-  // Admin is selected with the blue border by default as shown in the reference design,
-  // and hovering/focusing any card highlights it dynamically.
-  const [activeRole, setActiveRole] = useState<'parent' | 'teacher' | 'admin'>('admin');
+  const [activeRole, setActiveRole] = useState<'parent' | 'teacher' | 'admin'>('parent');
 
   const roles: RoleOption[] = [
     {
       id: 'parent',
       title: 'Parent',
       roleName: 'Parent Portal',
-      subtitleLines: ['STUDENT', 'RECORDS'],
+      subtitleBadge: 'STUDENT & PARENT ACCESS',
+      description: 'View daily attendance, test marks, evaluated answer sheets & home reach arrival.',
       image: `${import.meta.env.BASE_URL}images/roles/parent.jpg`,
+      icon: <Users className="w-5 h-5 text-[#155EEF]" />,
     },
     {
       id: 'teacher',
       title: 'Teacher',
-      roleName: 'Faculty Portal',
-      subtitleLines: ['ACADEMIC', 'DESK'],
+      roleName: 'Teacher Portal',
+      subtitleBadge: 'FACULTY EDUCATOR DESK',
+      description: 'Record student attendance, enter test marks, manage syllabus & portion progress.',
       image: `${import.meta.env.BASE_URL}images/roles/teacher.jpg`,
+      icon: <GraduationCap className="w-5 h-5 text-[#155EEF]" />,
     },
     {
       id: 'admin',
       title: 'Admin',
-      roleName: 'Administration Portal',
-      subtitleLines: ['CONTROL', 'CENTER'],
+      roleName: 'Admin Portal',
+      subtitleBadge: 'TUITION ADMINISTRATION',
+      description: 'Complete tuition control, student admissions, faculty roster & system security.',
       image: `${import.meta.env.BASE_URL}images/roles/admin.jpg`,
+      icon: <ShieldCheck className="w-5 h-5 text-[#155EEF]" />,
     },
   ];
 
@@ -54,7 +60,7 @@ export const RoleSelectionPage: React.FC = () => {
       <BrandWatermark opacity={0.035} size="xl" position="center" />
 
       {/* Top Header */}
-      <header className="w-full px-6 py-5 sm:px-8 sm:py-6 md:px-12 md:py-7 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
+      <header className="w-full px-6 py-4 sm:px-8 sm:py-5 flex items-center justify-between z-20 relative bg-white/70 backdrop-blur-md border-b border-[#DCE5F2]">
         <Link
           to="/"
           className="group inline-flex items-center gap-3 transition-opacity duration-200 focus:outline-hidden"
@@ -68,7 +74,7 @@ export const RoleSelectionPage: React.FC = () => {
           {isAuthenticated && user && (
             <div className="flex items-center gap-2">
               <span className="hidden sm:inline-block text-xs font-semibold text-[#5B6B82]">
-                Active: <strong className="text-[#0B1F4D]">{user.name}</strong> ({user.role})
+                Signed in: <strong className="text-[#0B1F4D]">{user.name}</strong> ({user.role})
               </span>
               <button
                 type="button"
@@ -84,21 +90,21 @@ export const RoleSelectionPage: React.FC = () => {
             </div>
           )}
 
-          {/* Institute badge */}
+          {/* Academic Session badge */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-xs font-bold text-[#155EEF]">
             <span className="w-2 h-2 rounded-full bg-[#00B8F8] animate-pulse" />
-            Academic Year 2024–25
+            <span>Academic Session 2024–25</span>
           </div>
         </div>
       </header>
 
       {/* Main Hero & Role Selection Container */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-6xl w-full mx-auto relative z-10">
-        {/* Welcome Hero Section */}
-        <section className="text-center max-w-2xl mx-auto space-y-3">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-10 max-w-6xl w-full mx-auto relative z-10">
+        {/* Welcome Section */}
+        <section className="text-center max-w-2xl mx-auto space-y-2.5">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[#155EEF] text-xs font-bold tracking-wide uppercase shadow-2xs">
             <Sparkles className="w-3.5 h-3.5 text-[#00B8F8]" />
-            Digital Tuition &amp; Academic Management System
+            <span>Digital Tuition &amp; Academic Management System</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0B1F4D] tracking-tight leading-tight">
@@ -106,13 +112,13 @@ export const RoleSelectionPage: React.FC = () => {
           </h1>
 
           <p className="text-sm sm:text-base text-[#5B6B82] leading-relaxed max-w-xl mx-auto font-normal">
-            Select your portal to sign in and access your academic workspace.
+            Choose your dedicated portal and click Enter to sign in to your workspace.
           </p>
         </section>
 
-        {/* Role Cards Section (Matching Reference Design) */}
-        <section className="w-full mt-10 sm:mt-12" aria-label="Select your role to sign in">
-          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 max-w-4xl mx-auto w-full">
+        {/* 3 Icon Cards Section */}
+        <section className="w-full mt-8 sm:mt-10" aria-label="Select your portal to sign in">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto w-full">
             {roles.map((role) => {
               const isSelected = activeRole === role.id;
               return (
@@ -120,7 +126,7 @@ export const RoleSelectionPage: React.FC = () => {
                   key={role.id}
                   role="button"
                   tabIndex={0}
-                  aria-label={`Enter as ${role.title}`}
+                  aria-label={`Enter ${role.roleName}`}
                   onClick={() => handleSelectRole(role.id)}
                   onMouseEnter={() => setActiveRole(role.id)}
                   onFocus={() => setActiveRole(role.id)}
@@ -130,42 +136,55 @@ export const RoleSelectionPage: React.FC = () => {
                       handleSelectRole(role.id);
                     }
                   }}
-                  className={`group relative w-full sm:w-[260px] md:w-[270px] min-h-[340px] p-8 rounded-[32px] bg-white transition-all duration-300 ease-out cursor-pointer flex flex-col items-center justify-between text-center select-none ${
+                  className={`group relative p-6 sm:p-7 rounded-3xl bg-white transition-all duration-300 ease-out cursor-pointer flex flex-col items-center justify-between text-center select-none ${
                     isSelected
-                      ? 'border-2 border-[#155EEF] shadow-[0_12px_36px_rgba(21,94,239,0.16)] -translate-y-1.5'
-                      : 'border border-[#E2E8F0] shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:border-[#155EEF]/60 hover:shadow-xl hover:-translate-y-1'
+                      ? 'border-2 border-[#155EEF] shadow-[0_12px_36px_rgba(21,94,239,0.16)] -translate-y-1.5 ring-4 ring-blue-50'
+                      : 'border border-[#DCE5F2] shadow-[0_4px_20px_rgba(11,31,77,0.06)] hover:border-[#155EEF]/70 hover:shadow-xl hover:-translate-y-1'
                   }`}
                 >
-                  {/* Top 3D Role Image */}
-                  <div className="pt-2 pb-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden flex items-center justify-center bg-transparent">
+                  {/* Top Badge with Icon */}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF4FF] border border-[#DCE5F2] text-[11px] font-bold text-[#155EEF] tracking-wide mb-3">
+                    {role.icon}
+                    <span>{role.subtitleBadge}</span>
+                  </div>
+
+                  {/* 3D Illustration / Icon Graphic */}
+                  <div className="py-2 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden flex items-center justify-center bg-[#F8FAFC]">
                       <img
                         src={role.image}
                         alt={role.title}
                         className="w-full h-full object-contain drop-shadow-sm"
                         loading="eager"
+                        onError={(e) => {
+                          // Fallback to stylized icon if image unavailable
+                          (e.currentTarget as HTMLElement).style.display = 'none';
+                        }}
                       />
                     </div>
                   </div>
 
-                  {/* Title & 2-Line Subtitle */}
+                  {/* Title & Description */}
                   <div className="flex-1 flex flex-col items-center justify-center my-3">
-                    <h3
+                    <h2
                       className={`text-2xl font-black tracking-tight transition-colors duration-200 ${
                         isSelected ? 'text-[#155EEF]' : 'text-[#0B1F4D] group-hover:text-[#155EEF]'
                       }`}
                     >
                       {role.title}
-                    </h3>
+                    </h2>
 
-                    <div className="mt-2 text-[11px] font-bold text-[#8A9BB0] tracking-[0.18em] uppercase leading-tight">
-                      <div>{role.subtitleLines[0]}</div>
-                      <div>{role.subtitleLines[1]}</div>
-                    </div>
+                    <p className="mt-1 text-xs font-bold text-[#155EEF]/80 uppercase tracking-wider">
+                      {role.roleName}
+                    </p>
+
+                    <p className="mt-2 text-xs text-[#5B6B82] leading-relaxed max-w-[220px]">
+                      {role.description}
+                    </p>
                   </div>
 
-                  {/* Action Pill Button */}
-                  <div className="mt-3 w-full flex justify-center">
+                  {/* Prominent Enter Button Below Card */}
+                  <div className="mt-4 w-full flex justify-center">
                     <button
                       type="button"
                       tabIndex={-1}
@@ -173,10 +192,10 @@ export const RoleSelectionPage: React.FC = () => {
                         e.stopPropagation();
                         handleSelectRole(role.id);
                       }}
-                      className="px-7 py-2.5 rounded-full bg-[#155EEF] hover:bg-[#004EEB] active:scale-95 text-white font-bold text-sm inline-flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/30 hover:shadow-lg hover:shadow-blue-500/40 transition-all duration-200"
+                      className="w-full py-2.5 px-6 rounded-full bg-[#155EEF] hover:bg-[#004EEB] active:scale-95 text-white font-bold text-sm inline-flex items-center justify-center gap-2 shadow-md shadow-blue-500/25 hover:shadow-lg hover:shadow-blue-500/35 transition-all duration-200 cursor-pointer"
                     >
                       <span>Enter</span>
-                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </button>
                   </div>
                 </div>

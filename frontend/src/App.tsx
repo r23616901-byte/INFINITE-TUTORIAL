@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
 import { AdminLayout } from './layouts/AdminLayout';
 import { TeacherLayout } from './layouts/TeacherLayout';
 import { ParentLayout } from './layouts/ParentLayout';
 import { LoginPage } from './pages/auth/LoginPage';
+import { RoleSelectionPage } from './pages/auth/RoleSelectionPage';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminStudentsPage } from './pages/admin/AdminStudentsPage';
@@ -53,7 +54,7 @@ import { LoadingProvider } from './context/LoadingContext';
 import { LoadingScreen } from './components/common/LoadingScreen';
 import { StartupVideo } from './components/common/StartupVideo';
 
-// Root route: Shows unified LoginPage so the user can sign in or select their portal
+// Root route: Shows RoleSelectionPage with 3 portal cards (Parent, Teacher, Admin)
 const RootRoute: React.FC = () => {
   const { isLoading } = useAuth();
 
@@ -61,15 +62,21 @@ const RootRoute: React.FC = () => {
     return <LoadingScreen message="Loading Infinite Tutorial..." subMessage="Checking your portal permissions and records" />;
   }
 
-  return <LoginPage />;
+  return <RoleSelectionPage />;
 };
 
-// Login Route wrapper: Renders LoginPage so the user can sign in or switch roles
+// Login Route wrapper: Shows RoleSelectionPage if no role specified, or LoginPage for the selected role
 const LoginRoute: React.FC = () => {
   const { isLoading } = useAuth();
+  const params = useParams<{ role?: string }>();
 
   if (isLoading) {
     return <LoadingScreen message="Loading Infinite Tutorial..." subMessage="Checking your portal permissions and records" />;
+  }
+
+  // If no role specified in URL (/login), show the 3 portal selection cards
+  if (!params.role) {
+    return <RoleSelectionPage />;
   }
 
   return <LoginPage />;
