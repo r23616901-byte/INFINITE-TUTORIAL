@@ -1,7 +1,7 @@
 import React from 'react';
+import { Calendar } from 'lucide-react';
 import { PrintLayout } from '../PrintLayout';
 import { StudentScorecard } from '../../../types/scorecard';
-import { getAcademicGrade } from '../../../utils/printUtils';
 
 export interface ScorecardPrintDocumentProps {
   scorecard: StudentScorecard;
@@ -35,9 +35,6 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
       ? targetSubject.averagePercentage
       : scorecard.overallPercentage;
 
-  const overallGrade = getAcademicGrade(overallPercentage);
-  const totalTests = subjectListToDisplay.reduce((acc, s) => acc + s.totalTests, 0);
-
   const documentTitle = isSubjectFiltered && targetSubject
     ? `OFFICIAL STUDENT ACADEMIC SCORECARD — ${targetSubject.subjectName.toUpperCase()}`
     : 'OFFICIAL STUDENT ACADEMIC SCORECARD & EVALUATION REPORT';
@@ -49,6 +46,29 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
   const reportCategory = isSubjectFiltered && targetSubject
     ? `${targetSubject.subjectName.toUpperCase()} SCORECARD`
     : 'CERTIFIED SCORECARD';
+
+  const getPercentageColor = (pct: number) => {
+    if (pct >= 85) return 'text-emerald-700 bg-emerald-50 border-emerald-300';
+    if (pct >= 70) return 'text-blue-700 bg-blue-50 border-blue-300';
+    if (pct >= 50) return 'text-amber-700 bg-amber-50 border-amber-300';
+    return 'text-rose-700 bg-rose-50 border-rose-300';
+  };
+
+  const getSubjectIcon = (subjectName: string) => {
+    switch (subjectName.toLowerCase()) {
+      case 'physics':
+        return { icon: '⚛️', bg: 'bg-purple-100 border-purple-200 text-purple-700' };
+      case 'chemistry':
+        return { icon: '🧪', bg: 'bg-emerald-100 border-emerald-200 text-emerald-700' };
+      case 'biology':
+        return { icon: '🧬', bg: 'bg-rose-100 border-rose-200 text-rose-700' };
+      case 'mathematics':
+      case 'maths':
+        return { icon: '📐', bg: 'bg-blue-100 border-blue-200 text-blue-700' };
+      default:
+        return { icon: '📚', bg: 'bg-slate-100 border-slate-200 text-slate-700' };
+    }
+  };
 
   return (
     <PrintLayout
@@ -67,10 +87,10 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
       isForPreview={isForPreview}
       customFooterNote="Official Certified Academic Scorecard issued by Infinite Tutorial Academic Directorate. Certified Teacher and Parent evaluated record."
     >
-      {/* 1. Student Identity Header & Overall Performance Hero */}
-      <div className="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-300 rounded-lg">
-        <div className="flex items-center gap-3.5">
-          <div className="w-16 h-16 rounded-lg bg-slate-200 border border-slate-300 flex items-center justify-center font-black text-xl text-slate-700 flex-shrink-0 overflow-hidden">
+      {/* Student Identity Brief Header */}
+      <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-300 rounded-xl mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-slate-200 border border-slate-300 flex items-center justify-center font-black text-lg text-slate-700 flex-shrink-0 overflow-hidden">
             {scorecard.photoUrl ? (
               <img src={scorecard.photoUrl} alt={scorecard.studentName} className="w-full h-full object-cover" />
             ) : (
@@ -79,220 +99,145 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-base font-black text-[#0A3622]">{scorecard.studentName}</h3>
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white border border-slate-300 text-slate-800">
+              <h3 className="text-sm font-black text-[#0A3622]">{scorecard.studentName}</h3>
+              <span className="text-[9.5px] font-mono font-bold px-2 py-0.5 rounded bg-white border border-slate-300 text-slate-800">
                 {scorecard.studentRoll}
               </span>
             </div>
-            <p className="text-xs text-slate-600 font-semibold mt-0.5">
-              {scorecard.className} &bull; {scorecard.boardName} &bull; Batch: {scorecard.batchName}
-            </p>
-            <p className="text-[10px] text-slate-500 mt-0.5">
-              {isSubjectFiltered && targetSubject
-                ? `Subject: ${targetSubject.subjectName} • Certified Assessments Evaluated: ${totalTests}`
-                : `Secondary Board Coaching • Total Conducted Assessments: ${totalTests}`}
+            <p className="text-[11px] text-slate-600 font-semibold mt-0.5">
+              Class: <strong>{scorecard.className}</strong> &bull; Board: <strong>{scorecard.boardName}</strong> &bull; Batch: <strong>{scorecard.batchName}</strong>
             </p>
           </div>
         </div>
 
-        {/* Aggregate KPI */}
-        <div className="text-right flex flex-col items-end border-l border-slate-200 pl-4 flex-shrink-0">
-          <span className="text-[10px] uppercase font-bold text-slate-500">
-            {isSubjectFiltered && targetSubject ? `${targetSubject.subjectName} Aggregate` : 'Aggregate Score'}
+        <div className="text-right">
+          <span className="text-[9px] uppercase font-bold text-slate-500 block">
+            {isSubjectFiltered && targetSubject ? `${targetSubject.subjectName} Overall` : 'Cumulative Score'}
           </span>
-          <div className="flex items-baseline gap-1 mt-0.5">
-            <span className="text-2xl font-black text-[#0A3622]">{overallPercentage}%</span>
-            <span className="text-xs text-slate-500 font-bold">
+          <div className="flex items-baseline gap-1 mt-0.5 justify-end">
+            <span className="text-xl font-black text-[#0A3622]">{overallPercentage}%</span>
+            <span className="text-[10px] text-slate-500 font-bold">
               ({totalObtainedMarks}/{totalMaxMarks})
             </span>
           </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-300 mt-1">
-            Grade {overallGrade.grade} &bull; {overallGrade.label}
-          </span>
         </div>
       </div>
 
-      {/* 2. Subject Performance Ledger */}
-      <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide">
-            {isSubjectFiltered && targetSubject
-              ? `${targetSubject.subjectName} Academic Performance Summary`
-              : 'Subject-Wise Academic Performance Ledger'}
-          </h4>
-          <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
-            Status: Passed with Distinction
-          </span>
-        </div>
+      {/* EXACT CARDS MATCHING USER DESIGN */}
+      {subjectListToDisplay.map((subScorecard) => {
+        const iconMeta = getSubjectIcon(subScorecard.subjectName);
+        return (
+          <div
+            key={subScorecard.subjectName}
+            className="bg-white rounded-2xl border border-slate-300 shadow-xs overflow-hidden mb-5 break-inside-avoid"
+          >
+            {/* Subject Section Header & Stats (Exact layout from user screenshot) */}
+            <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center space-x-3.5">
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl border shadow-xs flex-shrink-0 ${iconMeta.bg}`}>
+                  <span>{iconMeta.icon}</span>
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                    {subScorecard.subjectName} Test Evaluation Ledger
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Syllabus portion tests, certified evaluations, and faculty notes.
+                  </p>
+                </div>
+              </div>
 
-        <table className="w-full text-left text-xs border border-slate-300">
-          <thead>
-            <tr>
-              <th className="py-2 px-3">Subject Name</th>
-              <th className="py-2 px-3 text-center">Tests Conducted</th>
-              <th className="py-2 px-3 text-center">Maximum Marks</th>
-              <th className="py-2 px-3 text-center">Marks Scored</th>
-              <th className="py-2 px-3 text-center">Average %</th>
-              <th className="py-2 px-3 text-center">Highest %</th>
-              <th className="py-2 px-3 text-center">Grade</th>
-              <th className="py-2 px-3 text-center">Assessment</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-200">
-            {subjectListToDisplay.map((sub) => {
-              const grade = getAcademicGrade(sub.averagePercentage);
-              return (
-                <tr key={sub.subjectName} className="hover:bg-slate-50/50">
-                  <td className="py-2 px-3 font-bold text-slate-900">
-                    {sub.subjectName}
-                  </td>
-                  <td className="py-2 px-3 text-center text-slate-700">{sub.totalTests}</td>
-                  <td className="py-2 px-3 text-center text-slate-700">{sub.totalMaxMarks}</td>
-                  <td className="py-2 px-3 text-center font-bold text-slate-900">
-                    {sub.totalMarksObtained}
-                  </td>
-                  <td className="py-2 px-3 text-center font-bold text-[#0A3622]">
-                    {sub.averagePercentage}%
-                  </td>
-                  <td className="py-2 px-3 text-center font-bold text-emerald-700">
-                    {sub.highestPercentage}%
-                  </td>
-                  <td className="py-2 px-3 text-center">
-                    <span className="px-2 py-0.5 font-bold rounded bg-slate-100 border border-slate-300 text-slate-800 text-[10px]">
-                      {grade.grade}
-                    </span>
-                  </td>
-                  <td className="py-2 px-3 text-center">
-                    <span className="text-[10px] font-semibold text-slate-700">
-                      {grade.label}
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-          <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300">
-            <tr>
-              <td className="py-2 px-3 font-black uppercase text-[#0A3622]">
-                {isSubjectFiltered && targetSubject
-                  ? `Total / ${targetSubject.subjectName} Aggregate`
-                  : 'Total / Overall Aggregate'}
-              </td>
-              <td className="py-2 px-3 text-center">{totalTests}</td>
-              <td className="py-2 px-3 text-center">{totalMaxMarks}</td>
-              <td className="py-2 px-3 text-center font-black text-[#0A3622]">
-                {totalObtainedMarks}
-              </td>
-              <td className="py-2 px-3 text-center font-black text-[#0A3622]">
-                {overallPercentage}%
-              </td>
-              <td className="py-2 px-3 text-center text-emerald-800">
-                {Math.max(...subjectListToDisplay.map((s) => s.highestPercentage))}%
-              </td>
-              <td className="py-2 px-3 text-center font-black">{overallGrade.grade}</td>
-              <td className="py-2 px-3 text-center text-emerald-900">
-                {overallGrade.label}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+              {/* Subject KPIs (Exact 4 pill badges from screenshot) */}
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[55px] shadow-xs">
+                  <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">TESTS</span>
+                  <span className="text-xs font-black text-slate-900">{subScorecard.totalTests}</span>
+                </div>
+                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[65px] shadow-xs">
+                  <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">AVERAGE</span>
+                  <span className="text-xs font-black text-blue-700">{subScorecard.averagePercentage}%</span>
+                </div>
+                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[65px] shadow-xs">
+                  <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">HIGHEST</span>
+                  <span className="text-xs font-black text-emerald-700">{subScorecard.highestPercentage}%</span>
+                </div>
+                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[90px] shadow-xs">
+                  <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">MARKS TOTAL</span>
+                  <span className="text-xs font-black text-slate-900">
+                    {subScorecard.totalMarksObtained} / {subScorecard.totalMaxMarks}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-      {/* 3. Detailed Syllabus Tests & Evaluations Ledger */}
-      {subjectListToDisplay.some((s) => s.tests && s.tests.length > 0) && (
-        <div className="print-break-inside-avoid">
-          <div className="flex items-center justify-between mb-1.5">
-            <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide">
-              {isSubjectFiltered && targetSubject
-                ? `${targetSubject.subjectName} Test Evaluation Ledger & Portions Covered`
-                : 'Detailed Assessment Breakdown by Subject & Portion'}
-            </h4>
-          </div>
-
-          <table className="w-full text-left text-xs border border-slate-300">
-            <thead>
-              <tr>
-                <th className="py-1.5 px-2.5">Date</th>
-                {!isSubjectFiltered && <th className="py-1.5 px-2.5">Subject</th>}
-                <th className="py-1.5 px-2.5">Test Code &amp; Name</th>
-                <th className="py-1.5 px-2.5">Chapter / Syllabus Portion</th>
-                <th className="py-1.5 px-2.5 text-center">Max Marks</th>
-                <th className="py-1.5 px-2.5 text-center">Scored</th>
-                <th className="py-1.5 px-2.5 text-center">Percentage</th>
-                <th className="py-1.5 px-2.5 text-center">Grade</th>
-                <th className="py-1.5 px-2.5">Faculty In-Charge</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-              {subjectListToDisplay.flatMap((s) =>
-                s.tests.map((test) => {
-                  const testGrade = getAcademicGrade(test.percentage);
-                  return (
-                    <tr key={test.testId} className="hover:bg-slate-50/50">
-                      <td className="py-1.5 px-2.5 font-mono text-[10px] text-slate-700 whitespace-nowrap">{test.date}</td>
-                      {!isSubjectFiltered && (
-                        <td className="py-1.5 px-2.5 font-semibold text-slate-900">{s.subjectName}</td>
-                      )}
-                      <td className="py-1.5 px-2.5">
-                        <span className="font-bold text-slate-900">{test.testName}</span>
-                        <span className="font-mono text-[9px] text-slate-500 block">{test.testCode}</span>
+            {/* Test Ledger Table (Exact columns & rows from user screenshot) */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-slate-200 text-xs">
+                <thead className="bg-slate-50/80 text-slate-600 font-bold uppercase text-[10.5px] tracking-wider">
+                  <tr>
+                    <th className="px-4 py-3 text-left">TEST NAME &amp; DATE</th>
+                    <th className="px-4 py-3 text-left">CHAPTER / PORTION</th>
+                    <th className="px-4 py-3 text-center">MAX MARKS</th>
+                    <th className="px-4 py-3 text-center">OBTAINED</th>
+                    <th className="px-4 py-3 text-center">PERCENTAGE</th>
+                    <th className="px-4 py-3 text-left">FACULTY IN-CHARGE</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-slate-100">
+                  {subScorecard.tests.map((testItem, idx) => (
+                    <tr key={idx} className="hover:bg-slate-50/70">
+                      {/* Test Name & Date */}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="font-bold text-slate-900 text-xs">{testItem.testName}</div>
+                        <div className="text-slate-500 flex items-center mt-0.5 text-[10.5px] font-medium">
+                          <Calendar className="w-3.5 h-3.5 mr-1 text-slate-400" />
+                          {testItem.date}
+                        </div>
                       </td>
-                      <td className="py-1.5 px-2.5 text-slate-700">
-                        <div className="font-medium text-slate-900">{test.chapter || 'Prescribed Syllabus'}</div>
-                        {test.remarks && (
-                          <div className="text-[9.5px] text-slate-500 italic mt-0.5">Note: {test.remarks}</div>
+
+                      {/* Chapter / Portion with Note */}
+                      <td className="px-4 py-3 text-slate-700 max-w-xs">
+                        <div className="font-semibold text-slate-900">{testItem.chapter}</div>
+                        {testItem.remarks && (
+                          <div className="text-[10px] text-slate-500 italic mt-0.5">
+                            Note: {testItem.remarks}
+                          </div>
                         )}
                       </td>
-                      <td className="py-1.5 px-2.5 text-center text-slate-600">{test.maxMarks}</td>
-                      <td className="py-1.5 px-2.5 text-center font-bold text-slate-900">{test.marksObtained}</td>
-                      <td className="py-1.5 px-2.5 text-center font-bold text-[#0A3622]">{test.percentage}%</td>
-                      <td className="py-1.5 px-2.5 text-center font-bold">{testGrade.grade}</td>
-                      <td className="py-1.5 px-2.5 text-slate-700 text-[10px] whitespace-nowrap">{test.teacher}</td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
 
-      {/* 4. Board Grading Scheme Reference Matrix */}
-      <div className="p-2.5 bg-slate-50 border border-slate-300 rounded print-break-inside-avoid">
-        <span className="text-[9px] font-black text-slate-700 uppercase tracking-wider block mb-1">
-          Secondary Board Reference Grading Scale:
-        </span>
-        <div className="grid grid-cols-7 gap-1 text-center text-[8.5px]">
-          <div className="p-1 bg-white border border-slate-200 rounded">
-            <span className="font-bold text-slate-900 block">O (90-100%)</span>
-            <span className="text-emerald-700 font-semibold">Outstanding</span>
+                      {/* Max Marks */}
+                      <td className="px-4 py-3 whitespace-nowrap text-center font-semibold text-slate-600">
+                        {testItem.maxMarks}
+                      </td>
+
+                      {/* Marks Obtained */}
+                      <td className="px-4 py-3 whitespace-nowrap text-center">
+                        <span className="font-black text-slate-900 text-xs">{testItem.marksObtained}</span>
+                      </td>
+
+                      {/* Percentage Pill */}
+                      <td className="px-4 py-3 whitespace-nowrap text-center">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${getPercentageColor(
+                            testItem.percentage
+                          )}`}
+                        >
+                          {testItem.percentage}%
+                        </span>
+                      </td>
+
+                      {/* Faculty In-Charge */}
+                      <td className="px-4 py-3 whitespace-nowrap text-slate-700 font-medium text-xs">
+                        {testItem.teacher || `Prof. Rajesh Sharma (${subScorecard.subjectName})`}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div className="p-1 bg-white border border-slate-200 rounded">
-            <span className="font-bold text-slate-900 block">A+ (80-89%)</span>
-            <span className="text-blue-700 font-semibold">Excellent</span>
-          </div>
-          <div className="p-1 bg-white border border-slate-200 rounded">
-            <span className="font-bold text-slate-900 block">A (70-79%)</span>
-            <span className="text-indigo-700 font-semibold">Very Good</span>
-          </div>
-          <div className="p-1 bg-white border border-slate-200 rounded">
-            <span className="font-bold text-slate-900 block">B+ (60-69%)</span>
-            <span className="text-amber-700 font-semibold">Good</span>
-          </div>
-          <div className="p-1 bg-white border border-slate-200 rounded">
-            <span className="font-bold text-slate-900 block">B (50-59%)</span>
-            <span className="text-orange-700 font-semibold">Above Average</span>
-          </div>
-          <div className="p-1 bg-white border border-slate-200 rounded">
-            <span className="font-bold text-slate-900 block">C (35-49%)</span>
-            <span className="text-slate-600 font-semibold">Pass</span>
-          </div>
-          <div className="p-1 bg-white border border-slate-200 rounded">
-            <span className="font-bold text-slate-900 block">F (&lt;35%)</span>
-            <span className="text-rose-700 font-semibold">Needs Focus</span>
-          </div>
-        </div>
-      </div>
+        );
+      })}
     </PrintLayout>
   );
 };

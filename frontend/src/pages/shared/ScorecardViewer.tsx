@@ -237,8 +237,8 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
         <div className="absolute -right-16 -top-16 w-64 h-64 bg-[#155EEF]/25 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* 3. EXECUTIVE 4-SUBJECT PERFORMANCE MATRIX (Screen & Print Certified Summary) */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden break-inside-avoid">
+      {/* 3. EXECUTIVE 4-SUBJECT PERFORMANCE MATRIX (Screen Only) */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden break-inside-avoid print:hidden">
         <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center space-x-2">
             <Award className="w-4 h-4 text-[#155EEF]" />
@@ -523,8 +523,8 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
           </div>
         ))}
 
-      {/* 6. BOARD CERTIFIED GRADING SCALE REFERENCE (Included in print & screen) */}
-      <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-[10px] text-slate-600 break-inside-avoid">
+      {/* 6. BOARD CERTIFIED GRADING SCALE REFERENCE (Screen Only) */}
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-[10px] text-slate-600 break-inside-avoid print:hidden">
         <span className="font-bold uppercase tracking-wider text-slate-800 block mb-1">
           Standard Institutional Evaluation Key:
         </span>
