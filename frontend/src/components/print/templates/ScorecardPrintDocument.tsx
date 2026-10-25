@@ -5,28 +5,56 @@ import { getAcademicGrade } from '../../../utils/printUtils';
 
 export interface ScorecardPrintDocumentProps {
   scorecard: StudentScorecard;
+  selectedSubject?: 'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics' | string;
   isForPreview?: boolean;
 }
 
 export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
   scorecard,
+  selectedSubject,
   isForPreview = false,
 }) => {
-  const totalMaxMarks = scorecard.subjectList.reduce((acc, s) => acc + s.totalMaxMarks, 0);
-  const totalObtainedMarks = scorecard.subjectList.reduce((acc, s) => acc + s.totalMarksObtained, 0);
+  const isSubjectFiltered = Boolean(selectedSubject && selectedSubject !== 'ALL');
+  const targetSubject = isSubjectFiltered
+    ? scorecard.subjectList.find(
+        (s) => s.subjectName.toLowerCase() === selectedSubject?.toLowerCase()
+      )
+    : null;
+
+  // Filtered subject list: either just targetSubject, or all subjects
+  const subjectListToDisplay = targetSubject
+    ? [targetSubject]
+    : scorecard.subjectList;
+
+  const totalMaxMarks = subjectListToDisplay.reduce((acc, s) => acc + s.totalMaxMarks, 0);
+  const totalObtainedMarks = subjectListToDisplay.reduce((acc, s) => acc + s.totalMarksObtained, 0);
   const overallPercentage =
     totalMaxMarks > 0
       ? Number(((totalObtainedMarks / totalMaxMarks) * 100).toFixed(1))
+      : targetSubject
+      ? targetSubject.averagePercentage
       : scorecard.overallPercentage;
 
   const overallGrade = getAcademicGrade(overallPercentage);
-  const totalTests = scorecard.subjectList.reduce((acc, s) => acc + s.totalTests, 0);
+  const totalTests = subjectListToDisplay.reduce((acc, s) => acc + s.totalTests, 0);
+
+  const documentTitle = isSubjectFiltered && targetSubject
+    ? `OFFICIAL STUDENT ACADEMIC SCORECARD — ${targetSubject.subjectName.toUpperCase()}`
+    : 'OFFICIAL STUDENT ACADEMIC SCORECARD & EVALUATION REPORT';
+
+  const documentSubtitle = isSubjectFiltered && targetSubject
+    ? `Certified Secondary Board Evaluation, ${targetSubject.subjectName} Test Ledger & Faculty Assessment`
+    : 'Certified Secondary Board Evaluation, Subject Ledger & Cumulative Breakdown';
+
+  const reportCategory = isSubjectFiltered && targetSubject
+    ? `${targetSubject.subjectName.toUpperCase()} SCORECARD`
+    : 'CERTIFIED SCORECARD';
 
   return (
     <PrintLayout
-      documentTitle="OFFICIAL STUDENT ACADEMIC SCORECARD & EVALUATION REPORT"
-      documentSubtitle="Certified Secondary Board Evaluation, Subject Ledger & Cumulative Breakdown"
-      reportCategory="CERTIFIED SCORECARD"
+      documentTitle={documentTitle}
+      documentSubtitle={documentSubtitle}
+      reportCategory={reportCategory}
       metadata={{
         studentName: scorecard.studentName,
         studentId: scorecard.studentRoll,
@@ -34,6 +62,7 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
         boardName: scorecard.boardName,
         batchName: scorecard.batchName,
         academicYear: 'AY 2024–2025 (Term 2)',
+        ...(isSubjectFiltered && targetSubject ? { subject: targetSubject.subjectName } : {}),
       }}
       isForPreview={isForPreview}
       customFooterNote="Official Certified Academic Scorecard issued by Infinite Tutorial Academic Directorate. Certified Teacher and Parent evaluated record."
@@ -59,14 +88,18 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
               {scorecard.className} &bull; {scorecard.boardName} &bull; Batch: {scorecard.batchName}
             </p>
             <p className="text-[10px] text-slate-500 mt-0.5">
-              Secondary Board Coaching &bull; Total Conducted Assessments: {totalTests}
+              {isSubjectFiltered && targetSubject
+                ? `Subject: ${targetSubject.subjectName} • Certified Assessments Evaluated: ${totalTests}`
+                : `Secondary Board Coaching • Total Conducted Assessments: ${totalTests}`}
             </p>
           </div>
         </div>
 
         {/* Aggregate KPI */}
         <div className="text-right flex flex-col items-end border-l border-slate-200 pl-4 flex-shrink-0">
-          <span className="text-[10px] uppercase font-bold text-slate-500">Aggregate Score</span>
+          <span className="text-[10px] uppercase font-bold text-slate-500">
+            {isSubjectFiltered && targetSubject ? `${targetSubject.subjectName} Aggregate` : 'Aggregate Score'}
+          </span>
           <div className="flex items-baseline gap-1 mt-0.5">
             <span className="text-2xl font-black text-[#0A3622]">{overallPercentage}%</span>
             <span className="text-xs text-slate-500 font-bold">
@@ -79,11 +112,13 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
         </div>
       </div>
 
-      {/* 2. Executive 4-Subject Performance Ledger */}
+      {/* 2. Subject Performance Ledger */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide">
-            Subject-Wise Academic Performance Ledger
+            {isSubjectFiltered && targetSubject
+              ? `${targetSubject.subjectName} Academic Performance Summary`
+              : 'Subject-Wise Academic Performance Ledger'}
           </h4>
           <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
             Status: Passed with Distinction
@@ -104,7 +139,7 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
-            {scorecard.subjectList.map((sub) => {
+            {subjectListToDisplay.map((sub) => {
               const grade = getAcademicGrade(sub.averagePercentage);
               return (
                 <tr key={sub.subjectName} className="hover:bg-slate-50/50">
@@ -139,7 +174,9 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
           <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300">
             <tr>
               <td className="py-2 px-3 font-black uppercase text-[#0A3622]">
-                Total / Overall Aggregate
+                {isSubjectFiltered && targetSubject
+                  ? `Total / ${targetSubject.subjectName} Aggregate`
+                  : 'Total / Overall Aggregate'}
               </td>
               <td className="py-2 px-3 text-center">{totalTests}</td>
               <td className="py-2 px-3 text-center">{totalMaxMarks}</td>
@@ -150,7 +187,7 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
                 {overallPercentage}%
               </td>
               <td className="py-2 px-3 text-center text-emerald-800">
-                {Math.max(...scorecard.subjectList.map((s) => s.highestPercentage))}%
+                {Math.max(...subjectListToDisplay.map((s) => s.highestPercentage))}%
               </td>
               <td className="py-2 px-3 text-center font-black">{overallGrade.grade}</td>
               <td className="py-2 px-3 text-center text-emerald-900">
@@ -162,11 +199,13 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
       </div>
 
       {/* 3. Detailed Syllabus Tests & Evaluations Ledger */}
-      {scorecard.subjectList.some((s) => s.tests && s.tests.length > 0) && (
+      {subjectListToDisplay.some((s) => s.tests && s.tests.length > 0) && (
         <div className="print-break-inside-avoid">
           <div className="flex items-center justify-between mb-1.5">
             <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide">
-              Detailed Assessment Breakdown by Subject &amp; Portion
+              {isSubjectFiltered && targetSubject
+                ? `${targetSubject.subjectName} Test Evaluation Ledger & Portions Covered`
+                : 'Detailed Assessment Breakdown by Subject & Portion'}
             </h4>
           </div>
 
@@ -174,32 +213,41 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
             <thead>
               <tr>
                 <th className="py-1.5 px-2.5">Date</th>
-                <th className="py-1.5 px-2.5">Subject</th>
+                {!isSubjectFiltered && <th className="py-1.5 px-2.5">Subject</th>}
                 <th className="py-1.5 px-2.5">Test Code &amp; Name</th>
                 <th className="py-1.5 px-2.5">Chapter / Syllabus Portion</th>
                 <th className="py-1.5 px-2.5 text-center">Max Marks</th>
                 <th className="py-1.5 px-2.5 text-center">Scored</th>
                 <th className="py-1.5 px-2.5 text-center">Percentage</th>
                 <th className="py-1.5 px-2.5 text-center">Grade</th>
+                <th className="py-1.5 px-2.5">Faculty In-Charge</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {scorecard.subjectList.flatMap((s) =>
+              {subjectListToDisplay.flatMap((s) =>
                 s.tests.map((test) => {
                   const testGrade = getAcademicGrade(test.percentage);
                   return (
                     <tr key={test.testId} className="hover:bg-slate-50/50">
-                      <td className="py-1.5 px-2.5 font-mono text-[10px] text-slate-700">{test.date}</td>
-                      <td className="py-1.5 px-2.5 font-semibold text-slate-900">{s.subjectName}</td>
+                      <td className="py-1.5 px-2.5 font-mono text-[10px] text-slate-700 whitespace-nowrap">{test.date}</td>
+                      {!isSubjectFiltered && (
+                        <td className="py-1.5 px-2.5 font-semibold text-slate-900">{s.subjectName}</td>
+                      )}
                       <td className="py-1.5 px-2.5">
                         <span className="font-bold text-slate-900">{test.testName}</span>
                         <span className="font-mono text-[9px] text-slate-500 block">{test.testCode}</span>
                       </td>
-                      <td className="py-1.5 px-2.5 text-slate-700">{test.chapter || 'Prescribed Syllabus'}</td>
+                      <td className="py-1.5 px-2.5 text-slate-700">
+                        <div className="font-medium text-slate-900">{test.chapter || 'Prescribed Syllabus'}</div>
+                        {test.remarks && (
+                          <div className="text-[9.5px] text-slate-500 italic mt-0.5">Note: {test.remarks}</div>
+                        )}
+                      </td>
                       <td className="py-1.5 px-2.5 text-center text-slate-600">{test.maxMarks}</td>
                       <td className="py-1.5 px-2.5 text-center font-bold text-slate-900">{test.marksObtained}</td>
                       <td className="py-1.5 px-2.5 text-center font-bold text-[#0A3622]">{test.percentage}%</td>
                       <td className="py-1.5 px-2.5 text-center font-bold">{testGrade.grade}</td>
+                      <td className="py-1.5 px-2.5 text-slate-700 text-[10px] whitespace-nowrap">{test.teacher}</td>
                     </tr>
                   );
                 })

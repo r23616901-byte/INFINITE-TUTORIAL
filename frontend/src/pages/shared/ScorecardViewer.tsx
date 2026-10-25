@@ -22,14 +22,25 @@ interface ScorecardViewerProps {
   scorecard: StudentScorecard;
   onRefresh?: () => void;
   loading?: boolean;
+  activeSubject?: 'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics';
+  onSubjectChange?: (subject: 'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics') => void;
 }
 
 export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
   scorecard,
   onRefresh,
   loading = false,
+  activeSubject,
+  onSubjectChange,
 }) => {
-  const [activeTab, setActiveTab] = useState<'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'>('ALL');
+  const [internalTab, setInternalTab] = useState<'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'>('ALL');
+  const activeTab = activeSubject ?? internalTab;
+
+  const handleTabChange = (tab: 'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics') => {
+    setInternalTab(tab);
+    onSubjectChange?.(tab);
+  };
+
   const [previewDocUrl, setPreviewDocUrl] = useState<string | null>(null);
   const [previewDocTitle, setPreviewDocTitle] = useState('');
   const [showPrintPreview, setShowPrintPreview] = useState(false);
@@ -44,6 +55,23 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
 
   const totalTestsCount = scorecard.subjectList.reduce((acc, s) => acc + s.totalTests, 0);
 
+  // Subject-specific or cumulative metrics based on activeTab
+  const currentSubjectList = scorecard.subjectList.filter(
+    (sub) => activeTab === 'ALL' || activeTab.toLowerCase() === sub.subjectName.toLowerCase()
+  );
+  const targetSubject = activeTab !== 'ALL' ? currentSubjectList[0] : null;
+
+  const displayTotalMaxMarks = currentSubjectList.reduce((acc, s) => acc + s.totalMaxMarks, 0);
+  const displayTotalObtainedMarks = currentSubjectList.reduce((acc, s) => acc + s.totalMarksObtained, 0);
+  const displayOverallPct =
+    displayTotalMaxMarks > 0
+      ? Number(((displayTotalObtainedMarks / displayTotalMaxMarks) * 100).toFixed(1))
+      : targetSubject
+      ? targetSubject.averagePercentage
+      : accurateOverallPct;
+
+  const displayTestsCount = currentSubjectList.reduce((acc, s) => acc + s.totalTests, 0);
+
   const getGradeInfo = (pct: number) => {
     if (pct >= 90) return { grade: 'O', label: 'Outstanding', badge: 'bg-emerald-50 text-emerald-800 border-emerald-300' };
     if (pct >= 80) return { grade: 'A+', label: 'Excellent', badge: 'bg-blue-50 text-blue-800 border-blue-300' };
@@ -54,7 +82,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
     return { grade: 'F', label: 'Needs Improvement', badge: 'bg-rose-50 text-rose-800 border-rose-300' };
   };
 
-  const overallGradeInfo = getGradeInfo(accurateOverallPct);
+  const displayGradeInfo = getGradeInfo(displayOverallPct);
 
   const subjectTabs = [
     { name: 'ALL', label: 'All Subjects', icon: '📊', count: totalTestsCount },
@@ -75,13 +103,26 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
     setShowPrintPreview(true);
   };
 
+  const printDocumentTitle =
+    activeTab === 'ALL'
+      ? 'OFFICIAL STUDENT ACADEMIC SCORECARD & EVALUATION REPORT'
+      : `OFFICIAL STUDENT ACADEMIC SCORECARD — ${activeTab.toUpperCase()}`;
+
+  const printDocumentSubtitle =
+    activeTab === 'ALL'
+      ? 'Certified Board Syllabus Test Evaluations, Marks Ledger & Cumulative Breakdown'
+      : `Certified ${activeTab} Syllabus Test Evaluations, Marks Ledger & Faculty Assessment`;
+
+  const printReportCategory =
+    activeTab === 'ALL' ? 'CERTIFIED SCORECARD' : `${activeTab.toUpperCase()} SCORECARD`;
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto print:p-0 print:m-0 print:space-y-4 text-[#0B1F4D]">
       {/* 1. OFFICIAL INSTITUTIONAL PRINT HEADER (Visible only in print) */}
       <PrintTemplateHeader
-        documentTitle="OFFICIAL STUDENT ACADEMIC SCORECARD & EVALUATION REPORT"
-        documentSubtitle="Certified Board Syllabus Test Evaluations, Marks Ledger & Cumulative Breakdown"
-        reportCategory="CERTIFIED SCORECARD"
+        documentTitle={printDocumentTitle}
+        documentSubtitle={printDocumentSubtitle}
+        reportCategory={printReportCategory}
         academicYear="AY 2024–25 (Term 2)"
         studentName={scorecard.studentName}
         studentId={scorecard.studentRoll}
@@ -144,36 +185,36 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
             {/* Aggregate Score Card */}
             <div className="bg-white/10 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/20 text-center min-w-[130px]">
               <span className="text-[11px] uppercase tracking-wider text-slate-300 font-bold block">
-                Aggregate Score
+                {activeTab === 'ALL' ? 'Aggregate Score' : `${activeTab} Score`}
               </span>
               <div className="flex items-baseline justify-center space-x-1.5 mt-0.5">
-                <span className="text-3xl font-black text-white">{accurateOverallPct}%</span>
-                <span className="text-xs font-bold text-[#00B8F8]">({overallGradeInfo.grade})</span>
+                <span className="text-3xl font-black text-white">{displayOverallPct}%</span>
+                <span className="text-xs font-bold text-[#00B8F8]">({displayGradeInfo.grade})</span>
               </div>
               <span className="text-[10px] text-emerald-300 font-semibold block mt-0.5">
-                {overallGradeInfo.label}
+                {displayGradeInfo.label}
               </span>
             </div>
 
             {/* Total Marks Card */}
             <div className="bg-white/10 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/20 text-center min-w-[130px]">
               <span className="text-[11px] uppercase tracking-wider text-slate-300 font-bold block">
-                Total Marks
+                {activeTab === 'ALL' ? 'Total Marks' : `${activeTab} Marks`}
               </span>
               <div className="flex items-baseline justify-center space-x-1 mt-0.5">
-                <span className="text-2xl font-black text-white">{totalObtainedMarks}</span>
-                <span className="text-xs text-slate-300 font-bold">/ {totalMaxMarks}</span>
+                <span className="text-2xl font-black text-white">{displayTotalObtainedMarks}</span>
+                <span className="text-xs text-slate-300 font-bold">/ {displayTotalMaxMarks}</span>
               </div>
               <span className="text-[10px] text-slate-300 block mt-0.5">
-                {totalTestsCount} Tests Evaluated
+                {displayTestsCount} Tests Evaluated
               </span>
             </div>
 
             {/* Print Action Button */}
             <PrintButton
               onClick={handlePrint}
-              label="Print Scorecard"
-              title="Print official certified scorecard"
+              label={activeTab === 'ALL' ? 'Print Scorecard' : `Print ${activeTab}`}
+              title={activeTab === 'ALL' ? 'Print official certified scorecard' : `Print ${activeTab} test evaluations & scorecard`}
               variant="academic"
               size="md"
             />
@@ -202,7 +243,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
           <div className="flex items-center space-x-2">
             <Award className="w-4 h-4 text-[#155EEF]" />
             <h2 className="text-sm font-black text-[#0B1F4D] uppercase tracking-wide">
-              Subject-Wise Academic Performance Ledger
+              {activeTab === 'ALL' ? 'Subject-Wise Academic Performance Ledger' : `${activeTab} Academic Performance Summary`}
             </h2>
           </div>
           <span className="text-xs text-slate-500 font-semibold">
@@ -225,7 +266,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">
-              {scorecard.subjectList.map((sub) => {
+              {currentSubjectList.map((sub) => {
                 const gradeObj = getGradeInfo(sub.averagePercentage);
                 return (
                   <tr key={sub.subjectName} className="hover:bg-slate-50/70 transition-colors">
@@ -264,23 +305,23 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
               {/* Grand Total Row */}
               <tr className="bg-slate-50 font-black text-slate-900 border-t-2 border-slate-300">
                 <td className="px-4 py-3.5 uppercase text-[11px] tracking-wide">
-                  Cumulative Total (All Subjects)
+                  {activeTab === 'ALL' ? 'Cumulative Total (All Subjects)' : `Total (${activeTab})`}
                 </td>
-                <td className="px-4 py-3.5 text-center">{totalTestsCount} Tests</td>
-                <td className="px-4 py-3.5 text-center">{totalMaxMarks}</td>
-                <td className="px-4 py-3.5 text-center text-sm font-black text-[#155EEF]">{totalObtainedMarks}</td>
-                <td className="px-4 py-3.5 text-center text-sm font-black text-blue-700">{accurateOverallPct}%</td>
+                <td className="px-4 py-3.5 text-center">{displayTestsCount} Tests</td>
+                <td className="px-4 py-3.5 text-center">{displayTotalMaxMarks}</td>
+                <td className="px-4 py-3.5 text-center text-sm font-black text-[#155EEF]">{displayTotalObtainedMarks}</td>
+                <td className="px-4 py-3.5 text-center text-sm font-black text-blue-700">{displayOverallPct}%</td>
                 <td className="px-4 py-3.5 text-center font-black text-emerald-700">
-                  {Math.max(...scorecard.subjectList.map((s) => s.highestPercentage))}%
+                  {Math.max(...currentSubjectList.map((s) => s.highestPercentage))}%
                 </td>
                 <td className="px-4 py-3.5 text-center">
                   <span className="inline-block px-2.5 py-0.5 rounded text-xs font-black bg-[#0B1F4D] text-white">
-                    {overallGradeInfo.grade}
+                    {displayGradeInfo.grade}
                   </span>
                 </td>
                 <td className="px-4 py-3.5 text-center">
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    {overallGradeInfo.label}
+                    {displayGradeInfo.label}
                   </span>
                 </td>
               </tr>
@@ -296,7 +337,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
           return (
             <button
               key={tab.name}
-              onClick={() => setActiveTab(tab.name as any)}
+              onClick={() => handleTabChange(tab.name as any)}
               className={`inline-flex items-center space-x-2 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition-all cursor-pointer ${
                 isActive
                   ? 'bg-[#155EEF] text-white shadow-md shadow-blue-500/25'
@@ -549,10 +590,15 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
       <PrintPreviewModal
         isOpen={showPrintPreview}
         onClose={() => setShowPrintPreview(false)}
-        title={`Student Scorecard - ${scorecard.studentName}`}
+        title={`Student Scorecard - ${scorecard.studentName}${activeTab !== 'ALL' ? ` (${activeTab})` : ''}`}
+        documentTitle={`Infinite-Tutorial-Scorecard-${scorecard.studentName.replace(/\s+/g, '_')}${activeTab !== 'ALL' ? `_${activeTab}` : ''}`}
         defaultOrientation="portrait"
       >
-        <ScorecardPrintDocument scorecard={scorecard} isForPreview />
+        <ScorecardPrintDocument
+          scorecard={scorecard}
+          selectedSubject={activeTab === 'ALL' ? undefined : activeTab}
+          isForPreview
+        />
       </PrintPreviewModal>
     </div>
   );

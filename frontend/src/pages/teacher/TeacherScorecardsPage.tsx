@@ -22,6 +22,7 @@ export const TeacherScorecardsPage: React.FC = () => {
   const [loadingScorecard, setLoadingScorecard] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [showPrintPreview, setShowPrintPreview] = useState<boolean>(false);
+  const [selectedSubjectTab, setSelectedSubjectTab] = useState<'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'>('ALL');
 
   // 1. Fetch Students
   useEffect(() => {
@@ -95,8 +96,8 @@ export const TeacherScorecardsPage: React.FC = () => {
           </button>
           <PrintButton
             onClick={() => setShowPrintPreview(true)}
-            label="Print Scorecard"
-            title="Print official certified scorecard"
+            label={selectedSubjectTab === 'ALL' ? 'Print Scorecard' : `Print ${selectedSubjectTab}`}
+            title={`Print official certified scorecard${selectedSubjectTab !== 'ALL' ? ` for ${selectedSubjectTab}` : ''}`}
             variant="academic"
             size="md"
             disabled={!scorecard || loadingScorecard}
@@ -148,7 +149,13 @@ export const TeacherScorecardsPage: React.FC = () => {
           <p className="text-xs text-gray-500 mt-1">Aggregating Physics, Chemistry, Biology and Mathematics results.</p>
         </div>
       ) : scorecard ? (
-        <ScorecardViewer scorecard={scorecard} onRefresh={loadScorecard} loading={loadingScorecard} />
+        <ScorecardViewer
+          scorecard={scorecard}
+          onRefresh={loadScorecard}
+          loading={loadingScorecard}
+          activeSubject={selectedSubjectTab}
+          onSubjectChange={setSelectedSubjectTab}
+        />
       ) : (
         <EmptyState
           title="No scorecards generated yet"
@@ -164,10 +171,15 @@ export const TeacherScorecardsPage: React.FC = () => {
         <PrintPreviewModal
           isOpen={showPrintPreview}
           onClose={() => setShowPrintPreview(false)}
-          title={`Student Scorecard - ${scorecard.studentName}`}
+          title={`Student Scorecard - ${scorecard.studentName}${selectedSubjectTab !== 'ALL' ? ` (${selectedSubjectTab})` : ''}`}
+          documentTitle={`Infinite-Tutorial-Scorecard-${scorecard.studentName.replace(/\s+/g, '_')}${selectedSubjectTab !== 'ALL' ? `_${selectedSubjectTab}` : ''}`}
           defaultOrientation="portrait"
         >
-          <ScorecardPrintDocument scorecard={scorecard} isForPreview />
+          <ScorecardPrintDocument
+            scorecard={scorecard}
+            selectedSubject={selectedSubjectTab === 'ALL' ? undefined : selectedSubjectTab}
+            isForPreview
+          />
         </PrintPreviewModal>
       )}
     </div>
