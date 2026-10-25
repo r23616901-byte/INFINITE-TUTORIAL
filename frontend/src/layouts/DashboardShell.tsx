@@ -150,7 +150,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
   );
 
   return (
-    <div className="min-h-screen bg-[#F5F8FC] flex flex-col lg:flex-row text-[#0B1F4D]">
+    <div className="min-h-screen bg-[#F5F8FC] flex flex-col lg:flex-row text-[#0B1F4D] print:block print:bg-white print:min-h-0">
       {/* ========================================================= */}
       {/* DESKTOP FIXED DEEP NAVY SIDEBAR */}
       {/* ========================================================= */}
@@ -214,15 +214,15 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       {/* MOBILE / TABLET SLIDE-OUT DEEP NAVY DRAWER */}
       {/* ========================================================= */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden print:hidden">
           {/* Backdrop blur */}
           <div
-            className="fixed inset-0 bg-[#071633]/60 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-[#071633]/60 backdrop-blur-xs transition-opacity print:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
 
           {/* Drawer container */}
-          <div className="fixed inset-y-0 left-0 w-72 max-w-[85vw] brand-sidebar-bg text-white shadow-2xl flex flex-col z-50 animate-in slide-in-from-left duration-200">
+          <div className="fixed inset-y-0 left-0 w-72 max-w-[85vw] brand-sidebar-bg text-white shadow-2xl flex flex-col z-50 animate-in slide-in-from-left duration-200 print:hidden">
             <div className="p-4 border-b border-white/10 flex items-center justify-between">
               <BrandLogo size="sm" variant="white" />
               <button
@@ -345,11 +345,11 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         </header>
 
         {/* Content Body with SUBTLE BRAND WATERMARK ALWAYS PRESENT */}
-        <div className="relative flex-1 flex flex-col min-w-0 overflow-hidden print:overflow-visible print:w-full">
+        <div className="relative flex-1 flex flex-col min-w-0 overflow-hidden print:overflow-visible print:w-full print:block">
           {/* Subtle Infinite Tutorial Logo Watermark across every dashboard page */}
           <BrandWatermark opacity={0.045} size="lg" position="center" />
 
-          <main className="relative z-10 flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 pb-20 lg:pb-6 max-w-7xl w-full mx-auto print:p-0 print:m-0 print:max-w-none print:w-full">
+          <main className="relative z-10 flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 pb-20 lg:pb-6 max-w-7xl w-full mx-auto print:p-0 print:m-0 print:max-w-none print:w-full print:block">
             {children || <Outlet />}
           </main>
         </div>
@@ -393,7 +393,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         </div>
 
         {/* Shared Academic Footer */}
-        <footer className="bg-white border-t border-[#DCE5F2] px-3 sm:px-4 md:px-6 lg:px-8 py-3.5 mb-16 lg:mb-0 text-xs text-[#5B6B82] flex flex-col sm:flex-row items-center justify-between gap-2 relative">
+        <footer className="bg-white border-t border-[#DCE5F2] px-3 sm:px-4 md:px-6 lg:px-8 py-3.5 mb-16 lg:mb-0 text-xs text-[#5B6B82] flex flex-col sm:flex-row items-center justify-between gap-2 relative print:hidden">
           <div className="flex items-center gap-2">
             <GraduationCap className="w-4 h-4 text-[#155EEF] flex-shrink-0" />
             <span className="font-bold text-[#0B1F4D]">Infinite Tutorial</span>

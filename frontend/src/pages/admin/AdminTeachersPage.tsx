@@ -32,7 +32,9 @@ import {
   Mail,
   Phone,
   GraduationCap,
+  Printer,
 } from 'lucide-react';
+import { PrintPreviewModal, TeacherReportPrintDocument } from '../../components/print';
 
 const ALL_SUBJECTS = ['Physics', 'Chemistry', 'Biology', 'Mathematics'];
 const ALL_BATCHES = ['10A Morning', '10B Evening', '9A Evening'];
@@ -40,6 +42,7 @@ const ALL_BATCHES = ['10A Morning', '10B Evening', '9A Evening'];
 export const AdminTeachersPage: React.FC = () => {
   const [teachers, setTeachers] = useState<TeacherDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [printingTeacher, setPrintingTeacher] = useState<TeacherDto | null>(null);
 
   // Filters
   const [search, setSearch] = useState('');
@@ -560,6 +563,14 @@ export const AdminTeachersPage: React.FC = () => {
                     {/* Actions */}
                     <td className="px-6 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setPrintingTeacher(teacher)}
+                          title="Print Faculty Dossier"
+                          className="p-1.5 rounded-lg text-slate-500 hover:text-[#0A3622] hover:bg-emerald-50 transition-colors"
+                        >
+                          <Printer className="w-4 h-4 text-[#0A3622]" />
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleOpenStudentsModal(teacher)}
@@ -1120,6 +1131,20 @@ export const AdminTeachersPage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Universal Print Preview Modal */}
+      {printingTeacher && (
+        <PrintPreviewModal
+          isOpen={!!printingTeacher}
+          onClose={() => setPrintingTeacher(null)}
+          documentTitle={`Faculty_Dossier_${printingTeacher.name.replace(/\s+/g, '_')}`}
+        >
+          <TeacherReportPrintDocument
+            teacher={printingTeacher}
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
       )}
     </div>
   );

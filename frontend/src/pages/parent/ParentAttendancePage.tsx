@@ -15,10 +15,12 @@ import {
   Search,
   ShieldCheck,
 } from 'lucide-react';
+import { PrintButton, PrintPreviewModal, AttendanceReportPrintDocument } from '../../components/print';
 
 export const ParentAttendancePage: React.FC = () => {
   const [data, setData] = useState<StudentAttendanceStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   // Filters for History table
   const [sessionFilter, setSessionFilter] = useState<string>('ALL');
@@ -438,6 +440,13 @@ export const ParentAttendancePage: React.FC = () => {
               <option value="PRESENT">🟢 Present Only</option>
               <option value="ABSENT">🔴 Absent Only</option>
             </select>
+
+            <PrintButton
+              onClick={() => setIsPrintModalOpen(true)}
+              variant="academic"
+              size="sm"
+              label="Print Register"
+            />
           </div>
         }
       >
@@ -513,6 +522,21 @@ export const ParentAttendancePage: React.FC = () => {
         </div>
         )}
       </Card>
+
+      {/* Universal Print Preview Modal */}
+      {data && (
+        <PrintPreviewModal
+          isOpen={isPrintModalOpen}
+          onClose={() => setIsPrintModalOpen(false)}
+          documentTitle={`Student_Attendance_Register_${data.studentRoll}`}
+        >
+          <AttendanceReportPrintDocument
+            stats={data}
+            reportingPeriod="Current Academic Term 2024–2025"
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
+      )}
     </div>
   );
 };

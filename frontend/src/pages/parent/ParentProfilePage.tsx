@@ -3,6 +3,9 @@ import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { SkeletonBlock } from '../../components/common/LoadingSkeleton';
 import { fetchMyStudentProfile, StudentDto } from '../../services/studentService';
+import { PrintButton } from '../../components/print/PrintButton';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { StudentProfilePrintDocument } from '../../components/print/templates/StudentProfilePrintDocument';
 import {
   ShieldAlert,
   GraduationCap,
@@ -22,6 +25,7 @@ export const ParentProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [student, setStudent] = useState<StudentDto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -139,10 +143,18 @@ export const ParentProfilePage: React.FC = () => {
                 </p>
               </div>
 
-              {/* Student ID Badge */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-xl border border-slate-200 self-center sm:self-auto">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Student ID:</span>
-                <span className="text-xs font-black text-slate-900">{student.studentId}</span>
+              {/* Student ID Badge & Print Action */}
+              <div className="flex items-center gap-2 self-center sm:self-auto flex-wrap">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-xl border border-slate-200">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Student ID:</span>
+                  <span className="text-xs font-black text-slate-900">{student.studentId}</span>
+                </div>
+                <PrintButton
+                  onClick={() => setShowPrintPreview(true)}
+                  label="Print Profile"
+                  variant="academic"
+                  size="sm"
+                />
               </div>
             </div>
 
@@ -308,6 +320,18 @@ export const ParentProfilePage: React.FC = () => {
           Return to Parent Dashboard
         </Button>
       </div>
+
+      {/* UNIVERSAL PRINT PREVIEW MODAL */}
+      {student && (
+        <PrintPreviewModal
+          isOpen={showPrintPreview}
+          onClose={() => setShowPrintPreview(false)}
+          title={`Official Student Profile - ${student.name}`}
+          defaultOrientation="portrait"
+        >
+          <StudentProfilePrintDocument student={student} isForPreview />
+        </PrintPreviewModal>
+      )}
     </div>
   );
 };

@@ -4,11 +4,13 @@ import {
   CheckCircle2,
   Clock,
   Calendar,
-  Download,
   TrendingUp,
 } from 'lucide-react';
 import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
 import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
+import { PrintButton } from '../../components/print/PrintButton';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { PortionCompletionPrintDocument } from '../../components/print/templates/PortionCompletionPrintDocument';
 
 interface ChapterItem {
   id: string;
@@ -26,6 +28,7 @@ interface ChapterItem {
 
 export const ParentPortionCompletionPage: React.FC = () => {
   const [selectedSubject, setSelectedSubject] = useState<string>('ALL');
+  const [showPrintPreview, setShowPrintPreview] = useState<boolean>(false);
 
   const chapters: ChapterItem[] = [
     // PHYSICS (Prof. Rajesh Sharma)
@@ -326,13 +329,13 @@ export const ParentPortionCompletionPage: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={() => window.print()}
-          className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-xs text-xs font-semibold rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-        >
-          <Download className="w-4 h-4 mr-1.5 text-gray-500" />
-          Print Syllabus Tracker
-        </button>
+        <PrintButton
+          onClick={() => setShowPrintPreview(true)}
+          label="Print Syllabus Tracker"
+          title="Print official syllabus completion tracker"
+          variant="academic"
+          size="sm"
+        />
       </div>
 
       {/* Top Metric Cards */}
@@ -502,6 +505,34 @@ export const ParentPortionCompletionPage: React.FC = () => {
 
       {/* Official Letterhead Footer with Signatures */}
       <PrintTemplateFooter customNote="Official Curriculum Record of Infinite Tutorial. Parent Portal Verified." />
+
+      {/* UNIVERSAL PRINT PREVIEW MODAL */}
+      <PrintPreviewModal
+        isOpen={showPrintPreview}
+        onClose={() => setShowPrintPreview(false)}
+        title="Student Syllabus & Portion Completion Report"
+        defaultOrientation="portrait"
+      >
+        <PortionCompletionPrintDocument
+          chapters={filteredChapters.map((c) => ({
+            id: c.id,
+            chapterNumber: c.chapterNumber,
+            title: c.chapterName,
+            subject: c.subject,
+            totalLectures: c.totalLectures,
+            completedLectures: c.status === 'COMPLETED' ? c.totalLectures : c.status === 'IN_PROGRESS' ? Math.round(c.totalLectures * 0.7) : 0,
+            status: c.status,
+            faculty: c.teacher,
+            targetDate: c.targetDate,
+            completionDate: c.completionDate,
+          }))}
+          batchName="Class 10 CBSE"
+          className="Class 10"
+          boardName="CBSE"
+          selectedSubject={selectedSubject}
+          isForPreview
+        />
+      </PrintPreviewModal>
     </div>
   );
 };

@@ -34,7 +34,7 @@ export const ParentPerformanceGraphsPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 print:hidden">
         <div>
           <div className="flex items-center space-x-2">
             <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">

@@ -10,7 +10,6 @@ import {
   Layers,
   Sparkles,
   TrendingUp,
-  Printer,
   Search,
   Filter,
   Edit2,
@@ -20,6 +19,9 @@ import {
 } from 'lucide-react';
 import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
 import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
+import { PrintButton } from '../../components/print/PrintButton';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { PortionCompletionPrintDocument } from '../../components/print/templates/PortionCompletionPrintDocument';
 
 interface AdminChapterItem {
   id: string;
@@ -314,6 +316,7 @@ export const AdminPortionCompletionPage: React.FC = () => {
   const [editLectures, setEditLectures] = useState<number>(0);
   const [editStatus, setEditStatus] = useState<'COMPLETED' | 'IN_PROGRESS' | 'SCHEDULED'>('IN_PROGRESS');
   const [notification, setNotification] = useState<string | null>(null);
+  const [showPrintPreview, setShowPrintPreview] = useState<boolean>(false);
 
   const subjects = ['ALL', 'Physics', 'Chemistry', 'Biology', 'Mathematics'];
 
@@ -406,14 +409,13 @@ export const AdminPortionCompletionPage: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              onClick={() => window.print()}
-              className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm shadow-sm"
-            >
-              <Printer className="w-4 h-4 mr-2" />
-              Print Syllabus Report
-            </Button>
+            <PrintButton
+              onClick={() => setShowPrintPreview(true)}
+              label="Print Syllabus Report"
+              title="Print official syllabus completion report"
+              variant="white"
+              size="md"
+            />
           </div>
         </div>
       </div>
@@ -780,6 +782,23 @@ export const AdminPortionCompletionPage: React.FC = () => {
         {/* Official Letterhead Footer with Signatures */}
         <PrintTemplateFooter customNote="Official Syllabus and Portion Completion Record of Infinite Tutorial. Generated from Academic ERP." />
       </div>
+
+      {/* UNIVERSAL PRINT PREVIEW MODAL */}
+      <PrintPreviewModal
+        isOpen={showPrintPreview}
+        onClose={() => setShowPrintPreview(false)}
+        title="Syllabus & Portion Completion Report"
+        defaultOrientation="portrait"
+      >
+        <PortionCompletionPrintDocument
+          chapters={filteredChapters}
+          batchName="Class 10 CBSE - Composite"
+          className="Class 10"
+          boardName="CBSE"
+          selectedSubject={selectedSubject}
+          isForPreview
+        />
+      </PrintPreviewModal>
     </div>
   );
 };

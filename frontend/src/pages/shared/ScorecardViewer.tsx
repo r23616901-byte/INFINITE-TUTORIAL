@@ -4,7 +4,6 @@ import {
   Calendar,
   GraduationCap,
   BookOpen,
-  Printer,
   ExternalLink,
   X,
   FileCheck,
@@ -15,6 +14,9 @@ import {
 import { StudentScorecard } from '../../types/scorecard';
 import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
 import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { ScorecardPrintDocument } from '../../components/print/templates/ScorecardPrintDocument';
+import { PrintButton } from '../../components/print/PrintButton';
 
 interface ScorecardViewerProps {
   scorecard: StudentScorecard;
@@ -30,6 +32,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
   const [activeTab, setActiveTab] = useState<'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'>('ALL');
   const [previewDocUrl, setPreviewDocUrl] = useState<string | null>(null);
   const [previewDocTitle, setPreviewDocTitle] = useState('');
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
 
   // Calculate accurate aggregated metrics across all subjects
   const totalMaxMarks = scorecard.subjectList.reduce((acc, s) => acc + s.totalMaxMarks, 0);
@@ -69,7 +72,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
   };
 
   const handlePrint = () => {
-    window.print();
+    setShowPrintPreview(true);
   };
 
   return (
@@ -167,15 +170,13 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
             </div>
 
             {/* Print Action Button */}
-            <button
+            <PrintButton
               onClick={handlePrint}
-              type="button"
-              className="inline-flex items-center gap-2 px-4 py-3 bg-[#155EEF] hover:bg-[#004EEB] text-white rounded-2xl font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/30 transition-all cursor-pointer active:scale-95"
+              label="Print Scorecard"
               title="Print official certified scorecard"
-            >
-              <Printer className="w-4 h-4" />
-              <span>Print Scorecard</span>
-            </button>
+              variant="academic"
+              size="md"
+            />
 
             {onRefresh && (
               <button
@@ -543,6 +544,16 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
 
       {/* 8. OFFICIAL INSTITUTIONAL FOOTER WITH SIGNATURE BLOCKS (Print Mode) */}
       <PrintTemplateFooter customNote="Official Certified Academic Scorecard issued by Infinite Tutorial Academic Directorate. Certified Teacher and Parent evaluated record." />
+
+      {/* 9. UNIVERSAL PRINT PREVIEW MODAL */}
+      <PrintPreviewModal
+        isOpen={showPrintPreview}
+        onClose={() => setShowPrintPreview(false)}
+        title={`Student Scorecard - ${scorecard.studentName}`}
+        defaultOrientation="portrait"
+      >
+        <ScorecardPrintDocument scorecard={scorecard} isForPreview />
+      </PrintPreviewModal>
     </div>
   );
 };

@@ -32,6 +32,10 @@ import {
   Layers,
   UserX,
 } from 'lucide-react';
+import { PrintButton } from '../../components/print/PrintButton';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { StudentProfilePrintDocument } from '../../components/print/templates/StudentProfilePrintDocument';
+import { BatchReportPrintDocument } from '../../components/print/templates/BatchReportPrintDocument';
 
 export const AdminStudentsPage: React.FC = () => {
   const [students, setStudents] = useState<StudentDto[]>([]);
@@ -53,6 +57,8 @@ export const AdminStudentsPage: React.FC = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [activeStudent, setActiveStudent] = useState<StudentDto | null>(null);
+  const [showProfilePreview, setShowProfilePreview] = useState(false);
+  const [showDirectoryPreview, setShowDirectoryPreview] = useState(false);
 
   // Form Submission State
   const [formSubmitting, setFormSubmitting] = useState(false);
@@ -350,6 +356,13 @@ export const AdminStudentsPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          <PrintButton
+            onClick={() => setShowDirectoryPreview(true)}
+            label="Print Student Directory"
+            title="Print official enrolled students directory"
+            variant="outline"
+            size="sm"
+          />
           <Button
             variant="primary"
             size="sm"
@@ -1139,6 +1152,12 @@ export const AdminStudentsPage: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <PrintButton
+                onClick={() => setShowProfilePreview(true)}
+                label="Print Profile"
+                variant="academic"
+                size="sm"
+              />
               <Button
                 variant="outline"
                 size="sm"
@@ -1217,6 +1236,47 @@ export const AdminStudentsPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* UNIVERSAL PRINT PREVIEWS */}
+      {activeStudent && (
+        <PrintPreviewModal
+          isOpen={showProfilePreview}
+          onClose={() => setShowProfilePreview(false)}
+          title={`Official Student Profile - ${activeStudent.name}`}
+          defaultOrientation="portrait"
+        >
+          <StudentProfilePrintDocument student={activeStudent} isForPreview />
+        </PrintPreviewModal>
+      )}
+
+      <PrintPreviewModal
+        isOpen={showDirectoryPreview}
+        onClose={() => setShowDirectoryPreview(false)}
+        title="Official Enrolled Students Directory"
+        defaultOrientation="portrait"
+      >
+        <BatchReportPrintDocument
+          batch={{
+            id: 'all-enrolled',
+            name: 'All Enrolled Students Cohort',
+            timing: 'Morning & Evening Batches',
+            session: 'ACTIVE',
+            days: 'Monday-Saturday',
+            status: 'ACTIVE',
+            classId: 'all',
+            className: selectedClass ? lookups?.classes.find((c) => c.id === selectedClass)?.name : 'All Classes',
+            boardId: 'all',
+            boardName: selectedBoard ? lookups?.boards.find((b) => b.id === selectedBoard)?.name : 'CBSE & State Boards',
+            academicYear: selectedAcademicYear || '2024-2025',
+            assignedTeacherName: 'Infinite Tutorial Faculty Board',
+            studentCount: students.length,
+          }}
+          students={students}
+          className={selectedClass ? lookups?.classes.find((c) => c.id === selectedClass)?.name : 'Secondary Coaching'}
+          boardName={selectedBoard ? lookups?.boards.find((b) => b.id === selectedBoard)?.name : 'CBSE / State'}
+          isForPreview
+        />
+      </PrintPreviewModal>
     </div>
   );
 };

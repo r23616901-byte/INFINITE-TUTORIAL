@@ -19,6 +19,7 @@ import { StudentMark } from '../../types/mark';
 import { StudentScorecard } from '../../types/scorecard';
 import { ScorecardViewer } from '../shared/ScorecardViewer';
 import { EmptyState } from '../../components/common/EmptyState';
+import { PrintButton, PrintPreviewModal, ParentProgressReportPrintDocument } from '../../components/print';
 
 export const ParentMarksPage: React.FC = () => {
   const [activeView, setActiveView] = useState<'SCORECARD' | 'TEST_LIST'>('SCORECARD');
@@ -28,6 +29,7 @@ export const ParentMarksPage: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState('');
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   const loadData = async () => {
     try {
@@ -65,7 +67,7 @@ export const ParentMarksPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 print:hidden">
         <div>
           <div className="flex items-center space-x-2">
             <div className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-lg">
@@ -117,6 +119,13 @@ export const ParentMarksPage: React.FC = () => {
             <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </button>
+
+          <PrintButton
+            onClick={() => setIsPrintModalOpen(true)}
+            variant="academic"
+            size="md"
+            label="Print Progress Report"
+          />
         </div>
       </div>
 
@@ -378,6 +387,22 @@ export const ParentMarksPage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Universal Print Preview Modal */}
+      {scorecard && (
+        <PrintPreviewModal
+          isOpen={isPrintModalOpen}
+          onClose={() => setIsPrintModalOpen(false)}
+          documentTitle={`Parent_Progress_Report_${scorecard.studentRoll || 'Student'}`}
+        >
+          <ParentProgressReportPrintDocument
+            scorecard={scorecard}
+            portionCompletionPct={88}
+            facultyRemarks="Rahul demonstrates excellent conceptual understanding across Physics and Mathematics. Recommend extra focus on Organic Chemistry reaction mechanisms and Biology taxonomy."
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
       )}
     </div>
   );

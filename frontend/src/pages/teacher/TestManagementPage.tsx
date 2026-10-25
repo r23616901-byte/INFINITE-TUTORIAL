@@ -19,6 +19,9 @@ import {
 import { getClassesApi, getBoardsApi, getSubjectsApi } from '../../services/academicService';
 import { TestItem, TestType, CreateTestPayload } from '../../types/test';
 import { ClassItem, BoardItem, SubjectItem } from '../../types/attendance';
+import { StudentMark } from '../../types/mark';
+import markService from '../../services/markService';
+import { PrintButton, PrintPreviewModal, TestResultPrintDocument } from '../../components/print';
 import {
   FileText,
   Plus,
@@ -143,6 +146,10 @@ export const TestManagementPage: React.FC = () => {
   const [isTypesModalOpen, setIsTypesModalOpen] = useState(false);
   const [newCustomTypeName, setNewCustomTypeName] = useState('');
   const [isAddingType, setIsAddingType] = useState(false);
+
+  // Print State
+  const [printingTest, setPrintingTest] = useState<TestItem | null>(null);
+  const [testMarksList, setTestMarksList] = useState<StudentMark[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -715,6 +722,22 @@ export const TestManagementPage: React.FC = () => {
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
+
+                      <PrintButton
+                        onClick={async () => {
+                          try {
+                            const marks = await markService.getMarks({ testId: test.id });
+                            setTestMarksList(marks || []);
+                          } catch {
+                            setTestMarksList([]);
+                          } finally {
+                            setPrintingTest(test);
+                          }
+                        }}
+                        variant="academic"
+                        size="sm"
+                        label="Print Ledger"
+                      />
                     </div>
                   </div>
 
@@ -1281,6 +1304,34 @@ export const TestManagementPage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Universal Print Preview Modal */}
+      {printingTest && (
+        <PrintPreviewModal
+          isOpen={!!printingTest}
+          onClose={() => setPrintingTest(null)}
+          documentTitle={`Test_Ledger_${printingTest.testId || printingTest.name}`}
+          defaultOrientation="landscape"
+        >
+          <TestResultPrintDocument
+            test={{
+              id: printingTest.id,
+              testId: printingTest.testId,
+              name: printingTest.name,
+              subjectName: printingTest.subjectName,
+              className: printingTest.className,
+              boardName: printingTest.boardName,
+              chapter: printingTest.chapter,
+              dateStr: printingTest.date,
+              maxMarks: printingTest.maxMarks,
+              duration: printingTest.duration,
+              createdByName: printingTest.createdByName,
+            }}
+            marksList={testMarksList}
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
       )}
     </div>
   );

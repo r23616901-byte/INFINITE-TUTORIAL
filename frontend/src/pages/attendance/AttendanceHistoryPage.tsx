@@ -28,6 +28,7 @@ import {
   X,
   Check,
 } from 'lucide-react';
+import { PrintButton, PrintPreviewModal, AttendanceReportPrintDocument } from '../../components/print';
 
 export const AttendanceHistoryPage: React.FC = () => {
   const { user } = useAuth();
@@ -44,6 +45,7 @@ export const AttendanceHistoryPage: React.FC = () => {
 
   // Primary Student History view
   const [currentStudentStats, setCurrentStudentStats] = useState<StudentAttendanceStats | null>(null);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   // Correction Modal State (Admin)
   const [correctionTarget, setCorrectionTarget] = useState<AttendanceRecord | null>(null);
@@ -217,18 +219,27 @@ export const AttendanceHistoryPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="text-right">
-                <span className="text-[10px] font-bold text-[#5B6B82] uppercase tracking-wider block">
-                  Overall Compliance
-                </span>
-                <span className="text-xl font-black text-emerald-600">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <span className="text-[10px] font-bold text-[#5B6B82] uppercase tracking-wider block">
+                    Overall Compliance
+                  </span>
+                  <span className="text-xl font-black text-emerald-600">
+                    {currentStudentStats.attendancePercentage}%
+                  </span>
+                </div>
+                <div className="w-12 h-12 rounded-full border-4 border-emerald-500 flex items-center justify-center font-black text-xs text-emerald-700 bg-emerald-50">
                   {currentStudentStats.attendancePercentage}%
-                </span>
+                </div>
               </div>
-              <div className="w-12 h-12 rounded-full border-4 border-emerald-500 flex items-center justify-center font-black text-xs text-emerald-700 bg-emerald-50">
-                {currentStudentStats.attendancePercentage}%
-              </div>
+
+              <PrintButton
+                onClick={() => setIsPrintModalOpen(true)}
+                variant="academic"
+                size="sm"
+                label="Print Register"
+              />
             </div>
           </div>
 
@@ -531,6 +542,21 @@ export const AttendanceHistoryPage: React.FC = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Universal Print Preview Modal */}
+      {currentStudentStats && (
+        <PrintPreviewModal
+          isOpen={isPrintModalOpen}
+          onClose={() => setIsPrintModalOpen(false)}
+          documentTitle={`Attendance_Register_${currentStudentStats.studentRoll}`}
+        >
+          <AttendanceReportPrintDocument
+            stats={currentStudentStats}
+            reportingPeriod="Academic Year 2024–2025"
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
       )}
     </div>
   );

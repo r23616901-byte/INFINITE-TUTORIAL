@@ -26,6 +26,10 @@ import {
   FileText,
   Lock,
 } from 'lucide-react';
+import { PrintButton } from '../../components/print/PrintButton';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { StudentProfilePrintDocument } from '../../components/print/templates/StudentProfilePrintDocument';
+import { BatchReportPrintDocument } from '../../components/print/templates/BatchReportPrintDocument';
 
 export const TeacherStudentsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -41,6 +45,8 @@ export const TeacherStudentsPage: React.FC = () => {
   // View Modal
   const [activeStudent, setActiveStudent] = useState<StudentDto | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [showProfilePreview, setShowProfilePreview] = useState(false);
+  const [showDirectoryPreview, setShowDirectoryPreview] = useState(false);
 
   const loadData = async () => {
     setIsLoading(true);
@@ -92,6 +98,12 @@ export const TeacherStudentsPage: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-2">
+          <PrintButton
+            onClick={() => setShowDirectoryPreview(true)}
+            label="Print Roster"
+            variant="academic"
+            size="sm"
+          />
           <Button
             size="sm"
             variant="outline"
@@ -452,7 +464,13 @@ export const TeacherStudentsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-2 border-t border-gray-100 flex justify-end">
+            <div className="pt-2 border-t border-gray-100 flex items-center justify-end gap-2">
+              <PrintButton
+                onClick={() => setShowProfilePreview(true)}
+                label="Print Profile"
+                variant="academic"
+                size="sm"
+              />
               <button
                 onClick={() => setIsViewModalOpen(false)}
                 className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-semibold hover:bg-gray-200"
@@ -463,6 +481,47 @@ export const TeacherStudentsPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* UNIVERSAL PRINT PREVIEWS */}
+      {activeStudent && (
+        <PrintPreviewModal
+          isOpen={showProfilePreview}
+          onClose={() => setShowProfilePreview(false)}
+          title={`Official Student Profile - ${activeStudent.name}`}
+          defaultOrientation="portrait"
+        >
+          <StudentProfilePrintDocument student={activeStudent} isForPreview />
+        </PrintPreviewModal>
+      )}
+
+      <PrintPreviewModal
+        isOpen={showDirectoryPreview}
+        onClose={() => setShowDirectoryPreview(false)}
+        title="Assigned Students Cohort Roster"
+        defaultOrientation="portrait"
+      >
+        <BatchReportPrintDocument
+          batch={{
+            id: 'teacher-cohort',
+            name: selectedBatch ? lookups?.batches.find((b) => b.id === selectedBatch)?.name || 'Selected Cohort' : 'Assigned Students Roster',
+            timing: 'Morning & Evening Sessions',
+            session: 'ACTIVE',
+            days: 'Monday-Saturday',
+            status: 'ACTIVE',
+            classId: selectedClass || 'all',
+            className: selectedClass ? lookups?.classes.find((c) => c.id === selectedClass)?.name : 'Class 10',
+            boardId: 'cbse',
+            boardName: 'CBSE / State',
+            academicYear: '2024-2025',
+            assignedTeacherName: 'Faculty In-Charge',
+            studentCount: students.length,
+          }}
+          students={students}
+          className={selectedClass ? lookups?.classes.find((c) => c.id === selectedClass)?.name : 'Class 10'}
+          boardName="CBSE"
+          isForPreview
+        />
+      </PrintPreviewModal>
     </div>
   );
 };

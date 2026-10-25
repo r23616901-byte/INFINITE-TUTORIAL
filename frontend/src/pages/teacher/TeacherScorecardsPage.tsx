@@ -3,7 +3,6 @@ import {
   Award,
   RefreshCw,
   AlertTriangle,
-  Printer,
   ChevronDown,
 } from 'lucide-react';
 import { fetchStudents, StudentDto } from '../../services/studentService';
@@ -11,6 +10,9 @@ import scorecardService from '../../services/scorecardService';
 import { StudentScorecard } from '../../types/scorecard';
 import { ScorecardViewer } from '../shared/ScorecardViewer';
 import { EmptyState } from '../../components/common/EmptyState';
+import { PrintButton } from '../../components/print/PrintButton';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { ScorecardPrintDocument } from '../../components/print/templates/ScorecardPrintDocument';
 
 export const TeacherScorecardsPage: React.FC = () => {
   const [students, setStudents] = useState<StudentDto[]>([]);
@@ -19,6 +21,7 @@ export const TeacherScorecardsPage: React.FC = () => {
   const [loadingStudents, setLoadingStudents] = useState<boolean>(true);
   const [loadingScorecard, setLoadingScorecard] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [showPrintPreview, setShowPrintPreview] = useState<boolean>(false);
 
   // 1. Fetch Students
   useEffect(() => {
@@ -90,13 +93,14 @@ export const TeacherScorecardsPage: React.FC = () => {
             <RefreshCw className={`w-4 h-4 mr-2 ${loadingScorecard ? 'animate-spin' : ''}`} />
             Refresh
           </button>
-          <button
-            onClick={() => window.print()}
-            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-[#155EEF] hover:bg-[#1048B5] transition-colors"
-          >
-            <Printer className="w-4 h-4 mr-2" />
-            Print Report
-          </button>
+          <PrintButton
+            onClick={() => setShowPrintPreview(true)}
+            label="Print Scorecard"
+            title="Print official certified scorecard"
+            variant="academic"
+            size="md"
+            disabled={!scorecard || loadingScorecard}
+          />
         </div>
       </div>
 
@@ -153,6 +157,18 @@ export const TeacherScorecardsPage: React.FC = () => {
           actionText="Refresh Record"
           onAction={loadScorecard}
         />
+      )}
+
+      {/* UNIVERSAL PRINT PREVIEW MODAL */}
+      {scorecard && (
+        <PrintPreviewModal
+          isOpen={showPrintPreview}
+          onClose={() => setShowPrintPreview(false)}
+          title={`Student Scorecard - ${scorecard.studentName}`}
+          defaultOrientation="portrait"
+        >
+          <ScorecardPrintDocument scorecard={scorecard} isForPreview />
+        </PrintPreviewModal>
       )}
     </div>
   );

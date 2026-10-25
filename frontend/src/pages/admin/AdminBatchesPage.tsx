@@ -19,12 +19,18 @@ import {
   Moon,
   Search,
 } from 'lucide-react';
+import { fetchStudents, StudentDto } from '../../services/studentService';
+import { PrintButton, PrintPreviewModal, BatchReportPrintDocument } from '../../components/print';
 
 export const AdminBatchesPage: React.FC = () => {
   const [batches, setBatches] = useState<BatchItem[]>([]);
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [boards, setBoards] = useState<BoardItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Print State
+  const [printingBatch, setPrintingBatch] = useState<BatchItem | null>(null);
+  const [batchStudentList, setBatchStudentList] = useState<StudentDto[]>([]);
 
   // Filters
   const [selectedClass, setSelectedClass] = useState('');
@@ -329,9 +335,29 @@ export const AdminBatchesPage: React.FC = () => {
                 <span className="text-emerald-700 font-bold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> {b.status}
                 </span>
-                <span className="text-slate-500 font-bold">
-                  {b.studentCount || 14} Students
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-bold">
+                    {b.studentCount || 14} Students
+                  </span>
+                  <PrintButton
+                    onClick={async () => {
+                      setPrintingBatch(b);
+                      try {
+                        const res = await fetchStudents();
+                        const students = res.students;
+                        const batchStudents = students.filter(
+                          (s: StudentDto) => s.batchName === b.name || s.batchId === b.id
+                        );
+                        setBatchStudentList(batchStudents.length > 0 ? batchStudents : students.slice(0, 15));
+                      } catch {
+                        setBatchStudentList([]);
+                      }
+                    }}
+                    variant="academic"
+                    size="sm"
+                    label="Print Roster"
+                  />
+                </div>
               </div>
             </div>
           ))}
@@ -512,6 +538,23 @@ export const AdminBatchesPage: React.FC = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Universal Print Preview Modal */}
+      {printingBatch && (
+        <PrintPreviewModal
+          isOpen={!!printingBatch}
+          onClose={() => setPrintingBatch(null)}
+          documentTitle={`Batch_Roster_${printingBatch.name.replace(/\s+/g, '_')}`}
+        >
+          <BatchReportPrintDocument
+            batch={printingBatch}
+            students={batchStudentList}
+            className={printingBatch.className}
+            boardName={printingBatch.boardName}
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
       )}
     </div>
   );

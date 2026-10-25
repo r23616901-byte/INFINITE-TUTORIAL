@@ -19,7 +19,6 @@ import {
   Award,
   GraduationCap,
   BookOpen,
-  Printer,
   RefreshCw,
   Zap,
   CheckCircle2,
@@ -27,6 +26,9 @@ import {
 import { StudentOverallPerformance, SubjectPerformanceBreakdown } from '../../types/analytics';
 import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
 import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
+import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
+import { PerformanceAnalysisPrintDocument } from '../../components/print/templates/PerformanceAnalysisPrintDocument';
+import { PrintButton } from '../../components/print/PrintButton';
 
 interface PerformanceAnalysisViewProps {
   data: StudentOverallPerformance;
@@ -40,6 +42,7 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
   loading = false,
 }) => {
   const [activeSubject, setActiveSubject] = useState<'physics' | 'chemistry' | 'biology' | 'mathematics' | 'overview'>('physics');
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
 
   const subjectTabs = [
     { key: 'physics', name: 'Physics', icon: '⚛️', color: '#3b82f6', bg: 'bg-blue-50 text-blue-700 border-blue-200' },
@@ -131,13 +134,13 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
                 <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
               </button>
             )}
-            <button
-              onClick={() => window.print()}
-              className="print:hidden p-3 bg-white/10 hover:bg-white/20 rounded-xl border border-white/20 text-white transition-colors"
-              title="Print Performance Report"
-            >
-              <Printer className="w-5 h-5" />
-            </button>
+            <PrintButton
+              onClick={() => setShowPrintPreview(true)}
+              label="Print Report"
+              title="Print official certified performance report"
+              variant="white"
+              size="md"
+            />
           </div>
         </div>
 
@@ -526,6 +529,20 @@ export const PerformanceAnalysisView: React.FC<PerformanceAnalysisViewProps> = (
 
       {/* Official Print Footer */}
       <PrintTemplateFooter />
+
+      {/* UNIVERSAL PRINT PREVIEW MODAL */}
+      <PrintPreviewModal
+        isOpen={showPrintPreview}
+        onClose={() => setShowPrintPreview(false)}
+        title={`Academic Performance Analysis - ${data.studentName}`}
+        defaultOrientation="portrait"
+      >
+        <PerformanceAnalysisPrintDocument
+          data={data}
+          activeSubjectKey={activeSubject}
+          isForPreview
+        />
+      </PrintPreviewModal>
     </div>
   );
 };

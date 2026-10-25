@@ -1,0 +1,272 @@
+/* ==========================================================================
+   INFINITE TUTORIAL — UNIVERSAL ACADEMIC PRINT SYSTEM STYLES
+   Brand Colors:
+     Primary: Dark Academic Green (#0A3622 / #0F3D24)
+     Secondary: Crisp White (#FFFFFF)
+     Supporting: Subtle Light Green (#F0FDF4 / #E8F5E9) & Neutral Slate (#64748B / #E2E8F0)
+   Standard: ISO 216 A4 Dimensions (Portrait: 210x297mm, Landscape: 297x210mm)
+   ========================================================================== */
+
+/* 1. Global Print Page Configuration */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 12mm 12mm;
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #64748b;
+    }
+  }
+
+  @page landscape-sheet {
+    size: A4 landscape;
+    margin: 10mm 12mm 12mm 12mm;
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #64748b;
+    }
+  }
+
+  /* Reset outer shell */
+  html, body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide application chrome, navigation, toolbars, search boxes, and dialogs */
+  aside,
+  aside *,
+  .brand-sidebar-bg,
+  .brand-sidebar-bg *,
+  [class*="brand-sidebar"],
+  [class*="brand-sidebar"] *,
+  [class*="sidebar"],
+  [class*="sidebar"] *,
+  header:not(.print-header),
+  header:not(.print-header) *,
+  nav,
+  nav *,
+  footer:not(.print-footer),
+  footer:not(.print-footer) *,
+  .no-print,
+  .print-hide,
+  button:not(.print-keep),
+  input,
+  select,
+  textarea,
+  .mobile-bottom-nav,
+  .brand-watermark,
+  [role="dialog"]:not(.print-portal-active),
+  [role="alert"],
+  .action-column,
+  .btn-action {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* When Print Preview Modal is active, strictly hide all other content */
+  body.print-preview-active aside,
+  body.print-preview-active header:not(.print-header),
+  body.print-preview-active nav,
+  body.print-preview-active footer:not(.print-footer),
+  body.print-preview-active .brand-sidebar-bg,
+  body.print-preview-active main > *:not(.print-preview-modal-root) {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Ensure containers do not crop or clip and take full A4 printable width */
+  #root,
+  main,
+  div[class*="min-h-screen"],
+  div[class*="flex-1"],
+  div[class*="flex-col"],
+  div[class*="flex-row"],
+  div[class*="overflow-"] {
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Universal Print Container Layout */
+  .universal-print-document {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    page-break-after: auto;
+  }
+
+  .universal-print-document.landscape-mode {
+    page: landscape-sheet;
+  }
+
+  /* Page Break Controls */
+  .print-break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-page-break-before {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+
+  .print-page-break-after {
+    break-after: page !important;
+    page-break-after: always !important;
+  }
+
+  /* Table Flow Across Pages with Repeatable Header */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tfoot {
+    display: table-footer-group !important;
+  }
+
+  tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  th {
+    background-color: #f0fdf4 !important;
+    color: #0a3622 !important;
+    border: 1px solid #cbd5e1 !important;
+    font-weight: 700 !important;
+    font-size: 8pt !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+    padding: 5px 7px !important;
+  }
+
+  td {
+    border: 1px solid #e2e8f0 !important;
+    padding: 5px 7px !important;
+    font-size: 8.5pt !important;
+    color: #1e293b !important;
+  }
+
+  /* Dark Academic Green Brand Accents for Print */
+  .academic-brand-bar {
+    background-color: #0a3622 !important;
+    color: #ffffff !important;
+  }
+
+  .academic-badge-green {
+    background-color: #f0fdf4 !important;
+    color: #0a3622 !important;
+    border: 1px solid #86efac !important;
+  }
+
+  /* Recharts / SVGs Print Optimizations */
+  .recharts-responsive-container,
+  .print-chart-container {
+    width: 100% !important;
+    min-height: 240px !important;
+    max-height: 350px !important;
+    display: block !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .recharts-wrapper {
+    margin: 0 auto !important;
+  }
+
+  svg {
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* High contrast monochrome fallbacks */
+  .print-mono-contrast {
+    filter: contrast(120%) grayscale(10%) !important;
+  }
+}
+
+/* 2. Realistic Screen Preview Mode (A4 simulation inside modal) */
+.print-preview-backdrop {
+  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.print-preview-viewport {
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: auto;
+  background-color: #334155;
+  padding: 1.5rem;
+}
+
+.print-preview-sheet {
+  background-color: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* A4 aspect ratio and dimensional guidelines in preview */
+.print-preview-sheet.portrait {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 12mm 15mm;
+}
+
+.print-preview-sheet.landscape {
+  width: 297mm;
+  min-height: 210mm;
+  padding: 12mm 15mm;
+}
+
+@media (max-width: 900px) {
+  .print-preview-sheet.portrait,
+  .print-preview-sheet.landscape {
+    width: 100%;
+    min-height: auto;
+    padding: 16px;
+  }
+}

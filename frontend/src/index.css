@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles/theme.css";
+@import "./components/print/PrintStyles.css";
 
 @theme {
   --color-brand-navy: #0B1F4D;

@@ -40,8 +40,8 @@ export const PrintTemplateHeader: React.FC<PrintTemplateHeaderProps> = ({
   });
 
   return (
-    <div className="hidden print:block w-full mb-3 text-black select-none border-b-2 border-[#0B1F4D] pb-2">
-      {/* 1. Main Institutional Header / Letterhead */}
+    <div className="hidden print:block w-full mb-3 text-black select-none border-b-2 border-[#0A3622] pb-2">
+      {/* 1. Main Institutional Header / Letterhead with Dark Academic Green Branding */}
       <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-300">
         <div className="flex items-center gap-3">
           <img
@@ -54,10 +54,10 @@ export const PrintTemplateHeader: React.FC<PrintTemplateHeaderProps> = ({
             }}
           />
           <div>
-            <h1 className="text-lg font-black text-[#0B1F4D] tracking-tight uppercase leading-none">
+            <h1 className="text-lg font-black text-[#0A3622] tracking-tight uppercase leading-none">
               Infinite Tutorial
             </h1>
-            <p className="text-[11px] font-bold text-[#155EEF] tracking-wide mt-0.5 uppercase">
+            <p className="text-[11px] font-bold text-[#14532D] tracking-wide mt-0.5 uppercase">
               Centre for Academic Excellence &amp; Secondary Board Coaching
             </p>
             <p className="text-[9px] text-slate-600 mt-0.5">
@@ -67,22 +67,22 @@ export const PrintTemplateHeader: React.FC<PrintTemplateHeaderProps> = ({
         </div>
 
         <div className="text-right flex flex-col items-end flex-shrink-0">
-          <span className="inline-block px-2.5 py-0.5 bg-slate-100 border border-slate-300 rounded text-[9.5px] font-extrabold uppercase tracking-wider text-[#0B1F4D]">
+          <span className="inline-block px-2.5 py-0.5 bg-[#F0FDF4] border border-[#86EFAC] rounded text-[9.5px] font-extrabold uppercase tracking-wider text-[#0A3622]">
             {reportCategory}
           </span>
           <p className="text-[9.5px] font-bold text-slate-700 mt-0.5">
             Academic Session: {academicYear}
           </p>
-          <p className="text-[8.5px] text-slate-500">
+          <p className="text-[8.5px] text-slate-500 font-mono">
             Printed: {currentDate} at {currentTime}
           </p>
         </div>
       </div>
 
-      {/* 2. Document Title Banner */}
-      <div className="my-1.5 py-1 px-2.5 bg-[#F5F8FC] border-l-4 border-[#155EEF] flex items-center justify-between">
+      {/* 2. Document Title Banner in Dark Academic Green */}
+      <div className="my-1.5 py-1 px-2.5 bg-[#F0FDF4] border-l-4 border-[#0A3622] flex items-center justify-between">
         <div>
-          <h2 className="text-xs font-black text-[#0B1F4D] uppercase tracking-wide">
+          <h2 className="text-xs font-black text-[#0A3622] uppercase tracking-wide">
             {documentTitle}
           </h2>
           {documentSubtitle && (
@@ -92,7 +92,7 @@ export const PrintTemplateHeader: React.FC<PrintTemplateHeaderProps> = ({
           )}
         </div>
         <div className="text-right">
-          <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300">
+          <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-white text-[#0A3622] border border-[#86EFAC]">
             &bull; Verified Record
           </span>
         </div>
