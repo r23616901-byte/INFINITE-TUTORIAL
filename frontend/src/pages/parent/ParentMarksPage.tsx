@@ -19,10 +19,11 @@ import { StudentMark } from '../../types/mark';
 import { StudentScorecard } from '../../types/scorecard';
 import { ScorecardViewer } from '../shared/ScorecardViewer';
 import { EmptyState } from '../../components/common/EmptyState';
-import { PrintButton, PrintPreviewModal, ParentProgressReportPrintDocument } from '../../components/print';
+import { PrintButton, PrintPreviewModal, ParentProgressReportPrintDocument, ScorecardPrintDocument } from '../../components/print';
 
 export const ParentMarksPage: React.FC = () => {
   const [activeView, setActiveView] = useState<'SCORECARD' | 'TEST_LIST'>('SCORECARD');
+  const [selectedSubjectTab, setSelectedSubjectTab] = useState<'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'>('ALL');
   const [scorecard, setScorecard] = useState<StudentScorecard | null>(null);
   const [marks, setMarks] = useState<StudentMark[]>([]);
   const [loading, setLoading] = useState(true);
@@ -124,7 +125,18 @@ export const ParentMarksPage: React.FC = () => {
             onClick={() => setIsPrintModalOpen(true)}
             variant="academic"
             size="md"
-            label="Print Progress Report"
+            label={
+              activeView === 'SCORECARD'
+                ? selectedSubjectTab === 'ALL'
+                  ? 'Print Scorecard'
+                  : `Print ${selectedSubjectTab}`
+                : 'Print Progress Report'
+            }
+            title={
+              activeView === 'SCORECARD'
+                ? `Print official certified scorecard${selectedSubjectTab !== 'ALL' ? ` for ${selectedSubjectTab}` : ''}`
+                : 'Print official progress report'
+            }
           />
         </div>
       </div>
@@ -148,7 +160,13 @@ export const ParentMarksPage: React.FC = () => {
             <p className="text-xs text-gray-500 mt-1">Aggregating Physics, Chemistry, Biology and Mathematics results.</p>
           </div>
         ) : scorecard ? (
-          <ScorecardViewer scorecard={scorecard} onRefresh={loadData} loading={loading} />
+          <ScorecardViewer
+            scorecard={scorecard}
+            onRefresh={loadData}
+            loading={loading}
+            activeSubject={selectedSubjectTab}
+            onSubjectChange={setSelectedSubjectTab}
+          />
         ) : (
           <div className="bg-white rounded-3xl border border-gray-200 p-12 text-center shadow-sm">
             <Info className="w-8 h-8 text-gray-400 mx-auto mb-2" />
@@ -394,14 +412,32 @@ export const ParentMarksPage: React.FC = () => {
         <PrintPreviewModal
           isOpen={isPrintModalOpen}
           onClose={() => setIsPrintModalOpen(false)}
-          documentTitle={`Parent_Progress_Report_${scorecard.studentRoll || 'Student'}`}
+          title={
+            activeView === 'SCORECARD'
+              ? `Student Scorecard - ${scorecard.studentName}${selectedSubjectTab !== 'ALL' ? ` (${selectedSubjectTab})` : ''}`
+              : `Parent Progress Report - ${scorecard.studentName}`
+          }
+          documentTitle={
+            activeView === 'SCORECARD'
+              ? `Infinite-Tutorial-Scorecard-${(scorecard.studentName || 'Student').replace(/\s+/g, '_')}${selectedSubjectTab !== 'ALL' ? `_${selectedSubjectTab}` : ''}`
+              : `Parent_Progress_Report_${scorecard.studentRoll || 'Student'}`
+          }
+          defaultOrientation="portrait"
         >
-          <ParentProgressReportPrintDocument
-            scorecard={scorecard}
-            portionCompletionPct={88}
-            facultyRemarks="Rahul demonstrates excellent conceptual understanding across Physics and Mathematics. Recommend extra focus on Organic Chemistry reaction mechanisms and Biology taxonomy."
-            isForPreview={true}
-          />
+          {activeView === 'SCORECARD' ? (
+            <ScorecardPrintDocument
+              scorecard={scorecard}
+              selectedSubject={selectedSubjectTab === 'ALL' ? undefined : selectedSubjectTab}
+              isForPreview={true}
+            />
+          ) : (
+            <ParentProgressReportPrintDocument
+              scorecard={scorecard}
+              portionCompletionPct={88}
+              facultyRemarks="Rahul demonstrates excellent conceptual understanding across Physics and Mathematics. Recommend extra focus on Organic Chemistry reaction mechanisms and Biology taxonomy."
+              isForPreview={true}
+            />
+          )}
         </PrintPreviewModal>
       )}
     </div>
