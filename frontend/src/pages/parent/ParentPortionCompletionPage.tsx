@@ -10,7 +10,6 @@ import {
   ChevronDown,
   ChevronUp,
   Sparkles,
-  HelpCircle,
   Eye,
 } from 'lucide-react';
 import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
@@ -79,7 +78,6 @@ export const ParentPortionCompletionPage: React.FC = () => {
 
   // Question Paper Print / Preview
   const [previewPaper, setPreviewPaper] = useState<QuestionPaper | null>(null);
-  const [showAnswerKeyInPrint, setShowAnswerKeyInPrint] = useState<boolean>(false);
   const [showSyllabusPrint, setShowSyllabusPrint] = useState<boolean>(false);
 
   // Load student profile & resolve enrolled track
@@ -593,40 +591,20 @@ export const ParentPortionCompletionPage: React.FC = () => {
                   {/* Actions */}
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                     <button
-                      onClick={() => {
-                        setPreviewPaper(paper);
-                        setShowAnswerKeyInPrint(false);
-                      }}
+                      onClick={() => setPreviewPaper(paper)}
                       className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       View Paper
                     </button>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setPreviewPaper(paper);
-                          setShowAnswerKeyInPrint(true);
-                        }}
-                        className="px-3 py-2 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors flex items-center gap-1.5"
-                        title="Print paper along with complete solutions & answer key"
-                      >
-                        <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
-                        Solutions (A4)
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setPreviewPaper(paper);
-                          setShowAnswerKeyInPrint(false);
-                        }}
-                        className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition-colors flex items-center gap-1.5"
-                      >
-                        <Printer className="w-3.5 h-3.5" />
-                        Print A4 Sheet
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => setPreviewPaper(paper)}
+                      className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition-colors flex items-center gap-1.5"
+                    >
+                      <Printer className="w-3.5 h-3.5" />
+                      Print A4 Sheet
+                    </button>
                   </div>
                 </div>
               );
@@ -645,7 +623,7 @@ export const ParentPortionCompletionPage: React.FC = () => {
         >
           <QuestionPaperPrintDocument
             paper={previewPaper}
-            showAnswerKey={showAnswerKeyInPrint}
+            showAnswerKey={false}
             studentName={student?.name}
             rollNumber={student?.studentId}
             isForPreview

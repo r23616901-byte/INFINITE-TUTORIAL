@@ -13,3 +13,25 @@ export * from './templates/BatchReportPrintDocument';
 export * from './templates/TestResultPrintDocument';
 export * from './templates/ParentProgressReportPrintDocument';
 export * from './templates/QuestionPaperPrintDocument';
+
+// Centralized Document Template System exports
+export {
+  DocumentLayout,
+  DocumentHeader,
+  DocumentFooter,
+  ExaminationPaperTemplate,
+  AcademicReportTemplate,
+  PrintPreview,
+  FormulaRenderer,
+} from '../document-templates';
+export type {
+  DocumentLayoutProps,
+  DocumentHeaderProps,
+  DocumentFooterProps,
+  ExaminationPaperTemplateProps,
+  AcademicReportTemplateProps,
+  PrintPreviewProps,
+  FormulaRendererProps,
+} from '../document-templates';
+export * from '../../types/documentTemplates';
+export * from '../../utils/documentPrintUtils';

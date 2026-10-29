@@ -26,15 +26,33 @@ export const getCurriculumByBatchHandler = async (req: AuthRequest, res: Respons
   }
 };
 
+const sanitizePaperForStudent = (paper: any) => {
+  return {
+    ...paper,
+    sections: paper.sections.map((section: any) => ({
+      ...section,
+      questions: section.questions.map((q: any) => {
+        const { answerKey, ...sanitized } = q;
+        return sanitized;
+      }),
+    })),
+  };
+};
+
 export const getQuestionPapersHandler = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { classId, boardId, subjectId } = req.query;
+    const { classId, boardId, subjectId, studentCopyOnly } = req.query;
     const data = await curriculumService.getQuestionPapers({
       classId: classId ? String(classId) : undefined,
       boardId: boardId ? String(boardId) : undefined,
       subjectId: subjectId ? String(subjectId) : undefined,
     });
-    res.status(200).json({ success: true, data });
+
+    const isParent = req.user?.role === 'PARENT';
+    const stripAnswers = isParent || studentCopyOnly === 'true';
+    const sanitizedData = stripAnswers ? data.map(sanitizePaperForStudent) : data;
+
+    res.status(200).json({ success: true, data: sanitizedData });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -43,12 +61,18 @@ export const getQuestionPapersHandler = async (req: AuthRequest, res: Response):
 export const getQuestionPaperByIdHandler = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const id = String(req.params.id);
+    const { studentCopyOnly } = req.query;
     const data = await curriculumService.getQuestionPaperById(id);
     if (!data) {
       res.status(404).json({ success: false, message: 'Question paper not found' });
       return;
     }
-    res.status(200).json({ success: true, data });
+
+    const isParent = req.user?.role === 'PARENT';
+    const stripAnswers = isParent || studentCopyOnly === 'true';
+    const sanitizedData = stripAnswers ? sanitizePaperForStudent(data) : data;
+
+    res.status(200).json({ success: true, data: sanitizedData });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message });
   }

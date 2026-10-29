@@ -112,16 +112,29 @@ export const getCurriculumByBatchApi = async (batchId: string): Promise<Curricul
   return getCurriculumApi({ classId, boardId });
 };
 
+const sanitizePaper = (paper: QuestionPaper): QuestionPaper => ({
+  ...paper,
+  sections: paper.sections.map((sec) => ({
+    ...sec,
+    questions: sec.questions.map((q) => {
+      const { answerKey, ...sanitized } = q;
+      return sanitized as any;
+    }),
+  })),
+});
+
 export const getQuestionPapersApi = async (filters: {
   classId?: string;
   boardId?: string;
   subjectId?: string;
+  studentCopyOnly?: boolean;
 } = {}): Promise<QuestionPaper[]> => {
   try {
     const params = new URLSearchParams();
     if (filters.classId) params.append('classId', filters.classId);
     if (filters.boardId) params.append('boardId', filters.boardId);
     if (filters.subjectId) params.append('subjectId', filters.subjectId);
+    if (filters.studentCopyOnly) params.append('studentCopyOnly', 'true');
 
     const res = await api.get(`/curriculum/question-papers?${params.toString()}`);
     if (res.data?.success && res.data.data) {
@@ -145,19 +158,27 @@ export const getQuestionPapersApi = async (filters: {
         qp.subject.toLowerCase() === filters.subjectId?.toLowerCase()
     );
   }
+  if (filters.studentCopyOnly) {
+    list = list.map(sanitizePaper);
+  }
   return list;
 };
 
-export const getQuestionPaperByIdApi = async (id: string): Promise<QuestionPaper | null> => {
+export const getQuestionPaperByIdApi = async (
+  id: string,
+  studentCopyOnly?: boolean
+): Promise<QuestionPaper | null> => {
   try {
-    const res = await api.get(`/curriculum/question-papers/${id}`);
+    const query = studentCopyOnly ? '?studentCopyOnly=true' : '';
+    const res = await api.get(`/curriculum/question-papers/${id}${query}`);
     if (res.data?.success && res.data.data) {
       return res.data.data;
     }
   } catch {
     // Fallback
   }
-  return clientQuestionPapers.find((p) => p.id === id) || null;
+  const paper = clientQuestionPapers.find((p) => p.id === id) || null;
+  return paper && studentCopyOnly ? sanitizePaper(paper) : paper;
 };
 
 export const updateChapterProgressApi = async (

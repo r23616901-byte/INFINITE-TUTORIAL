@@ -502,6 +502,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
   // Question Paper Preview & Print Modal
   const [previewPaper, setPreviewPaper] = useState<QuestionPaper | null>(null);
   const [showAnswerKeyInPrint, setShowAnswerKeyInPrint] = useState<boolean>(false);
+  const [answerSpacePreference, setAnswerSpacePreference] = useState<'none' | 'lines' | 'box' | 'diagram' | 'calculation'>('none');
 
   const activeTrack = TEACHER_CURRICULUM_TRACKS.find((t) => t.id === selectedTrackId) || TEACHER_CURRICULUM_TRACKS[0];
 
@@ -1172,9 +1173,56 @@ export const TeacherPortionProgressPage: React.FC = () => {
           title={`Question Paper — ${previewPaper.subject} (${previewPaper.className} ${previewPaper.boardName})`}
           defaultOrientation="portrait"
         >
+          {/* Top Interactive Configuration Strip */}
+          <div className="no-print bg-slate-100 border border-slate-300 rounded-lg p-2.5 mb-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+            {/* Format Toggle: Student Paper vs Teacher Key */}
+            <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-300">
+              <button
+                type="button"
+                onClick={() => setShowAnswerKeyInPrint(false)}
+                className={`px-3 py-1 rounded text-xs font-bold transition-all ${
+                  !showAnswerKeyInPrint
+                    ? 'bg-[#0A3622] text-white shadow-2xs'
+                    : 'text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                Student Paper (Clean)
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAnswerKeyInPrint(true)}
+                className={`px-3 py-1 rounded text-xs font-bold transition-all ${
+                  showAnswerKeyInPrint
+                    ? 'bg-amber-600 text-white shadow-2xs'
+                    : 'text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                Teacher Answer Key &amp; Scheme
+              </button>
+            </div>
+
+            {/* Answer Space Selector (when in Student Paper mode) */}
+            {!showAnswerKeyInPrint && (
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-slate-700 text-[11px]">Answer Space:</span>
+                <select
+                  value={answerSpacePreference}
+                  onChange={(e) => setAnswerSpacePreference(e.target.value as any)}
+                  className="bg-white border border-slate-300 rounded-md px-2 py-1 text-xs font-semibold text-slate-800"
+                >
+                  <option value="none">Compact (Questions Only)</option>
+                  <option value="lines">Ruled Answer Lines</option>
+                  <option value="box">Blank Writing Box</option>
+                  <option value="calculation">Calculations / Rough Work</option>
+                </select>
+              </div>
+            )}
+          </div>
+
           <QuestionPaperPrintDocument
             paper={previewPaper}
             showAnswerKey={showAnswerKeyInPrint}
+            answerSpacePreference={answerSpacePreference}
             isForPreview
           />
         </PrintPreviewModal>
