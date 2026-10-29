@@ -14,6 +14,7 @@ import teacherRoutes from './teacher.routes';
 import dailyUpdateRoutes from './dailyUpdate.routes';
 import fileRoutes from './file.routes';
 import auditRoutes from './audit.routes';
+import curriculumRoutes from './curriculum.routes';
 import { authenticate, authorize } from '../middleware/auth.middleware';
 import { AuthRequest } from '../types';
 
@@ -25,6 +26,7 @@ router.use('/auth', authRoutes);
 router.use('/students', studentRoutes);
 router.use('/attendance', attendanceRoutes);
 router.use('/academics', academicRoutes);
+router.use('/curriculum', curriculumRoutes);
 router.use('/leaves', leaveRoutes);
 router.use('/tests', testRoutes);
 router.use('/home-reach', homeReachRoutes);

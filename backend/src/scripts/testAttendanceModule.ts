@@ -55,8 +55,8 @@ async function runAttendanceVerification() {
   console.log('  ✓ Admin authenticated');
 
   const parentLogin = await postJson(`${API_BASE}/auth/login`, {
-    identifier: '9876543210',
-    password: '051511',
+    identifier: '6361085188',
+    password: '260906',
   });
   if (!parentLogin.ok) throw new Error(`Parent login failed: ${JSON.stringify(parentLogin.data)}`);
   const parentToken = parentLogin.data.data.token;

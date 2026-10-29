@@ -1,6 +1,7 @@
 import prisma from './prisma';
 import { RoleType } from '../types';
 import bcrypt from 'bcryptjs';
+import { checkDbAvailability } from './academicService';
 
 export interface UserRecord {
   id: string;
@@ -76,28 +77,66 @@ const SEED_USERS: UserRecord[] = [
       address: 'Bangalore, Karnataka',
     },
   },
+  {
+    id: 'parent-uuid-4444-5555-666677778888',
+    phone: '9823445566',
+    email: 'venkat.nair@infinite.com',
+    passwordHash: bcrypt.hashSync('250112', 10), // DOB password: 250112 (Jan 25, 2012 - Priya Nair)
+    role: 'PARENT',
+    isActive: true,
+    mustChangePassword: false,
+    name: 'Mr. Venkat Nair (Parent of Priya - Class 9)',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+    parent: {
+      id: 'parent-prof-2',
+      name: 'Mr. Venkat Nair (Parent of Priya - Class 9)',
+      phone: '9823445566',
+      alternatePhone: null,
+      address: 'Jayanagar, Bangalore, Karnataka',
+    },
+  },
+  {
+    id: 'parent-uuid-5555-6666-777788889999',
+    phone: '9834556677',
+    email: 'santosh.patil@infinite.com',
+    passwordHash: bcrypt.hashSync('141111', 10), // DOB password: 141111 (Nov 14, 2011 - Rohan Patil)
+    role: 'PARENT',
+    isActive: true,
+    mustChangePassword: false,
+    name: 'Mr. Santosh Patil (Parent of Rohan - Class 10 KSB)',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+    parent: {
+      id: 'parent-prof-3',
+      name: 'Mr. Santosh Patil (Parent of Rohan - Class 10 KSB)',
+      phone: '9834556677',
+      alternatePhone: null,
+      address: 'Rajajinagar, Bangalore, Karnataka',
+    },
+  },
+  {
+    id: 'parent-uuid-6666-7777-888899990000',
+    phone: '9834556688',
+    email: 'vikas.sharma@infinite.com',
+    passwordHash: bcrypt.hashSync('180512', 10), // DOB password: 180512 (May 18, 2012 - Ananya Sharma)
+    role: 'PARENT',
+    isActive: true,
+    mustChangePassword: false,
+    name: 'Mr. Vikas Sharma (Parent of Ananya - Class 9 CBSE)',
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+    parent: {
+      id: 'parent-prof-4',
+      name: 'Mr. Vikas Sharma (Parent of Ananya - Class 9 CBSE)',
+      phone: '9834556688',
+      alternatePhone: null,
+      address: 'Indiranagar, Bangalore, Karnataka',
+    },
+  },
 ];
 
-let isDbAvailable: boolean | null = null;
-let lastDbCheck = 0;
-const DB_RECHECK_INTERVAL = 30000; // 30 seconds
 
-const checkDbAvailability = async (): Promise<boolean> => {
-  const now = Date.now();
-  if (isDbAvailable !== null && now - lastDbCheck < DB_RECHECK_INTERVAL) {
-    return isDbAvailable;
-  }
-
-  try {
-    // Quick probe compatible with MongoDB Atlas and relational databases
-    await prisma.user.findFirst({ select: { id: true } });
-    isDbAvailable = true;
-  } catch {
-    isDbAvailable = false;
-  }
-  lastDbCheck = now;
-  return isDbAvailable;
-};
 
 export const findUserByIdentifier = async (identifier: string): Promise<UserRecord | null> => {
   const clean = identifier.trim();
@@ -134,9 +173,7 @@ export const findUserByIdentifier = async (identifier: string): Promise<UserReco
           name,
         };
       }
-    } catch {
-      isDbAvailable = false;
-    }
+    } catch {}
   }
 
   // Fallback to memory seed records
@@ -172,9 +209,7 @@ export const findUserById = async (id: string): Promise<UserRecord | null> => {
           name,
         };
       }
-    } catch {
-      isDbAvailable = false;
-    }
+    } catch {}
   }
 
   const match = SEED_USERS.find((u) => u.id === id);
@@ -196,9 +231,7 @@ export const updateUserPassword = async (
         },
       });
       return;
-    } catch {
-      isDbAvailable = false;
-    }
+    } catch {}
   }
 
   const match = SEED_USERS.find((u) => u.id === userId);

@@ -144,8 +144,8 @@ let inMemoryStudents: StudentDto[] = [
     id: 'stu-10029',
     studentId: 'IT10029',
     name: 'Rohan Patil',
-    photoUrl: null,
-    school: 'Kendriya Vidyalaya',
+    photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300',
+    school: 'Sardar Patel High School (State)',
     parentId: 'parent-5',
     parentName: 'Santosh Patil',
     parentPhone: '9834556677',
@@ -153,15 +153,38 @@ let inMemoryStudents: StudentDto[] = [
     dateOfBirth: '2011-11-14T00:00:00.000Z',
     classId: 'cls-10',
     className: 'Class 10',
-    boardId: 'brd-cbse',
-    boardName: 'CBSE',
+    boardId: 'brd-ksb',
+    boardName: 'Karnataka State Board',
     batchId: 'batch-10b-evening',
     batchName: '10-B Evening',
     academicYear: '2024-2025',
     admissionDate: '2024-06-18T00:00:00.000Z',
-    status: 'INACTIVE',
+    status: 'ACTIVE',
     createdAt: '2024-06-18T00:00:00.000Z',
     updatedAt: '2024-08-01T00:00:00.000Z',
+  },
+  {
+    id: 'stu-10030',
+    studentId: 'IT10030',
+    name: 'Ananya Sharma',
+    photoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=300',
+    school: 'Delhi Public School',
+    parentId: 'parent-6',
+    parentName: 'Vikas Sharma',
+    parentPhone: '9834556688',
+    studentPhone: null,
+    dateOfBirth: '2012-05-18T00:00:00.000Z',
+    classId: 'cls-9',
+    className: 'Class 9',
+    boardId: 'brd-cbse',
+    boardName: 'CBSE',
+    batchId: 'batch-9b-morning',
+    batchName: '9-B Morning',
+    academicYear: '2024-2025',
+    admissionDate: '2024-06-20T00:00:00.000Z',
+    status: 'ACTIVE',
+    createdAt: '2024-06-20T00:00:00.000Z',
+    updatedAt: '2024-06-20T00:00:00.000Z',
   },
 ];
 
@@ -564,8 +587,9 @@ export const createStudent = async (data: CreateStudentDto): Promise<StudentDto>
   };
 
   // Try DB persistence
-  try {
-    await prisma.student.create({
+  if (await checkDbAvailability()) {
+    try {
+      await prisma.student.create({
       data: {
         studentId: newStudent.studentId,
         name: newStudent.name,
@@ -596,8 +620,9 @@ export const createStudent = async (data: CreateStudentDto): Promise<StudentDto>
         },
       },
     });
-  } catch (err) {
-    // If DB fails, maintain in-memory
+    } catch (err) {
+      // If DB fails, maintain in-memory
+    }
   }
 
   inMemoryStudents.unshift(newStudent);
@@ -653,8 +678,9 @@ export const updateStudent = async (id: string, data: UpdateStudentDto): Promise
     updatedAt: new Date().toISOString(),
   };
 
-  try {
-    await prisma.student.update({
+  if (await checkDbAvailability()) {
+    try {
+      await prisma.student.update({
       where: { id: existing.id },
       data: {
         name: updated.name,
@@ -671,8 +697,9 @@ export const updateStudent = async (id: string, data: UpdateStudentDto): Promise
         ...(data.batchId ? { batch: { connect: { id: data.batchId } } } : {}),
       },
     });
-  } catch (err) {
-    // DB fallback
+    } catch (err) {
+      // DB fallback
+    }
   }
 
   inMemoryStudents[index] = updated;

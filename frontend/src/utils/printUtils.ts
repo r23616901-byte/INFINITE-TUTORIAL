@@ -20,6 +20,23 @@ export interface PrintOptions {
 export const triggerUniversalPrint = async (options: PrintOptions = {}): Promise<void> => {
   const { documentTitle, landscape = false, onBeforePrint, onAfterPrint, timeout = 300 } = options;
 
+  // Inject strict dynamic @page rule for ISO 216 A4 standard paper size & margins
+  const pageStyleId = 'dynamic-a4-print-page-style';
+  let existingStyle = document.getElementById(pageStyleId);
+  if (!existingStyle) {
+    existingStyle = document.createElement('style');
+    existingStyle.id = pageStyleId;
+    document.head.appendChild(existingStyle);
+  }
+  existingStyle.textContent = landscape
+    ? `@page { size: A4 landscape !important; margin: 8mm 10mm 10mm 10mm !important; } body { margin: 0 !important; }`
+    : `@page { size: A4 portrait !important; margin: 8mm 10mm 10mm 10mm !important; } body { margin: 0 !important; }`;
+
+  const cleanupPageStyle = () => {
+    existingStyle?.remove();
+  };
+  window.addEventListener('afterprint', cleanupPageStyle, { once: true });
+
   if (landscape) {
     document.body.classList.add('print-landscape');
     window.addEventListener(

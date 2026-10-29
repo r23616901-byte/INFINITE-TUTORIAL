@@ -9,6 +9,7 @@ import {
   getBoardsApi,
 } from '../../services/academicService';
 import { BatchItem, ClassItem, BoardItem } from '../../types/attendance';
+import { useNavigate } from 'react-router-dom';
 import {
   Layers,
   Plus,
@@ -18,11 +19,13 @@ import {
   Sun,
   Moon,
   Search,
+  BookOpen,
 } from 'lucide-react';
 import { fetchStudents, StudentDto } from '../../services/studentService';
 import { PrintButton, PrintPreviewModal, BatchReportPrintDocument } from '../../components/print';
 
 export const AdminBatchesPage: React.FC = () => {
+  const navigate = useNavigate();
   const [batches, setBatches] = useState<BatchItem[]>([]);
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [boards, setBoards] = useState<BoardItem[]>([]);
@@ -329,6 +332,37 @@ export const AdminBatchesPage: React.FC = () => {
                     {b.assignedTeacherName || 'Prof. Rajesh Sharma'}
                   </span>
                 </div>
+              </div>
+
+              {/* Linked Syllabus & Question Paper Indicator */}
+              <div className="pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between text-[11px] mb-1.5">
+                  <span className="text-slate-400 font-medium flex items-center gap-1">
+                    <BookOpen className="w-3.5 h-3.5 text-blue-600" />
+                    Linked Curriculum:
+                  </span>
+                  <button
+                    onClick={() => navigate('/admin/portion-completion')}
+                    className="text-[#155EEF] font-bold hover:underline flex items-center gap-0.5 text-[10.5px]"
+                  >
+                    Track &amp; Q-Papers &rarr;
+                  </button>
+                </div>
+                <span
+                  className={`inline-block px-2 py-0.5 rounded text-[10.5px] font-bold ${
+                    b.id.includes('9a') || b.id.includes('10b')
+                      ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                      : 'bg-indigo-50 text-indigo-800 border border-indigo-200'
+                  }`}
+                >
+                  {b.id.includes('9a')
+                    ? 'Karnataka State Board — 27 Chapters (4 Q-Papers)'
+                    : b.id.includes('9b')
+                    ? 'CBSE Board — 22 Units (4 Q-Papers)'
+                    : b.id.includes('10b')
+                    ? 'Karnataka State Board — 28 Chapters (4 Q-Papers)'
+                    : 'CBSE Board — 22 Units (4 Q-Papers)'}
+                </span>
               </div>
 
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">

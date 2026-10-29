@@ -1,342 +1,255 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BookOpen,
   CheckCircle2,
   Clock,
   Calendar,
   TrendingUp,
+  FileText,
+  Printer,
+  ChevronDown,
+  ChevronUp,
+  Sparkles,
+  HelpCircle,
+  Eye,
 } from 'lucide-react';
 import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
-import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
 import { PrintButton } from '../../components/print/PrintButton';
 import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
 import { PortionCompletionPrintDocument } from '../../components/print/templates/PortionCompletionPrintDocument';
+import { QuestionPaperPrintDocument } from '../../components/print/templates/QuestionPaperPrintDocument';
+import {
+  CurriculumChapter,
+  QuestionPaper,
+  getCurriculumApi,
+  getQuestionPapersApi,
+  KARNATAKA_CLASS_9_CHAPTERS,
+} from '../../services/curriculumService';
+import { fetchMyStudentProfile, StudentDto } from '../../services/studentService';
 
-interface ChapterItem {
-  id: string;
-  chapterNumber: number;
-  chapterName: string;
-  subject: 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics';
-  teacher: string;
-  status: 'COMPLETED' | 'IN_PROGRESS' | 'UPCOMING';
-  completionDate?: string;
-  targetDate?: string;
-  weightage: string;
-  revisionStatus: 'REVISED' | 'SCHEDULED' | 'PENDING';
-  totalLectures: number;
-}
+export const CURRICULUM_TRACKS = [
+  {
+    id: 'ksb-9',
+    label: 'Karnataka State Board — Class 9',
+    shortLabel: 'Class 9 (KSB)',
+    classId: 'cls-9',
+    boardId: 'brd-ksb',
+    className: 'Class 9',
+    boardName: 'Karnataka State Board',
+  },
+  {
+    id: 'ksb-10',
+    label: 'Karnataka State Board — Class 10',
+    shortLabel: 'Class 10 (KSB)',
+    classId: 'cls-10',
+    boardId: 'brd-ksb',
+    className: 'Class 10',
+    boardName: 'Karnataka State Board',
+  },
+  {
+    id: 'cbse-9',
+    label: 'CBSE Board — Class 9 (2026–27)',
+    shortLabel: 'Class 9 (CBSE)',
+    classId: 'cls-9',
+    boardId: 'brd-cbse',
+    className: 'Class 9',
+    boardName: 'CBSE',
+  },
+  {
+    id: 'cbse-10',
+    label: 'CBSE Board — Class 10 (2026–27)',
+    shortLabel: 'Class 10 (CBSE)',
+    classId: 'cls-10',
+    boardId: 'brd-cbse',
+    className: 'Class 10',
+    boardName: 'CBSE',
+  },
+];
 
 export const ParentPortionCompletionPage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'SYLLABUS' | 'QUESTION_PAPERS'>('SYLLABUS');
   const [selectedSubject, setSelectedSubject] = useState<string>('ALL');
-  const [showPrintPreview, setShowPrintPreview] = useState<boolean>(false);
+  const [selectedTrackId, setSelectedTrackId] = useState<string>('ksb-9');
+  const [student, setStudent] = useState<StudentDto | null>(null);
 
-  const chapters: ChapterItem[] = [
-    // PHYSICS (Prof. Rajesh Sharma)
-    {
-      id: 'phy-1',
-      chapterNumber: 1,
-      chapterName: 'Electricity & Electric Circuits',
-      subject: 'Physics',
-      teacher: 'Prof. Rajesh Sharma',
-      status: 'COMPLETED',
-      completionDate: '15 Aug 2026',
-      weightage: '7 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 14,
-    },
-    {
-      id: 'phy-2',
-      chapterNumber: 2,
-      chapterName: 'Magnetic Effects of Electric Current',
-      subject: 'Physics',
-      teacher: 'Prof. Rajesh Sharma',
-      status: 'COMPLETED',
-      completionDate: '02 Sept 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 12,
-    },
-    {
-      id: 'phy-3',
-      chapterNumber: 3,
-      chapterName: 'Light: Reflection and Refraction',
-      subject: 'Physics',
-      teacher: 'Prof. Rajesh Sharma',
-      status: 'COMPLETED',
-      completionDate: '20 Sept 2026',
-      weightage: '7 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 16,
-    },
-    {
-      id: 'phy-4',
-      chapterNumber: 4,
-      chapterName: 'The Human Eye and the Colourful World',
-      subject: 'Physics',
-      teacher: 'Prof. Rajesh Sharma',
-      status: 'IN_PROGRESS',
-      targetDate: '10 Oct 2026',
-      weightage: '5 Marks',
-      revisionStatus: 'SCHEDULED',
-      totalLectures: 8,
-    },
-    {
-      id: 'phy-5',
-      chapterNumber: 5,
-      chapterName: 'Sources of Energy (Review)',
-      subject: 'Physics',
-      teacher: 'Prof. Rajesh Sharma',
-      status: 'UPCOMING',
-      targetDate: '25 Oct 2026',
-      weightage: '3 Marks',
-      revisionStatus: 'PENDING',
-      totalLectures: 6,
-    },
+  // Curriculum & Question Papers
+  const [chapters, setChapters] = useState<CurriculumChapter[]>(KARNATAKA_CLASS_9_CHAPTERS);
+  const [questionPapers, setQuestionPapers] = useState<QuestionPaper[]>([]);
+  const [expandedTopics, setExpandedTopics] = useState<Record<string, boolean>>({});
 
-    // CHEMISTRY (Dr. Anita Deshmukh)
-    {
-      id: 'chm-1',
-      chapterNumber: 1,
-      chapterName: 'Chemical Reactions and Equations',
-      subject: 'Chemistry',
-      teacher: 'Dr. Anita Deshmukh',
-      status: 'COMPLETED',
-      completionDate: '18 Aug 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 12,
-    },
-    {
-      id: 'chm-2',
-      chapterNumber: 2,
-      chapterName: 'Acids, Bases and Salts',
-      subject: 'Chemistry',
-      teacher: 'Dr. Anita Deshmukh',
-      status: 'COMPLETED',
-      completionDate: '05 Sept 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 14,
-    },
-    {
-      id: 'chm-3',
-      chapterNumber: 3,
-      chapterName: 'Metals and Non-Metals',
-      subject: 'Chemistry',
-      teacher: 'Dr. Anita Deshmukh',
-      status: 'COMPLETED',
-      completionDate: '22 Sept 2026',
-      weightage: '7 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 14,
-    },
-    {
-      id: 'chm-4',
-      chapterNumber: 4,
-      chapterName: 'Carbon and its Compounds',
-      subject: 'Chemistry',
-      teacher: 'Dr. Anita Deshmukh',
-      status: 'IN_PROGRESS',
-      targetDate: '15 Oct 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'SCHEDULED',
-      totalLectures: 16,
-    },
-    {
-      id: 'chm-5',
-      chapterNumber: 5,
-      chapterName: 'Periodic Classification of Elements',
-      subject: 'Chemistry',
-      teacher: 'Dr. Anita Deshmukh',
-      status: 'UPCOMING',
-      targetDate: '30 Oct 2026',
-      weightage: '5 Marks',
-      revisionStatus: 'PENDING',
-      totalLectures: 8,
-    },
+  // Question Paper Print / Preview
+  const [previewPaper, setPreviewPaper] = useState<QuestionPaper | null>(null);
+  const [showAnswerKeyInPrint, setShowAnswerKeyInPrint] = useState<boolean>(false);
+  const [showSyllabusPrint, setShowSyllabusPrint] = useState<boolean>(false);
 
-    // BIOLOGY (Dr. Vikram Rao)
-    {
-      id: 'bio-1',
-      chapterNumber: 1,
-      chapterName: 'Life Processes (Nutrition, Respiration, Transport)',
-      subject: 'Biology',
-      teacher: 'Dr. Vikram Rao',
-      status: 'COMPLETED',
-      completionDate: '20 Aug 2026',
-      weightage: '9 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 18,
-    },
-    {
-      id: 'bio-2',
-      chapterNumber: 2,
-      chapterName: 'Control and Coordination',
-      subject: 'Biology',
-      teacher: 'Dr. Vikram Rao',
-      status: 'COMPLETED',
-      completionDate: '08 Sept 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 12,
-    },
-    {
-      id: 'bio-3',
-      chapterNumber: 3,
-      chapterName: 'How do Organisms Reproduce?',
-      subject: 'Biology',
-      teacher: 'Dr. Vikram Rao',
-      status: 'COMPLETED',
-      completionDate: '23 Sept 2026',
-      weightage: '7 Marks',
-      revisionStatus: 'SCHEDULED',
-      totalLectures: 14,
-    },
-    {
-      id: 'bio-4',
-      chapterNumber: 4,
-      chapterName: 'Heredity and Evolution',
-      subject: 'Biology',
-      teacher: 'Dr. Vikram Rao',
-      status: 'IN_PROGRESS',
-      targetDate: '12 Oct 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'PENDING',
-      totalLectures: 10,
-    },
+  // Load student profile & resolve enrolled track
+  useEffect(() => {
+    const initData = async () => {
+      try {
+        const studentProfile = await fetchMyStudentProfile();
+        if (studentProfile) {
+          setStudent(studentProfile);
+          let detected = 'ksb-9';
+          if (studentProfile.boardId === 'brd-ksb') {
+            detected = studentProfile.classId === 'cls-10' ? 'ksb-10' : 'ksb-9';
+          } else {
+            detected = studentProfile.classId === 'cls-9' ? 'cbse-9' : 'cbse-10';
+          }
+          setSelectedTrackId(detected);
+        }
+      } catch (err) {
+        console.error('Failed to load profile', err);
+      }
+    };
+    initData();
+  }, []);
 
-    // MATHEMATICS (Mrs. Priya Sundaram)
-    {
-      id: 'mat-1',
-      chapterNumber: 1,
-      chapterName: 'Real Numbers & Fundamental Theorem',
-      subject: 'Mathematics',
-      teacher: 'Mrs. Priya Sundaram',
-      status: 'COMPLETED',
-      completionDate: '10 Aug 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 10,
-    },
-    {
-      id: 'mat-2',
-      chapterNumber: 2,
-      chapterName: 'Polynomials & Zeros Analysis',
-      subject: 'Mathematics',
-      teacher: 'Mrs. Priya Sundaram',
-      status: 'COMPLETED',
-      completionDate: '22 Aug 2026',
-      weightage: '5 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 10,
-    },
-    {
-      id: 'mat-3',
-      chapterNumber: 3,
-      chapterName: 'Pair of Linear Equations in Two Variables',
-      subject: 'Mathematics',
-      teacher: 'Mrs. Priya Sundaram',
-      status: 'COMPLETED',
-      completionDate: '05 Sept 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 14,
-    },
-    {
-      id: 'mat-4',
-      chapterNumber: 4,
-      chapterName: 'Quadratic Equations & Nature of Roots',
-      subject: 'Mathematics',
-      teacher: 'Mrs. Priya Sundaram',
-      status: 'COMPLETED',
-      completionDate: '19 Sept 2026',
-      weightage: '6 Marks',
-      revisionStatus: 'REVISED',
-      totalLectures: 12,
-    },
-    {
-      id: 'mat-5',
-      chapterNumber: 5,
-      chapterName: 'Arithmetic Progressions (AP)',
-      subject: 'Mathematics',
-      teacher: 'Mrs. Priya Sundaram',
-      status: 'IN_PROGRESS',
-      targetDate: '05 Oct 2026',
-      weightage: '7 Marks',
-      revisionStatus: 'SCHEDULED',
-      totalLectures: 14,
-    },
-    {
-      id: 'mat-6',
-      chapterNumber: 6,
-      chapterName: 'Triangles (Similarity & Theorems)',
-      subject: 'Mathematics',
-      teacher: 'Mrs. Priya Sundaram',
-      status: 'UPCOMING',
-      targetDate: '22 Oct 2026',
-      weightage: '8 Marks',
-      revisionStatus: 'PENDING',
-      totalLectures: 16,
-    },
-    {
-      id: 'mat-7',
-      chapterNumber: 7,
-      chapterName: 'Introduction to Trigonometry',
-      subject: 'Mathematics',
-      teacher: 'Mrs. Priya Sundaram',
-      status: 'UPCOMING',
-      targetDate: '10 Nov 2026',
-      weightage: '8 Marks',
-      revisionStatus: 'PENDING',
-      totalLectures: 14,
-    },
-  ];
+  const activeTrack = CURRICULUM_TRACKS.find((t) => t.id === selectedTrackId) || CURRICULUM_TRACKS[0];
 
-  const filteredChapters = chapters.filter(
-    (c) => selectedSubject === 'ALL' || c.subject.toUpperCase() === selectedSubject.toUpperCase()
-  );
+  useEffect(() => {
+    const loadCurriculum = async () => {
+      const chList = await getCurriculumApi({
+        classId: activeTrack.classId,
+        boardId: activeTrack.boardId,
+      });
+      setChapters(chList);
+
+      const qpList = await getQuestionPapersApi({
+        classId: activeTrack.classId,
+        boardId: activeTrack.boardId,
+      });
+      setQuestionPapers(qpList);
+    };
+    loadCurriculum();
+  }, [selectedTrackId]);
+
+  const toggleTopics = (id: string) => {
+    setExpandedTopics((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const boardName = activeTrack.boardName;
+  const className = activeTrack.className;
+
+  const filteredChapters = chapters.filter((ch) => {
+    if (selectedSubject !== 'ALL' && ch.subjectName.toLowerCase() !== selectedSubject.toLowerCase()) {
+      return false;
+    }
+    return true;
+  });
+
+  const filteredPapers = questionPapers.filter((qp) => {
+    if (selectedSubject !== 'ALL' && qp.subject.toLowerCase() !== selectedSubject.toLowerCase()) {
+      return false;
+    }
+    return true;
+  });
 
   const completedCount = chapters.filter((c) => c.status === 'COMPLETED').length;
   const inProgressCount = chapters.filter((c) => c.status === 'IN_PROGRESS').length;
   const totalCount = chapters.length;
-  const completionPercentage = Math.round((completedCount / totalCount) * 100);
+  const completionPercentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12 print:space-y-0 print:pb-0">
       {/* Official Institutional Print Header */}
       <PrintTemplateHeader
-        documentTitle="STUDENT SYLLABUS & PORTION COMPLETION REPORT"
-        documentSubtitle="Official Curriculum Delivery & Board Chapter Progress Tracker"
+        documentTitle={`STUDENT SYLLABUS & PORTION COMPLETION REPORT — ${className.toUpperCase()}`}
+        documentSubtitle={`Official Curriculum Delivery & Board Chapter Progress Tracker (${boardName})`}
         reportCategory="PORTION COMPLETION REPORT"
-        academicYear="AY 2024–25 (Term 2)"
+        academicYear="AY 2024–25"
         subject={selectedSubject !== 'ALL' ? selectedSubject : 'Physics, Chemistry, Biology & Mathematics'}
-        className="Class 10 (CBSE)"
+        className={`${className} (${boardName})`}
       />
 
-      {/* Top Header */}
+      {/* Top Header & Student Class Resolution Badge */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 print:hidden">
         <div className="flex items-center space-x-3">
           <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
             <BookOpen className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-              Portion &amp; Syllabus Completion
-            </h1>
-            <p className="text-xs sm:text-sm text-gray-500">
-              Curriculum progression and chapter-by-chapter completion status for Class 10 (CBSE).
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+                Portion &amp; Syllabus Completion
+              </h1>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                {className} &bull; {boardName}
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+              Curriculum progression and chapter-by-chapter outline for {className} ({boardName}).
             </p>
           </div>
         </div>
 
-        <PrintButton
-          onClick={() => setShowPrintPreview(true)}
-          label="Print Syllabus Tracker"
-          title="Print official syllabus completion tracker"
-          variant="academic"
-          size="sm"
-        />
+        {/* Curriculum Track Switcher */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200 flex-wrap">
+            {CURRICULUM_TRACKS.map((t) => {
+              const isSelected = selectedTrackId === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setSelectedTrackId(t.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    isSelected
+                      ? 'bg-white text-blue-700 shadow-xs ring-1 ring-blue-400/30'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {t.shortLabel}
+                </button>
+              );
+            })}
+          </div>
+
+          <PrintButton
+            onClick={() => setShowSyllabusPrint(true)}
+            label="Print Syllabus (A4)"
+            title="Print official syllabus completion tracker in A4 Sheet format"
+            variant="academic"
+            size="sm"
+          />
+        </div>
       </div>
+
+      {/* Student Link Notice Bar */}
+      {student && (
+        <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border border-blue-200/80 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 text-xs shadow-xs print:hidden">
+          <div className="flex items-center gap-3">
+            {student.photoUrl ? (
+              <img
+                src={student.photoUrl}
+                alt={student.name}
+                className="w-10 h-10 rounded-full object-cover border border-blue-300"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center">
+                {student.name.charAt(0)}
+              </div>
+            )}
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-black text-slate-900 text-sm">{student.name}</span>
+                <span className="font-mono text-[11px] font-bold text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-200">
+                  {student.studentId}
+                </span>
+              </div>
+              <p className="text-slate-600 mt-0.5">
+                Enrolled in: <strong className="text-slate-800">{student.className}</strong> &bull;{' '}
+                <strong className="text-slate-800">{student.boardName}</strong> &bull; Batch:{' '}
+                <strong className="text-slate-800">{student.batchName}</strong>
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">
+              Linked Parent:
+            </span>
+            <span className="font-bold text-slate-800">{student.parentName}</span>
+          </div>
+        </div>
+      )}
 
       {/* Top Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 print:hidden">
@@ -370,169 +283,408 @@ export const ParentPortionCompletionPage: React.FC = () => {
           </div>
           <div className="mt-3">
             <span className="text-3xl font-black text-gray-900">{inProgressCount} Chapters</span>
-            <span className="text-xs text-amber-600 font-semibold block mt-1">
-              Active classroom lectures
-            </span>
+            <span className="text-xs text-amber-600 font-semibold block mt-1">Active syllabus delivery</span>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Revised in Tuition</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Finished Chapters</span>
             <span className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
               <CheckCircle2 className="w-4 h-4" />
             </span>
           </div>
           <div className="mt-3">
-            <span className="text-3xl font-black text-gray-900">12 Chapters</span>
-            <span className="text-xs text-emerald-600 font-semibold block mt-1">
-              Post-assessment revision done
-            </span>
+            <span className="text-3xl font-black text-gray-900">{completedCount} Chapters</span>
+            <span className="text-xs text-emerald-600 font-semibold block mt-1">Fully completed &amp; reviewed</span>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Target Syllabus End</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Question Papers</span>
             <span className="p-2 bg-[#EEF4FF] text-[#155EEF] rounded-xl border border-[#DCE5F2]">
-              <Calendar className="w-4 h-4" />
+              <FileText className="w-4 h-4" />
             </span>
           </div>
           <div className="mt-3">
-            <span className="text-xl font-bold text-gray-900">15 Nov 2026</span>
+            <span className="text-3xl font-black text-gray-900">{questionPapers.length} Papers</span>
             <span className="text-xs text-[#155EEF] font-semibold block mt-1">
-              Before Pre-Board Mock Exams
+              Ready in A4 Sheet Print format
             </span>
           </div>
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-3 print:hidden">
-        {['ALL', 'Physics', 'Chemistry', 'Biology', 'Mathematics'].map((subj) => (
+      {/* Main Mode Toggle: Syllabus vs Question Papers */}
+      <div className="flex items-center justify-between gap-4 border-b border-gray-200 pb-2 print:hidden">
+        <div className="flex items-center gap-2">
           <button
-            key={subj}
-            onClick={() => setSelectedSubject(subj)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              selectedSubject.toUpperCase() === subj.toUpperCase()
-                ? 'bg-blue-600 text-white shadow-xs'
+            onClick={() => setActiveTab('SYLLABUS')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'SYLLABUS'
+                ? 'bg-[#0B1F4D] text-white shadow-xs'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            {subj === 'ALL' ? 'All Subjects' : subj}
+            <BookOpen className="w-4 h-4" />
+            Syllabus &amp; Chapter Outline ({chapters.length})
           </button>
-        ))}
-      </div>
-
-      {/* Chapters Table */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h2 className="font-bold text-gray-900 text-sm">
-            {selectedSubject === 'ALL' ? 'All Core Subjects' : selectedSubject} Chapters ({filteredChapters.length})
-          </h2>
-          <span className="text-xs text-gray-500">Class 10 CBSE Board Syllabus</span>
+          <button
+            onClick={() => setActiveTab('QUESTION_PAPERS')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'QUESTION_PAPERS'
+                ? 'bg-[#0B1F4D] text-white shadow-xs'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            Official Question Papers (4 Subjects)
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-400 text-slate-900 font-black">
+              A4 Format
+            </span>
+          </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 text-xs">
-            <thead className="bg-gray-50 text-gray-500 uppercase tracking-wider text-[11px]">
-              <tr>
-                <th className="px-6 py-3.5 text-left font-semibold">Ch #</th>
-                <th className="px-6 py-3.5 text-left font-semibold">Chapter &amp; Topic</th>
-                <th className="px-6 py-3.5 text-left font-semibold">Subject &amp; Faculty</th>
-                <th className="px-6 py-3.5 text-left font-semibold">Weightage</th>
-                <th className="px-6 py-3.5 text-left font-semibold">Status</th>
-                <th className="px-6 py-3.5 text-left font-semibold">Date</th>
-                <th className="px-6 py-3.5 text-left font-semibold">Revision</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {filteredChapters.map((ch) => (
-                <tr key={ch.id} className="hover:bg-gray-50/80 transition-colors">
-                  <td className="px-6 py-4 font-bold text-gray-900">Ch {ch.chapterNumber}</td>
-                  <td className="px-6 py-4 font-semibold text-gray-900">
-                    <div>{ch.chapterName}</div>
-                    <div className="text-[11px] text-gray-400 font-normal">{ch.totalLectures} Lectures Allotted</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="font-medium text-gray-800 block">{ch.subject}</span>
-                    <span className="text-[11px] text-gray-500 block">{ch.teacher}</span>
-                  </td>
-                  <td className="px-6 py-4 font-bold text-[#1048B5]">{ch.weightage}</td>
-                  <td className="px-6 py-4">
-                    {ch.status === 'COMPLETED' && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <CheckCircle2 className="w-3 h-3" /> Completed
-                      </span>
-                    )}
-                    {ch.status === 'IN_PROGRESS' && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                        <Clock className="w-3 h-3 animate-spin" /> In Progress
-                      </span>
-                    )}
-                    {ch.status === 'UPCOMING' && (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-semibold bg-gray-100 text-gray-600 border border-gray-200">
-                        Upcoming
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">
-                    {ch.completionDate ? (
-                      <span className="text-emerald-700 font-medium">{ch.completionDate}</span>
-                    ) : (
-                      <span className="text-gray-400">Target: {ch.targetDate}</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
-                        ch.revisionStatus === 'REVISED'
-                          ? 'bg-blue-100 text-blue-800'
-                          : ch.revisionStatus === 'SCHEDULED'
-                          ? 'bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]'
-                          : 'bg-gray-100 text-gray-500'
-                      }`}
-                    >
-                      {ch.revisionStatus}
-                    </span>
-                  </td>
+        {/* Subject Filter Pills */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {['ALL', 'Physics', 'Chemistry', 'Biology', 'Mathematics'].map((subj) => (
+            <button
+              key={subj}
+              onClick={() => setSelectedSubject(subj)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                selectedSubject.toUpperCase() === subj.toUpperCase()
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              {subj === 'ALL' ? 'All Subjects' : subj}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* TAB 1: SYLLABUS & CHAPTER OUTLINE */}
+      {activeTab === 'SYLLABUS' && (
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div>
+              <h2 className="font-bold text-gray-900 text-sm">
+                {selectedSubject === 'ALL' ? 'All Subjects' : selectedSubject} Curriculum Outline ({filteredChapters.length} Chapters)
+              </h2>
+              <p className="text-xs text-gray-500">
+                {boardName} &bull; {className} Complete Chapter-wise Topic Distribution
+              </p>
+            </div>
+            <span className="text-xs text-slate-400 font-medium">Click a chapter to expand covered topics</span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200 text-xs">
+              <thead className="bg-gray-50 text-gray-500 uppercase tracking-wider text-[11px]">
+                <tr>
+                  <th className="px-5 py-3.5 text-left font-semibold">Ch #</th>
+                  <th className="px-5 py-3.5 text-left font-semibold">Chapter &amp; Detailed Topics</th>
+                  <th className="px-5 py-3.5 text-left font-semibold">Subject &amp; Faculty</th>
+                  <th className="px-5 py-3.5 text-center font-semibold">Lectures</th>
+                  <th className="px-5 py-3.5 text-left font-semibold">Status</th>
+                  <th className="px-5 py-3.5 text-left font-semibold">Target / Completion</th>
+                  <th className="px-5 py-3.5 text-center font-semibold">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {filteredChapters.map((ch) => {
+                  const isExpanded = !!expandedTopics[ch.id];
+                  return (
+                    <React.Fragment key={ch.id}>
+                      <tr className="hover:bg-blue-50/40 transition-colors">
+                        <td className="px-5 py-4 font-mono font-bold text-gray-400">
+                          {ch.chapterNumber}
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="font-bold text-gray-900 text-sm">{ch.title}</div>
+                          {ch.topics && ch.topics.length > 0 && (
+                            <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                              {ch.topics.slice(0, 2).map((t, idx) => (
+                                <span
+                                  key={idx}
+                                  className="text-[10.5px] px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200"
+                                >
+                                  {t}
+                                </span>
+                              ))}
+                              {ch.topics.length > 2 && (
+                                <button
+                                  onClick={() => toggleTopics(ch.id)}
+                                  className="text-[10px] text-blue-600 font-bold hover:underline"
+                                >
+                                  {isExpanded ? 'Hide' : `+${ch.topics.length - 2} more`}
+                                </button>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-5 py-4">
+                          <span
+                            className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                              ch.subjectName === 'Physics'
+                                ? 'bg-blue-100 text-blue-800'
+                                : ch.subjectName === 'Chemistry'
+                                ? 'bg-amber-100 text-amber-800'
+                                : ch.subjectName === 'Biology'
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : 'bg-purple-100 text-purple-800'
+                            }`}
+                          >
+                            {ch.subjectName}
+                          </span>
+                          <div className="text-[11px] text-gray-500 font-medium mt-1">
+                            {ch.facultyName}
+                          </div>
+                        </td>
+                        <td className="px-5 py-4 text-center font-mono font-medium text-gray-700">
+                          <span className="font-bold text-gray-900">{ch.completedLectures}</span> / {ch.totalLectures}
+                        </td>
+                        <td className="px-5 py-4">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                              ch.status === 'COMPLETED'
+                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                : ch.status === 'IN_PROGRESS'
+                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                : 'bg-gray-100 text-gray-600 border border-gray-200'
+                            }`}
+                          >
+                            {ch.status === 'COMPLETED' ? (
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                            ) : ch.status === 'IN_PROGRESS' ? (
+                              <Clock className="w-3 h-3 text-amber-600" />
+                            ) : (
+                              <Calendar className="w-3 h-3 text-gray-400" />
+                            )}
+                            {ch.status}
+                          </span>
+                        </td>
+                        <td className="px-5 py-4 text-gray-600">
+                          {ch.completionDate ? (
+                            <span className="text-emerald-700 font-bold">{ch.completionDate}</span>
+                          ) : (
+                            <span className="text-slate-600">{ch.targetDate || 'TBD'}</span>
+                          )}
+                        </td>
+                        <td className="px-5 py-4 text-center">
+                          <button
+                            onClick={() => toggleTopics(ch.id)}
+                            className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
+                            title="View all topics"
+                          >
+                            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          </button>
+                        </td>
+                      </tr>
+
+                      {/* Expanded Topics Detail Box */}
+                      {isExpanded && (
+                        <tr className="bg-slate-50/80">
+                          <td colSpan={7} className="px-8 py-3.5 border-t border-b border-slate-200">
+                            <div className="space-y-1.5">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                Detailed Curriculum Topics Covered in this Chapter:
+                              </span>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                                {ch.topics.map((topic, tIdx) => (
+                                  <div
+                                    key={tIdx}
+                                    className="bg-white p-2 rounded-lg border border-slate-200 text-xs text-slate-800 font-medium flex items-center gap-2"
+                                  >
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                    <span>{topic}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Official Letterhead Footer with Signatures */}
-      <PrintTemplateFooter customNote="Official Curriculum Record of Infinite Tutorial. Parent Portal Verified." />
+      {/* TAB 2: OFFICIAL QUESTION PAPERS (A4 SHEET FORMAT) */}
+      {activeTab === 'QUESTION_PAPERS' && (
+        <div className="space-y-6">
+          <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-6 text-white shadow-lg border border-blue-700">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[11px] font-bold uppercase tracking-wider mb-2">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Karnataka State Board — Class 9 Official Exam Papers
+                </span>
+                <h2 className="text-2xl font-black">
+                  Official 40-Mark Periodic Assessment Papers
+                </h2>
+                <p className="text-blue-100 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+                  Strictly aligned with the Karnataka State Board Class 9 curriculum for Physics, Chemistry, Biology, and Mathematics. Designed to be printed in standard ISO 216 A4 Sheet format.
+                </p>
+              </div>
+            </div>
+          </div>
 
-      {/* UNIVERSAL PRINT PREVIEW MODAL */}
-      <PrintPreviewModal
-        isOpen={showPrintPreview}
-        onClose={() => setShowPrintPreview(false)}
-        title="Student Syllabus & Portion Completion Report"
-        defaultOrientation="portrait"
-      >
-        <PortionCompletionPrintDocument
-          chapters={filteredChapters.map((c) => ({
-            id: c.id,
-            chapterNumber: c.chapterNumber,
-            title: c.chapterName,
-            subject: c.subject,
-            totalLectures: c.totalLectures,
-            completedLectures: c.status === 'COMPLETED' ? c.totalLectures : c.status === 'IN_PROGRESS' ? Math.round(c.totalLectures * 0.7) : 0,
-            status: c.status,
-            faculty: c.teacher,
-            targetDate: c.targetDate,
-            completionDate: c.completionDate,
-          }))}
-          batchName="Class 10 CBSE"
-          className="Class 10"
-          boardName="CBSE"
-          selectedSubject={selectedSubject}
-          isForPreview
-        />
-      </PrintPreviewModal>
+          {/* Grid of Question Papers */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {filteredPapers.map((paper) => {
+              const totalQuestions = paper.sections.reduce((acc, s) => acc + s.questions.length, 0);
+              return (
+                <div
+                  key={paper.id}
+                  className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:border-blue-400 transition-all space-y-4 flex flex-col justify-between"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="font-mono text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                          {paper.subjectCode} &bull; {paper.className}
+                        </span>
+                        <h3 className="text-lg font-black text-slate-900 mt-1">{paper.title}</h3>
+                        <p className="text-xs text-slate-500 font-medium">{paper.boardName}</p>
+                      </div>
+                      <span className="px-2.5 py-1 rounded-xl text-xs font-black bg-blue-50 text-blue-800 border border-blue-200">
+                        {paper.totalMarks} Marks
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl text-xs text-slate-700 border border-slate-100">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase text-slate-400 block">Duration</span>
+                        <span className="font-bold text-slate-900">{paper.duration}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase text-slate-400 block">Sections</span>
+                        <span className="font-bold text-slate-900">{paper.sections.length} Sections</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase text-slate-400 block">Questions</span>
+                        <span className="font-bold text-slate-900">{totalQuestions} Qs</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
+                        Included Sections:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {paper.sections.map((s, idx) => (
+                          <span
+                            key={idx}
+                            className="text-[10.5px] px-2 py-0.5 rounded bg-white text-slate-700 border border-slate-200 font-medium"
+                          >
+                            {s.sectionName.split(' ')[0]} ({s.totalMarks}M)
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <button
+                      onClick={() => {
+                        setPreviewPaper(paper);
+                        setShowAnswerKeyInPrint(false);
+                      }}
+                      className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      View Paper
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setPreviewPaper(paper);
+                          setShowAnswerKeyInPrint(true);
+                        }}
+                        className="px-3 py-2 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors flex items-center gap-1.5"
+                        title="Print paper along with complete solutions & answer key"
+                      >
+                        <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        Solutions (A4)
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setPreviewPaper(paper);
+                          setShowAnswerKeyInPrint(false);
+                        }}
+                        className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition-colors flex items-center gap-1.5"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                        Print A4 Sheet
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* QUESTION PAPER A4 PRINT PREVIEW MODAL */}
+      {previewPaper && (
+        <PrintPreviewModal
+          isOpen={!!previewPaper}
+          onClose={() => setPreviewPaper(null)}
+          title={`Question Paper — ${previewPaper.subject} (${previewPaper.className} ${previewPaper.boardName})`}
+          defaultOrientation="portrait"
+        >
+          <QuestionPaperPrintDocument
+            paper={previewPaper}
+            showAnswerKey={showAnswerKeyInPrint}
+            studentName={student?.name}
+            rollNumber={student?.studentId}
+            isForPreview
+          />
+        </PrintPreviewModal>
+      )}
+
+      {/* SYLLABUS TRACKER A4 PRINT PREVIEW MODAL */}
+      {showSyllabusPrint && (
+        <PrintPreviewModal
+          isOpen={showSyllabusPrint}
+          onClose={() => setShowSyllabusPrint(false)}
+          title={`Official Syllabus Completion Tracker — ${className} (${boardName})`}
+          defaultOrientation="portrait"
+        >
+          <PortionCompletionPrintDocument
+            chapters={chapters.map((c) => ({
+              id: c.id,
+              chapterNumber: c.chapterNumber,
+              title: c.title,
+              subject: c.subjectName,
+              totalLectures: c.totalLectures,
+              completedLectures: c.completedLectures,
+              status: c.status,
+              faculty: c.facultyName,
+              targetDate: c.targetDate,
+              completionDate: c.completionDate,
+              weightageMarks: c.weightageMarks,
+              verifiedByAdmin: c.verifiedByAdmin,
+            }))}
+            className={className}
+            boardName={boardName}
+            batchName={student?.batchName || `${className} - Morning & Evening`}
+            selectedSubject={selectedSubject === 'ALL' ? 'All Core Subjects' : selectedSubject}
+            academicYear="AY 2024–2025"
+            isForPreview
+          />
+        </PrintPreviewModal>
+      )}
     </div>
   );
 };

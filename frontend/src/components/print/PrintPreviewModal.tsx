@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Printer,
   X,
@@ -78,8 +79,8 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-slate-900/80 backdrop-blur-xs print:p-0 print:m-0 print:bg-white print:static">
+  return createPortal(
+    <div className="print-preview-modal-root fixed inset-0 z-[999999] flex flex-col bg-slate-900/85 backdrop-blur-xs print:p-0 print:m-0 print:bg-white print:static print:overflow-visible">
       {/* 1. Modal Top Toolbar (Hidden when actually printing) */}
       <header className="no-print bg-[#0B1F4D] text-white px-4 py-3 flex items-center justify-between border-b border-slate-700 shadow-md flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -90,11 +91,11 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-bold tracking-tight text-white">{title}</h2>
               <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                <ShieldCheck className="w-3 h-3" /> A4 Certified Template
+                <ShieldCheck className="w-3 h-3" /> ISO 216 A4 Certified ({orientation === 'landscape' ? '297 × 210 mm' : '210 × 297 mm'})
               </span>
             </div>
             <p className="text-[11px] text-slate-300">
-              Infinite Tutorial Academic Universal Print Preview &bull; Ready for Printer / PDF Export
+              Infinite Tutorial Academic Standard A4 Sheet Document &bull; Ready for Printer / PDF Export
             </p>
           </div>
         </div>
@@ -112,7 +113,7 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
                   : 'text-slate-300 hover:text-white'
               }`}
             >
-              Portrait
+              Portrait (A4)
             </button>
             <button
               type="button"
@@ -123,7 +124,7 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
                   : 'text-slate-300 hover:text-white'
               }`}
             >
-              Landscape
+              Landscape (A4)
             </button>
           </div>
 
@@ -166,7 +167,7 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
             className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#0A3622] hover:bg-[#072417] text-white rounded-lg text-xs font-bold border border-[#14532D] shadow-sm hover:shadow transition-all cursor-pointer"
           >
             <Printer className={`w-4 h-4 ${isPrinting ? 'animate-spin' : ''}`} />
-            <span>{isPrinting ? 'Opening Dialog...' : 'Print / Save PDF'}</span>
+            <span>{isPrinting ? 'Preparing A4 Sheet...' : 'Print / Save PDF (A4)'}</span>
           </button>
 
           {/* Close Button */}
@@ -182,14 +183,14 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
       </header>
 
       {/* 2. Interactive Document Canvas Viewport */}
-      <div className="flex-1 overflow-auto bg-slate-700/60 p-4 sm:p-8 flex justify-center items-start print:p-0 print:m-0 print:bg-white print:overflow-visible">
+      <div className="flex-1 overflow-auto bg-slate-800/80 p-4 sm:p-8 flex justify-center items-start print:p-0 print:m-0 print:bg-white print:overflow-visible">
         <div
           style={{
-            transform: `scale(${zoomLevel / 100})`,
+            transform: isPrinting ? 'none' : `scale(${zoomLevel / 100})`,
             transformOrigin: 'top center',
             transition: 'transform 0.15s ease-out',
           }}
-          className="print:transform-none"
+          className="print:!transform-none print:w-full"
         >
           {/* The Actual Printed Document Container */}
           <div className={`print-preview-sheet ${orientation} print:p-0 print:m-0 print:shadow-none print:w-full`}>
@@ -197,6 +198,7 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { StatCard } from '../../components/common/StatCard';
@@ -23,6 +23,16 @@ import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter
 import { PrintButton } from '../../components/print/PrintButton';
 import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
 import { PortionCompletionPrintDocument } from '../../components/print/templates/PortionCompletionPrintDocument';
+import { QuestionPaperPrintDocument } from '../../components/print/templates/QuestionPaperPrintDocument';
+import {
+  KARNATAKA_CLASS_9_CHAPTERS,
+  getCurriculumApi,
+  getCurriculumByBatchApi,
+  getQuestionPapersApi,
+  CurriculumChapter,
+  QuestionPaper,
+} from '../../services/curriculumService';
+import { FileText, Printer, HelpCircle, Eye } from 'lucide-react';
 
 interface SyllabusChapter {
   id: string;
@@ -40,7 +50,7 @@ interface SyllabusChapter {
   weightageMarks: number;
 }
 
-const INITIAL_SYLLABUS: SyllabusChapter[] = [
+export const INITIAL_SYLLABUS: SyllabusChapter[] = [
   // Physics (Class 10 CBSE)
   {
     id: 'ch-phy-10',
@@ -422,8 +432,79 @@ const INITIAL_SYLLABUS: SyllabusChapter[] = [
   },
 ];
 
+const KSB_CLASS_9_SYLLABUS: SyllabusChapter[] = KARNATAKA_CLASS_9_CHAPTERS.map((ch) => ({
+  id: ch.id,
+  chapterNumber: ch.chapterNumber,
+  title: ch.title,
+  subject: ch.subjectName,
+  totalLectures: ch.totalLectures,
+  completedLectures: ch.completedLectures,
+  status: ch.status,
+  completionDate: ch.completionDate,
+  targetDate: ch.targetDate,
+  topicsCovered: ch.topics,
+  pendingTopics: ch.status === 'COMPLETED' ? [] : ['Periodic chapter exercises & mock practice problems'],
+  facultyName: ch.facultyName,
+  weightageMarks: ch.weightageMarks,
+}));
+
+export const TEACHER_CURRICULUM_TRACKS = [
+  {
+    id: 'ksb-9',
+    label: 'Karnataka State Board — Class 9',
+    shortLabel: 'Class 9 (KSB)',
+    classId: 'cls-9',
+    boardId: 'brd-ksb',
+    className: 'Class 9',
+    boardName: 'Karnataka State Board',
+    defaultBatch: 'batch-9a-morning',
+  },
+  {
+    id: 'ksb-10',
+    label: 'Karnataka State Board — Class 10',
+    shortLabel: 'Class 10 (KSB)',
+    classId: 'cls-10',
+    boardId: 'brd-ksb',
+    className: 'Class 10',
+    boardName: 'Karnataka State Board',
+    defaultBatch: 'batch-10b-morning',
+  },
+  {
+    id: 'cbse-9',
+    label: 'CBSE Board — Class 9 (2026–27)',
+    shortLabel: 'Class 9 (CBSE)',
+    classId: 'cls-9',
+    boardId: 'brd-cbse',
+    className: 'Class 9',
+    boardName: 'CBSE',
+    defaultBatch: 'batch-9b-morning',
+  },
+  {
+    id: 'cbse-10',
+    label: 'CBSE Board — Class 10 (2026–27)',
+    shortLabel: 'Class 10 (CBSE)',
+    classId: 'cls-10',
+    boardId: 'brd-cbse',
+    className: 'Class 10',
+    boardName: 'CBSE',
+    defaultBatch: 'batch-10a-morning',
+  },
+];
+
 export const TeacherPortionProgressPage: React.FC = () => {
-  const [chapters, setChapters] = useState<SyllabusChapter[]>(INITIAL_SYLLABUS);
+  const [selectedTrackId, setSelectedTrackId] = useState<string>('ksb-9');
+  const [selectedBatchId, setSelectedBatchId] = useState<string>('batch-9a-morning');
+  const [activeTab, setActiveTab] = useState<'PORTIONS' | 'QUESTION_PAPERS'>('PORTIONS');
+
+  const [chapters, setChapters] = useState<SyllabusChapter[]>(KSB_CLASS_9_SYLLABUS);
+  const [questionPapers, setQuestionPapers] = useState<QuestionPaper[]>([]);
+
+  // Question Paper Preview & Print Modal
+  const [previewPaper, setPreviewPaper] = useState<QuestionPaper | null>(null);
+  const [showAnswerKeyInPrint, setShowAnswerKeyInPrint] = useState<boolean>(false);
+
+  const activeTrack = TEACHER_CURRICULUM_TRACKS.find((t) => t.id === selectedTrackId) || TEACHER_CURRICULUM_TRACKS[0];
+
   const [selectedSubject, setSelectedSubject] = useState<string>('ALL');
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -432,6 +513,44 @@ export const TeacherPortionProgressPage: React.FC = () => {
   const [editStatus, setEditStatus] = useState<'COMPLETED' | 'IN_PROGRESS' | 'SCHEDULED'>('IN_PROGRESS');
   const [notification, setNotification] = useState<string | null>(null);
   const [showPrintPreview, setShowPrintPreview] = useState<boolean>(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      let chList: CurriculumChapter[] = [];
+      if (selectedBatchId) {
+        chList = await getCurriculumByBatchApi(selectedBatchId);
+      } else {
+        chList = await getCurriculumApi({
+          classId: activeTrack.classId,
+          boardId: activeTrack.boardId,
+        });
+      }
+      setChapters(
+        chList.map((ch) => ({
+          id: ch.id,
+          chapterNumber: ch.chapterNumber,
+          title: ch.title,
+          subject: ch.subjectName,
+          totalLectures: ch.totalLectures,
+          completedLectures: ch.completedLectures,
+          status: ch.status,
+          completionDate: ch.completionDate,
+          targetDate: ch.targetDate,
+          topicsCovered: ch.topics,
+          pendingTopics: ch.status === 'COMPLETED' ? [] : ['Periodic chapter exercises & mock practice problems'],
+          facultyName: ch.facultyName,
+          weightageMarks: ch.weightageMarks,
+        }))
+      );
+
+      const qpList = await getQuestionPapersApi({
+        classId: activeTrack.classId,
+        boardId: activeTrack.boardId,
+      });
+      setQuestionPapers(qpList);
+    };
+    loadData();
+  }, [selectedTrackId, selectedBatchId]);
 
   const subjects = ['ALL', 'Physics', 'Chemistry', 'Biology', 'Mathematics'];
 
@@ -456,7 +575,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
 
   const totalLecturesCount = chapters.reduce((acc, c) => acc + c.totalLectures, 0);
   const completedLecturesCount = chapters.reduce((acc, c) => acc + c.completedLectures, 0);
-  const overallPercentage = Math.round((completedLecturesCount / totalLecturesCount) * 100);
+  const overallPercentage = totalLecturesCount > 0 ? Math.round((completedLecturesCount / totalLecturesCount) * 100) : 0;
 
   const handleStartEdit = (ch: SyllabusChapter) => {
     setEditingChapterId(ch.id);
@@ -473,7 +592,7 @@ export const TeacherPortionProgressPage: React.FC = () => {
             ...ch,
             completedLectures: editCompletedLectures,
             status: isDone ? 'COMPLETED' : editStatus,
-            completionDate: isDone ? '24 Sep 2026' : ch.completionDate,
+            completionDate: isDone ? new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : ch.completionDate,
           };
         }
         return ch;
@@ -484,16 +603,20 @@ export const TeacherPortionProgressPage: React.FC = () => {
     setTimeout(() => setNotification(null), 4000);
   };
 
+  const currentClassName = activeTrack.className;
+  const currentBoardName = activeTrack.boardName;
+  const currentBatchLabel = selectedBatchId.toUpperCase();
+
   return (
     <div className="space-y-6 print:space-y-0">
       {/* Official Institutional Print Header */}
       <PrintTemplateHeader
-        documentTitle="SYLLABUS & PORTION COMPLETION TRACKING REPORT"
-        documentSubtitle="Official Lecture Delivery, Milestone Logs & Topic Coverage Tracker"
+        documentTitle={`SYLLABUS & PORTION COMPLETION REPORT — ${currentClassName.toUpperCase()}`}
+        documentSubtitle={`Official Lecture Delivery, Milestone Logs & Topic Coverage Tracker (${currentBoardName})`}
         reportCategory="PORTION COMPLETION REPORT"
-        academicYear="AY 2024–25 (Term 2)"
+        academicYear="AY 2024–25"
         subject={selectedSubject !== 'ALL' ? selectedSubject : 'Physics, Chemistry, Biology & Mathematics'}
-        batchName="Batch 10A (CBSE)"
+        batchName={`${currentBatchLabel} (${currentBoardName})`}
       />
 
       {/* Header Banner */}
@@ -505,24 +628,115 @@ export const TeacherPortionProgressPage: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#155EEF]/30 text-[#00B8F8] text-xs font-semibold uppercase tracking-wider backdrop-blur-sm border border-[#00B8F8]/30 mb-3">
               <Sparkles className="w-3.5 h-3.5" />
-              CBSE Class 10 Syllabus & Portion Milestone Tracker
+              {currentBoardName} {currentClassName} Syllabus &amp; Portion Milestone Tracker
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Syllabus & Portion Progress
+              Syllabus &amp; Portion Progress
             </h1>
             <p className="text-blue-100/90 text-sm mt-1 max-w-2xl">
-              Track lecture delivery, chapter completion milestones, and topic coverage for Batch 10A (Morning & Evening sessions). Synchronized in real time with parent scorecards.
+              Track lecture delivery, chapter completion milestones, and topic coverage for {currentBatchLabel}. Synchronized in real time with parent scorecards.
             </p>
           </div>
           <div className="flex items-center gap-3">
             <PrintButton
               onClick={() => setShowPrintPreview(true)}
-              label="Print Syllabus Tracker"
-              title="Print official syllabus tracking report"
+              label="Print Syllabus (A4)"
+              title="Print official syllabus tracking report in A4 Sheet format"
               variant="white"
               size="md"
             />
           </div>
+        </div>
+      </div>
+
+      {/* Classes & Batches Selector Row */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex flex-wrap items-center justify-between gap-3 print:hidden">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-500 mr-1 flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-blue-600" />
+            Class &amp; Batch:
+          </span>
+
+          {/* Track Switcher */}
+          <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200 flex-wrap">
+            {TEACHER_CURRICULUM_TRACKS.map((t) => {
+              const isSelected = selectedTrackId === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => {
+                    setSelectedTrackId(t.id);
+                    setSelectedBatchId(t.defaultBatch);
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    isSelected
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {t.shortLabel}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Batch Selector Dropdown */}
+          <select
+            value={selectedBatchId}
+            onChange={(e) => setSelectedBatchId(e.target.value)}
+            className="text-xs font-bold border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 focus:bg-white text-slate-800"
+          >
+            {selectedTrackId === 'ksb-9' && (
+              <>
+                <option value="batch-9a-morning">Batch 9-A Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-9a-evening">Batch 9-A Evening (05:00 PM - 06:30 PM)</option>
+              </>
+            )}
+            {selectedTrackId === 'cbse-9' && (
+              <>
+                <option value="batch-9b-morning">Batch 9-B Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-9b-evening">Batch 9-B Evening (05:00 PM - 06:30 PM)</option>
+              </>
+            )}
+            {selectedTrackId === 'ksb-10' && (
+              <>
+                <option value="batch-10b-morning">Batch 10-B Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-10b-evening">Batch 10-B Evening (05:30 PM - 07:00 PM)</option>
+              </>
+            )}
+            {selectedTrackId === 'cbse-10' && (
+              <>
+                <option value="batch-10a-morning">Batch 10-A Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-10a-evening">Batch 10-A Evening (05:30 PM - 07:00 PM)</option>
+              </>
+            )}
+          </select>
+        </div>
+
+        {/* View Toggle */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setActiveTab('PORTIONS')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'PORTIONS'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            Curriculum Tracker ({chapters.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('QUESTION_PAPERS')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'QUESTION_PAPERS'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            <FileText className="w-3.5 h-3.5 text-amber-500" />
+            Question Papers ({questionPapers.length})
+          </button>
         </div>
       </div>
 
@@ -677,7 +891,8 @@ export const TeacherPortionProgressPage: React.FC = () => {
       </Card>
 
       {/* Chapters Table & Cards (Screen Interactive View) */}
-      <div className="space-y-4 print:hidden">
+      {activeTab === 'PORTIONS' && (
+        <div className="space-y-4 print:hidden">
         {filteredChapters.map((ch) => {
           const isEditing = editingChapterId === ch.id;
           const pct = Math.round((ch.completedLectures / ch.totalLectures) * 100);
@@ -847,7 +1062,123 @@ export const TeacherPortionProgressPage: React.FC = () => {
             </Card>
           );
         })}
-      </div>
+        </div>
+      )}
+
+      {/* TAB 2: QUESTION PAPERS VIEW (Teacher Portal) */}
+      {activeTab === 'QUESTION_PAPERS' && (
+        <div className="space-y-5 print:hidden">
+          <div className="bg-gradient-to-r from-slate-900 to-blue-950 rounded-2xl p-6 text-white shadow-md border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[11px] font-bold uppercase tracking-wider mb-2 border border-blue-400/20">
+                <Sparkles className="w-3.5 h-3.5" />
+                {currentBoardName} {currentClassName} Assessment Papers
+              </span>
+              <h2 className="text-xl font-bold">
+                Official 40-Mark Examination Question Papers ({questionPapers.length} Total)
+              </h2>
+              <p className="text-slate-300 text-xs mt-1">
+                Teacher question papers with detailed marking schemes and solutions formatted for ISO 216 standard A4 sheet printing.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {questionPapers.map((paper) => {
+              const qCount = paper.sections.reduce((acc, s) => acc + s.questions.length, 0);
+              return (
+                <div
+                  key={paper.id}
+                  className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:border-blue-400 transition-all space-y-3 flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                          {paper.subjectCode} &bull; {paper.className}
+                        </span>
+                        <h4 className="font-black text-slate-900 text-base mt-1">{paper.title}</h4>
+                        <span className="text-xs text-slate-500 font-medium">{paper.boardName}</span>
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-blue-50 text-blue-700 border border-blue-200">
+                        {paper.totalMarks} Marks
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-xl text-xs text-slate-700 border border-slate-100">
+                      <div>
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Time</span>
+                        <span className="font-bold text-slate-800">{paper.duration}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Sections</span>
+                        <span className="font-bold text-slate-800">{paper.sections.length}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Questions</span>
+                        <span className="font-bold text-slate-800">{qCount}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <button
+                      onClick={() => {
+                        setPreviewPaper(paper);
+                        setShowAnswerKeyInPrint(false);
+                      }}
+                      className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      View Paper
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setPreviewPaper(paper);
+                          setShowAnswerKeyInPrint(true);
+                        }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors flex items-center gap-1.5"
+                      >
+                        <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        Solutions (A4)
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setPreviewPaper(paper);
+                          setShowAnswerKeyInPrint(false);
+                        }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center gap-1.5 shadow-xs"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                        Print A4
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* QUESTION PAPER A4 PRINT PREVIEW MODAL */}
+      {previewPaper && (
+        <PrintPreviewModal
+          isOpen={!!previewPaper}
+          onClose={() => setPreviewPaper(null)}
+          title={`Question Paper — ${previewPaper.subject} (${previewPaper.className} ${previewPaper.boardName})`}
+          defaultOrientation="portrait"
+        >
+          <QuestionPaperPrintDocument
+            paper={previewPaper}
+            showAnswerKey={showAnswerKeyInPrint}
+            isForPreview
+          />
+        </PrintPreviewModal>
+      )}
 
       {/* ========================================================= */}
       {/* SYSTEMATIC INSTITUTIONAL PRINTABLE TABLE (Print Only)     */}

@@ -68,8 +68,8 @@ export const INITIAL_BATCHES: BatchDto[] = [
     status: 'ACTIVE',
     classId: 'cls-10',
     className: 'Class 10',
-    boardId: 'brd-cbse',
-    boardName: 'CBSE',
+    boardId: 'brd-ksb',
+    boardName: 'Karnataka State Board',
     academicYear: '2024-2025',
     assignedTeacherName: 'Dr. Meena Iyer (Mathematics)',
     studentCount: 15,
@@ -85,8 +85,8 @@ export const INITIAL_BATCHES: BatchDto[] = [
     status: 'ACTIVE',
     classId: 'cls-10',
     className: 'Class 10',
-    boardId: 'brd-cbse',
-    boardName: 'CBSE',
+    boardId: 'brd-ksb',
+    boardName: 'Karnataka State Board',
     academicYear: '2024-2025',
     assignedTeacherName: 'Dr. Meena Iyer (Mathematics)',
     studentCount: 16,
@@ -136,8 +136,8 @@ export const INITIAL_BATCHES: BatchDto[] = [
     status: 'ACTIVE',
     classId: 'cls-9',
     className: 'Class 9',
-    boardId: 'brd-ksb',
-    boardName: 'Karnataka State Board',
+    boardId: 'brd-cbse',
+    boardName: 'CBSE',
     academicYear: '2024-2025',
     assignedTeacherName: 'Mrs. Geetha Hegde (Chemistry)',
     studentCount: 12,
@@ -153,8 +153,8 @@ export const INITIAL_BATCHES: BatchDto[] = [
     status: 'ACTIVE',
     classId: 'cls-9',
     className: 'Class 9',
-    boardId: 'brd-ksb',
-    boardName: 'Karnataka State Board',
+    boardId: 'brd-cbse',
+    boardName: 'CBSE',
     academicYear: '2024-2025',
     assignedTeacherName: 'Mrs. Geetha Hegde (Chemistry)',
     studentCount: 14,
@@ -168,7 +168,7 @@ let inMemoryBatches = [...INITIAL_BATCHES];
 
 let isDbAvailable: boolean | null = null;
 let lastDbCheck = 0;
-const DB_RECHECK_INTERVAL = 30000;
+const DB_RECHECK_INTERVAL = 120000; // 2 minutes
 
 export const checkDbAvailability = async (): Promise<boolean> => {
   const now = Date.now();
@@ -176,8 +176,11 @@ export const checkDbAvailability = async (): Promise<boolean> => {
     return isDbAvailable;
   }
   try {
-    // Quick probe compatible with MongoDB Atlas and relational databases
-    await prisma.user.findFirst({ select: { id: true } });
+    // Quick probe with 1.5s timeout to prevent freezing offline/development mode
+    await Promise.race([
+      prisma.user.findFirst({ select: { id: true } }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('DB Timeout')), 1500)),
+    ]);
     isDbAvailable = true;
   } catch {
     isDbAvailable = false;
@@ -203,19 +206,23 @@ export const addClass = async (data: { name: string; grade: number; description?
     grade: Number(data.grade),
     description: data.description,
   };
-  try {
-    const created = await prisma.class.create({ data });
-    return created;
-  } catch {}
+  if (await checkDbAvailability()) {
+    try {
+      const created = await prisma.class.create({ data });
+      return created;
+    } catch {}
+  }
   inMemoryClasses.push(newClass);
   return newClass;
 };
 
 export const getBoards = async (): Promise<BoardDto[]> => {
-  try {
-    const list = await prisma.board.findMany({ orderBy: { name: 'asc' } });
-    if (list.length > 0) return list;
-  } catch {}
+  if (await checkDbAvailability()) {
+    try {
+      const list = await prisma.board.findMany({ orderBy: { name: 'asc' } });
+      if (list.length > 0) return list;
+    } catch {}
+  }
   return inMemoryBoards;
 };
 
@@ -225,31 +232,35 @@ export const addBoard = async (data: { name: string; code: string }): Promise<Bo
     name: data.name,
     code: data.code,
   };
-  try {
-    const created = await prisma.board.create({ data });
-    return created;
-  } catch {}
+  if (await checkDbAvailability()) {
+    try {
+      const created = await prisma.board.create({ data });
+      return created;
+    } catch {}
+  }
   inMemoryBoards.push(newBoard);
   return newBoard;
 };
 
 export const getSubjects = async (boardId?: string): Promise<SubjectDto[]> => {
-  try {
-    const list = await prisma.subject.findMany({
-      where: boardId ? { boardId } : undefined,
-      include: { board: true },
-      orderBy: { name: 'asc' },
-    });
-    if (list.length > 0) {
-      return list.map((s) => ({
-        id: s.id,
-        name: s.name,
-        code: s.code,
-        boardId: s.boardId,
-        boardName: s.board?.name || null,
-      }));
-    }
-  } catch {}
+  if (await checkDbAvailability()) {
+    try {
+      const list = await prisma.subject.findMany({
+        where: boardId ? { boardId } : undefined,
+        include: { board: true },
+        orderBy: { name: 'asc' },
+      });
+      if (list.length > 0) {
+        return list.map((s) => ({
+          id: s.id,
+          name: s.name,
+          code: s.code,
+          boardId: s.boardId,
+          boardName: s.board?.name || null,
+        }));
+      }
+    } catch {}
+  }
   if (boardId) {
     return inMemorySubjects.filter((s) => s.boardId === boardId);
   }
@@ -265,52 +276,56 @@ export const addSubject = async (data: { name: string; code: string; boardId?: s
     boardId: data.boardId,
     boardName: board ? board.name : undefined,
   };
-  try {
-    const created = await prisma.subject.create({
-      data,
-      include: { board: true },
-    });
-    return {
-      id: created.id,
-      name: created.name,
-      code: created.code,
-      boardId: created.boardId,
-      boardName: created.board?.name || null,
-    };
-  } catch {}
+  if (await checkDbAvailability()) {
+    try {
+      const created = await prisma.subject.create({
+        data,
+        include: { board: true },
+      });
+      return {
+        id: created.id,
+        name: created.name,
+        code: created.code,
+        boardId: created.boardId,
+        boardName: created.board?.name || null,
+      };
+    } catch {}
+  }
   inMemorySubjects.push(newSubject);
   return newSubject;
 };
 
 export const getBatches = async (filters: { classId?: string; boardId?: string; session?: string } = {}): Promise<BatchDto[]> => {
-  try {
-    const list = await prisma.batch.findMany({
-      where: {
-        ...(filters.classId ? { classId: filters.classId } : {}),
-        ...(filters.boardId ? { boardId: filters.boardId } : {}),
-      },
-      include: { class: true, board: true, students: true },
-      orderBy: { name: 'asc' },
-    });
-    if (list.length > 0) {
-      return list.map((b: any) => ({
-        id: b.id,
-        name: b.name,
-        timing: b.timing,
-        session: b.session || 'MORNING',
-        startTime: b.startTime,
-        endTime: b.endTime,
-        days: b.days || 'Monday-Saturday',
-        status: b.status || 'ACTIVE',
-        classId: b.classId,
-        className: b.class?.name,
-        boardId: b.boardId,
-        boardName: b.board?.name,
-        academicYear: b.academicYear,
-        studentCount: b.students?.length || 0,
-      }));
-    }
-  } catch {}
+  if (await checkDbAvailability()) {
+    try {
+      const list = await prisma.batch.findMany({
+        where: {
+          ...(filters.classId ? { classId: filters.classId } : {}),
+          ...(filters.boardId ? { boardId: filters.boardId } : {}),
+        },
+        include: { class: true, board: true, students: true },
+        orderBy: { name: 'asc' },
+      });
+      if (list.length > 0) {
+        return list.map((b: any) => ({
+          id: b.id,
+          name: b.name,
+          timing: b.timing,
+          session: b.session || 'MORNING',
+          startTime: b.startTime,
+          endTime: b.endTime,
+          days: b.days || 'Monday-Saturday',
+          status: b.status || 'ACTIVE',
+          classId: b.classId,
+          className: b.class?.name,
+          boardId: b.boardId,
+          boardName: b.board?.name,
+          academicYear: b.academicYear,
+          studentCount: b.students?.length || 0,
+        }));
+      }
+    } catch {}
+  }
 
   let results = [...inMemoryBatches];
   if (filters.classId) {
@@ -359,39 +374,41 @@ export const createBatch = async (data: {
     studentCount: 0,
   };
 
-  try {
-    const created = await prisma.batch.create({
-      data: {
-        name: data.name,
-        timing: newBatch.timing,
-        session: newBatch.session,
-        startTime: newBatch.startTime,
-        endTime: newBatch.endTime,
-        days: newBatch.days,
-        status: newBatch.status,
-        classId: data.classId,
-        boardId: data.boardId,
-        academicYear: newBatch.academicYear,
-      },
-      include: { class: true, board: true },
-    });
-    return {
-      id: created.id,
-      name: created.name,
-      timing: created.timing,
-      session: created.session,
-      startTime: created.startTime,
-      endTime: created.endTime,
-      days: created.days,
-      status: created.status,
-      classId: created.classId,
-      className: created.class?.name,
-      boardId: created.boardId,
-      boardName: created.board?.name,
-      academicYear: created.academicYear,
-      studentCount: 0,
-    };
-  } catch {}
+  if (await checkDbAvailability()) {
+    try {
+      const created = await prisma.batch.create({
+        data: {
+          name: data.name,
+          timing: newBatch.timing,
+          session: newBatch.session,
+          startTime: newBatch.startTime,
+          endTime: newBatch.endTime,
+          days: newBatch.days,
+          status: newBatch.status,
+          classId: data.classId,
+          boardId: data.boardId,
+          academicYear: newBatch.academicYear,
+        },
+        include: { class: true, board: true },
+      });
+      return {
+        id: created.id,
+        name: created.name,
+        timing: created.timing,
+        session: created.session,
+        startTime: created.startTime,
+        endTime: created.endTime,
+        days: created.days,
+        status: created.status,
+        classId: created.classId,
+        className: created.class?.name,
+        boardId: created.boardId,
+        boardName: created.board?.name,
+        academicYear: created.academicYear,
+        studentCount: 0,
+      };
+    } catch {}
+  }
 
   inMemoryBatches.unshift(newBatch);
   return newBatch;

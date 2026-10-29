@@ -12,3 +12,4 @@ export * from './templates/TeacherReportPrintDocument';
 export * from './templates/BatchReportPrintDocument';
 export * from './templates/TestResultPrintDocument';
 export * from './templates/ParentProgressReportPrintDocument';
+export * from './templates/QuestionPaperPrintDocument';

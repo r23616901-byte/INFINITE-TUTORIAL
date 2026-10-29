@@ -156,7 +156,7 @@ export const App: React.FC = () => {
           </Route>
 
           {/* Protected Parent Routes with ParentLayout */}
-          <Route element={<ProtectedRoute allowedRoles={['PARENT']} />}>
+          <Route element={<ProtectedRoute allowedRoles={['PARENT', 'ADMIN']} />}>
             <Route element={<ParentLayout />}>
               <Route path="/parent" element={<ParentDashboard />} />
               <Route path="/parent/profile" element={<ParentProfilePage />} />

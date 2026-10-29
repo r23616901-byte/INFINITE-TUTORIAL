@@ -27,11 +27,9 @@ export const PrintLayout: React.FC<PrintLayoutProps> = ({
   customDate,
   children,
   className = '',
-  isForPreview = false,
+  isForPreview: _isForPreview = false,
 }) => {
-  const containerClass = isForPreview
-    ? `print-preview-sheet ${orientation} font-sans leading-normal ${className}`
-    : `universal-print-document ${orientation === 'landscape' ? 'landscape-mode' : ''} font-sans leading-normal ${className}`;
+  const containerClass = `universal-print-document ${orientation === 'landscape' ? 'landscape-mode' : ''} font-sans leading-normal w-full ${className}`;
 
   return (
     <div className={containerClass}>

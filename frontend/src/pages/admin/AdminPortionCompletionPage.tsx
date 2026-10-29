@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { StatCard } from '../../components/common/StatCard';
@@ -22,6 +22,16 @@ import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter
 import { PrintButton } from '../../components/print/PrintButton';
 import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
 import { PortionCompletionPrintDocument } from '../../components/print/templates/PortionCompletionPrintDocument';
+import { QuestionPaperPrintDocument } from '../../components/print/templates/QuestionPaperPrintDocument';
+import {
+  KARNATAKA_CLASS_9_CHAPTERS,
+  getCurriculumApi,
+  getCurriculumByBatchApi,
+  getQuestionPapersApi,
+  CurriculumChapter,
+  QuestionPaper,
+} from '../../services/curriculumService';
+import { FileText, Printer, HelpCircle, Eye } from 'lucide-react';
 
 interface AdminChapterItem {
   id: string;
@@ -38,8 +48,8 @@ interface AdminChapterItem {
   verifiedByAdmin: boolean;
 }
 
-const INITIAL_ADMIN_CHAPTERS: AdminChapterItem[] = [
-  // Physics
+// Fallback chapters
+export const INITIAL_ADMIN_CHAPTERS: AdminChapterItem[] = [
   {
     id: 'adm-ch-phy-10',
     chapterNumber: 10,
@@ -307,8 +317,75 @@ const INITIAL_ADMIN_CHAPTERS: AdminChapterItem[] = [
   },
 ];
 
+const KSB_CLASS_9_ADMIN_CHAPTERS: AdminChapterItem[] = KARNATAKA_CLASS_9_CHAPTERS.map((ch) => ({
+  id: ch.id,
+  chapterNumber: ch.chapterNumber,
+  title: ch.title,
+  subject: ch.subjectName,
+  totalLectures: ch.totalLectures,
+  completedLectures: ch.completedLectures,
+  status: ch.status,
+  faculty: ch.facultyName,
+  targetDate: ch.targetDate,
+  completionDate: ch.completionDate,
+  weightageMarks: ch.weightageMarks,
+  verifiedByAdmin: ch.verifiedByAdmin,
+}));
+
+export const ADMIN_CURRICULUM_TRACKS = [
+  {
+    id: 'ksb-9',
+    label: 'Karnataka State Board — Class 9',
+    shortLabel: 'Class 9 (KSB)',
+    classId: 'cls-9',
+    boardId: 'brd-ksb',
+    className: 'Class 9',
+    boardName: 'Karnataka State Board',
+  },
+  {
+    id: 'ksb-10',
+    label: 'Karnataka State Board — Class 10',
+    shortLabel: 'Class 10 (KSB)',
+    classId: 'cls-10',
+    boardId: 'brd-ksb',
+    className: 'Class 10',
+    boardName: 'Karnataka State Board',
+  },
+  {
+    id: 'cbse-9',
+    label: 'CBSE Board — Class 9 (2026–27)',
+    shortLabel: 'Class 9 (CBSE)',
+    classId: 'cls-9',
+    boardId: 'brd-cbse',
+    className: 'Class 9',
+    boardName: 'CBSE',
+  },
+  {
+    id: 'cbse-10',
+    label: 'CBSE Board — Class 10 (2026–27)',
+    shortLabel: 'Class 10 (CBSE)',
+    classId: 'cls-10',
+    boardId: 'brd-cbse',
+    className: 'Class 10',
+    boardName: 'CBSE',
+  },
+];
+
 export const AdminPortionCompletionPage: React.FC = () => {
-  const [chapters, setChapters] = useState<AdminChapterItem[]>(INITIAL_ADMIN_CHAPTERS);
+  const [selectedTrackId, setSelectedTrackId] = useState<string>('ksb-9');
+  const [selectedBatchId, setSelectedBatchId] = useState<string>('ALL');
+  const [activeTab, setActiveTab] = useState<'SYLLABUS' | 'QUESTION_PAPERS'>('SYLLABUS');
+
+  const [chapters, setChapters] = useState<AdminChapterItem[]>(KSB_CLASS_9_ADMIN_CHAPTERS);
+  const [questionPapers, setQuestionPapers] = useState<QuestionPaper[]>([]);
+
+  // Question Paper Preview & Print Modal
+  const [previewPaper, setPreviewPaper] = useState<QuestionPaper | null>(null);
+  const [showAnswerKeyInPrint, setShowAnswerKeyInPrint] = useState<boolean>(false);
+
+  const activeTrack = ADMIN_CURRICULUM_TRACKS.find((t) => t.id === selectedTrackId) || ADMIN_CURRICULUM_TRACKS[0];
+  const isClass9 = activeTrack.classId === 'cls-9';
+
   const [selectedSubject, setSelectedSubject] = useState<string>('ALL');
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -317,6 +394,43 @@ export const AdminPortionCompletionPage: React.FC = () => {
   const [editStatus, setEditStatus] = useState<'COMPLETED' | 'IN_PROGRESS' | 'SCHEDULED'>('IN_PROGRESS');
   const [notification, setNotification] = useState<string | null>(null);
   const [showPrintPreview, setShowPrintPreview] = useState<boolean>(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      let chList: CurriculumChapter[] = [];
+      if (selectedBatchId !== 'ALL') {
+        chList = await getCurriculumByBatchApi(selectedBatchId);
+      } else {
+        chList = await getCurriculumApi({
+          classId: activeTrack.classId,
+          boardId: activeTrack.boardId,
+        });
+      }
+      setChapters(
+        chList.map((ch) => ({
+          id: ch.id,
+          chapterNumber: ch.chapterNumber,
+          title: ch.title,
+          subject: ch.subjectName,
+          totalLectures: ch.totalLectures,
+          completedLectures: ch.completedLectures,
+          status: ch.status,
+          faculty: ch.facultyName,
+          targetDate: ch.targetDate,
+          completionDate: ch.completionDate,
+          weightageMarks: ch.weightageMarks,
+          verifiedByAdmin: ch.verifiedByAdmin,
+        }))
+      );
+
+      const qpList = await getQuestionPapersApi({
+        classId: activeTrack.classId,
+        boardId: activeTrack.boardId,
+      });
+      setQuestionPapers(qpList);
+    };
+    loadData();
+  }, [selectedTrackId, selectedBatchId]);
 
   const subjects = ['ALL', 'Physics', 'Chemistry', 'Biology', 'Mathematics'];
 
@@ -426,6 +540,99 @@ export const AdminPortionCompletionPage: React.FC = () => {
           <span className="text-sm font-medium">{notification}</span>
         </div>
       )}
+
+      {/* Classes & Batches Selector Row (Admin) */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex flex-wrap items-center justify-between gap-3 print:hidden">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-500 mr-1 flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-blue-600" />
+            Class &amp; Batch:
+          </span>
+
+          {/* Class Toggle */}
+          {/* Track Switcher */}
+          <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200 flex-wrap">
+            {ADMIN_CURRICULUM_TRACKS.map((t) => {
+              const isSelected = selectedTrackId === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => {
+                    setSelectedTrackId(t.id);
+                    setSelectedBatchId('ALL');
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    isSelected
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {t.shortLabel}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Batch Selector Dropdown */}
+          <select
+            value={selectedBatchId}
+            onChange={(e) => setSelectedBatchId(e.target.value)}
+            className="text-xs font-bold border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 focus:bg-white text-slate-800"
+          >
+            <option value="ALL">All Batches (Composite View)</option>
+            {selectedTrackId === 'ksb-9' && (
+              <>
+                <option value="batch-9a-morning">Batch 9-A Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-9a-evening">Batch 9-A Evening (05:00 PM - 06:30 PM)</option>
+              </>
+            )}
+            {selectedTrackId === 'cbse-9' && (
+              <>
+                <option value="batch-9b-morning">Batch 9-B Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-9b-evening">Batch 9-B Evening (05:00 PM - 06:30 PM)</option>
+              </>
+            )}
+            {selectedTrackId === 'ksb-10' && (
+              <>
+                <option value="batch-10b-morning">Batch 10-B Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-10b-evening">Batch 10-B Evening (05:30 PM - 07:00 PM)</option>
+              </>
+            )}
+            {selectedTrackId === 'cbse-10' && (
+              <>
+                <option value="batch-10a-morning">Batch 10-A Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-10a-evening">Batch 10-A Evening (05:30 PM - 07:00 PM)</option>
+              </>
+            )}
+          </select>
+        </div>
+
+        {/* View Toggle */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setActiveTab('SYLLABUS')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'SYLLABUS'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            <CheckSquare className="w-3.5 h-3.5" />
+            Curriculum Tracker ({chapters.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('QUESTION_PAPERS')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'QUESTION_PAPERS'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            <FileText className="w-3.5 h-3.5 text-amber-500" />
+            Official Question Papers ({questionPapers.length})
+          </button>
+        </div>
+      </div>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 print:hidden">
@@ -568,7 +775,8 @@ export const AdminPortionCompletionPage: React.FC = () => {
       </Card>
 
       {/* Chapters Table (Screen Interactive View) */}
-      <div className="space-y-3 print:hidden">
+      {activeTab === 'SYLLABUS' && (
+        <div className="space-y-3 print:hidden">
         {filteredChapters.map((ch) => {
           const isEditing = editingId === ch.id;
           const pct = Math.round((ch.completedLectures / ch.totalLectures) * 100);
@@ -704,7 +912,123 @@ export const AdminPortionCompletionPage: React.FC = () => {
             </Card>
           );
         })}
-      </div>
+        </div>
+      )}
+
+      {/* TAB 2: QUESTION PAPERS VIEW (Admin Portal) */}
+      {activeTab === 'QUESTION_PAPERS' && (
+        <div className="space-y-5 print:hidden">
+          <div className="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl p-6 text-white shadow-md border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[11px] font-bold uppercase tracking-wider mb-2 border border-blue-400/20">
+                <Sparkles className="w-3.5 h-3.5" />
+                {isClass9 ? 'Karnataka State Board' : 'CBSE'} {isClass9 ? 'Class 9' : 'Class 10'} Question Papers
+              </span>
+              <h2 className="text-xl font-bold">
+                Periodic Assessment Master Papers ({questionPapers.length} Total)
+              </h2>
+              <p className="text-slate-300 text-xs mt-1">
+                Official institutional test copies with full marking schemes and question keys, formatted in ISO 216 standard A4 sheet print specifications.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {questionPapers.map((paper) => {
+              const qCount = paper.sections.reduce((acc, s) => acc + s.questions.length, 0);
+              return (
+                <div
+                  key={paper.id}
+                  className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:border-blue-400 transition-all space-y-3 flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                          {paper.subjectCode} &bull; {paper.className}
+                        </span>
+                        <h4 className="font-black text-slate-900 text-base mt-1">{paper.title}</h4>
+                        <span className="text-xs text-slate-500 font-medium">{paper.boardName}</span>
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-blue-50 text-blue-700 border border-blue-200">
+                        {paper.totalMarks} Marks
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-xl text-xs text-slate-700 border border-slate-100">
+                      <div>
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Time</span>
+                        <span className="font-bold text-slate-800">{paper.duration}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Sections</span>
+                        <span className="font-bold text-slate-800">{paper.sections.length}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Questions</span>
+                        <span className="font-bold text-slate-800">{qCount}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <button
+                      onClick={() => {
+                        setPreviewPaper(paper);
+                        setShowAnswerKeyInPrint(false);
+                      }}
+                      className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center gap-1.5"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      View Paper
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setPreviewPaper(paper);
+                          setShowAnswerKeyInPrint(true);
+                        }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors flex items-center gap-1.5"
+                      >
+                        <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        Solutions (A4)
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setPreviewPaper(paper);
+                          setShowAnswerKeyInPrint(false);
+                        }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center gap-1.5 shadow-xs"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                        Print A4
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* QUESTION PAPER A4 PRINT PREVIEW MODAL */}
+      {previewPaper && (
+        <PrintPreviewModal
+          isOpen={!!previewPaper}
+          onClose={() => setPreviewPaper(null)}
+          title={`Question Paper — ${previewPaper.subject} (${previewPaper.className} ${previewPaper.boardName})`}
+          defaultOrientation="portrait"
+        >
+          <QuestionPaperPrintDocument
+            paper={previewPaper}
+            showAnswerKey={showAnswerKeyInPrint}
+            isForPreview
+          />
+        </PrintPreviewModal>
+      )}
 
       {/* ========================================================= */}
       {/* SYSTEMATIC INSTITUTIONAL PRINTABLE TABLE (Print Only)     */}
@@ -792,9 +1116,9 @@ export const AdminPortionCompletionPage: React.FC = () => {
       >
         <PortionCompletionPrintDocument
           chapters={filteredChapters}
-          batchName="Class 10 CBSE - Composite"
-          className="Class 10"
-          boardName="CBSE"
+          batchName={isClass9 ? 'Class 9 Karnataka State Board - Composite' : 'Class 10 CBSE - Composite'}
+          className={isClass9 ? 'Class 9' : 'Class 10'}
+          boardName={isClass9 ? 'Karnataka State Board' : 'CBSE'}
           selectedSubject={selectedSubject}
           isForPreview
         />

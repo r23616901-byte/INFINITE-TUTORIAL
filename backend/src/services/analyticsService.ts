@@ -5,6 +5,7 @@ import {
   ChapterAnalysisItem,
 } from '../types';
 import prisma from './prisma';
+import { checkDbAvailability } from './academicService';
 
 // In-Memory mock students directory for resilient dual-persistence
 const SEED_STUDENTS = [
@@ -51,22 +52,24 @@ export class AnalyticsService {
   async getStudentPerformanceAnalysis(studentIdOrCode: string): Promise<StudentOverallPerformanceDto> {
     // 1. Resolve student entity
     let student: any = null;
-    try {
-      student = await prisma.student.findFirst({
-        where: {
-          OR: [
-            { id: studentIdOrCode },
-            { studentId: studentIdOrCode },
-          ],
-        },
-        include: {
-          class: true,
-          board: true,
-          batch: true,
-        },
-      });
-    } catch {
-      // Prisma offline or schema variant
+    if (await checkDbAvailability()) {
+      try {
+        student = await prisma.student.findFirst({
+          where: {
+            OR: [
+              { id: studentIdOrCode },
+              { studentId: studentIdOrCode },
+            ],
+          },
+          include: {
+            class: true,
+            board: true,
+            batch: true,
+          },
+        });
+      } catch {
+        // Prisma offline or schema variant
+      }
     }
 
     if (!student) {
