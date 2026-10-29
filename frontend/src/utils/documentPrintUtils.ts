@@ -185,3 +185,38 @@ export const getAnswerLinesForMarks = (marks: number, preference?: AnswerSpaceTy
   if (marks <= 4) return 8;
   return 12; // 5-6 marks
 };
+
+/**
+ * Resolves local or relative file upload paths to their absolute backend URL.
+ * Prevents SPA router / Vite from falling back to index.html and redirecting to the login screen.
+ */
+export const resolveBackendAssetUrl = (rawUrl?: string | null): string => {
+  if (!rawUrl) return '';
+  if (
+    rawUrl.startsWith('http://') ||
+    rawUrl.startsWith('https://') ||
+    rawUrl.startsWith('blob:') ||
+    rawUrl.startsWith('data:')
+  ) {
+    return rawUrl;
+  }
+
+  const envUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL;
+  let backendOrigin = '';
+
+  if (envUrl) {
+    try {
+      const parsed = new URL(envUrl);
+      backendOrigin = parsed.origin;
+    } catch {
+      backendOrigin = '';
+    }
+  } else if (import.meta.env.PROD) {
+    backendOrigin = 'https://infinite-tutorial-1.onrender.com';
+  } else {
+    backendOrigin = 'http://localhost:5000';
+  }
+
+  const cleanPath = rawUrl.startsWith('/') ? rawUrl : `/${rawUrl}`;
+  return `${backendOrigin}${cleanPath}`;
+};

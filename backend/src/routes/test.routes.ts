@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { authenticate, authorize } from '../middleware/auth.middleware';
 import { uploadTestPaper } from '../middleware/uploadMiddleware';
 import {
+  streamTestPaperFileHandler,
   uploadTestPaperHandler,
   getTestTypesHandler,
   addTestTypeHandler,
@@ -14,6 +15,9 @@ import {
 } from '../controllers/testController';
 
 const router = Router();
+
+// Public streaming route for embedded PDF / image preview in question paper templates
+router.get('/file/:filename', streamTestPaperFileHandler);
 
 router.use(authenticate);
 

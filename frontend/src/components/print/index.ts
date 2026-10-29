@@ -21,6 +21,7 @@ export {
   DocumentFooter,
   ExaminationPaperTemplate,
   AcademicReportTemplate,
+  TestQuestionPaperDocument,
   PrintPreview,
   FormulaRenderer,
 } from '../document-templates';
@@ -30,6 +31,7 @@ export type {
   DocumentFooterProps,
   ExaminationPaperTemplateProps,
   AcademicReportTemplateProps,
+  TestQuestionPaperDocumentProps,
   PrintPreviewProps,
   FormulaRendererProps,
 } from '../document-templates';

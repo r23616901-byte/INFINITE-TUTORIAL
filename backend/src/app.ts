@@ -37,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static uploaded files (test papers, docs)
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use('/api/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // API Routes
 app.use('/api', routes);

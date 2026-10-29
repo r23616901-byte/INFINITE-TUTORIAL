@@ -1,5 +1,49 @@
 import { Request, Response } from 'express';
+import path from 'path';
+import fs from 'fs';
 import * as testService from '../services/testService';
+
+/**
+ * Public stream handler for test paper files (PDFs, images)
+ * GET /api/tests/file/:filename
+ */
+export const streamTestPaperFileHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const rawParam = Array.isArray(req.params.filename) ? req.params.filename[0] : req.params.filename || '';
+    const filename = path.basename(String(rawParam));
+
+    const candidatePaths = [
+      path.join(process.cwd(), 'uploads', 'test-papers', filename),
+      path.join(process.cwd(), 'uploads', 'documents', filename),
+      path.join(process.cwd(), 'uploads', filename),
+    ];
+
+    const matchedPath = candidatePaths.find((p) => fs.existsSync(p));
+    if (matchedPath) {
+      const ext = path.extname(matchedPath).toLowerCase();
+      const contentType =
+        ext === '.pdf'
+          ? 'application/pdf'
+          : ext === '.png'
+          ? 'image/png'
+          : ext === '.jpg' || ext === '.jpeg'
+          ? 'image/jpeg'
+          : 'application/octet-stream';
+
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
+      res.sendFile(matchedPath);
+      return;
+    }
+
+    res.status(404).json({
+      success: false,
+      message: `File "${filename}" not found on server storage.`,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
 
 /**
  * Upload a test paper (PDF / Image)
@@ -16,7 +60,7 @@ export const uploadTestPaperHandler = async (req: Request, res: Response): Promi
     }
 
     const file = req.file;
-    const fileUrl = `/uploads/test-papers/${file.filename}`;
+    const fileUrl = `/api/tests/file/${file.filename}`;
 
     res.status(200).json({
       success: true,

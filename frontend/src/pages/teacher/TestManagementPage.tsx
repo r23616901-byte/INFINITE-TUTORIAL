@@ -21,7 +21,13 @@ import { TestItem, TestType, CreateTestPayload } from '../../types/test';
 import { ClassItem, BoardItem, SubjectItem } from '../../types/attendance';
 import { StudentMark } from '../../types/mark';
 import markService from '../../services/markService';
-import { PrintButton, PrintPreviewModal, TestResultPrintDocument } from '../../components/print';
+import {
+  PrintButton,
+  PrintPreviewModal,
+  TestResultPrintDocument,
+  TestQuestionPaperDocument,
+  resolveBackendAssetUrl,
+} from '../../components/print';
 import {
   FileText,
   Plus,
@@ -135,12 +141,8 @@ export const TestManagementPage: React.FC = () => {
     message: string;
   } | null>(null);
 
-  // Paper Viewer Modal State
-  const [viewingPaper, setViewingPaper] = useState<{
-    url: string;
-    name: string;
-    mimeType?: string | null;
-  } | null>(null);
+  // Question Paper Preview Modal State (Universal Document Template)
+  const [previewingTestPaper, setPreviewingTestPaper] = useState<TestItem | null>(null);
 
   // Admin Custom Test Types Modal
   const [isTypesModalOpen, setIsTypesModalOpen] = useState(false);
@@ -677,35 +679,34 @@ export const TestManagementPage: React.FC = () => {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2 flex-wrap">
-                      {hasPaper ? (
-                        <>
-                          <button
-                            onClick={() =>
-                              setViewingPaper({
-                                url: test.testPaperUrl!,
-                                name: test.testPaperName || test.name,
-                                mimeType: test.mimeType,
-                              })
-                            }
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#EEF4FF] text-[#1048B5] hover:bg-[#EEF4FF] border border-[#DCE5F2] transition-colors"
-                          >
-                            <Eye className="w-3.5 h-3.5" /> Preview Paper
-                          </button>
-                          <a
-                            href={test.testPaperUrl!}
-                            download={test.testPaperName || 'test-paper.pdf'}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition-colors"
-                          >
-                            <Download className="w-3.5 h-3.5" /> Download
-                          </a>
-                        </>
-                      ) : (
-                        <span className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
-                          Paper Pending
-                        </span>
+                      <button
+                        onClick={() => setPreviewingTestPaper(test)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#EEF4FF] text-[#1048B5] hover:bg-[#DCE5F2] border border-[#DCE5F2] transition-colors"
+                        title="Preview question paper with official Infinite Tutorial header and footer"
+                      >
+                        <Eye className="w-3.5 h-3.5" /> Preview Paper
+                      </button>
+
+                      {hasPaper && (
+                        <a
+                          href={resolveBackendAssetUrl(test.testPaperUrl)}
+                          download={test.testPaperName || 'test-paper.pdf'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition-colors"
+                          title="Download original uploaded file"
+                        >
+                          <Download className="w-3.5 h-3.5" /> Download
+                        </a>
                       )}
+
+                      <PrintButton
+                        onClick={() => setPreviewingTestPaper(test)}
+                        variant="outline"
+                        size="sm"
+                        label="Print Paper"
+                        title="Print official question paper with Infinite Tutorial header & footer"
+                      />
 
                       <button
                         onClick={() => handleOpenEditWizard(test)}
@@ -736,7 +737,8 @@ export const TestManagementPage: React.FC = () => {
                         }}
                         variant="academic"
                         size="sm"
-                        label="Print Ledger"
+                        label="Print Marks Ledger"
+                        title="Print official evaluated student marks and cohort summary ledger"
                       />
                     </div>
                   </div>
@@ -1093,16 +1095,40 @@ export const TestManagementPage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        onClick={() =>
-                          setViewingPaper({
-                            url: uploadedPaperUrl,
-                            name: uploadedPaperName || 'Test Paper',
+                        onClick={() => {
+                          const currentClass = classes.find((c) => c.id === wizardClassId);
+                          const currentBoard = boards.find((b) => b.id === wizardBoardId);
+                          const currentSubject = subjects.find((s) => s.id === wizardSubjectId);
+
+                          setPreviewingTestPaper({
+                            id: editingTestId || 'new-test',
+                            testId: 'TST-PREVIEW',
+                            name: wizardTestName || 'Official Examination Question Paper',
+                            subjectId: wizardSubjectId,
+                            subjectName: currentSubject?.name || 'Physics',
+                            classId: wizardClassId,
+                            className: currentClass?.name || 'Class 10',
+                            boardId: wizardBoardId,
+                            boardName: currentBoard?.name || 'CBSE',
+                            chapter: wizardChapter || 'Chapter 1',
+                            testType: wizardTestType || 'Unit Test',
+                            date: wizardDate || new Date().toISOString().split('T')[0],
+                            maxMarks: Number(wizardMaxMarks) || 50,
+                            duration: wizardDuration || '90 mins',
+                            durationMinutes: 90,
+                            instructions: wizardInstructions || '',
+                            testPaperUrl: uploadedPaperUrl,
+                            testPaperName: uploadedPaperName || 'Question_Paper.pdf',
                             mimeType: uploadedMimeType,
-                          })
-                        }
-                        className="px-2 py-1 text-xs font-semibold text-[#155EEF] hover:text-[#0B1F4D] bg-[#EEF4FF] rounded-md"
+                            createdById: user?.id || 'admin-001',
+                            createdByName: user?.name || 'Academic Administrator',
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString(),
+                          });
+                        }}
+                        className="px-2.5 py-1 text-xs font-bold text-[#1048B5] hover:text-[#0B1F4D] bg-[#EEF4FF] border border-[#DCE5F2] rounded-md transition-colors"
                       >
-                        Preview
+                        Preview Paper
                       </button>
                       <button
                         type="button"
@@ -1171,55 +1197,21 @@ export const TestManagementPage: React.FC = () => {
       )}
 
       {/* ======================================================================= */}
-      {/* EMBEDDED TEST PAPER VIEWER MODAL                                        */}
+      {/* OFFICIAL QUESTION PAPER PREVIEW MODAL (Universal Document Template)     */}
       {/* ======================================================================= */}
-      {viewingPaper && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <FileText className="w-5 h-5 text-[#00B8F8]" />
-                <div>
-                  <h4 className="font-bold text-sm truncate max-w-md">{viewingPaper.name}</h4>
-                  <p className="text-[10px] text-slate-400">Secure Question Paper Preview</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={viewingPaper.url}
-                  download={viewingPaper.name}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-[#155EEF] hover:bg-[#1048B5] text-white text-xs font-bold flex items-center gap-1.5"
-                >
-                  <Download className="w-3.5 h-3.5" /> Download
-                </a>
-                <button
-                  onClick={() => setViewingPaper(null)}
-                  className="p-1.5 text-slate-400 hover:text-white rounded-lg"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex-1 bg-slate-100 flex items-center justify-center p-4 overflow-auto">
-              {viewingPaper.url.toLowerCase().endsWith('.pdf') ? (
-                <iframe
-                  src={viewingPaper.url}
-                  title={viewingPaper.name}
-                  className="w-full h-full rounded-xl bg-white border border-slate-200 shadow-xs"
-                />
-              ) : (
-                <img
-                  src={viewingPaper.url}
-                  alt={viewingPaper.name}
-                  className="max-w-full max-h-full object-contain rounded-xl shadow-md border border-slate-200"
-                />
-              )}
-            </div>
-          </div>
-        </div>
+      {previewingTestPaper && (
+        <PrintPreviewModal
+          isOpen={!!previewingTestPaper}
+          onClose={() => setPreviewingTestPaper(null)}
+          title={`Question Paper — ${previewingTestPaper.name}`}
+          documentTitle={`Infinite_Tutorial_Question_Paper_${previewingTestPaper.testId || previewingTestPaper.name}`}
+          defaultOrientation="portrait"
+        >
+          <TestQuestionPaperDocument
+            test={previewingTestPaper}
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
       )}
 
       {/* ======================================================================= */}
