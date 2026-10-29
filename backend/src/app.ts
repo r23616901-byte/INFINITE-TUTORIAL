@@ -39,6 +39,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
+// Fallback streamer for test-paper files (prevents 404 JSON inside iframes)
+import { streamTestPaperFileHandler } from './controllers/testController';
+app.get(['/uploads/test-papers/:filename', '/api/uploads/test-papers/:filename'], streamTestPaperFileHandler);
+
 // API Routes
 app.use('/api', routes);
 
