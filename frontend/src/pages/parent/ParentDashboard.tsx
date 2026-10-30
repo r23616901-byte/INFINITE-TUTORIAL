@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Card } from '../../components/common/Card';
@@ -394,92 +395,95 @@ export const ParentDashboard: React.FC = () => {
         sectionTitle="Parent Quick Access"
         sectionSubtitle="Quick access to your child's academic information"
         categories={parentCategories}
+        defaultCompact={true}
       />
 
       {/* Password Change Dialog Modal */}
-      {showPasswordModal && (
-        <div className="fixed inset-0 z-50 bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-md w-full p-6 space-y-4 shadow-xl">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center border border-[#DCE5F2]">
-                <KeyRound className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-bold text-[#0B1F4D] text-base">Update Password</h3>
-                <p className="text-xs text-[#5B6B82]">Set a custom permanent password for your parent account.</p>
-              </div>
-            </div>
-
-            {passwordError && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 font-medium">
-                {passwordError}
-              </div>
-            )}
-
-            {passwordSuccess && (
-              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-700 font-medium">
-                {passwordSuccess}
-              </div>
-            )}
-
-            <form onSubmit={handlePasswordChange} className="space-y-3.5 text-left">
-              <div>
-                <Input
-                  label="Current Password"
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="e.g. 260906"
-                  required
-                />
+      {showPasswordModal &&
+        createPortal(
+          <div className="fixed inset-0 z-[999999] bg-[#071633]/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl border border-[#DCE5F2] max-w-md w-full p-6 space-y-4 shadow-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] text-[#155EEF] flex items-center justify-center border border-[#DCE5F2]">
+                  <KeyRound className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#0B1F4D] text-base">Update Password</h3>
+                  <p className="text-xs text-[#5B6B82]">Set a custom permanent password for your parent account.</p>
+                </div>
               </div>
 
-              <div>
-                <Input
-                  label="New Password"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Minimum 6 characters"
-                  required
-                />
-              </div>
+              {passwordError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 font-medium">
+                  {passwordError}
+                </div>
+              )}
 
-              <div>
-                <Input
-                  label="Confirm New Password"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Re-enter new password"
-                  required
-                />
-              </div>
+              {passwordSuccess && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-700 font-medium">
+                  {passwordSuccess}
+                </div>
+              )}
 
-              <div className="flex items-center justify-end gap-2 pt-2">
-                {!user?.mustChangePassword && (
+              <form onSubmit={handlePasswordChange} className="space-y-3.5 text-left">
+                <div>
+                  <Input
+                    label="Current Password"
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="e.g. 260906"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Input
+                    label="New Password"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Minimum 6 characters"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Input
+                    label="Confirm New Password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter new password"
+                    required
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  {!user?.mustChangePassword && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowPasswordModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                  )}
                   <Button
-                    type="button"
-                    variant="ghost"
+                    type="submit"
+                    variant="primary"
                     size="sm"
-                    onClick={() => setShowPasswordModal(false)}
+                    isLoading={isSubmitting}
                   >
-                    Cancel
+                    Save New Password
                   </Button>
-                )}
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="sm"
-                  isLoading={isSubmitting}
-                >
-                  Save New Password
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                </div>
+              </form>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };
