@@ -183,17 +183,26 @@
     page: landscape-sheet;
   }
 
-  /* Page Break Controls */
+  /* Page Break Controls - Specific elements that should never be split mid-box */
   .print-break-inside-avoid,
   .break-inside-avoid,
   .print-header,
   .print-footer,
   .print-card,
-  [class*="border-slate-300"],
-  [class*="rounded-2xl"],
-  [class*="rounded-xl"] {
+  .question-item,
+  .question-card,
+  .signature-block,
+  .metric-kpi-card {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
+  }
+
+  /* Section containers & document wrappers must flow continuously across pages */
+  .doc-section-card,
+  .universal-print-document > div,
+  .universal-print-document > section {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
   }
 
   .print-page-break-before {

@@ -104,15 +104,20 @@
     border: none !important;
   }
 
-  /* Break avoidance to prevent clipped questions and split tables */
+  /* Break avoidance for indivisible elements: single questions, signatures, KPI cards, table rows */
   .question-card,
-  .doc-section-card,
-  .avoid-break,
-  .metric-kpi-card,
+  .question-item,
   .signature-block,
+  .metric-kpi-card,
   tr {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
+  }
+
+  /* Document section cards must flow continuously across pages without skipping empty space */
+  .doc-section-card {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
   }
 
   .doc-section-heading {

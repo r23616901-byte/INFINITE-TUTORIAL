@@ -174,7 +174,7 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
       </section>
 
       {/* 3. Official Examination Question Content */}
-      <section className="doc-section-card border border-slate-300 rounded-lg overflow-hidden bg-white shadow-2xs">
+      <section className="doc-section-card border border-slate-300 rounded-lg bg-white shadow-2xs">
         {/* Section Header with View Mode Switcher */}
         <div className="bg-[#F0FDF4] border-b border-[#166534]/30 px-3 sm:px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2.5 doc-section-heading">
           <div className="flex items-center gap-2 min-w-0">
@@ -306,8 +306,8 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
               </div>
 
               {matchingCurriculumPaper.sections.map((section, sIdx) => (
-                <div key={sIdx} className="border border-slate-200 rounded-lg overflow-hidden avoid-break">
-                  <div className="bg-slate-100 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between">
+                <div key={sIdx} className="border border-slate-200 rounded-lg bg-white">
+                  <div className="bg-slate-100 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between doc-section-heading">
                     <div>
                       <span className="font-black text-xs text-slate-800">{section.sectionName}</span>
                       {section.instructions && (
@@ -320,7 +320,7 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
                   </div>
                   <div className="p-3 space-y-3 divide-y divide-slate-100">
                     {section.questions.map((q) => (
-                      <div key={q.questionNumber} className="pt-2.5 first:pt-0 space-y-1.5 avoid-break">
+                      <div key={q.questionNumber} className="pt-2.5 first:pt-0 space-y-1.5 avoid-break question-item">
                         <div className="flex items-start justify-between gap-3 text-xs">
                           <div className="flex-1 leading-relaxed">
                             <span className="font-black text-[#0A3622] mr-2">Q{q.questionNumber}.</span>

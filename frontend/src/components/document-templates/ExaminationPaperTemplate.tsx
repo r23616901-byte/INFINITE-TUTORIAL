@@ -133,7 +133,7 @@ export const ExaminationPaperTemplate: React.FC<ExaminationPaperTemplateProps> =
           return (
             <section
               key={sIdx}
-              className="doc-section-card border border-slate-300 rounded-lg overflow-hidden bg-white shadow-2xs"
+              className="doc-section-card border border-slate-300 rounded-lg bg-white shadow-2xs"
             >
               {/* Section Header */}
               <div className="bg-[#F0FDF4] border-b border-[#166534]/30 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 doc-section-heading">
@@ -161,7 +161,7 @@ export const ExaminationPaperTemplate: React.FC<ExaminationPaperTemplateProps> =
                   return (
                     <div
                       key={q.questionNumber}
-                      className="question-card pt-3 first:pt-0 space-y-2"
+                      className="question-card question-item pt-3 first:pt-0 space-y-2 avoid-break"
                     >
                       {/* Question Number, Text and Marks */}
                       <div className="flex items-start justify-between gap-3">
