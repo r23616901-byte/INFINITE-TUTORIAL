@@ -21,7 +21,7 @@ export const PrintFooter: React.FC<PrintFooterProps> = ({
     <div className={`w-full mt-4 pt-3 border-t-2 border-slate-300 text-slate-800 select-none print-break-inside-avoid ${className}`}>
       {/* 1. Official Three-Signature Block */}
       {showSignatures && (
-        <div className="grid grid-cols-3 gap-6 pt-3 pb-2 text-center text-[9px]">
+        <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-3 pb-2 text-center text-[8px] sm:text-[9px]">
           <div className="border-t border-slate-400 pt-1">
             <p className="font-bold text-slate-900 uppercase">{facultySignatureLabel}</p>
             <p className="text-[8px] text-slate-500">Signature &amp; Date</p>

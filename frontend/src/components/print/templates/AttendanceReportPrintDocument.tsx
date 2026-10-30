@@ -47,30 +47,30 @@ export const AttendanceReportPrintDocument: React.FC<AttendanceReportPrintDocume
       customFooterNote="Official Attendance Record compiled from Infinite Tutorial biometric & classroom attendance registers. Authorized for secondary academic records."
     >
       {/* 1. Attendance Summary KPI Cards */}
-      <div className="grid grid-cols-4 gap-2.5">
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Attendance Rate</span>
-          <span className="text-xl font-black text-[#0A3622] mt-0.5 block">{attendancePct}%</span>
+          <span className="text-lg sm:text-xl font-black text-[#0A3622] mt-0.5 block">{attendancePct}%</span>
           <span className="text-[8.5px] font-semibold text-emerald-800">
             {attendancePct >= 75 ? 'Meets Board Criteria' : 'Requires Attention'}
           </span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Total Classes</span>
-          <span className="text-xl font-black text-slate-900 mt-0.5 block">{totalClasses}</span>
+          <span className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 block">{totalClasses}</span>
           <span className="text-[8.5px] text-slate-600">Conducted Sessions</span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Classes Attended</span>
-          <span className="text-xl font-black text-emerald-800 mt-0.5 block">{presentCount}</span>
+          <span className="text-lg sm:text-xl font-black text-emerald-800 mt-0.5 block">{presentCount}</span>
           <span className="text-[8.5px] font-semibold text-emerald-700">Present Sessions</span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Sessions Absent</span>
-          <span className="text-xl font-black text-rose-800 mt-0.5 block">{absentCount}</span>
+          <span className="text-lg sm:text-xl font-black text-rose-800 mt-0.5 block">{absentCount}</span>
           <span className="text-[8.5px] text-slate-600">Unattended / Leave</span>
         </div>
       </div>
@@ -86,7 +86,8 @@ export const AttendanceReportPrintDocument: React.FC<AttendanceReportPrintDocume
           </span>
         </div>
 
-        <table className="w-full text-left text-xs border border-slate-300">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs border border-slate-300">
           <thead>
             <tr>
               <th className="py-2 px-2 text-center w-10">S.No</th>
@@ -148,6 +149,7 @@ export const AttendanceReportPrintDocument: React.FC<AttendanceReportPrintDocume
             </tr>
           </tfoot>
         </table>
+        </div>
       </div>
     </PrintLayout>
   );

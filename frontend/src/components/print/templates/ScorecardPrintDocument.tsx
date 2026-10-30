@@ -88,34 +88,34 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
       customFooterNote="Official Certified Academic Scorecard issued by Infinite Tutorial Academic Directorate. Certified Teacher and Parent evaluated record."
     >
       {/* Student Identity Brief Header */}
-      <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-300 rounded-xl mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-slate-200 border border-slate-300 flex items-center justify-center font-black text-lg text-slate-700 flex-shrink-0 overflow-hidden">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 border border-slate-300 rounded-xl mb-4 gap-2.5">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-slate-200 border border-slate-300 flex items-center justify-center font-black text-base sm:text-lg text-slate-700 flex-shrink-0 overflow-hidden">
             {scorecard.photoUrl ? (
               <img src={scorecard.photoUrl} alt={scorecard.studentName} className="w-full h-full object-cover" />
             ) : (
               <span>{scorecard.studentName.charAt(0)}</span>
             )}
           </div>
-          <div>
-            <div className="flex items-center gap-2">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-sm font-black text-[#0A3622]">{scorecard.studentName}</h3>
               <span className="text-[9.5px] font-mono font-bold px-2 py-0.5 rounded bg-white border border-slate-300 text-slate-800">
                 {scorecard.studentRoll}
               </span>
             </div>
-            <p className="text-[11px] text-slate-600 font-semibold mt-0.5">
+            <p className="text-[10px] sm:text-[11px] text-slate-600 font-semibold mt-0.5">
               Class: <strong>{scorecard.className}</strong> &bull; Board: <strong>{scorecard.boardName}</strong> &bull; Batch: <strong>{scorecard.batchName}</strong>
             </p>
           </div>
         </div>
 
-        <div className="text-right">
+        <div className="text-left sm:text-right shrink-0">
           <span className="text-[9px] uppercase font-bold text-slate-500 block">
             {isSubjectFiltered && targetSubject ? `${targetSubject.subjectName} Overall` : 'Cumulative Score'}
           </span>
-          <div className="flex items-baseline gap-1 mt-0.5 justify-end">
-            <span className="text-xl font-black text-[#0A3622]">{overallPercentage}%</span>
+          <div className="flex items-baseline gap-1 mt-0.5 justify-start sm:justify-end">
+            <span className="text-lg sm:text-xl font-black text-[#0A3622]">{overallPercentage}%</span>
             <span className="text-[10px] text-slate-500 font-bold">
               ({totalObtainedMarks}/{totalMaxMarks})
             </span>
@@ -132,36 +132,36 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
             className="bg-white rounded-2xl border border-slate-300 shadow-xs overflow-hidden mb-5 break-inside-avoid"
           >
             {/* Subject Section Header & Stats (Exact layout from user screenshot) */}
-            <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="flex items-center space-x-3.5">
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl border shadow-xs flex-shrink-0 ${iconMeta.bg}`}>
+            <div className="p-3 sm:p-5 bg-gradient-to-r from-slate-50 via-white to-slate-50 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div className="flex items-center space-x-3 min-w-0">
+                <div className={`w-9 sm:w-11 h-9 sm:h-11 rounded-xl flex items-center justify-center text-xl sm:text-2xl border shadow-xs flex-shrink-0 ${iconMeta.bg}`}>
                   <span>{iconMeta.icon}</span>
                 </div>
-                <div>
-                  <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm sm:text-lg font-black text-slate-900 tracking-tight">
                     {subScorecard.subjectName} Test Evaluation Ledger
                   </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
                     Syllabus portion tests, certified evaluations, and faculty notes.
                   </p>
                 </div>
               </div>
 
-              {/* Subject KPIs (Exact 4 pill badges from screenshot) */}
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[55px] shadow-xs">
+              {/* Subject KPIs */}
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
+                <div className="bg-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[55px] shadow-xs">
                   <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">TESTS</span>
                   <span className="text-xs font-black text-slate-900">{subScorecard.totalTests}</span>
                 </div>
-                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[65px] shadow-xs">
+                <div className="bg-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[65px] shadow-xs">
                   <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">AVERAGE</span>
                   <span className="text-xs font-black text-blue-700">{subScorecard.averagePercentage}%</span>
                 </div>
-                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[65px] shadow-xs">
+                <div className="bg-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[65px] shadow-xs">
                   <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">HIGHEST</span>
                   <span className="text-xs font-black text-emerald-700">{subScorecard.highestPercentage}%</span>
                 </div>
-                <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[90px] shadow-xs">
+                <div className="bg-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 text-center min-w-[80px] shadow-xs">
                   <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">MARKS TOTAL</span>
                   <span className="text-xs font-black text-slate-900">
                     {subScorecard.totalMarksObtained} / {subScorecard.totalMaxMarks}

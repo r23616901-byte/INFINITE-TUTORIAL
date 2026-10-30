@@ -84,21 +84,21 @@ export const PrintHeader: React.FC<PrintHeaderProps> = ({
   return (
     <div className={`w-full text-slate-900 select-none border-b-2 border-[#0A3622] pb-3 ${className}`}>
       {/* 1. Main Institutional Header / Letterhead with Dark Academic Green Branding */}
-      <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-slate-200">
-        <div className="flex items-center gap-3.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 pb-2.5 border-b border-slate-200 print:flex-row print:items-center print:justify-between">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           <img
             src="/logo-transparent.png"
             alt="Infinite Tutorial"
-            className="h-13 w-auto object-contain flex-shrink-0"
+            className="h-11 sm:h-13 w-auto object-contain flex-shrink-0"
             onError={(e) => {
               (e.target as HTMLImageElement).src = '/logo-clean.png';
             }}
           />
-          <div>
-            <h1 className="text-xl font-black text-[#0A3622] tracking-tight uppercase leading-none">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-base sm:text-xl font-black text-[#0A3622] tracking-tight uppercase leading-tight">
               INFINITE TUTORIAL
             </h1>
-            <p className="text-[10.5px] font-bold text-[#14532D] tracking-wide mt-0.5 uppercase">
+            <p className="text-[10px] sm:text-[10.5px] font-bold text-[#14532D] tracking-wide mt-0.5 uppercase">
               Centre for Academic Excellence &amp; Secondary Board Coaching
             </p>
             <p className="text-[9px] text-slate-600 mt-0.5">
@@ -107,14 +107,14 @@ export const PrintHeader: React.FC<PrintHeaderProps> = ({
           </div>
         </div>
 
-        <div className="text-right flex flex-col items-end flex-shrink-0">
-          <span className="inline-block px-2.5 py-0.5 bg-[#F0FDF4] border border-[#86EFAC] rounded text-[9.5px] font-extrabold uppercase tracking-wider text-[#0A3622]">
+        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-1.5 sm:gap-0.5 shrink-0 w-full sm:w-auto pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-100 print:flex-col print:items-end print:w-auto print:border-t-0 print:pt-0">
+          <span className="inline-block px-2 sm:px-2.5 py-0.5 bg-[#F0FDF4] border border-[#86EFAC] rounded text-[9px] sm:text-[9.5px] font-extrabold uppercase tracking-wider text-[#0A3622] whitespace-nowrap">
             {reportCategory}
           </span>
-          <p className="text-[9.5px] font-bold text-slate-700 mt-0.5">
+          <p className="text-[9px] sm:text-[9.5px] font-bold text-slate-700 mt-0.5 whitespace-nowrap">
             Academic Session: {academicYear}
           </p>
-          <p className="text-[8.5px] text-slate-500 font-mono">
+          <p className="text-[8.5px] text-slate-500 font-mono whitespace-nowrap">
             Printed: {printDateStr}
           </p>
         </div>

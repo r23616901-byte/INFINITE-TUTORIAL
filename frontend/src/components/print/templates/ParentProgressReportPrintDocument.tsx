@@ -52,32 +52,32 @@ export const ParentProgressReportPrintDocument: React.FC<ParentProgressReportPri
       customFooterNote="Official Parent Progress Report issued by Infinite Tutorial Directorate. Strictly confidential academic record for authorized parents."
     >
       {/* 1. Executive Summary KPI Dashboard */}
-      <div className="grid grid-cols-4 gap-2.5">
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Academic Aggregate</span>
-          <span className="text-xl font-black text-[#0A3622] mt-0.5 block">{overallPercentage}%</span>
+          <span className="text-lg sm:text-xl font-black text-[#0A3622] mt-0.5 block">{overallPercentage}%</span>
           <span className="text-[8.5px] font-bold text-emerald-800">
             Grade {overallGrade.grade} ({overallGrade.label})
           </span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Class Attendance</span>
-          <span className="text-xl font-black text-[#0A3622] mt-0.5 block">{attendancePct}%</span>
+          <span className="text-lg sm:text-xl font-black text-[#0A3622] mt-0.5 block">{attendancePct}%</span>
           <span className="text-[8.5px] font-semibold text-emerald-800">
             {attendanceStats ? `${attendanceStats.presentSessions} of ${attendanceStats.totalSessions} Sessions` : 'Excellent Attendance'}
           </span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Curriculum Covered</span>
-          <span className="text-xl font-black text-slate-900 mt-0.5 block">{portionCompletionPct}%</span>
+          <span className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 block">{portionCompletionPct}%</span>
           <span className="text-[8.5px] font-semibold text-slate-600">On Track with Milestones</span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Exam Readiness</span>
-          <span className="text-xl font-black text-emerald-800 mt-0.5 block">High</span>
+          <span className="text-lg sm:text-xl font-black text-emerald-800 mt-0.5 block">High</span>
           <span className="text-[8.5px] font-bold text-emerald-700">Verified Board Coaching</span>
         </div>
       </div>
@@ -94,55 +94,57 @@ export const ParentProgressReportPrintDocument: React.FC<ParentProgressReportPri
             </span>
           </div>
 
-          <table className="w-full text-left text-xs border border-slate-300">
-            <thead>
-              <tr>
-                <th className="py-2 px-3">Subject Name</th>
-                <th className="py-2 px-3 text-center">Conducted Tests</th>
-                <th className="py-2 px-3 text-center">Max Marks</th>
-                <th className="py-2 px-3 text-center">Marks Obtained</th>
-                <th className="py-2 px-3 text-center">Subject Average</th>
-                <th className="py-2 px-3 text-center">Grade</th>
-                <th className="py-2 px-3 text-center">Assessment</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-              {scorecard.subjectList.map((sub) => {
-                const grade = getAcademicGrade(sub.averagePercentage);
-                return (
-                  <tr key={sub.subjectName} className="hover:bg-slate-50/50">
-                    <td className="py-1.5 px-3 font-bold text-slate-900">{sub.subjectName}</td>
-                    <td className="py-1.5 px-3 text-center text-slate-700">{sub.totalTests}</td>
-                    <td className="py-1.5 px-3 text-center text-slate-700">{sub.totalMaxMarks}</td>
-                    <td className="py-1.5 px-3 text-center font-bold text-slate-900">{sub.totalMarksObtained}</td>
-                    <td className="py-1.5 px-3 text-center font-bold text-[#0A3622]">{sub.averagePercentage}%</td>
-                    <td className="py-1.5 px-3 text-center font-bold">{grade.grade}</td>
-                    <td className="py-1.5 px-3 text-center text-[10px] font-semibold text-slate-700">
-                      {grade.label}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-            <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300">
-              <tr>
-                <td className="py-2 px-3 uppercase text-[#0A3622]">Cumulative Total</td>
-                <td className="py-2 px-3 text-center">
-                  {scorecard.subjectList.reduce((acc, s) => acc + s.totalTests, 0)}
-                </td>
-                <td className="py-2 px-3 text-center">{totalMaxMarks}</td>
-                <td className="py-2 px-3 text-center font-black text-[#0A3622]">{totalObtainedMarks}</td>
-                <td className="py-2 px-3 text-center font-black text-[#0A3622]">{overallPercentage}%</td>
-                <td className="py-2 px-3 text-center font-black">{overallGrade.grade}</td>
-                <td className="py-2 px-3 text-center text-emerald-900 font-bold">{overallGrade.label}</td>
-              </tr>
-            </tfoot>
-          </table>
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left text-xs border border-slate-300">
+              <thead>
+                <tr>
+                  <th className="py-2 px-3 whitespace-nowrap">Subject Name</th>
+                  <th className="py-2 px-3 text-center whitespace-nowrap">Conducted Tests</th>
+                  <th className="py-2 px-3 text-center whitespace-nowrap">Max Marks</th>
+                  <th className="py-2 px-3 text-center whitespace-nowrap">Marks Obtained</th>
+                  <th className="py-2 px-3 text-center whitespace-nowrap">Subject Average</th>
+                  <th className="py-2 px-3 text-center whitespace-nowrap">Grade</th>
+                  <th className="py-2 px-3 text-center whitespace-nowrap">Assessment</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {scorecard.subjectList.map((sub) => {
+                  const grade = getAcademicGrade(sub.averagePercentage);
+                  return (
+                    <tr key={sub.subjectName} className="hover:bg-slate-50/50">
+                      <td className="py-1.5 px-3 font-bold text-slate-900 whitespace-nowrap">{sub.subjectName}</td>
+                      <td className="py-1.5 px-3 text-center text-slate-700">{sub.totalTests}</td>
+                      <td className="py-1.5 px-3 text-center text-slate-700">{sub.totalMaxMarks}</td>
+                      <td className="py-1.5 px-3 text-center font-bold text-slate-900">{sub.totalMarksObtained}</td>
+                      <td className="py-1.5 px-3 text-center font-bold text-[#0A3622]">{sub.averagePercentage}%</td>
+                      <td className="py-1.5 px-3 text-center font-bold">{grade.grade}</td>
+                      <td className="py-1.5 px-3 text-center text-[10px] font-semibold text-slate-700 whitespace-nowrap">
+                        {grade.label}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300">
+                <tr>
+                  <td className="py-2 px-3 uppercase text-[#0A3622] whitespace-nowrap">Cumulative Total</td>
+                  <td className="py-2 px-3 text-center">
+                    {scorecard.subjectList.reduce((acc, s) => acc + s.totalTests, 0)}
+                  </td>
+                  <td className="py-2 px-3 text-center">{totalMaxMarks}</td>
+                  <td className="py-2 px-3 text-center font-black text-[#0A3622]">{totalObtainedMarks}</td>
+                  <td className="py-2 px-3 text-center font-black text-[#0A3622]">{overallPercentage}%</td>
+                  <td className="py-2 px-3 text-center font-black">{overallGrade.grade}</td>
+                  <td className="py-2 px-3 text-center text-emerald-900 font-bold whitespace-nowrap">{overallGrade.label}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </div>
       )}
 
       {/* 3. Portion Completion & Attendance Summary in Parallel */}
-      <div className="grid grid-cols-2 gap-4 print-break-inside-avoid">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 print-break-inside-avoid">
         {/* Attendance Details */}
         <div className="p-3 bg-white border border-slate-300 rounded-lg space-y-1.5">
           <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide border-b border-slate-200 pb-1">

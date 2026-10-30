@@ -61,7 +61,7 @@ export const TestResultPrintDocument: React.FC<TestResultPrintDocumentProps> = (
       customFooterNote="Official Examination Record issued by Infinite Tutorial Examination Directorate. Verified teacher marks ledger."
     >
       {/* 1. Test Details & Statistics KPI Header */}
-      <div className="grid grid-cols-4 gap-2.5">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Class Average Score</span>
           <span className="text-xl font-black text-[#0A3622] mt-0.5 block">{averageMarks} / {test.maxMarks}</span>
@@ -93,7 +93,7 @@ export const TestResultPrintDocument: React.FC<TestResultPrintDocumentProps> = (
 
       {/* 2. Student Marks Table */}
       <div>
-        <div className="flex items-center justify-between mb-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
           <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide">
             Student Marks Assessment Roster &bull; {test.name}
           </h4>
@@ -102,68 +102,70 @@ export const TestResultPrintDocument: React.FC<TestResultPrintDocumentProps> = (
           </span>
         </div>
 
-        <table className="w-full text-left text-xs border border-slate-300">
-          <thead>
-            <tr>
-              <th className="py-2 px-2 text-center w-10">S.No</th>
-              <th className="py-2 px-3">Student Full Name</th>
-              <th className="py-2 px-2.5 text-center">Student Roll</th>
-              <th className="py-2 px-2.5 text-center">Max Marks</th>
-              <th className="py-2 px-2.5 text-center">Obtained</th>
-              <th className="py-2 px-2.5 text-center">Percentage</th>
-              <th className="py-2 px-2.5 text-center">Grade</th>
-              <th className="py-2 px-3">Faculty Remarks</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-200">
-            {marksList.length > 0 ? (
-              marksList.map((m, idx) => {
-                const pct = m.percentage || (test.maxMarks > 0 ? (m.marksObtained / test.maxMarks) * 100 : 0);
-                const grade = getAcademicGrade(pct);
-                return (
-                  <tr key={m.id || idx} className="hover:bg-slate-50/50">
-                    <td className="py-1.5 px-2 text-center font-mono text-slate-500">{idx + 1}</td>
-                    <td className="py-1.5 px-3 font-bold text-slate-900">{m.studentName}</td>
-                    <td className="py-1.5 px-2.5 text-center font-mono text-xs font-semibold text-[#0A3622]">
-                      {m.studentRoll}
-                    </td>
-                    <td className="py-1.5 px-2.5 text-center text-slate-600">{m.maxMarks || test.maxMarks}</td>
-                    <td className="py-1.5 px-2.5 text-center font-bold text-slate-900">{m.marksObtained}</td>
-                    <td className="py-1.5 px-2.5 text-center font-bold text-[#0A3622]">
-                      {Number(pct.toFixed(1))}%
-                    </td>
-                    <td className="py-1.5 px-2.5 text-center">
-                      <span className="px-2 py-0.5 rounded text-[9.5px] font-bold bg-slate-100 border border-slate-300">
-                        {grade.grade}
-                      </span>
-                    </td>
-                    <td className="py-1.5 px-3 text-slate-700 italic text-[10.5px]">
-                      {m.remarks || 'Standard evaluation recorded'}
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left text-xs border border-slate-300 min-w-[650px]">
+            <thead>
               <tr>
-                <td colSpan={8} className="py-4 text-center text-slate-500 italic">
-                  No evaluated student marks recorded yet for this test.
+                <th className="py-2 px-2 text-center w-10">S.No</th>
+                <th className="py-2 px-3">Student Full Name</th>
+                <th className="py-2 px-2.5 text-center">Student Roll</th>
+                <th className="py-2 px-2.5 text-center">Max Marks</th>
+                <th className="py-2 px-2.5 text-center">Obtained</th>
+                <th className="py-2 px-2.5 text-center">Percentage</th>
+                <th className="py-2 px-2.5 text-center">Grade</th>
+                <th className="py-2 px-3">Faculty Remarks</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {marksList.length > 0 ? (
+                marksList.map((m, idx) => {
+                  const pct = m.percentage || (test.maxMarks > 0 ? (m.marksObtained / test.maxMarks) * 100 : 0);
+                  const grade = getAcademicGrade(pct);
+                  return (
+                    <tr key={m.id || idx} className="hover:bg-slate-50/50">
+                      <td className="py-1.5 px-2 text-center font-mono text-slate-500">{idx + 1}</td>
+                      <td className="py-1.5 px-3 font-bold text-slate-900">{m.studentName}</td>
+                      <td className="py-1.5 px-2.5 text-center font-mono text-xs font-semibold text-[#0A3622]">
+                        {m.studentRoll}
+                      </td>
+                      <td className="py-1.5 px-2.5 text-center text-slate-600">{m.maxMarks || test.maxMarks}</td>
+                      <td className="py-1.5 px-2.5 text-center font-bold text-slate-900">{m.marksObtained}</td>
+                      <td className="py-1.5 px-2.5 text-center font-bold text-[#0A3622]">
+                        {Number(pct.toFixed(1))}%
+                      </td>
+                      <td className="py-1.5 px-2.5 text-center">
+                        <span className="px-2 py-0.5 rounded text-[9.5px] font-bold bg-slate-100 border border-slate-300">
+                          {grade.grade}
+                        </span>
+                      </td>
+                      <td className="py-1.5 px-3 text-slate-700 italic text-[10.5px]">
+                        {m.remarks || 'Standard evaluation recorded'}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={8} className="py-4 text-center text-slate-500 italic">
+                    No evaluated student marks recorded yet for this test.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+            <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300">
+              <tr>
+                <td colSpan={4} className="py-2 px-3 uppercase text-right text-[#0A3622]">
+                  Cohort Benchmark Average:
+                </td>
+                <td className="py-2 px-2.5 text-center font-black text-[#0A3622]">{averageMarks}</td>
+                <td className="py-2 px-2.5 text-center font-black text-[#0A3622]">{averagePercentage}%</td>
+                <td colSpan={2} className="py-2 px-3 text-slate-700 text-[10px]">
+                  {passCount} Passed / {totalEvaluated} Total Students Evaluated
                 </td>
               </tr>
-            )}
-          </tbody>
-          <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300">
-            <tr>
-              <td colSpan={4} className="py-2 px-3 uppercase text-right text-[#0A3622]">
-                Cohort Benchmark Average:
-              </td>
-              <td className="py-2 px-2.5 text-center font-black text-[#0A3622]">{averageMarks}</td>
-              <td className="py-2 px-2.5 text-center font-black text-[#0A3622]">{averagePercentage}%</td>
-              <td colSpan={2} className="py-2 px-3 text-slate-700 text-[10px]">
-                {passCount} Passed / {totalEvaluated} Total Students Evaluated
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+            </tfoot>
+          </table>
+        </div>
       </div>
     </PrintLayout>
   );

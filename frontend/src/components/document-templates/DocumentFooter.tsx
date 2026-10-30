@@ -18,14 +18,14 @@ export const DocumentFooter: React.FC<DocumentFooterProps> = ({
     <footer className={`official-doc-footer w-full pt-3 mt-4 border-t border-slate-300 text-slate-600 select-none ${className}`}>
       {/* 1. Official Signatures Block (when enabled) */}
       {showSignatures && (
-        <div className="signature-block my-3 pt-2 grid grid-cols-3 gap-6 text-center text-xs">
+        <div className="signature-block my-3 pt-2 grid grid-cols-3 gap-2 sm:gap-6 text-center text-xs">
           {signatureLabels.map((label, idx) => (
-            <div key={idx} className="flex flex-col items-center">
-              <div className="w-40 border-b border-dashed border-slate-400 mb-1.5 h-7" />
-              <span className="font-semibold text-slate-800 text-[10.5px] uppercase tracking-wider">
+            <div key={idx} className="flex flex-col items-center min-w-0">
+              <div className="w-full max-w-[110px] sm:max-w-[160px] border-b border-dashed border-slate-400 mb-1.5 h-6 sm:h-7" />
+              <span className="font-semibold text-slate-800 text-[9px] sm:text-[10.5px] uppercase tracking-wider truncate max-w-full block">
                 {label}
               </span>
-              <span className="text-[9px] text-slate-600 font-medium">Signature &amp; Date</span>
+              <span className="text-[8px] sm:text-[9px] text-slate-600 font-medium block">Signature &amp; Date</span>
             </div>
           ))}
         </div>

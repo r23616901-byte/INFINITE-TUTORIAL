@@ -36,24 +36,24 @@ export const TeacherReportPrintDocument: React.FC<TeacherReportPrintDocumentProp
     >
       {/* 1. Faculty Information Header Card */}
       <div className="p-4 bg-slate-50 border border-slate-300 rounded-lg">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
             <h3 className="text-lg font-black text-[#0A3622]">{teacher.name}</h3>
             <p className="text-xs font-semibold text-slate-600 mt-0.5">
               Faculty In-Charge &bull; Secondary Coaching Division
             </p>
           </div>
-          <div className="text-right flex flex-col items-end">
+          <div className="sm:text-right flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
             <span className="px-2.5 py-0.5 rounded bg-[#0A3622] text-white font-mono font-bold text-xs">
               ID: {teacher.id.slice(-6).toUpperCase()}
             </span>
-            <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300 mt-1">
+            <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
               Status: {teacher.status}
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-200 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-200 text-xs">
           <div>
             <span className="text-[9px] font-bold text-slate-500 uppercase block">Phone / Helpline:</span>
             <span className="font-mono font-bold text-slate-900">{teacher.phone}</span>
@@ -70,7 +70,7 @@ export const TeacherReportPrintDocument: React.FC<TeacherReportPrintDocumentProp
       </div>
 
       {/* 2. Department Allocations */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="p-3 bg-white border border-slate-300 rounded-lg">
           <span className="text-[10px] font-black uppercase text-[#0A3622] tracking-wider block mb-2">
             Assigned Subjects
@@ -110,28 +110,30 @@ export const TeacherReportPrintDocument: React.FC<TeacherReportPrintDocumentProp
           <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide mb-1.5">
             Weekly Instructional Schedule &amp; Timetable
           </h4>
-          <table className="w-full text-left text-xs border border-slate-300">
-            <thead>
-              <tr>
-                <th className="py-2 px-3">Day of Week</th>
-                <th className="py-2 px-3">Class Timing</th>
-                <th className="py-2 px-3">Batch</th>
-                <th className="py-2 px-3">Subject</th>
-                <th className="py-2 px-3">Classroom / Room</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-              {timetableEntries.map((slot, idx) => (
-                <tr key={idx} className="hover:bg-slate-50/50">
-                  <td className="py-2 px-3 font-bold text-slate-900">{slot.day}</td>
-                  <td className="py-2 px-3 font-mono text-slate-800">{slot.timing}</td>
-                  <td className="py-2 px-3 text-slate-900">{slot.batchName}</td>
-                  <td className="py-2 px-3 font-bold text-[#0A3622]">{slot.subject}</td>
-                  <td className="py-2 px-3 text-slate-600">{slot.room || 'Room 101'}</td>
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left text-xs border border-slate-300 min-w-[500px]">
+              <thead>
+                <tr>
+                  <th className="py-2 px-3">Day of Week</th>
+                  <th className="py-2 px-3">Class Timing</th>
+                  <th className="py-2 px-3">Batch</th>
+                  <th className="py-2 px-3">Subject</th>
+                  <th className="py-2 px-3">Classroom / Room</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                {timetableEntries.map((slot, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50/50">
+                    <td className="py-2 px-3 font-bold text-slate-900">{slot.day}</td>
+                    <td className="py-2 px-3 font-mono text-slate-800">{slot.timing}</td>
+                    <td className="py-2 px-3 text-slate-900">{slot.batchName}</td>
+                    <td className="py-2 px-3 font-bold text-[#0A3622]">{slot.subject}</td>
+                    <td className="py-2 px-3 text-slate-600">{slot.room || 'Room 101'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-600">

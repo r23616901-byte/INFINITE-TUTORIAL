@@ -62,30 +62,30 @@ export const PortionCompletionPrintDocument: React.FC<PortionCompletionPrintDocu
       customFooterNote="Official Syllabus and Portion Completion Record of Infinite Tutorial Academic ERP. Verified against secondary board curriculum guidelines."
     >
       {/* 1. Milestone Audit KPI Grid */}
-      <div className="grid grid-cols-4 gap-2.5">
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Overall Portion Progress</span>
-          <span className="text-xl font-black text-[#0A3622] mt-0.5 block">{overallPercentage}%</span>
+          <span className="text-lg sm:text-xl font-black text-[#0A3622] mt-0.5 block">{overallPercentage}%</span>
           <span className="text-[8.5px] font-semibold text-slate-600">
             {completedPortions} of {totalPortions} Portions
           </span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Completed Chapters</span>
-          <span className="text-xl font-black text-emerald-800 mt-0.5 block">{completedChapters}</span>
+          <span className="text-lg sm:text-xl font-black text-emerald-800 mt-0.5 block">{completedChapters}</span>
           <span className="text-[8.5px] font-semibold text-slate-600">Verified Finished</span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">In Progress</span>
-          <span className="text-xl font-black text-blue-800 mt-0.5 block">{inProgressChapters}</span>
+          <span className="text-lg sm:text-xl font-black text-blue-800 mt-0.5 block">{inProgressChapters}</span>
           <span className="text-[8.5px] font-semibold text-slate-600">Active in Classroom</span>
         </div>
 
-        <div className="p-3 bg-slate-50 border border-slate-300 rounded-lg">
+        <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-300 rounded-lg">
           <span className="text-[9px] font-bold uppercase text-slate-500 block">Upcoming / Scheduled</span>
-          <span className="text-xl font-black text-amber-800 mt-0.5 block">{scheduledChapters}</span>
+          <span className="text-lg sm:text-xl font-black text-amber-800 mt-0.5 block">{scheduledChapters}</span>
           <span className="text-[8.5px] font-semibold text-slate-600">Targeted for Term End</span>
         </div>
       </div>
@@ -107,19 +107,19 @@ export const PortionCompletionPrintDocument: React.FC<PortionCompletionPrintDocu
       </div>
 
       {/* 3. Detailed Syllabus Chapters Table */}
-      <div>
+      <div className="overflow-x-auto w-full">
         <table className="w-full text-left text-xs border border-slate-300">
           <thead>
             <tr>
-              <th className="py-2 px-2 text-center w-10">S.No</th>
-              <th className="py-2 px-3">Subject</th>
-              <th className="py-2 px-3">Chapter / Syllabus Unit</th>
-              <th className="py-2 px-2 text-center">Total Portions</th>
-              <th className="py-2 px-2 text-center">Completed</th>
-              <th className="py-2 px-2 text-center">Pending</th>
-              <th className="py-2 px-2 text-center">Progress %</th>
-              <th className="py-2 px-3 text-center">Status</th>
-              <th className="py-2 px-3 text-center">Target / Completed</th>
+              <th className="py-2 px-2 text-center w-10 whitespace-nowrap">S.No</th>
+              <th className="py-2 px-3 whitespace-nowrap">Subject</th>
+              <th className="py-2 px-3 whitespace-nowrap">Chapter / Syllabus Unit</th>
+              <th className="py-2 px-2 text-center whitespace-nowrap">Total Portions</th>
+              <th className="py-2 px-2 text-center whitespace-nowrap">Completed</th>
+              <th className="py-2 px-2 text-center whitespace-nowrap">Pending</th>
+              <th className="py-2 px-2 text-center whitespace-nowrap">Progress %</th>
+              <th className="py-2 px-3 text-center whitespace-nowrap">Status</th>
+              <th className="py-2 px-3 text-center whitespace-nowrap">Target / Completed</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
@@ -131,9 +131,9 @@ export const PortionCompletionPrintDocument: React.FC<PortionCompletionPrintDocu
 
               return (
                 <tr key={ch.id} className="hover:bg-slate-50/50">
-                  <td className="py-2 px-2 text-center font-mono text-slate-500">{idx + 1}</td>
-                  <td className="py-2 px-3 font-semibold text-slate-900">{ch.subject}</td>
-                  <td className="py-2 px-3">
+                  <td className="py-2 px-2 text-center font-mono text-slate-500 whitespace-nowrap">{idx + 1}</td>
+                  <td className="py-2 px-3 font-semibold text-slate-900 whitespace-nowrap">{ch.subject}</td>
+                  <td className="py-2 px-3 min-w-[160px]">
                     <span className="font-bold text-slate-900 block">
                       Ch {ch.chapterNumber}: {ch.title}
                     </span>
@@ -143,11 +143,11 @@ export const PortionCompletionPrintDocument: React.FC<PortionCompletionPrintDocu
                       </span>
                     )}
                   </td>
-                  <td className="py-2 px-2 text-center text-slate-700">{chTotal}</td>
-                  <td className="py-2 px-2 text-center font-bold text-emerald-800">{chDone}</td>
-                  <td className="py-2 px-2 text-center text-slate-600">{chPending}</td>
-                  <td className="py-2 px-2 text-center font-bold text-[#0A3622]">{chPct}%</td>
-                  <td className="py-2 px-3 text-center">
+                  <td className="py-2 px-2 text-center text-slate-700 whitespace-nowrap">{chTotal}</td>
+                  <td className="py-2 px-2 text-center font-bold text-emerald-800 whitespace-nowrap">{chDone}</td>
+                  <td className="py-2 px-2 text-center text-slate-600 whitespace-nowrap">{chPending}</td>
+                  <td className="py-2 px-2 text-center font-bold text-[#0A3622] whitespace-nowrap">{chPct}%</td>
+                  <td className="py-2 px-3 text-center whitespace-nowrap">
                     <span
                       className={`inline-block px-2 py-0.5 rounded text-[9.5px] font-bold border ${
                         ch.status === 'COMPLETED'
@@ -164,7 +164,7 @@ export const PortionCompletionPrintDocument: React.FC<PortionCompletionPrintDocu
                         : 'Scheduled'}
                     </span>
                   </td>
-                  <td className="py-2 px-3 text-center text-[10px] text-slate-600 font-mono">
+                  <td className="py-2 px-3 text-center text-[10px] text-slate-600 font-mono whitespace-nowrap">
                     {ch.completionDate || ch.targetDate || 'TBD'}
                   </td>
                 </tr>
@@ -173,14 +173,14 @@ export const PortionCompletionPrintDocument: React.FC<PortionCompletionPrintDocu
           </tbody>
           <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-300">
             <tr>
-              <td colSpan={3} className="py-2 px-3 text-right uppercase font-black text-[#0A3622]">
+              <td colSpan={3} className="py-2 px-3 text-right uppercase font-black text-[#0A3622] whitespace-nowrap">
                 Curriculum Totals:
               </td>
-              <td className="py-2 px-2 text-center font-black">{totalPortions}</td>
-              <td className="py-2 px-2 text-center font-black text-emerald-800">{completedPortions}</td>
-              <td className="py-2 px-2 text-center font-black">{pendingPortions}</td>
-              <td className="py-2 px-2 text-center font-black text-[#0A3622]">{overallPercentage}%</td>
-              <td colSpan={2} className="py-2 px-3 text-center text-[10px] text-slate-600">
+              <td className="py-2 px-2 text-center font-black whitespace-nowrap">{totalPortions}</td>
+              <td className="py-2 px-2 text-center font-black text-emerald-800 whitespace-nowrap">{completedPortions}</td>
+              <td className="py-2 px-2 text-center font-black whitespace-nowrap">{pendingPortions}</td>
+              <td className="py-2 px-2 text-center font-black text-[#0A3622] whitespace-nowrap">{overallPercentage}%</td>
+              <td colSpan={2} className="py-2 px-3 text-center text-[10px] text-slate-600 whitespace-nowrap">
                 {completedChapters} Finished / {totalChapters} Chapters
               </td>
             </tr>

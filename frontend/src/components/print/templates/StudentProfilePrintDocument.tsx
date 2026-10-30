@@ -30,7 +30,7 @@ export const StudentProfilePrintDocument: React.FC<StudentProfilePrintDocumentPr
       customFooterNote="Official Student Profile Record issued by Infinite Tutorial Directorate of Admissions. Any unauthorized modification renders this document void."
     >
       {/* 1. Profile Top Card */}
-      <div className="flex items-start gap-5 p-4 bg-slate-50 border border-slate-300 rounded-lg">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 p-4 bg-slate-50 border border-slate-300 rounded-lg">
         {/* Student Photograph */}
         <div className="w-24 h-28 rounded-lg overflow-hidden border-2 border-slate-300 bg-white flex items-center justify-center flex-shrink-0 shadow-2xs">
           {student.photoUrl ? (
@@ -46,23 +46,23 @@ export const StudentProfilePrintDocument: React.FC<StudentProfilePrintDocumentPr
         </div>
 
         {/* Identity Highlights */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between">
+        <div className="flex-1 min-w-0 w-full">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
             <div>
               <h3 className="text-lg font-black text-[#0A3622]">{student.name}</h3>
               <p className="text-xs font-bold text-slate-700 mt-0.5">{student.school}</p>
             </div>
-            <div className="text-right flex flex-col items-end">
+            <div className="sm:text-right flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-1">
               <span className="px-2.5 py-1 rounded bg-[#0A3622] text-white font-mono font-bold text-xs">
                 {student.studentId}
               </span>
-              <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300 mt-1">
+              <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
                 Status: {student.status}
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-200 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-200 text-xs">
             <div>
               <span className="text-[9px] font-bold text-slate-500 uppercase block">Class &amp; Board:</span>
               <span className="font-bold text-slate-900">{student.className} ({student.boardName})</span>
@@ -80,7 +80,7 @@ export const StudentProfilePrintDocument: React.FC<StudentProfilePrintDocumentPr
       </div>
 
       {/* 2. Structured Information Blocks */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Academic Details Section */}
         <div className="p-3.5 bg-white border border-slate-300 rounded-lg space-y-2">
           <h4 className="text-xs font-black text-[#0A3622] uppercase tracking-wide border-b border-slate-200 pb-1.5">

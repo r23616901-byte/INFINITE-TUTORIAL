@@ -82,30 +82,30 @@ export const ExaminationPaperTemplate: React.FC<ExaminationPaperTemplateProps> =
       customFooterNote={`${paper.boardName} Curriculum Benchmark Assessment &bull; Official Examination of Infinite Tutorial`}
     >
       {/* 1. Exam Metrics Summary Bar */}
-      <section className="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs flex flex-wrap items-center justify-between gap-3 avoid-break">
-        <div className="flex items-center gap-4 flex-wrap">
+      <section className="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs flex flex-wrap items-center justify-between gap-2.5 avoid-break">
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 sm:gap-4 flex-1">
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Allotted Time</span>
             <span className="font-bold text-slate-900">{paper.duration}</span>
           </div>
-          <div className="h-6 w-px bg-slate-300" />
+          <div className="hidden sm:block h-6 w-px bg-slate-300" />
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Maximum Marks</span>
             <span className="font-bold text-[#0A3622] text-sm">{paper.totalMarks} Marks</span>
           </div>
-          <div className="h-6 w-px bg-slate-300" />
+          <div className="hidden sm:block h-6 w-px bg-slate-300" />
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Subject Code</span>
             <span className="font-mono font-bold text-slate-800">{paper.subjectCode}</span>
           </div>
-          <div className="h-6 w-px bg-slate-300" />
+          <div className="hidden sm:block h-6 w-px bg-slate-300" />
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Class &amp; Board</span>
             <span className="font-bold text-slate-800">{paper.className} &bull; {paper.boardName}</span>
           </div>
         </div>
 
-        <div className="text-[11px] font-bold text-[#0A3622] bg-[#F0FDF4] px-2.5 py-1 rounded border border-[#166534]/30">
+        <div className="text-[10.5px] sm:text-[11px] font-bold text-[#0A3622] bg-[#F0FDF4] px-2.5 py-1 rounded border border-[#166534]/30 whitespace-nowrap shrink-0">
           {isTeacherVersion ? 'Teacher Evaluation Copy' : 'Official Examination Paper'}
         </div>
       </section>
@@ -136,7 +136,7 @@ export const ExaminationPaperTemplate: React.FC<ExaminationPaperTemplateProps> =
               className="doc-section-card border border-slate-300 rounded-lg overflow-hidden bg-white shadow-2xs"
             >
               {/* Section Header */}
-              <div className="bg-[#F0FDF4] border-b border-[#166534]/30 px-3.5 py-2.5 flex items-center justify-between doc-section-heading">
+              <div className="bg-[#F0FDF4] border-b border-[#166534]/30 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 doc-section-heading">
                 <div>
                   <h3 className="font-black text-xs text-[#0A3622] uppercase tracking-wide">
                     {section.sectionName}
@@ -147,7 +147,7 @@ export const ExaminationPaperTemplate: React.FC<ExaminationPaperTemplateProps> =
                     </p>
                   )}
                 </div>
-                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded bg-white border border-[#166534]/40 text-[#0A3622] font-mono shrink-0">
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded bg-white border border-[#166534]/40 text-[#0A3622] font-mono shrink-0 whitespace-nowrap">
                   Total: {section.totalMarks} Marks
                 </span>
               </div>

@@ -130,30 +130,30 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
       customFooterNote={`${boardName} Secondary Board Examination &bull; Official Question Paper of Infinite Tutorial`}
     >
       {/* 1. Exam Metrics Banner */}
-      <section className="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs flex flex-wrap items-center justify-between gap-3 avoid-break">
-        <div className="flex items-center gap-4 flex-wrap">
+      <section className="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs flex flex-wrap items-center justify-between gap-2.5 avoid-break">
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 sm:gap-4 flex-1">
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Allotted Time</span>
             <span className="font-bold text-slate-900">{test.duration || '90 mins'}</span>
           </div>
-          <div className="h-6 w-px bg-slate-300" />
+          <div className="hidden sm:block h-6 w-px bg-slate-300" />
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Maximum Marks</span>
             <span className="font-bold text-[#0A3622] text-sm">{test.maxMarks} Marks</span>
           </div>
-          <div className="h-6 w-px bg-slate-300" />
+          <div className="hidden sm:block h-6 w-px bg-slate-300" />
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Paper Identifier</span>
             <span className="font-mono font-bold text-slate-800">{test.testId || 'TST-REF'}</span>
           </div>
-          <div className="h-6 w-px bg-slate-300" />
+          <div className="hidden sm:block h-6 w-px bg-slate-300" />
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Class &amp; Board</span>
             <span className="font-bold text-slate-800">{className} &bull; {boardName}</span>
           </div>
         </div>
 
-        <div className="text-[11px] font-bold text-[#0A3622] bg-[#F0FDF4] px-2.5 py-1 rounded border border-[#166534]/30">
+        <div className="text-[10.5px] sm:text-[11px] font-bold text-[#0A3622] bg-[#F0FDF4] px-2.5 py-1 rounded border border-[#166534]/30 whitespace-nowrap shrink-0">
           Official Examination Paper
         </div>
       </section>
@@ -176,26 +176,27 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
       {/* 3. Official Examination Question Content */}
       <section className="doc-section-card border border-slate-300 rounded-lg overflow-hidden bg-white shadow-2xs">
         {/* Section Header with View Mode Switcher */}
-        <div className="bg-[#F0FDF4] border-b border-[#166534]/30 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 doc-section-heading">
-          <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-[#0A3622]" />
-            <h3 className="font-black text-xs text-[#0A3622] uppercase tracking-wide">
+        <div className="bg-[#F0FDF4] border-b border-[#166534]/30 px-3 sm:px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2.5 doc-section-heading">
+          <div className="flex items-center gap-2 min-w-0">
+            <FileText className="w-4 h-4 text-[#0A3622] shrink-0" />
+            <h3 className="font-black text-xs text-[#0A3622] uppercase tracking-wide truncate">
               Official Examination Questions &amp; Problem Sets
             </h3>
           </div>
 
-          <div className="no-print flex items-center gap-1.5">
+          <div className="no-print flex items-center gap-2 flex-wrap shrink-0">
             {matchingCurriculumPaper && (
               <button
                 type="button"
                 onClick={() => setViewMode('questions')}
-                className={`px-2.5 py-1 rounded text-xs font-bold transition-all ${
+                className={`px-3 py-1 rounded-md text-xs font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer ${
                   viewMode === 'questions'
                     ? 'bg-[#0A3622] text-white shadow-xs'
                     : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300'
                 }`}
               >
-                <Award className="w-3 h-3 inline mr-1" /> Certified Paper
+                <Award className="w-3.5 h-3.5 text-amber-300" />
+                <span>Certified Paper</span>
               </button>
             )}
 
@@ -203,18 +204,19 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
               <button
                 type="button"
                 onClick={() => setViewMode('document')}
-                className={`px-2.5 py-1 rounded text-xs font-bold transition-all ${
+                className={`px-3 py-1 rounded-md text-xs font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer ${
                   viewMode === 'document'
                     ? 'bg-[#0A3622] text-white shadow-xs'
                     : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-300'
                 }`}
               >
-                <FileText className="w-3 h-3 inline mr-1" /> Attached File
+                <FileText className="w-3.5 h-3.5 text-blue-300" />
+                <span>Attached File</span>
               </button>
             )}
 
             {test.testPaperName && (
-              <span className="text-[10px] font-mono text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
+              <span className="text-[10px] font-mono text-slate-600 bg-white px-2 py-1 rounded border border-slate-200 max-w-[180px] sm:max-w-xs truncate" title={test.testPaperName}>
                 {test.testPaperName}
               </span>
             )}
@@ -330,9 +332,9 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
                         </div>
 
                         {q.options && q.options.length > 0 && (
-                          <div className="grid grid-cols-2 gap-2 pl-6 pt-1 text-xs">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-2 sm:pl-6 pt-1 text-xs">
                             {q.options.map((opt, oIdx) => (
-                              <div key={oIdx} className="bg-slate-50 p-1.5 rounded border border-slate-200 font-mono text-[11px]">
+                              <div key={oIdx} className="bg-slate-50 hover:bg-emerald-50/50 p-2 sm:p-1.5 rounded-md border border-slate-200 font-mono text-[11px] text-slate-800 transition-colors">
                                 {opt}
                               </div>
                             ))}
