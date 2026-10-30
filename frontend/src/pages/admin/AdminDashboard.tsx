@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/common/Button';
 import { StatCard } from '../../components/common/StatCard';
+import { fetchStudents } from '../../services/studentService';
 import {
   Shield,
   GraduationCap,
@@ -45,6 +46,17 @@ interface AdminModuleItem {
 export const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [studentCount, setStudentCount] = useState<number>(6);
+
+  useEffect(() => {
+    fetchStudents()
+      .then((res) => {
+        if (res?.students?.length) {
+          setStudentCount(res.students.length);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // 24 Admin Navigation Modules mapping directly to existing application routes
   const adminModules: AdminModuleItem[] = [
@@ -297,13 +309,13 @@ export const AdminDashboard: React.FC = () => {
         {/* Card 1: Total Students */}
         <StatCard
           title="Total Students"
-          value="84"
+          value={String(studentCount)}
           subtitle="9th & 10th grades"
           icon={<GraduationCap className="w-5 h-5 text-[#155EEF]" />}
           iconBg="bg-[#EEF4FF] border border-[#DCE5F2]"
           badge="Enrolled"
           badgeVariant="blue"
-          trend={{ text: '+12% this term', type: 'positive', icon: <TrendingUp className="w-3 h-3" /> }}
+          trend={{ text: `${studentCount} Profiles Active`, type: 'positive', icon: <TrendingUp className="w-3 h-3" /> }}
         />
 
         {/* Card 2: Total Teachers */}
@@ -343,7 +355,7 @@ export const AdminDashboard: React.FC = () => {
         <StatCard
           title="Today's Attendance"
           value="91.3%"
-          subtitle="79 / 84 students present"
+          subtitle={`${Math.max(1, studentCount - 1)} / ${studentCount} students present`}
           icon={<Clock className="w-5 h-5 text-emerald-600" />}
           iconBg="bg-emerald-50 border border-emerald-200"
           badge="Live Status"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   Users,
@@ -19,8 +19,21 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { DashboardShell, NavSection } from './DashboardShell';
+import { fetchStudents } from '../services/studentService';
 
 export const AdminLayout: React.FC = () => {
+  const [studentCount, setStudentCount] = useState<number>(6);
+
+  useEffect(() => {
+    fetchStudents()
+      .then((res) => {
+        if (res?.students?.length) {
+          setStudentCount(res.students.length);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const adminNavSections: NavSection[] = [
     {
       title: 'Main',
@@ -39,7 +52,7 @@ export const AdminLayout: React.FC = () => {
           name: 'Students Directory',
           href: '/admin/students',
           icon: <GraduationCap className="w-4 h-4" />,
-          badge: '84',
+          badge: String(studentCount),
         },
         {
           name: 'Parents Management',

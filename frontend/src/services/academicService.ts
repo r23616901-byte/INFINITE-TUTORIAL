@@ -36,7 +36,7 @@ const SEED_BATCHES: BatchItem[] = [
     boardName: 'CBSE',
     academicYear: '2024-25',
     assignedTeacherName: 'Mrs. Priya Sundaram',
-    studentCount: 42,
+    studentCount: 2,
   },
   {
     id: 'batch-10-evening',
@@ -53,7 +53,7 @@ const SEED_BATCHES: BatchItem[] = [
     boardName: 'CBSE',
     academicYear: '2024-25',
     assignedTeacherName: 'Mrs. Priya Sundaram',
-    studentCount: 38,
+    studentCount: 2,
   },
   {
     id: 'batch-9-morning',
@@ -70,7 +70,7 @@ const SEED_BATCHES: BatchItem[] = [
     boardName: 'Karnataka State Board',
     academicYear: '2024-25',
     assignedTeacherName: 'Mr. Arvind Saxena',
-    studentCount: 35,
+    studentCount: 1,
   },
   {
     id: 'batch-9-evening',
@@ -87,7 +87,7 @@ const SEED_BATCHES: BatchItem[] = [
     boardName: 'Karnataka State Board',
     academicYear: '2024-25',
     assignedTeacherName: 'Mr. Arvind Saxena',
-    studentCount: 32,
+    studentCount: 1,
   },
 ];
 

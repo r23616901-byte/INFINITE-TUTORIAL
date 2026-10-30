@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   Users,
@@ -16,8 +16,21 @@ import {
   FileEdit,
 } from 'lucide-react';
 import { DashboardShell, NavSection } from './DashboardShell';
+import { fetchStudents } from '../services/studentService';
 
 export const TeacherLayout: React.FC = () => {
+  const [studentCount, setStudentCount] = useState<number>(6);
+
+  useEffect(() => {
+    fetchStudents()
+      .then((res) => {
+        if (res?.students?.length) {
+          setStudentCount(res.students.length);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const teacherNavSections: NavSection[] = [
     {
       title: 'Main',
@@ -36,7 +49,7 @@ export const TeacherLayout: React.FC = () => {
           name: 'Assigned Students',
           href: '/teacher/students',
           icon: <Users className="w-4 h-4" />,
-          badge: '42',
+          badge: String(studentCount),
         },
         {
           name: 'Take Attendance',

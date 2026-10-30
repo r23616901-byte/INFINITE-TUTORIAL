@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/common/Button';
 import { QuickAccessHub, QuickAccessCategory } from '../../components/common/QuickAccessHub';
+import { fetchStudents } from '../../services/studentService';
 import {
   BookOpen,
   FileText,
@@ -29,9 +30,20 @@ import { useNavigate } from 'react-router-dom';
 export const TeacherDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [totalStudents, setTotalStudents] = useState<number>(6);
+
+  useEffect(() => {
+    fetchStudents()
+      .then((res) => {
+        if (res?.students?.length) {
+          setTotalStudents(res.students.length);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const metrics = {
-    totalStudents: 82,
+    totalStudents,
     todaysClasses: 3,
     attendancePending: 1,
     pendingLeaves: 4,
@@ -50,7 +62,7 @@ export const TeacherDashboard: React.FC = () => {
           route: '/teacher/students',
           icon: GraduationCap,
           iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
-          badge: '82',
+          badge: String(totalStudents),
         },
         {
           id: 'teacher-student-profiles',

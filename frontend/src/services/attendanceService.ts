@@ -369,9 +369,9 @@ export const fetchAttendanceOverviewStats = async () => {
     // Fallback
   }
   return {
-    totalStudents: 42,
-    todayPresent: 38,
-    todayAbsent: 4,
+    totalStudents: 6,
+    todayPresent: 5,
+    todayAbsent: 1,
     averageAttendancePercentage: 91.3,
   };
 };

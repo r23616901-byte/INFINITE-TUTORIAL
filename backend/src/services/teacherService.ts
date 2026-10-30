@@ -214,8 +214,8 @@ export const getAssignedStudents = async (id: string) => {
     teacherName: teacher.name,
     batches: teacher.batches,
     subjects: teacher.subjects,
-    totalStudents: assigned.length > 0 ? assigned.length : 42,
-    students: assigned.length > 0 ? assigned : students.slice(0, 10),
+    totalStudents: assigned.length > 0 ? assigned.length : students.length,
+    students: assigned.length > 0 ? assigned : students,
   };
 };
 

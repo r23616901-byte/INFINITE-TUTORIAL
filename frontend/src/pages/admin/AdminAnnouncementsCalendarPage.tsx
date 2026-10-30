@@ -319,7 +319,7 @@ export const AdminAnnouncementsCalendarPage: React.FC = () => {
         />
         <StatCard
           title="Total Audience Reach"
-          value="84 Enrolled"
+          value="All Enrolled"
           subtitle="Parents & Students"
           icon={<Users className="w-5 h-5 text-[#00B8F8]" />}
         />
