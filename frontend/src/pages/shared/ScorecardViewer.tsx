@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   FileText,
   Calendar,
@@ -545,44 +546,46 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
       </div>
 
       {/* 7. DOCUMENT PREVIEW MODAL (Test Paper or Answer Sheet) */}
-      {previewDocUrl && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 print:hidden">
-          <div className="bg-white rounded-3xl max-w-4xl w-full h-[85vh] p-6 shadow-2xl flex flex-col relative animate-in fade-in duration-200">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
-              <div className="flex items-center space-x-2">
-                <FileCheck className="w-5 h-5 text-[#155EEF]" />
-                <h3 className="font-bold text-slate-900 text-base">{previewDocTitle}</h3>
+      {previewDocUrl &&
+        createPortal(
+          <div className="fixed inset-0 z-[999999] bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 print:hidden">
+            <div className="bg-white rounded-3xl max-w-4xl w-full h-[85vh] p-6 shadow-2xl flex flex-col relative animate-in fade-in duration-200">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                <div className="flex items-center space-x-2">
+                  <FileCheck className="w-5 h-5 text-[#155EEF]" />
+                  <h3 className="font-bold text-slate-900 text-base">{previewDocTitle}</h3>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <a
+                    href={previewDocUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-[#155EEF] bg-[#EEF4FF] hover:bg-blue-100"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 mr-1" />
+                    <span>Open External</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewDocUrl(null)}
+                    className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <a
-                  href={previewDocUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-[#155EEF] bg-[#EEF4FF] hover:bg-blue-100"
-                >
-                  <ExternalLink className="w-3.5 h-3.5 mr-1" />
-                  <span>Open External</span>
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setPreviewDocUrl(null)}
-                  className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
 
-            <div className="flex-1 bg-slate-100 rounded-2xl overflow-hidden flex items-center justify-center">
-              {previewDocUrl.endsWith('.pdf') ? (
-                <iframe src={previewDocUrl} className="w-full h-full border-0" title="Document Viewer" />
-              ) : (
-                <img src={previewDocUrl} alt="Document Viewer" className="max-h-full object-contain mx-auto" />
-              )}
+              <div className="flex-1 bg-slate-100 rounded-2xl overflow-hidden flex items-center justify-center">
+                {previewDocUrl.endsWith('.pdf') ? (
+                  <iframe src={previewDocUrl} className="w-full h-full border-0" title="Document Viewer" />
+                ) : (
+                  <img src={previewDocUrl} alt="Document Viewer" className="max-h-full object-contain mx-auto" />
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* 8. OFFICIAL INSTITUTIONAL FOOTER WITH SIGNATURE BLOCKS (Print Mode) */}
       <PrintTemplateFooter customNote="Official Certified Academic Scorecard issued by Infinite Tutorial Academic Directorate. Certified Teacher and Parent evaluated record." />

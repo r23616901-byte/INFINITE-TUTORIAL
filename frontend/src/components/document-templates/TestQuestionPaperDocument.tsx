@@ -35,17 +35,25 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
   const className = test.className || 'Class 10';
   const subjectName = test.subjectName || 'Physics';
 
-  // Attempt to find matching curriculum structured questions
-  const matchingCurriculumPaper = ALL_QUESTION_PAPERS.find(
-    (qp) =>
-      qp.subject.toLowerCase() === subjectName.toLowerCase() &&
-      qp.className.toLowerCase().includes(className.toLowerCase().replace('class ', ''))
-  );
+  // Attempt to find matching curriculum structured questions with robust fuzzy matcher
+  const matchingCurriculumPaper =
+    ALL_QUESTION_PAPERS.find((qp) => {
+      const s1 = qp.subject.toLowerCase();
+      const s2 = subjectName.toLowerCase();
+      const subMatch = s1.includes(s2) || s2.includes(s1);
+      const num1 = qp.className.replace(/[^0-9]/g, '');
+      const num2 = className.replace(/[^0-9]/g, '');
+      return subMatch && (num1 === num2 || !num2);
+    }) ||
+    ALL_QUESTION_PAPERS.find((qp) => {
+      const s1 = qp.subject.toLowerCase();
+      const s2 = subjectName.toLowerCase();
+      return s1.includes(s2) || s2.includes(s1);
+    }) ||
+    ALL_QUESTION_PAPERS[0];
 
-  // Default view mode: questions view (Universal Template) if curriculum questions exist, else attached doc
-  const [viewMode, setViewMode] = useState<'questions' | 'document'>(
-    matchingCurriculumPaper ? 'questions' : 'document'
-  );
+  // Default view mode: always default to certified questions view (Universal Document Template)
+  const [viewMode, setViewMode] = useState<'questions' | 'document'>('questions');
 
   const documentTitle = `${boardName.toUpperCase()} — ${className.toUpperCase()} EXAMINATION`;
   const documentSubtitle = `${test.name} • Subject: ${subjectName}`;

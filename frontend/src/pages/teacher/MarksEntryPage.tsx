@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Award,
   FileText,
@@ -762,42 +763,44 @@ export const MarksEntryPage: React.FC = () => {
       )}
 
       {/* EMBEDDED ANSWER SHEET PREVIEW MODAL (Prompt 18) */}
-      {previewSheetUrl && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] p-6 shadow-2xl flex flex-col relative">
-            <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
-              <div className="flex items-center space-x-2">
-                <FileCheck className="w-5 h-5 text-[#155EEF]" />
-                <h3 className="font-bold text-gray-900 text-base">{previewSheetTitle}</h3>
+      {previewSheetUrl &&
+        createPortal(
+          <div className="fixed inset-0 z-[999999] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] p-6 shadow-2xl flex flex-col relative">
+              <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+                <div className="flex items-center space-x-2">
+                  <FileCheck className="w-5 h-5 text-[#155EEF]" />
+                  <h3 className="font-bold text-gray-900 text-base">{previewSheetTitle}</h3>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <a
+                    href={previewSheetUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF]"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 mr-1" /> Open External
+                  </a>
+                  <button
+                    onClick={() => setPreviewSheetUrl(null)}
+                    className="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <a
-                  href={previewSheetUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF]"
-                >
-                  <ExternalLink className="w-3.5 h-3.5 mr-1" /> Open External
-                </a>
-                <button
-                  onClick={() => setPreviewSheetUrl(null)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
 
-            <div className="flex-1 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
-              {previewSheetUrl.endsWith('.pdf') ? (
-                <iframe src={previewSheetUrl} className="w-full h-full border-0" title="Scanned Answer Sheet" />
-              ) : (
-                <img src={previewSheetUrl} alt="Scanned Answer Sheet" className="max-h-full object-contain mx-auto" />
-              )}
+              <div className="flex-1 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+                {previewSheetUrl.endsWith('.pdf') ? (
+                  <iframe src={previewSheetUrl} className="w-full h-full border-0" title="Scanned Answer Sheet" />
+                ) : (
+                  <img src={previewSheetUrl} alt="Scanned Answer Sheet" className="max-h-full object-contain mx-auto" />
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

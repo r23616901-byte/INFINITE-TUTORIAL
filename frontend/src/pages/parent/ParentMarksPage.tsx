@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Award,
   FileText,
@@ -366,47 +367,49 @@ export const ParentMarksPage: React.FC = () => {
       )}
 
       {/* Answer Sheet Modal Viewer */}
-      {previewUrl && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
-              <div className="flex items-center space-x-2">
-                <FileText className="w-5 h-5 text-[#155EEF]" />
-                <h3 className="font-bold text-gray-900 text-sm">{previewTitle}</h3>
-              </div>
-              <button
-                onClick={() => setPreviewUrl(null)}
-                className="p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-200 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="flex-1 p-6 overflow-y-auto bg-gray-100 flex flex-col items-center justify-center min-h-[400px]">
-              {previewUrl.toLowerCase().endsWith('.pdf') ? (
-                <iframe src={previewUrl} title={previewTitle} className="w-full h-[600px] rounded-lg border border-gray-300" />
-              ) : (
-                <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-200 max-w-full">
-                  <img src={previewUrl} alt={previewTitle} className="max-w-full max-h-[70vh] object-contain rounded-lg" />
+      {previewUrl &&
+        createPortal(
+          <div className="fixed inset-0 z-[999999] overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+              <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+                <div className="flex items-center space-x-2">
+                  <FileText className="w-5 h-5 text-[#155EEF]" />
+                  <h3 className="font-bold text-gray-900 text-sm">{previewTitle}</h3>
                 </div>
-              )}
-            </div>
+                <button
+                  onClick={() => setPreviewUrl(null)}
+                  className="p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-200 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-            <div className="px-6 py-3 border-t border-gray-200 flex items-center justify-between bg-white text-xs text-gray-500">
-              <span>Verified Official Evaluated Answer Paper • Infinite Tutorial</span>
-              <a
-                href={previewUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center text-[#155EEF] font-semibold hover:underline"
-              >
-                Open in Full Window
-                <ExternalLink className="w-3.5 h-3.5 ml-1" />
-              </a>
+              <div className="flex-1 p-6 overflow-y-auto bg-gray-100 flex flex-col items-center justify-center min-h-[400px]">
+                {previewUrl.toLowerCase().endsWith('.pdf') ? (
+                  <iframe src={previewUrl} title={previewTitle} className="w-full h-[600px] rounded-lg border border-gray-300" />
+                ) : (
+                  <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-200 max-w-full">
+                    <img src={previewUrl} alt={previewTitle} className="max-w-full max-h-[70vh] object-contain rounded-lg" />
+                  </div>
+                )}
+              </div>
+
+              <div className="px-6 py-3 border-t border-gray-200 flex items-center justify-between bg-white text-xs text-gray-500">
+                <span>Verified Official Evaluated Answer Paper • Infinite Tutorial</span>
+                <a
+                  href={previewUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center text-[#155EEF] font-semibold hover:underline"
+                >
+                  Open in Full Window
+                  <ExternalLink className="w-3.5 h-3.5 ml-1" />
+                </a>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* Universal Print Preview Modal */}
       {scorecard && (

@@ -154,7 +154,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       {/* ========================================================= */}
       {/* DESKTOP FIXED DEEP NAVY SIDEBAR */}
       {/* ========================================================= */}
-      <aside className="hidden lg:flex flex-col w-64 xl:w-72 brand-sidebar-bg border-r border-[#142C68] sticky top-0 h-screen z-30 flex-shrink-0 shadow-lg select-none print:hidden">
+      <aside className="hidden lg:flex flex-col w-64 xl:w-72 brand-sidebar-bg border-r border-[#142C68] sticky top-0 h-screen z-20 flex-shrink-0 shadow-lg select-none print:hidden">
         {/* Sidebar Brand Header */}
         <div className="p-5 border-b border-white/10">
           <Link to="/" className="block">
@@ -345,11 +345,11 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         </header>
 
         {/* Content Body with SUBTLE BRAND WATERMARK ALWAYS PRESENT */}
-        <div className="relative flex-1 flex flex-col min-w-0 overflow-hidden print:overflow-visible print:w-full print:block">
+        <div className="relative flex-1 flex flex-col min-w-0 print:overflow-visible print:w-full print:block">
           {/* Subtle Infinite Tutorial Logo Watermark across every dashboard page */}
           <BrandWatermark opacity={0.045} size="lg" position="center" />
 
-          <main className="relative z-10 flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 pb-20 lg:pb-6 max-w-7xl w-full mx-auto print:p-0 print:m-0 print:max-w-none print:w-full print:block">
+          <main className="relative flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 pb-20 lg:pb-6 max-w-7xl w-full mx-auto print:p-0 print:m-0 print:max-w-none print:w-full print:block">
             {children || <Outlet />}
           </main>
         </div>

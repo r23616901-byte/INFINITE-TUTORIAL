@@ -80,7 +80,7 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
   };
 
   return createPortal(
-    <div className="print-preview-modal-root fixed inset-0 z-[999999] flex flex-col bg-slate-900/85 backdrop-blur-xs print:p-0 print:m-0 print:bg-white print:static print:overflow-visible">
+    <div className="print-preview-modal-root fixed inset-0 w-screen h-screen left-0 top-0 z-[999999] flex flex-col bg-slate-900/90 backdrop-blur-xs print:p-0 print:m-0 print:bg-white print:static print:overflow-visible">
       {/* 1. Modal Top Toolbar (Hidden when actually printing) */}
       <header className="no-print bg-[#0B1F4D] text-white px-4 py-3 flex items-center justify-between border-b border-slate-700 shadow-md flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -190,10 +190,10 @@ export const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({
             transformOrigin: 'top center',
             transition: 'transform 0.15s ease-out',
           }}
-          className="print:!transform-none print:w-full"
+          className="print:!transform-none print:w-full mx-auto"
         >
           {/* The Actual Printed Document Container */}
-          <div className={`print-preview-sheet ${orientation} print:p-0 print:m-0 print:shadow-none print:w-full`}>
+          <div className={`print-preview-sheet ${orientation} print:p-0 print:m-0 print:shadow-none print:w-full mx-auto`}>
             {children}
           </div>
         </div>
