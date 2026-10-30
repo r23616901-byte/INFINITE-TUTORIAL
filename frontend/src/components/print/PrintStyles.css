@@ -205,6 +205,19 @@
     page-break-inside: auto !important;
   }
 
+  /* Allow tables inside responsive scroll wrappers to paginate naturally across pages without being treated as monolithic unbreakable boxes */
+  .overflow-x-auto,
+  .overflow-auto,
+  [class*="overflow-x-auto"],
+  [class*="overflow-auto"] {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    display: block !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
   .print-page-break-before {
     break-before: page !important;
     page-break-before: always !important;

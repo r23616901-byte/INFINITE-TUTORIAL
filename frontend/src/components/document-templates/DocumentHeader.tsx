@@ -66,7 +66,7 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
     <header className={`official-doc-header w-full text-slate-900 select-none border-b-2 border-[#0A3622] pb-3 ${className}`}>
       {/* 1. Main Letterhead with Authentic Logo & Dark Academic Green Branding */}
       <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-slate-200">
-        <div className="flex items-center gap-3.5 min-w-0">
+        <div className="flex items-center gap-3.5 shrink-0">
           <img
             src={INFINITE_TUTORIAL_TEMPLATE_SETTINGS.logoUrl}
             alt="Infinite Tutorial"
@@ -75,9 +75,9 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
               (e.target as HTMLImageElement).src = '/logo-clean.png';
             }}
           />
-          <div>
+          <div className="shrink-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl font-black text-[#0A3622] tracking-tight uppercase leading-none">
+              <h1 className="text-xl font-black text-[#0A3622] tracking-tight uppercase leading-none whitespace-nowrap">
                 {INFINITE_TUTORIAL_TEMPLATE_SETTINGS.institutionName}
               </h1>
               {isTeacherVersion && (
@@ -86,10 +86,10 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
                 </span>
               )}
             </div>
-            <p className="text-[10.5px] font-bold text-[#14532D] tracking-wide mt-0.5 uppercase">
+            <p className="text-[10px] font-bold text-[#14532D] tracking-wide mt-1 uppercase whitespace-nowrap">
               {INFINITE_TUTORIAL_TEMPLATE_SETTINGS.institutionSubtitle}
             </p>
-            <p className="text-[9px] text-slate-600 mt-0.5">
+            <p className="text-[8.5px] text-slate-600 mt-0.5 whitespace-nowrap">
               {INFINITE_TUTORIAL_TEMPLATE_SETTINGS.institutionAddress}
             </p>
           </div>
@@ -106,10 +106,10 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
           >
             {reportCategory}
           </span>
-          <span className="text-[9.5px] font-bold text-slate-700 font-mono whitespace-nowrap mt-0.5">
+          <span className="text-[9px] font-bold text-slate-700 font-mono whitespace-nowrap mt-1">
             Academic Session: {academicYear}
           </span>
-          <span className="text-[8.5px] text-slate-500 font-mono whitespace-nowrap">
+          <span className="text-[8.5px] text-slate-500 font-mono whitespace-nowrap mt-0.5">
             Issued: {dateStr}
           </span>
         </div>

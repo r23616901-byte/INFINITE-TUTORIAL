@@ -120,6 +120,19 @@
     page-break-inside: auto !important;
   }
 
+  /* Allow tables inside responsive scroll wrappers to paginate naturally across pages */
+  .overflow-x-auto,
+  .overflow-auto,
+  [class*="overflow-x-auto"],
+  [class*="overflow-auto"] {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    display: block !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
   .doc-section-heading {
     break-after: avoid !important;
     page-break-after: avoid !important;

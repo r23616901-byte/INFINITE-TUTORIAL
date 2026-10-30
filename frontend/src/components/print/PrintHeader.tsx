@@ -85,23 +85,23 @@ export const PrintHeader: React.FC<PrintHeaderProps> = ({
     <div className={`w-full text-slate-900 select-none border-b-2 border-[#0A3622] pb-3 ${className}`}>
       {/* 1. Main Institutional Header / Letterhead with Dark Academic Green Branding */}
       <div className="flex items-center justify-between gap-4 pb-2.5 border-b border-slate-200">
-        <div className="flex items-center gap-3.5 min-w-0">
+        <div className="flex items-center gap-3.5 shrink-0">
           <img
             src="/logo-transparent.png"
             alt="Infinite Tutorial"
-            className="h-12 w-auto object-contain flex-shrink-0"
+            className="h-12 w-auto object-contain shrink-0"
             onError={(e) => {
               (e.target as HTMLImageElement).src = '/logo-clean.png';
             }}
           />
-          <div>
-            <h1 className="text-xl font-black text-[#0A3622] tracking-tight uppercase leading-none">
+          <div className="shrink-0">
+            <h1 className="text-xl font-black text-[#0A3622] tracking-tight uppercase leading-none whitespace-nowrap">
               INFINITE TUTORIAL
             </h1>
-            <p className="text-[10.5px] font-bold text-[#14532D] tracking-wide mt-0.5 uppercase">
+            <p className="text-[10px] font-bold text-[#14532D] tracking-wide mt-1 uppercase whitespace-nowrap">
               Centre for Academic Excellence &amp; Secondary Board Coaching
             </p>
-            <p className="text-[9px] text-slate-600 mt-0.5">
+            <p className="text-[8.5px] text-slate-600 mt-0.5 whitespace-nowrap">
               Infinite Tutorial Campus &bull; Email: admin@infinitetutorial.com &bull; Helpline: +91 9800000001
             </p>
           </div>
@@ -111,10 +111,10 @@ export const PrintHeader: React.FC<PrintHeaderProps> = ({
           <span className="inline-block px-2.5 py-0.5 bg-[#F0FDF4] border border-[#86EFAC] rounded text-[9.5px] font-extrabold uppercase tracking-wider text-[#0A3622] whitespace-nowrap">
             {reportCategory}
           </span>
-          <p className="text-[9.5px] font-bold text-slate-700 mt-0.5 whitespace-nowrap">
+          <p className="text-[9px] font-bold text-slate-700 mt-1 whitespace-nowrap">
             Academic Session: {academicYear}
           </p>
-          <p className="text-[8.5px] text-slate-500 font-mono whitespace-nowrap">
+          <p className="text-[8.5px] text-slate-500 font-mono whitespace-nowrap mt-0.5">
             Printed: {printDateStr}
           </p>
         </div>
