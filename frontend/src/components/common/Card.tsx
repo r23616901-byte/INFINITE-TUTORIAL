@@ -28,33 +28,33 @@ export const Card: React.FC<CardProps> = ({
       {...props}
     >
       {(title || subtitle || headerAction || icon || badge) && (
-        <div className="px-5 py-4 border-b border-[#F0F4FA] flex items-center justify-between gap-3 bg-white">
-          <div className="flex items-center gap-3 min-w-0">
+        <div className="px-4 sm:px-5 py-3.5 sm:py-4 border-b border-[#F0F4FA] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
+          <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
             {icon && (
               <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] border border-[#DCE5F2] flex items-center justify-center text-[#155EEF] flex-shrink-0 shadow-2xs">
                 {icon}
               </div>
             )}
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 flex-wrap">
                 {title && (
-                  <h3 className="text-sm sm:text-base font-bold text-[#0B1F4D] tracking-tight truncate">
+                  <h3 className="text-sm sm:text-base font-bold text-[#0B1F4D] tracking-tight">
                     {title}
                   </h3>
                 )}
                 {badge && <div>{badge}</div>}
               </div>
               {subtitle && (
-                <p className="text-xs text-[#5B6B82] mt-0.5 truncate font-normal">
+                <p className="text-xs text-[#5B6B82] mt-0.5 font-normal leading-normal">
                   {subtitle}
                 </p>
               )}
             </div>
           </div>
-          {headerAction && <div className="flex-shrink-0">{headerAction}</div>}
+          {headerAction && <div className="w-full sm:w-auto flex-shrink-0">{headerAction}</div>}
         </div>
       )}
-      <div className={noPadding ? '' : 'p-5 sm:p-6'}>{children}</div>
+      <div className={noPadding ? '' : 'p-4 sm:p-6'}>{children}</div>
       {footer && (
         <div className="px-5 py-3.5 bg-[#F8FAFD] border-t border-[#F0F4FA] text-xs text-[#5B6B82] flex items-center justify-between">
           {footer}

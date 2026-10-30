@@ -124,14 +124,14 @@ export const ParentAttendancePage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-[#0B1F4D] flex items-center justify-center text-white shadow-md flex-shrink-0">
-            <CalendarCheck className="w-8 h-8" />
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-[#0B1F4D] flex items-center justify-center text-white shadow-md flex-shrink-0">
+            <CalendarCheck className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
                 {data?.studentName || 'Rahul Kumar'} — Attendance Dashboard
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
@@ -145,7 +145,7 @@ export const ParentAttendancePage: React.FC = () => {
         </div>
 
         {/* Visual Circular Progress Indicator */}
-        <div className="flex items-center gap-4 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 self-start md:self-auto">
+        <div className="flex items-center gap-4 bg-slate-50 p-3 sm:p-3.5 rounded-2xl border border-slate-200 w-full md:w-auto">
           <div className="relative w-16 h-16 flex items-center justify-center">
             <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
               <path
@@ -409,44 +409,51 @@ export const ParentAttendancePage: React.FC = () => {
         title="Student Attendance History Log"
         subtitle="Complete chronological timeline of attended and missed class sessions"
         headerAction={
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="relative">
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+            {/* Search Input */}
+            <div className="relative flex-1 sm:w-48 md:w-56">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search date, remark..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-xs border border-slate-300 rounded-lg pl-8 pr-2.5 py-1 bg-slate-50 focus:bg-white"
+                className="w-full text-xs border border-slate-300 rounded-lg pl-8 pr-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-[#155EEF]"
               />
             </div>
 
-            <select
-              value={sessionFilter}
-              onChange={(e) => setSessionFilter(e.target.value)}
-              className="text-xs border border-slate-300 rounded-lg px-2.5 py-1 bg-slate-50 focus:bg-white"
-            >
-              <option value="ALL">All Sessions</option>
-              <option value="MORNING">Morning</option>
-              <option value="EVENING">Evening</option>
-            </select>
+            {/* Dropdowns & Print in a responsive flex row */}
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+              <select
+                value={sessionFilter}
+                onChange={(e) => setSessionFilter(e.target.value)}
+                className="flex-1 sm:flex-none text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white"
+                aria-label="Filter by session"
+              >
+                <option value="ALL">All Sessions</option>
+                <option value="MORNING">Morning</option>
+                <option value="EVENING">Evening</option>
+              </select>
 
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-xs border border-slate-300 rounded-lg px-2.5 py-1 bg-slate-50 focus:bg-white"
-            >
-              <option value="ALL">All Status</option>
-              <option value="PRESENT">🟢 Present Only</option>
-              <option value="ABSENT">🔴 Absent Only</option>
-            </select>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="flex-1 sm:flex-none text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white"
+                aria-label="Filter by status"
+              >
+                <option value="ALL">All Status</option>
+                <option value="PRESENT">🟢 Present</option>
+                <option value="ABSENT">🔴 Absent</option>
+              </select>
 
-            <PrintButton
-              onClick={() => setIsPrintModalOpen(true)}
-              variant="academic"
-              size="sm"
-              label="Print Register"
-            />
+              <PrintButton
+                onClick={() => setIsPrintModalOpen(true)}
+                variant="academic"
+                size="sm"
+                label="Print Register"
+                className="flex-shrink-0"
+              />
+            </div>
           </div>
         }
       >
@@ -458,48 +465,58 @@ export const ParentAttendancePage: React.FC = () => {
             compact
           />
         ) : (
-          <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase border-y border-slate-200">
-              <tr>
-                <th className="py-3 px-4">Date</th>
-                <th className="py-3 px-4">Day</th>
-                <th className="py-3 px-4">Session</th>
-                <th className="py-3 px-4">Batch</th>
-                <th className="py-3 px-4 text-center">Status</th>
-                <th className="py-3 px-4">Teacher / Recorded By</th>
-                <th className="py-3 px-4">Notes / Remarks</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
+          <div className="space-y-4">
+            {/* Record count summary bar */}
+            <div className="flex items-center justify-between text-xs text-slate-500 pb-1 border-b border-slate-100">
+              <span className="font-semibold text-slate-700">
+                Total Sessions: <span className="text-[#0B1F4D] font-bold">{filteredRecords.length}</span>
+              </span>
+              <span className="text-[11px] text-slate-400">
+                {filteredRecords.filter((r) => r.status === 'PRESENT').length} Present &bull;{' '}
+                {filteredRecords.filter((r) => r.status === 'ABSENT').length} Absent
+              </span>
+            </div>
+
+            {/* ========================================================= */}
+            {/* 1. MOBILE RESPONSIVE CARD LIST (Visible on phones <md) */}
+            {/* Allows effortless vertical sliding down with 100% clarity */}
+            {/* ========================================================= */}
+            <div className="md:hidden space-y-3">
               {filteredRecords.map((r) => {
                 const isPresent = r.status === 'PRESENT';
                 return (
-                  <tr
+                  <div
                     key={r.id}
-                    className={`hover:bg-slate-50/70 transition-colors ${
-                      !isPresent ? 'bg-red-50/20' : ''
+                    className={`rounded-xl border p-3.5 transition-all ${
+                      isPresent
+                        ? 'bg-white border-slate-200/90 shadow-2xs hover:border-emerald-300'
+                        : 'bg-red-50/30 border-red-200 shadow-2xs'
                     }`}
                   >
-                    <td className="py-3 px-4 font-mono font-bold text-slate-800">
-                      {r.dateStr}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-slate-700">{r.day}</td>
-                    <td className="py-3 px-4">
+                    {/* Top Row: Date, Day, Status Pill */}
+                    <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs flex-shrink-0 shadow-2xs ${
+                            isPresent
+                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                              : 'bg-red-100 text-red-800 border border-red-200'
+                          }`}
+                        >
+                          {isPresent ? 'P' : 'A'}
+                        </div>
+                        <div>
+                          <div className="font-mono font-bold text-xs text-slate-900">
+                            {r.dateStr}
+                          </div>
+                          <div className="text-[11px] font-medium text-slate-500">
+                            {r.day}
+                          </div>
+                        </div>
+                      </div>
+
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${
-                          r.session === 'MORNING'
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-[#EEF4FF] text-[#0B1F4D]'
-                        }`}
-                      >
-                        {r.session}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 font-medium text-slate-900">{r.batchName}</td>
-                    <td className="py-3 px-4 text-center">
-                      <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold flex-shrink-0 ${
                           isPresent
                             ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                             : 'bg-red-100 text-red-800 border border-red-200'
@@ -507,19 +524,121 @@ export const ParentAttendancePage: React.FC = () => {
                       >
                         {isPresent ? '🟢 Present' : '🔴 Absent'}
                       </span>
-                    </td>
-                    <td className="py-3 px-4 text-slate-600 text-[11px]">
-                      {r.recordedByName || 'Prof. Rajesh Sharma'}
-                    </td>
-                    <td className="py-3 px-4 text-slate-500 italic text-[11px]">
-                      {r.remarks || 'Regular class attendance'}
-                    </td>
-                  </tr>
+                    </div>
+
+                    {/* Middle Row: Session badge & Batch */}
+                    <div className="grid grid-cols-2 gap-2 py-2 text-xs">
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] uppercase font-bold text-slate-400">Session</span>
+                        <div>
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${
+                              r.session === 'MORNING'
+                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                : 'bg-[#EEF4FF] text-[#1048B5] border border-[#C7D9F8]'
+                            }`}
+                          >
+                            {r.session}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] uppercase font-bold text-slate-400">Batch</span>
+                        <p className="font-semibold text-slate-800 text-xs truncate">
+                          {r.batchName}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Bottom Row: Teacher & Remarks */}
+                    <div className="pt-2 border-t border-slate-100 space-y-1 text-xs">
+                      <div className="flex items-center justify-between text-slate-600">
+                        <span className="text-[11px] text-slate-400">Teacher:</span>
+                        <span className="font-medium text-slate-800 text-[11px]">
+                          {r.recordedByName || 'Prof. Rajesh Sharma'}
+                        </span>
+                      </div>
+                      {r.remarks && (
+                        <div className="flex items-start justify-between text-[11px] pt-0.5">
+                          <span className="text-slate-400">Notes:</span>
+                          <span className="italic text-slate-600 text-right max-w-[75%]">
+                            {r.remarks}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 );
               })}
-            </tbody>
-          </table>
-        </div>
+            </div>
+
+            {/* ========================================================= */}
+            {/* 2. DESKTOP TABULAR VIEW (Visible on tablets & desktop >=md) */}
+            {/* ========================================================= */}
+            <div className="hidden md:block overflow-x-auto rounded-xl border border-slate-200">
+              <table className="w-full text-left text-xs text-slate-600">
+                <thead className="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase border-b border-slate-200">
+                  <tr>
+                    <th className="py-3 px-4">Date</th>
+                    <th className="py-3 px-4">Day</th>
+                    <th className="py-3 px-4">Session</th>
+                    <th className="py-3 px-4">Batch</th>
+                    <th className="py-3 px-4 text-center">Status</th>
+                    <th className="py-3 px-4">Teacher / Recorded By</th>
+                    <th className="py-3 px-4">Notes / Remarks</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 bg-white">
+                  {filteredRecords.map((r) => {
+                    const isPresent = r.status === 'PRESENT';
+                    return (
+                      <tr
+                        key={r.id}
+                        className={`hover:bg-slate-50/80 transition-colors ${
+                          !isPresent ? 'bg-red-50/20' : ''
+                        }`}
+                      >
+                        <td className="py-3 px-4 font-mono font-bold text-slate-800 whitespace-nowrap">
+                          {r.dateStr}
+                        </td>
+                        <td className="py-3 px-4 font-medium text-slate-700 whitespace-nowrap">{r.day}</td>
+                        <td className="py-3 px-4 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold ${
+                              r.session === 'MORNING'
+                                ? 'bg-amber-100 text-amber-800'
+                                : 'bg-[#EEF4FF] text-[#1048B5]'
+                            }`}
+                          >
+                            {r.session}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 font-medium text-slate-900 whitespace-nowrap">{r.batchName}</td>
+                        <td className="py-3 px-4 text-center whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                              isPresent
+                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                : 'bg-red-100 text-red-800 border border-red-200'
+                            }`}
+                          >
+                            {isPresent ? '🟢 Present' : '🔴 Absent'}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-slate-600 text-[11px] whitespace-nowrap">
+                          {r.recordedByName || 'Prof. Rajesh Sharma'}
+                        </td>
+                        <td className="py-3 px-4 text-slate-500 italic text-[11px]">
+                          {r.remarks || 'Regular class attendance'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
       </Card>
 
