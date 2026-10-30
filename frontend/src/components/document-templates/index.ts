@@ -4,6 +4,7 @@ export * from './DocumentFooter';
 export * from './ExaminationPaperTemplate';
 export * from './AcademicReportTemplate';
 export * from './TestQuestionPaperDocument';
+export * from './TimetablePrintDocument';
 export * from './PrintPreview';
 export * from './PrintButton';
 export * from './FormulaRenderer';

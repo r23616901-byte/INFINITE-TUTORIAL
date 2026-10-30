@@ -22,6 +22,7 @@ export {
   ExaminationPaperTemplate,
   AcademicReportTemplate,
   TestQuestionPaperDocument,
+  TimetablePrintDocument,
   PrintPreview,
   FormulaRenderer,
 } from '../document-templates';
@@ -32,6 +33,7 @@ export type {
   ExaminationPaperTemplateProps,
   AcademicReportTemplateProps,
   TestQuestionPaperDocumentProps,
+  TimetablePrintDocumentProps,
   PrintPreviewProps,
   FormulaRendererProps,
 } from '../document-templates';

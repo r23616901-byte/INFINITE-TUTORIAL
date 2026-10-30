@@ -7,8 +7,7 @@ import {
   CheckCircle2,
   Printer,
 } from 'lucide-react';
-import { PrintTemplateHeader } from '../../components/common/PrintTemplateHeader';
-import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter';
+import { PrintPreviewModal, TimetablePrintDocument } from '../../components/print';
 
 interface TimetableSlot {
   id: string;
@@ -24,6 +23,7 @@ interface TimetableSlot {
 
 export const ParentTimetablePage: React.FC = () => {
   const [activeSession, setActiveSession] = useState<'MORNING' | 'EVENING'>('EVENING');
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   const eveningSlots: TimetableSlot[] = [
     {
@@ -167,18 +167,8 @@ export const ParentTimetablePage: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12 print:space-y-0 print:pb-0">
-      {/* Official Institutional Print Header */}
-      <PrintTemplateHeader
-        documentTitle="STUDENT TIMETABLE & WEEKLY TUITION SCHEDULE"
-        documentSubtitle="Official Academic Timings, Assigned Tuition Rooms, and Subject Faculty"
-        reportCategory="STUDENT TIMETABLE ROSTER"
-        academicYear="AY 2024–25 (Term 2)"
-        batchName={activeSession === 'EVENING' ? 'Batch 10A Evening' : 'Batch 10A Morning'}
-        className="Class 10 (CBSE)"
-      />
-
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 print:hidden">
+      {/* Top Header - Screen Only */}
+      <div className="no-print flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-5 print:hidden">
         <div className="flex items-center space-x-3">
           <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
             <Clock className="w-6 h-6" />
@@ -194,16 +184,16 @@ export const ParentTimetablePage: React.FC = () => {
         </div>
 
         <button
-          onClick={() => window.print()}
-          className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-xs text-xs font-semibold rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+          onClick={() => setIsPrintModalOpen(true)}
+          className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-xs text-xs font-semibold rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
         >
           <Printer className="w-4 h-4 mr-1.5 text-gray-500" />
           Print Timetable
         </button>
       </div>
 
-      {/* Session Switcher & Info */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white rounded-2xl border border-gray-200 p-4 shadow-xs print:hidden">
+      {/* Session Switcher & Info - Screen Only */}
+      <div className="no-print flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white rounded-2xl border border-gray-200 p-4 shadow-xs print:hidden">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold text-gray-500">Select Batch Session:</span>
           <div className="flex rounded-xl bg-gray-100 p-1">
@@ -242,7 +232,7 @@ export const ParentTimetablePage: React.FC = () => {
       </div>
 
       {/* Weekly Schedule Cards (Screen View) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 print:hidden">
+      <div className="no-print grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 print:hidden">
         {currentSlots.map((slot) => (
           <div
             key={slot.id}
@@ -282,8 +272,8 @@ export const ParentTimetablePage: React.FC = () => {
         ))}
       </div>
 
-      {/* Tuition Notes */}
-      <div className="bg-blue-50/70 border border-blue-100 rounded-2xl p-5 text-xs text-blue-900 space-y-1.5 print:hidden">
+      {/* Tuition Notes - Screen Only */}
+      <div className="no-print bg-blue-50/70 border border-blue-100 rounded-2xl p-5 text-xs text-blue-900 space-y-1.5 print:hidden">
         <h4 className="font-bold flex items-center gap-1.5 text-blue-950">
           <BookOpen className="w-4 h-4 text-blue-600" /> Timetable Guidelines for Parents
         </h4>
@@ -296,62 +286,40 @@ export const ParentTimetablePage: React.FC = () => {
       </div>
 
       {/* ========================================================= */}
-      {/* SYSTEMATIC INSTITUTIONAL PRINTABLE TABLE (Print Only)     */}
+      {/* SYSTEMATIC INSTITUTIONAL PRINTABLE TEMPLATE (Print Only)  */}
       {/* ========================================================= */}
       <div className="hidden print:block w-full">
-        <table className="w-full text-left border-collapse border border-slate-300">
-          <thead>
-            <tr className="bg-slate-100 text-black text-[9pt] uppercase font-bold border-b border-slate-300">
-              <th className="p-1.5 border border-slate-300 w-24">Day</th>
-              <th className="p-1.5 border border-slate-300 w-36">Timing</th>
-              <th className="p-1.5 border border-slate-300 w-28">Subject</th>
-              <th className="p-1.5 border border-slate-300">Curriculum Topic / Module</th>
-              <th className="p-1.5 border border-slate-300 w-36">Faculty</th>
-              <th className="p-1.5 border border-slate-300 w-28">Room</th>
-              <th className="p-1.5 border border-slate-300 text-center w-24">Session Type</th>
-            </tr>
-          </thead>
-          <tbody className="text-[8.5pt] divide-y divide-slate-200">
-            {currentSlots.map((slot, index) => (
-              <tr key={slot.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
-                <td className="p-1.5 font-bold text-black border border-slate-300">
-                  {slot.day}
-                </td>
-                <td className="p-1.5 font-mono font-semibold text-black border border-slate-300 whitespace-nowrap">
-                  {slot.time}
-                </td>
-                <td className="p-1.5 font-bold text-[#155EEF] border border-slate-300">
-                  {slot.subject}
-                </td>
-                <td className="p-1.5 text-slate-800 border border-slate-300">
-                  {slot.topic}
-                </td>
-                <td className="p-1.5 font-medium text-black border border-slate-300">
-                  {slot.faculty}
-                </td>
-                <td className="p-1.5 text-slate-700 border border-slate-300">
-                  {slot.room}
-                </td>
-                <td className="p-1.5 text-center border border-slate-300">
-                  <span className="text-[8.5pt] font-bold text-slate-700 bg-slate-100 px-1 py-0.5 rounded">
-                    {slot.sessionType}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {/* Print Summary Metrics */}
-        <div className="mt-2.5 flex items-center justify-between text-[8.5pt] bg-slate-50 p-2 border border-slate-300 rounded">
-          <span><strong>Current Batch:</strong> {activeSession === 'EVENING' ? 'Batch 10A Evening' : 'Batch 10A Morning'}</span>
-          <span><strong>Weekly Cycles:</strong> Monday to Saturday</span>
-          <span><strong>Infinite Tutorial:</strong> Academic Portal Verified</span>
-        </div>
-
-        {/* Official Letterhead Footer with Signatures */}
-        <PrintTemplateFooter customNote="Official Student Timetable Schedule of Infinite Tutorial. Please retain a printed copy at home study desk." />
+        <TimetablePrintDocument
+          slots={currentSlots}
+          batchName={activeSession === 'EVENING' ? 'Batch 10A Evening' : 'Batch 10A Morning'}
+          className="Class 10"
+          boardName="CBSE"
+          academicYear="AY 2024–25 (Term 2)"
+          centerLocation="Main Center Wing"
+          orientation="portrait"
+        />
       </div>
+
+      {/* A4 PRINT PREVIEW MODAL */}
+      {isPrintModalOpen && (
+        <PrintPreviewModal
+          isOpen={isPrintModalOpen}
+          onClose={() => setIsPrintModalOpen(false)}
+          title={`Student Timetable — ${activeSession === 'EVENING' ? 'Batch 10A Evening' : 'Batch 10A Morning'}`}
+          defaultOrientation="portrait"
+        >
+          <TimetablePrintDocument
+            slots={currentSlots}
+            batchName={activeSession === 'EVENING' ? 'Batch 10A Evening' : 'Batch 10A Morning'}
+            className="Class 10"
+            boardName="CBSE"
+            academicYear="AY 2024–25 (Term 2)"
+            centerLocation="Main Center Wing"
+            orientation="portrait"
+            isForPreview={true}
+          />
+        </PrintPreviewModal>
+      )}
     </div>
   );
 };

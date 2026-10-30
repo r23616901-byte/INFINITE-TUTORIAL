@@ -96,9 +96,9 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
         </div>
 
         {/* Right-aligned Document Classification & Date */}
-        <div className="text-right flex flex-col items-end">
+        <div className="text-right flex flex-col items-end shrink-0 whitespace-nowrap">
           <span
-            className={`inline-block px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded border ${
+            className={`inline-block px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded border whitespace-nowrap ${
               isTeacherVersion
                 ? 'bg-amber-100 text-amber-900 border-amber-300'
                 : 'bg-[#F0FDF4] text-[#0A3622] border-[#166534]'
@@ -106,10 +106,10 @@ export const DocumentHeader: React.FC<DocumentHeaderProps> = ({
           >
             {reportCategory}
           </span>
-          <span className="text-[10px] font-bold text-slate-700 mt-1 font-mono">
+          <span className="text-[10px] font-bold text-slate-700 mt-1 font-mono whitespace-nowrap">
             {academicYear}
           </span>
-          <span className="text-[9px] text-slate-500 font-medium mt-0.5">
+          <span className="text-[9px] text-slate-500 font-medium mt-0.5 whitespace-nowrap">
             Issued: {dateStr}
           </span>
         </div>

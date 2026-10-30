@@ -43,7 +43,7 @@ export const PrintTemplateHeader: React.FC<PrintTemplateHeaderProps> = ({
     <div className="hidden print:block w-full mb-3 text-black select-none border-b-2 border-[#0A3622] pb-2">
       {/* 1. Main Institutional Header / Letterhead with Dark Academic Green Branding */}
       <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-300">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           <img
             src="/logo-transparent.png"
             alt="Infinite Tutorial"
@@ -53,7 +53,7 @@ export const PrintTemplateHeader: React.FC<PrintTemplateHeaderProps> = ({
               (e.target as HTMLImageElement).src = '/logo-clean.png';
             }}
           />
-          <div>
+          <div className="min-w-0">
             <h1 className="text-lg font-black text-[#0A3622] tracking-tight uppercase leading-none">
               Infinite Tutorial
             </h1>
@@ -66,14 +66,14 @@ export const PrintTemplateHeader: React.FC<PrintTemplateHeaderProps> = ({
           </div>
         </div>
 
-        <div className="text-right flex flex-col items-end flex-shrink-0">
-          <span className="inline-block px-2.5 py-0.5 bg-[#F0FDF4] border border-[#86EFAC] rounded text-[9.5px] font-extrabold uppercase tracking-wider text-[#0A3622]">
+        <div className="text-right flex flex-col items-end shrink-0 whitespace-nowrap">
+          <span className="inline-block px-2.5 py-0.5 bg-[#F0FDF4] border border-[#86EFAC] rounded text-[9.5px] font-extrabold uppercase tracking-wider text-[#0A3622] whitespace-nowrap">
             {reportCategory}
           </span>
-          <p className="text-[9.5px] font-bold text-slate-700 mt-0.5">
+          <p className="text-[9.5px] font-bold text-slate-700 mt-0.5 whitespace-nowrap">
             Academic Session: {academicYear}
           </p>
-          <p className="text-[8.5px] text-slate-500 font-mono">
+          <p className="text-[8.5px] text-slate-500 font-mono whitespace-nowrap">
             Printed: {currentDate} at {currentTime}
           </p>
         </div>
