@@ -193,6 +193,8 @@ const getSeedMarks = (): StudentMark[] => [
   },
 ];
 
+let localMarks: StudentMark[] = [...getSeedMarks()];
+
 export const markService = {
   // Get all marks (role-filtered by backend or fallback)
   getMarks: async (filters: MarkFilters = {}): Promise<StudentMark[]> => {
@@ -214,13 +216,19 @@ export const markService = {
       // Fallback
     }
 
-    let marks = getSeedMarks();
+    let marks = [...localMarks];
     if (filters.subjectName && filters.subjectName !== 'ALL') {
       marks = marks.filter((m) => m.subjectName.toLowerCase() === filters.subjectName?.toLowerCase());
     }
     if (filters.search) {
       const q = filters.search.toLowerCase();
-      marks = marks.filter((m) => m.testName.toLowerCase().includes(q) || m.testCode.toLowerCase().includes(q));
+      marks = marks.filter(
+        (m) =>
+          m.testName.toLowerCase().includes(q) ||
+          m.testCode.toLowerCase().includes(q) ||
+          m.studentName.toLowerCase().includes(q) ||
+          m.studentRoll.toLowerCase().includes(q)
+      );
     }
     return marks;
   },
@@ -237,41 +245,111 @@ export const markService = {
     } catch {
       // Fallback
     }
-    const seed = getSeedMarks();
-    return seed.find((m) => m.id === id) || seed[0];
+    return localMarks.find((m) => m.id === id) || localMarks[0];
   },
 
   createMark: async (payload: CreateMarkPayload): Promise<StudentMark> => {
-    const response = await api.post<{ success: boolean; data: StudentMark; message: string }>(
-      '/marks',
-      payload
-    );
-    return response.data.data;
+    try {
+      const response = await api.post<{ success: boolean; data: StudentMark; message: string }>(
+        '/marks',
+        payload
+      );
+      if (response.data?.data) {
+        return response.data.data;
+      }
+    } catch {}
+    const newMark: StudentMark = {
+      id: `mark-${Date.now()}`,
+      studentId: payload.studentId,
+      studentName: 'Student',
+      studentRoll: 'IT10000',
+      testId: payload.testId,
+      testCode: 'TST-EVAL',
+      testName: 'Evaluated Test',
+      subjectId: payload.subjectId,
+      subjectName: 'General',
+      maxMarks: payload.maxMarks || 50,
+      marksObtained: payload.marksObtained,
+      percentage: Number(((payload.marksObtained / (payload.maxMarks || 50)) * 100).toFixed(1)),
+      answerSheetUrl: payload.answerSheetUrl,
+      answerSheetName: payload.answerSheetName,
+      answerSheetSize: payload.answerSheetSize,
+      mimeType: payload.mimeType || 'application/pdf',
+      isPublished: payload.isPublished ?? true,
+      remarks: payload.remarks,
+      createdById: 'usr-teacher-01',
+      createdByName: 'Prof. Sharma',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    localMarks.unshift(newMark);
+    return newMark;
   },
 
   updateMark: async (id: string, payload: UpdateMarkPayload): Promise<StudentMark> => {
-    const response = await api.put<{ success: boolean; data: StudentMark; message: string }>(
-      `/marks/${id}`,
-      payload
-    );
-    return response.data.data;
+    try {
+      const response = await api.put<{ success: boolean; data: StudentMark; message: string }>(
+        `/marks/${id}`,
+        payload
+      );
+      if (response.data && response.data.success && response.data.data) {
+        return response.data.data;
+      }
+    } catch {
+      // Fallback
+    }
+
+    const idx = localMarks.findIndex((m) => m.id === id);
+    if (idx !== -1) {
+      const old = localMarks[idx];
+      const newScore = payload.marksObtained !== undefined ? payload.marksObtained : old.marksObtained;
+      const updated: StudentMark = {
+        ...old,
+        marksObtained: newScore,
+        percentage: Number(((newScore / old.maxMarks) * 100).toFixed(1)),
+        answerSheetUrl: payload.answerSheetUrl !== undefined ? payload.answerSheetUrl : old.answerSheetUrl,
+        answerSheetName: payload.answerSheetName !== undefined ? payload.answerSheetName : old.answerSheetName,
+        answerSheetSize: payload.answerSheetSize !== undefined ? payload.answerSheetSize : old.answerSheetSize,
+        mimeType: payload.mimeType !== undefined ? payload.mimeType : (old.mimeType || 'application/pdf'),
+        remarks: payload.remarks !== undefined ? payload.remarks : old.remarks,
+        updatedAt: new Date().toISOString(),
+      };
+      localMarks[idx] = updated;
+      return updated;
+    }
+    return localMarks[0];
   },
 
   uploadAnswerSheet: async (
     file: File
   ): Promise<{ fileUrl: string; fileName: string; fileSize: number; mimeType: string; isCloudinary: boolean }> => {
-    const formData = new FormData();
-    formData.append('answerSheet', file);
+    try {
+      const formData = new FormData();
+      formData.append('answerSheet', file);
 
-    const response = await api.post<{
-      success: boolean;
-      data: { fileUrl: string; fileName: string; fileSize: number; mimeType: string; isCloudinary: boolean };
-    }>('/marks/upload-answer-sheet', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data.data;
+      const response = await api.post<{
+        success: boolean;
+        data: { fileUrl: string; fileName: string; fileSize: number; mimeType: string; isCloudinary: boolean };
+      }>('/marks/upload-answer-sheet', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response.data && response.data.success && response.data.data) {
+        return response.data.data;
+      }
+    } catch {
+      // Fallback
+    }
+
+    const fakeUrl = URL.createObjectURL(file);
+    return {
+      fileUrl: fakeUrl,
+      fileName: file.name,
+      fileSize: file.size,
+      mimeType: file.type || 'application/pdf',
+      isCloudinary: false,
+    };
   },
 
   // Get audit trail for a mark

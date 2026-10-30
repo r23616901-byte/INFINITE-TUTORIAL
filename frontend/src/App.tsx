@@ -29,6 +29,7 @@ import { ParentTuitionReachPage } from './pages/parent/ParentTuitionReachPage';
 import { TeacherHomeReachPage } from './pages/teacher/TeacherHomeReachPage';
 import { AdminHomeReachPage } from './pages/admin/AdminHomeReachPage';
 import { MarksEntryPage } from './pages/teacher/MarksEntryPage';
+import { StudentAnswerSheetsPage } from './pages/teacher/StudentAnswerSheetsPage';
 import { ParentMarksPage } from './pages/parent/ParentMarksPage';
 import { TeacherScorecardsPage } from './pages/teacher/TeacherScorecardsPage';
 import { ParentPerformanceGraphsPage } from './pages/parent/ParentPerformanceGraphsPage';
@@ -141,7 +142,7 @@ export const App: React.FC = () => {
               <Route path="/teacher/test-papers" element={<Navigate to="/teacher/tests" replace />} />
               <Route path="/teacher/home-reach" element={<TeacherHomeReachPage />} />
               <Route path="/teacher/marks-entry" element={<MarksEntryPage />} />
-              <Route path="/teacher/answer-sheets" element={<MarksEntryPage />} />
+              <Route path="/teacher/answer-sheets" element={<StudentAnswerSheetsPage />} />
               <Route path="/teacher/marks" element={<MarksEntryPage />} />
               <Route path="/teacher/scorecards" element={<TeacherScorecardsPage />} />
               <Route path="/teacher/performance" element={<TeacherAnalyticsPage />} />

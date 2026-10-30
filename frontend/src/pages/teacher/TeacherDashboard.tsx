@@ -143,8 +143,8 @@ export const TeacherDashboard: React.FC = () => {
       items: [
         {
           id: 'teacher-answer-sheets',
-          title: 'Answer Sheet Repository',
-          description: 'Upload & verify paper answer scans',
+          title: 'Student Answer Sheets',
+          description: 'Attach & view evaluated answer sheet PDFs',
           route: '/teacher/answer-sheets',
           icon: Files,
           iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
