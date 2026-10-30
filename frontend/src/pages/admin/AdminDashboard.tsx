@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/common/Button';
 import { StatCard } from '../../components/common/StatCard';
+import { QuickAccessHub, QuickAccessCategory } from '../../components/common/QuickAccessHub';
 import { fetchStudents } from '../../services/studentService';
 import {
   Shield,
@@ -13,7 +14,6 @@ import {
   CalendarCheck,
   FileQuestion,
   Award,
-  ArrowUpRight,
   TrendingUp,
   FolderOpen,
   History,
@@ -30,18 +30,8 @@ import {
   Megaphone,
   KeyRound,
   Bell,
-  type LucideIcon,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-interface AdminModuleItem {
-  id: string;
-  title: string;
-  description: string;
-  route: string;
-  icon: LucideIcon;
-  iconStyle: string;
-}
 
 export const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -58,204 +48,232 @@ export const AdminDashboard: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  // 24 Admin Navigation Modules mapping directly to existing application routes
-  const adminModules: AdminModuleItem[] = [
-    // STUDENTS & FACULTY
+  // Admin Command Center categorized modules with compact/detailed view matching Teacher & Parent portals
+  const adminCategories: QuickAccessCategory[] = [
     {
-      id: 'students-directory',
-      title: 'Students Directory',
-      description: 'Manage student records & profiles',
-      route: '/admin/students',
-      icon: GraduationCap,
-      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+      title: 'Students & Faculty',
+      items: [
+        {
+          id: 'students-directory',
+          title: 'Students Directory',
+          description: 'Manage student records & profiles',
+          route: '/admin/students',
+          icon: GraduationCap,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+          badge: String(studentCount),
+        },
+        {
+          id: 'parents-management',
+          title: 'Parents Management',
+          description: 'Parent accounts & contacts',
+          route: '/admin/parents',
+          icon: Users,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'teachers-staff',
+          title: 'Teachers & Staff',
+          description: 'Faculty profiles & subject allocations',
+          route: '/admin/teachers',
+          icon: UserCheck,
+          iconStyle: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]',
+          badge: '8',
+        },
+      ],
     },
     {
-      id: 'parents-management',
-      title: 'Parents Management',
-      description: 'Parent accounts & contacts',
-      route: '/admin/parents',
-      icon: Users,
-      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+      title: 'Academic Structure',
+      items: [
+        {
+          id: 'batches-classes',
+          title: 'Batches & Classes',
+          description: 'Grade levels & batch schedules',
+          route: '/admin/batches',
+          icon: Layers,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'boards-subjects',
+          title: 'Boards & Subjects',
+          description: 'CBSE & State Board curriculums',
+          route: '/admin/subjects',
+          icon: BookOpen,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'timetable-sessions',
+          title: 'Timetable & Sessions',
+          description: 'Class weekly schedules & timings',
+          route: '/admin/timetable',
+          icon: Clock,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'portion-completion',
+          title: 'Portion Completion',
+          description: 'Syllabus tracker & milestones',
+          route: '/admin/portion-completion',
+          icon: BookMarked,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+        },
+      ],
     },
     {
-      id: 'teachers-staff',
-      title: 'Teachers & Staff',
-      description: 'Faculty profiles & subject allocations',
-      route: '/admin/teachers',
-      icon: UserCheck,
-      iconStyle: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-
-    // ACADEMIC STRUCTURE
-    {
-      id: 'batches-classes',
-      title: 'Batches & Classes',
-      description: 'Grade levels & batch schedules',
-      route: '/admin/batches',
-      icon: Layers,
-      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-    {
-      id: 'boards-subjects',
-      title: 'Boards & Subjects',
-      description: 'CBSE & State Board curriculums',
-      route: '/admin/subjects',
-      icon: BookOpen,
-      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-    {
-      id: 'timetable-sessions',
-      title: 'Timetable & Sessions',
-      description: 'Class weekly schedules & timings',
-      route: '/admin/timetable',
-      icon: Clock,
-      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
-    },
-    {
-      id: 'portion-completion',
-      title: 'Portion Completion',
-      description: 'Syllabus tracker & milestones',
-      route: '/admin/portion-completion',
-      icon: BookMarked,
-      iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
-    },
-
-    // ATTENDANCE & STUDENT OPERATIONS
-    {
-      id: 'take-attendance',
-      title: 'Take Attendance',
-      description: 'Live batch attendance rolls',
-      route: '/admin/attendance',
-      icon: ClipboardCheck,
-      iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+      title: 'Attendance & Student Operations',
+      items: [
+        {
+          id: 'take-attendance',
+          title: 'Take Attendance',
+          description: 'Live batch attendance rolls',
+          route: '/admin/attendance',
+          icon: ClipboardCheck,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+          badge: 'Pending',
+          badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
+        },
+        {
+          id: 'attendance-history',
+          title: 'Attendance History',
+          description: 'Historical registers & reports',
+          route: '/admin/attendance-history',
+          icon: CalendarCheck,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'leave-reports',
+          title: 'Leave Reports',
+          description: 'Review student leave applications',
+          route: '/admin/leave-requests',
+          icon: FileClock,
+          iconStyle: 'text-amber-800 bg-amber-50 border-amber-200',
+          badge: '4 Review',
+          badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+        },
+        {
+          id: 'homework-safety-desk',
+          title: 'Homework / Safety Desk',
+          description: 'Arrival & departure home-reach logs',
+          route: '/admin/home-reach',
+          icon: ShieldCheck,
+          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+        },
+        {
+          id: 'daily-updates',
+          title: 'Daily Updates',
+          description: 'Daily syllabus & session updates',
+          route: '/admin/daily-updates',
+          icon: Bell,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+      ],
     },
     {
-      id: 'attendance-history',
-      title: 'Attendance History',
-      description: 'Historical registers & reports',
-      route: '/admin/attendance-history',
-      icon: CalendarCheck,
-      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+      title: 'Tests, Question Papers & Marks',
+      items: [
+        {
+          id: 'tests-question-papers',
+          title: 'Tests & Question Papers',
+          description: 'Exam scheduling & question papers',
+          route: '/admin/tests',
+          icon: FileQuestion,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'enter-edit-marks',
+          title: 'Enter / Edit Marks',
+          description: 'Student scores & grade entries',
+          route: '/admin/marks',
+          icon: PenLine,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+        },
+        {
+          id: 'student-scorecard',
+          title: 'Student Scorecard',
+          description: 'Official academic report cards',
+          route: '/admin/scorecards',
+          icon: Award,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+        },
+        {
+          id: 'answer-sheet-repository',
+          title: 'Answer Sheet Repository',
+          description: 'Uploaded paper answer scans',
+          route: '/admin/answer-sheets',
+          icon: Files,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
     },
     {
-      id: 'leave-reports',
-      title: 'Leave Reports',
-      description: 'Review student leave applications',
-      route: '/admin/leave-requests',
-      icon: FileClock,
-      iconStyle: 'text-amber-800 bg-amber-50 border-amber-200',
+      title: 'Communication & Announcements',
+      items: [
+        {
+          id: 'announcements',
+          title: 'Announcements',
+          description: 'Broadcast notices to parents & staff',
+          route: '/admin/announcements',
+          icon: Megaphone,
+          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+        },
+        {
+          id: 'calendar',
+          title: 'Calendar',
+          description: 'Academic calendar & event schedules',
+          route: '/admin/announcements',
+          icon: CalendarDays,
+          iconStyle: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]',
+        },
+      ],
     },
     {
-      id: 'homework-safety-desk',
-      title: 'Homework / Safety Desk',
-      description: 'Arrival & departure home-reach logs',
-      route: '/admin/home-reach',
-      icon: ShieldCheck,
-      iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+      title: 'Analytics & Reporting',
+      items: [
+        {
+          id: 'performance-analytics',
+          title: 'Performance Analytics',
+          description: 'Graphical trends & subject insights',
+          route: '/admin/analytics',
+          icon: BarChart3,
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+        },
+        {
+          id: 'reports',
+          title: 'Reports',
+          description: 'Consolidated institutional reports',
+          route: '/admin/analytics',
+          icon: FileSpreadsheet,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
     },
     {
-      id: 'daily-updates',
-      title: 'Daily Updates',
-      description: 'Daily syllabus & session updates',
-      route: '/admin/daily-updates',
-      icon: Bell,
-      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
-    },
-
-    // TESTS & MARKS
-    {
-      id: 'tests-question-papers',
-      title: 'Tests & Question Papers',
-      description: 'Exam scheduling & question papers',
-      route: '/admin/tests',
-      icon: FileQuestion,
-      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-    {
-      id: 'enter-edit-marks',
-      title: 'Enter / Edit Marks',
-      description: 'Student scores & grade entries',
-      route: '/admin/marks',
-      icon: PenLine,
-      iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
-    },
-    {
-      id: 'student-scorecard',
-      title: 'Student Scorecard',
-      description: 'Official academic report cards',
-      route: '/admin/scorecards',
-      icon: Award,
-      iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
-    },
-    {
-      id: 'answer-sheet-repository',
-      title: 'Answer Sheet Repository',
-      description: 'Uploaded paper answer scans',
-      route: '/admin/answer-sheets',
-      icon: Files,
-      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-
-    // COMMUNICATION
-    {
-      id: 'announcements',
-      title: 'Announcements',
-      description: 'Broadcast notices to parents & staff',
-      route: '/admin/announcements',
-      icon: Megaphone,
-      iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
-    },
-    {
-      id: 'calendar',
-      title: 'Calendar',
-      description: 'Academic calendar & event schedules',
-      route: '/admin/announcements',
-      icon: CalendarDays,
-      iconStyle: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]',
-    },
-
-    // ANALYTICS & REPORTING
-    {
-      id: 'performance-analytics',
-      title: 'Performance Analytics',
-      description: 'Graphical trends & subject insights',
-      route: '/admin/analytics',
-      icon: BarChart3,
-      iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
-    },
-    {
-      id: 'reports',
-      title: 'Reports',
-      description: 'Consolidated institutional reports',
-      route: '/admin/analytics',
-      icon: FileSpreadsheet,
-      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-
-    // FILES & SECURITY
-    {
-      id: 'uploaded-files',
-      title: 'Uploaded Files',
-      description: 'Study resources & institutional files',
-      route: '/admin/files',
-      icon: FolderOpen,
-      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-    {
-      id: 'audit-logs',
-      title: 'Audit Logs',
-      description: 'Immutable security & activity logs',
-      route: '/admin/audit-logs',
-      icon: History,
-      iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
-    },
-    {
-      id: 'password-management',
-      title: 'Password Management',
-      description: 'Reset credentials & secure logins',
-      route: '/admin/passwords',
-      icon: KeyRound,
-      iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+      title: 'Files & System Security',
+      items: [
+        {
+          id: 'uploaded-files',
+          title: 'Uploaded Files',
+          description: 'Study resources & institutional files',
+          route: '/admin/files',
+          icon: FolderOpen,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'audit-logs',
+          title: 'Audit Logs',
+          description: 'Immutable security & activity logs',
+          route: '/admin/audit-logs',
+          icon: History,
+          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+        {
+          id: 'password-management',
+          title: 'Password Management',
+          description: 'Reset credentials & secure logins',
+          route: '/admin/passwords',
+          icon: KeyRound,
+          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+        },
+      ],
     },
   ];
 
@@ -270,14 +288,14 @@ export const AdminDashboard: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-xl sm:text-2xl font-black text-[#0B1F4D] tracking-tight">
-                {user?.name || 'Dr. Ramesh Sharma'}
+                Academic Administration Center
               </h1>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
-                INSTITUTE CONTROLLER
+                MASTER ADMIN ACCESS
               </span>
             </div>
-            <p className="text-xs text-[#5B6B82] mt-1">
-              Infinite Tutorial Administrative Console &bull; Email: {user?.email || 'admin@infinitetutorial.com'} &bull; Phone: {user?.phone || '+91 9876543210'}
+            <p className="text-xs text-[#5B6B82] mt-1 font-medium">
+              System Administrator: {user?.name || 'Administrator'} • Central Academy Control
             </p>
           </div>
         </div>
@@ -397,65 +415,14 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* ========================================================= */}
-      {/* ADMIN COMMAND CENTER / NAVIGATION HUB */}
+      {/* ADMIN COMMAND CENTER (CATEGORIZED QUICK ACCESS HUB) */}
       {/* ========================================================= */}
-      <div className="bg-white rounded-2xl border border-[#DCE5F2] p-5 sm:p-6 shadow-xs space-y-4">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F0F4FA]">
-          <div>
-            <div className="flex items-center gap-2.5">
-              <h2 className="text-lg font-bold text-[#0B1F4D] tracking-tight">
-                Admin Command Center
-              </h2>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
-                {adminModules.length} Modules
-              </span>
-            </div>
-            <p className="text-xs text-[#5B6B82] mt-0.5">
-              Quick access to all administrative modules
-            </p>
-          </div>
-          <span className="text-[11px] font-medium text-[#8A9BB0] hidden sm:inline-block">
-            Click any module card to navigate
-          </span>
-        </div>
-
-        {/* Responsive Grid: Desktop (4 cols), Tablet (3 cols), Mobile (2 cols), Extra Small (1 col) */}
-        <div className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-3.5">
-          {adminModules.map((item) => {
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => navigate(item.route)}
-                aria-label={`Open ${item.title}`}
-                className="group relative text-left p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-[#DCE5F2] hover:border-[#155EEF] hover:bg-[#F8FAFD] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#155EEF] focus:ring-offset-2 flex flex-col justify-between"
-              >
-                <div className="flex items-start justify-between w-full">
-                  <div
-                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border transition-transform duration-200 group-hover:scale-105 ${item.iconStyle}`}
-                  >
-                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div className="w-6 h-6 rounded-lg flex items-center justify-center text-[#8A9BB0] group-hover:text-[#155EEF] group-hover:bg-[#EEF4FF] transition-all">
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </div>
-                </div>
-
-                <div className="mt-3">
-                  <h3 className="font-bold text-[#0B1F4D] text-xs sm:text-sm group-hover:text-[#155EEF] transition-colors line-clamp-1 leading-snug">
-                    {item.title}
-                  </h3>
-                  <p className="text-[11px] text-[#5B6B82] mt-0.5 line-clamp-1 leading-normal">
-                    {item.description}
-                  </p>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <QuickAccessHub
+        sectionTitle="Admin Command Center"
+        sectionSubtitle="Quick access to all administrative and institutional management tools"
+        categories={adminCategories}
+        defaultCompact={true}
+      />
     </div>
   );
 };
