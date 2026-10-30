@@ -190,8 +190,6 @@ export const ParentAttendancePage: React.FC = () => {
           subtitle="🟢 Attended classes"
           icon={<CheckCircle2 className="w-5 h-5 text-emerald-600" />}
           iconBg="bg-emerald-50"
-          badge="42 Present"
-          badgeVariant="emerald"
         />
 
         <StatCard
@@ -200,8 +198,6 @@ export const ParentAttendancePage: React.FC = () => {
           subtitle="🔴 Excused / Missed"
           icon={<XCircle className="w-5 h-5 text-red-600" />}
           iconBg="bg-red-50"
-          badge="4 Absent"
-          badgeVariant="amber"
         />
 
         <StatCard
@@ -210,8 +206,6 @@ export const ParentAttendancePage: React.FC = () => {
           subtitle="Requirement: >85%"
           icon={<TrendingUp className="w-5 h-5 text-emerald-600" />}
           iconBg="bg-emerald-50"
-          badge="91.3%"
-          badgeVariant="emerald"
         />
 
         <StatCard
@@ -220,8 +214,6 @@ export const ParentAttendancePage: React.FC = () => {
           subtitle="Mon–Sat Schedule"
           icon={<CalendarCheck className="w-5 h-5 text-blue-600" />}
           iconBg="bg-blue-50"
-          badge="Term 1"
-          badgeVariant="blue"
         />
       </div>
 

@@ -11,8 +11,6 @@ import {
   History,
   Info,
   Check,
-  LayoutGrid,
-  ListFilter,
 } from 'lucide-react';
 import markService from '../../services/markService';
 import scorecardService from '../../services/scorecardService';
@@ -24,7 +22,7 @@ import { PrintButton, PrintPreviewModal, ParentProgressReportPrintDocument, Scor
 import { resolveBackendAssetUrl } from '../../utils/documentPrintUtils';
 
 export const ParentMarksPage: React.FC = () => {
-  const [activeView, setActiveView] = useState<'SCORECARD' | 'TEST_LIST'>('SCORECARD');
+  const activeView = 'SCORECARD';
   const [selectedSubjectTab, setSelectedSubjectTab] = useState<'ALL' | 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'>('ALL');
   const [scorecard, setScorecard] = useState<StudentScorecard | null>(null);
   const [marks, setMarks] = useState<StudentMark[]>([]);
@@ -88,57 +86,16 @@ export const ParentMarksPage: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-3">
-          {/* Mode Selector */}
-          <div className="bg-gray-100 p-1 rounded-xl flex items-center print:hidden">
-            <button
-              onClick={() => setActiveView('SCORECARD')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center ${
-                activeView === 'SCORECARD'
-                  ? 'bg-white text-[#155EEF] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5 mr-1.5" />
-              4-Subject Scorecard
-            </button>
-            <button
-              onClick={() => setActiveView('TEST_LIST')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center ${
-                activeView === 'TEST_LIST'
-                  ? 'bg-white text-[#155EEF] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              <ListFilter className="w-3.5 h-3.5 mr-1.5" />
-              Individual Tests ({marks.length})
-            </button>
-          </div>
-
-          <button
-            onClick={loadData}
-            disabled={loading}
-            className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-          >
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
-          </button>
-
           <PrintButton
             onClick={() => setIsPrintModalOpen(true)}
             variant="academic"
             size="md"
             label={
-              activeView === 'SCORECARD'
-                ? selectedSubjectTab === 'ALL'
-                  ? 'Print Scorecard'
-                  : `Print ${selectedSubjectTab}`
-                : 'Print Progress Report'
+              selectedSubjectTab === 'ALL'
+                ? 'Print Scorecard'
+                : `Print ${selectedSubjectTab}`
             }
-            title={
-              activeView === 'SCORECARD'
-                ? `Print official certified scorecard${selectedSubjectTab !== 'ALL' ? ` for ${selectedSubjectTab}` : ''}`
-                : 'Print official progress report'
-            }
+            title={`Print official certified scorecard${selectedSubjectTab !== 'ALL' ? ` for ${selectedSubjectTab}` : ''}`}
           />
         </div>
       </div>
