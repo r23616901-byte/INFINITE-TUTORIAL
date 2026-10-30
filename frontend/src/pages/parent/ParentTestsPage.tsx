@@ -15,11 +15,15 @@ import {
   Eye,
   Search,
   BookOpen,
-  X,
-  FileCheck,
   CheckCircle2,
   RefreshCw,
 } from 'lucide-react';
+import {
+  PrintButton,
+  PrintPreviewModal,
+  TestQuestionPaperDocument,
+} from '../../components/print';
+import { resolveBackendAssetUrl } from '../../utils/documentPrintUtils';
 
 export const ParentTestsPage: React.FC = () => {
   const [tests, setTests] = useState<TestItem[]>([]);
@@ -28,11 +32,8 @@ export const ParentTestsPage: React.FC = () => {
   const [subjectFilter, setSubjectFilter] = useState('ALL');
   const [typeFilter, setTypeFilter] = useState('ALL');
 
-  // Preview Modal
-  const [viewingPaper, setViewingPaper] = useState<{
-    url: string;
-    name: string;
-  } | null>(null);
+  // Official Question Paper Preview Modal (Universal Document Template)
+  const [previewingTestPaper, setPreviewingTestPaper] = useState<TestItem | null>(null);
 
   const loadTests = async () => {
     try {
@@ -239,31 +240,35 @@ export const ParentTestsPage: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <button
+                        onClick={() => setPreviewingTestPaper(test)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#EEF4FF] text-[#1048B5] hover:bg-[#DCE5F2] border border-[#DCE5F2] transition-colors"
+                        title="View official examination question paper"
+                      >
+                        <Eye className="w-3.5 h-3.5" /> View Paper
+                      </button>
+
                       {hasPaper && (
-                        <>
-                          <button
-                            onClick={() =>
-                              setViewingPaper({
-                                url: test.testPaperUrl!,
-                                name: test.testPaperName || test.name,
-                              })
-                            }
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200"
-                          >
-                            <Eye className="w-3.5 h-3.5" /> View Paper
-                          </button>
-                          <a
-                            href={test.testPaperUrl!}
-                            download={test.testPaperName || 'test-paper.pdf'}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200"
-                          >
-                            <Download className="w-3.5 h-3.5" /> Download
-                          </a>
-                        </>
+                        <a
+                          href={resolveBackendAssetUrl(test.testPaperUrl)}
+                          download={test.testPaperName || `${test.name}.pdf`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition-colors"
+                          title="Download uploaded question paper file"
+                        >
+                          <Download className="w-3.5 h-3.5" /> Download
+                        </a>
                       )}
+
+                      <PrintButton
+                        onClick={() => setPreviewingTestPaper(test)}
+                        variant="outline"
+                        size="sm"
+                        label="Print Paper"
+                        title="Print official question paper"
+                      />
                     </div>
                   </div>
 
@@ -322,51 +327,21 @@ export const ParentTestsPage: React.FC = () => {
         )}
       </Card>
 
-      {/* Viewing Paper Modal */}
-      {viewingPaper && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <FileCheck className="w-5 h-5 text-blue-400" />
-                <h4 className="font-bold text-sm truncate max-w-md">{viewingPaper.name}</h4>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={viewingPaper.url}
-                  download={viewingPaper.name}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5"
-                >
-                  <Download className="w-3.5 h-3.5" /> Download
-                </a>
-                <button
-                  onClick={() => setViewingPaper(null)}
-                  className="p-1.5 text-slate-400 hover:text-white rounded-lg"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex-1 bg-slate-100 flex items-center justify-center p-4 overflow-auto">
-              {viewingPaper.url.toLowerCase().endsWith('.pdf') ? (
-                <iframe
-                  src={viewingPaper.url}
-                  title={viewingPaper.name}
-                  className="w-full h-full rounded-xl bg-white border border-slate-200 shadow-xs"
-                />
-              ) : (
-                <img
-                  src={viewingPaper.url}
-                  alt={viewingPaper.name}
-                  className="max-w-full max-h-full object-contain rounded-xl shadow-md border border-slate-200"
-                />
-              )}
-            </div>
-          </div>
-        </div>
+      {/* Official Question Paper Preview Modal (Universal Document Template) */}
+      {previewingTestPaper && (
+        <PrintPreviewModal
+          isOpen={!!previewingTestPaper}
+          onClose={() => setPreviewingTestPaper(null)}
+          title={`Question Paper — ${previewingTestPaper.name}`}
+          documentTitle={`Infinite_Tutorial_Question_Paper_${previewingTestPaper.testId || previewingTestPaper.name}`}
+          defaultOrientation="portrait"
+        >
+          <TestQuestionPaperDocument
+            test={previewingTestPaper}
+            isForPreview={true}
+            showAnswerKey={false}
+          />
+        </PrintPreviewModal>
       )}
     </div>
   );

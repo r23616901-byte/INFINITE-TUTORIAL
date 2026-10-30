@@ -20,6 +20,7 @@ import { StudentScorecard } from '../../types/scorecard';
 import { ScorecardViewer } from '../shared/ScorecardViewer';
 import { EmptyState } from '../../components/common/EmptyState';
 import { PrintButton, PrintPreviewModal, ParentProgressReportPrintDocument, ScorecardPrintDocument } from '../../components/print';
+import { resolveBackendAssetUrl } from '../../utils/documentPrintUtils';
 
 export const ParentMarksPage: React.FC = () => {
   const [activeView, setActiveView] = useState<'SCORECARD' | 'TEST_LIST'>('SCORECARD');
@@ -342,7 +343,7 @@ export const ParentMarksPage: React.FC = () => {
                           {m.answerSheetUrl ? (
                             <button
                               onClick={() => {
-                                setPreviewUrl(m.answerSheetUrl!);
+                                setPreviewUrl(resolveBackendAssetUrl(m.answerSheetUrl!));
                                 setPreviewTitle(`${m.studentName} — ${m.testName} (${m.subjectName})`);
                               }}
                               className="inline-flex items-center px-3 py-1.5 border border-[#DCE5F2] text-xs font-medium rounded-lg text-[#1048B5] bg-[#EEF4FF] hover:bg-[#EEF4FF] transition-colors"

@@ -17,6 +17,7 @@ import { PrintTemplateFooter } from '../../components/common/PrintTemplateFooter
 import { PrintPreviewModal } from '../../components/print/PrintPreviewModal';
 import { ScorecardPrintDocument } from '../../components/print/templates/ScorecardPrintDocument';
 import { PrintButton } from '../../components/print/PrintButton';
+import { resolveBackendAssetUrl } from '../../utils/documentPrintUtils';
 
 interface ScorecardViewerProps {
   scorecard: StudentScorecard;
@@ -484,7 +485,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
                           <button
                             type="button"
                             onClick={() => {
-                              setPreviewDocUrl(testItem.answerSheetUrl!);
+                              setPreviewDocUrl(resolveBackendAssetUrl(testItem.answerSheetUrl!));
                               setPreviewDocTitle(`Scanned Answer Sheet • ${testItem.testName} (${scorecard.studentName})`);
                             }}
                             className="inline-flex items-center px-2.5 py-1 rounded-lg text-[#155EEF] bg-[#EEF4FF] hover:bg-blue-100 font-semibold border border-[#DCE5F2] transition-colors cursor-pointer"
@@ -503,7 +504,7 @@ export const ScorecardViewer: React.FC<ScorecardViewerProps> = ({
                           <button
                             type="button"
                             onClick={() => {
-                              setPreviewDocUrl(testItem.testPaperUrl!);
+                              setPreviewDocUrl(resolveBackendAssetUrl(testItem.testPaperUrl!));
                               setPreviewDocTitle(`Test Question Paper • ${testItem.testName} (${subScorecard.subjectName})`);
                             }}
                             className="inline-flex items-center px-2.5 py-1 rounded-lg text-emerald-700 bg-emerald-50 hover:bg-emerald-100 font-semibold border border-emerald-200 transition-colors cursor-pointer"
