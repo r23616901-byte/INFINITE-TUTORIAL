@@ -25,7 +25,7 @@ export const INITIAL_SUBJECTS: SubjectDto[] = [
 export const INITIAL_BATCHES: BatchDto[] = [
   {
     id: 'batch-10-morning',
-    name: '10th Morning session',
+    name: '10th Morning',
     timing: '07:00 AM - 08:30 AM',
     session: 'MORNING',
     startTime: '07:00 AM',
@@ -42,7 +42,7 @@ export const INITIAL_BATCHES: BatchDto[] = [
   },
   {
     id: 'batch-10-evening',
-    name: '10th Evening session',
+    name: '10th Evening',
     timing: '05:30 PM - 07:00 PM',
     session: 'EVENING',
     startTime: '05:30 PM',
@@ -59,7 +59,7 @@ export const INITIAL_BATCHES: BatchDto[] = [
   },
   {
     id: 'batch-9-morning',
-    name: '9th Morning session',
+    name: '9th Morning',
     timing: '07:00 AM - 08:30 AM',
     session: 'MORNING',
     startTime: '07:00 AM',
@@ -76,7 +76,7 @@ export const INITIAL_BATCHES: BatchDto[] = [
   },
   {
     id: 'batch-9-evening',
-    name: '9th Evening session',
+    name: '9th Evening',
     timing: '05:00 PM - 06:30 PM',
     session: 'EVENING',
     startTime: '05:00 PM',

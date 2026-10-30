@@ -22,7 +22,7 @@ export const DEFAULT_BOARDS = [
 export const DEFAULT_BATCHES = [
   {
     id: 'batch-10-morning',
-    name: '10th Morning session',
+    name: '10th Morning',
     timing: '07:00 AM - 08:30 AM',
     classId: 'cls-10',
     boardId: 'brd-cbse',
@@ -30,7 +30,7 @@ export const DEFAULT_BATCHES = [
   },
   {
     id: 'batch-10-evening',
-    name: '10th Evening session',
+    name: '10th Evening',
     timing: '05:30 PM - 07:00 PM',
     classId: 'cls-10',
     boardId: 'brd-cbse',
@@ -38,7 +38,7 @@ export const DEFAULT_BATCHES = [
   },
   {
     id: 'batch-9-morning',
-    name: '9th Morning session',
+    name: '9th Morning',
     timing: '07:00 AM - 08:30 AM',
     classId: 'cls-9',
     boardId: 'brd-ksb',
@@ -46,7 +46,7 @@ export const DEFAULT_BATCHES = [
   },
   {
     id: 'batch-9-evening',
-    name: '9th Evening session',
+    name: '9th Evening',
     timing: '05:00 PM - 06:30 PM',
     classId: 'cls-9',
     boardId: 'brd-ksb',

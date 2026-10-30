@@ -583,13 +583,13 @@ export const AdminPortionCompletionPage: React.FC = () => {
             <option value="ALL">All Batches (Composite View)</option>
             {(selectedTrackId === 'ksb-9' || selectedTrackId === 'cbse-9') ? (
               <>
-                <option value="batch-9-morning">9th Morning session (07:00 AM - 08:30 AM)</option>
-                <option value="batch-9-evening">9th Evening session (05:00 PM - 06:30 PM)</option>
+                <option value="batch-9-morning">9th Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-9-evening">9th Evening (05:00 PM - 06:30 PM)</option>
               </>
             ) : (
               <>
-                <option value="batch-10-morning">10th Morning session (07:00 AM - 08:30 AM)</option>
-                <option value="batch-10-evening">10th Evening session (05:30 PM - 07:00 PM)</option>
+                <option value="batch-10-morning">10th Morning (07:00 AM - 08:30 AM)</option>
+                <option value="batch-10-evening">10th Evening (05:30 PM - 07:00 PM)</option>
               </>
             )}
           </select>

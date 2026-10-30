@@ -176,10 +176,10 @@ export const TeacherHomeReachPage: React.FC = () => {
                 onChange={(e) => setSelectedBatch(e.target.value)}
                 className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 bg-white"
               >
-                <option value="batch-10-morning">10th Morning session</option>
-                <option value="batch-10-evening">10th Evening session</option>
-                <option value="batch-9-morning">9th Morning session</option>
-                <option value="batch-9-evening">9th Evening session</option>
+                <option value="batch-10-morning">10th Morning</option>
+                <option value="batch-10-evening">10th Evening</option>
+                <option value="batch-9-morning">9th Morning</option>
+                <option value="batch-9-evening">9th Evening</option>
               </select>
             </div>
 
