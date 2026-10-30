@@ -14,8 +14,6 @@ export function buildPdfBuffer(title: string, subtitle: string, contentLines: st
   formattedLines.push(title.toUpperCase());
   formattedLines.push(subtitle);
   formattedLines.push(`---------------------------------------------------------------------------------------------`);
-  formattedLines.push(`Candidate Name: _______________________   Roll Number: ______________   Date: ________`);
-  formattedLines.push(`---------------------------------------------------------------------------------------------`);
   formattedLines.push(``);
 
   for (const line of contentLines) {
@@ -57,15 +55,9 @@ export function buildPdfBuffer(title: string, subtitle: string, contentLines: st
   streamBody += `0 -16 Td\n`;
   streamBody += `(${sanitize(formattedLines[3])}) Tj\n`;
 
-  streamBody += `0 -14 Td\n`;
-  streamBody += `(${sanitize(formattedLines[4])}) Tj\n`;
-
-  streamBody += `0 -14 Td\n`;
-  streamBody += `(${sanitize(formattedLines[5])}) Tj\n`;
-
   streamBody += `/F1 9.5 Tf\n`;
-  let currentY = 716;
-  for (let i = 6; i < Math.min(formattedLines.length, 50); i++) {
+  let currentY = 744;
+  for (let i = 4; i < Math.min(formattedLines.length, 50); i++) {
     const l = formattedLines[i];
     streamBody += `0 -15 Td\n`;
     streamBody += `(${sanitize(l)}) Tj\n`;

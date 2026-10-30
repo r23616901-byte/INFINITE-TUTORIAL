@@ -24,8 +24,8 @@ export interface TestQuestionPaperDocumentProps {
 export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps> = ({
   test,
   showAnswerKey = false,
-  studentName,
-  rollNumber,
+  studentName: _studentName,
+  rollNumber: _rollNumber,
   isForPreview: _isForPreview = false,
 }) => {
   const [loadError, setLoadError] = useState(false);
@@ -121,9 +121,9 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
       signatureLabels={['Invigilator / Examiner', 'Subject Faculty', 'Principal / Center Head']}
       customFooterNote={`${boardName} Secondary Board Examination &bull; Official Question Paper of Infinite Tutorial`}
     >
-      {/* 1. Exam Metrics & Candidate Fill-in Area */}
+      {/* 1. Exam Metrics Banner */}
       <section className="bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs flex flex-wrap items-center justify-between gap-3 avoid-break">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <div>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Allotted Time</span>
             <span className="font-bold text-slate-900">{test.duration || '90 mins'}</span>
@@ -138,26 +138,15 @@ export const TestQuestionPaperDocument: React.FC<TestQuestionPaperDocumentProps>
             <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Paper Identifier</span>
             <span className="font-mono font-bold text-slate-800">{test.testId || 'TST-REF'}</span>
           </div>
+          <div className="h-6 w-px bg-slate-300" />
+          <div>
+            <span className="text-[9.5px] uppercase font-bold text-slate-500 block">Class &amp; Board</span>
+            <span className="font-bold text-slate-800">{className} &bull; {boardName}</span>
+          </div>
         </div>
 
-        {/* Candidate Fill-in Area */}
-        <div className="flex flex-wrap items-center gap-2 text-[10.5px]">
-          <div className="border border-dashed border-slate-400 rounded px-2.5 py-1 bg-white">
-            <span className="text-slate-500">Student Name: </span>
-            <span className="font-bold text-slate-900">
-              {studentName ? studentName : '___________________________'}
-            </span>
-          </div>
-          <div className="border border-dashed border-slate-400 rounded px-2.5 py-1 bg-white">
-            <span className="text-slate-500">Roll No: </span>
-            <span className="font-mono font-bold text-slate-900">
-              {rollNumber ? rollNumber : '______________'}
-            </span>
-          </div>
-          <div className="border border-dashed border-slate-400 rounded px-2.5 py-1 bg-white">
-            <span className="text-slate-500">Class/Sec: </span>
-            <span className="font-bold text-slate-900">{className}</span>
-          </div>
+        <div className="text-[11px] font-bold text-[#0A3622] bg-[#F0FDF4] px-2.5 py-1 rounded border border-[#166534]/30">
+          Official Examination Paper
         </div>
       </section>
 
