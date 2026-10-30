@@ -19,7 +19,7 @@ export const TeacherHomeReachPage: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   // Departure Form State
-  const [selectedBatch, setSelectedBatch] = useState('batch-10a-evening');
+  const [selectedBatch, setSelectedBatch] = useState('batch-10-evening');
   const [selectedSession, setSelectedSession] = useState('EVENING');
   const [classEndedTime, setClassEndedTime] = useState('7:30 PM');
   const [departureNotes, setDepartureNotes] = useState('Class concluded on schedule.');
@@ -176,10 +176,10 @@ export const TeacherHomeReachPage: React.FC = () => {
                 onChange={(e) => setSelectedBatch(e.target.value)}
                 className="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 bg-white"
               >
-                <option value="batch-10a-evening">10A Evening (CBSE)</option>
-                <option value="batch-10a-morning">10-A Morning (CBSE)</option>
-                <option value="batch-10b-evening">10-B Evening (CBSE)</option>
-                <option value="batch-9a-evening">9-A Evening (State)</option>
+                <option value="batch-10-morning">10th Morning session</option>
+                <option value="batch-10-evening">10th Evening session</option>
+                <option value="batch-9-morning">9th Morning session</option>
+                <option value="batch-9-evening">9th Evening session</option>
               </select>
             </div>
 

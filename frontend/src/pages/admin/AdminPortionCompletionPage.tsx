@@ -581,28 +581,15 @@ export const AdminPortionCompletionPage: React.FC = () => {
             className="text-xs font-bold border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 focus:bg-white text-slate-800"
           >
             <option value="ALL">All Batches (Composite View)</option>
-            {selectedTrackId === 'ksb-9' && (
+            {(selectedTrackId === 'ksb-9' || selectedTrackId === 'cbse-9') ? (
               <>
-                <option value="batch-9a-morning">Batch 9-A Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-9a-evening">Batch 9-A Evening (05:00 PM - 06:30 PM)</option>
+                <option value="batch-9-morning">9th Morning session (07:00 AM - 08:30 AM)</option>
+                <option value="batch-9-evening">9th Evening session (05:00 PM - 06:30 PM)</option>
               </>
-            )}
-            {selectedTrackId === 'cbse-9' && (
+            ) : (
               <>
-                <option value="batch-9b-morning">Batch 9-B Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-9b-evening">Batch 9-B Evening (05:00 PM - 06:30 PM)</option>
-              </>
-            )}
-            {selectedTrackId === 'ksb-10' && (
-              <>
-                <option value="batch-10b-morning">Batch 10-B Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-10b-evening">Batch 10-B Evening (05:30 PM - 07:00 PM)</option>
-              </>
-            )}
-            {selectedTrackId === 'cbse-10' && (
-              <>
-                <option value="batch-10a-morning">Batch 10-A Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-10a-evening">Batch 10-A Evening (05:30 PM - 07:00 PM)</option>
+                <option value="batch-10-morning">10th Morning session (07:00 AM - 08:30 AM)</option>
+                <option value="batch-10-evening">10th Evening session (05:30 PM - 07:00 PM)</option>
               </>
             )}
           </select>

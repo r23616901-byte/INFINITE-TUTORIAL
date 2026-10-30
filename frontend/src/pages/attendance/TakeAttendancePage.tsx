@@ -50,7 +50,7 @@ export const TakeAttendancePage: React.FC = () => {
   const [selectedSession, setSelectedSession] = useState<AttendanceSession>('MORNING');
   const [selectedClass, setSelectedClass] = useState<string>('cls-10');
   const [selectedBoard, setSelectedBoard] = useState<string>('brd-cbse');
-  const [selectedBatch, setSelectedBatch] = useState<string>('batch-10a-morning');
+  const [selectedBatch, setSelectedBatch] = useState<string>('batch-10-morning');
 
   // Academic Dropdown Lookups
   const [classes, setClasses] = useState<ClassItem[]>([]);

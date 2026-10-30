@@ -457,7 +457,7 @@ export const TEACHER_CURRICULUM_TRACKS = [
     boardId: 'brd-ksb',
     className: 'Class 9',
     boardName: 'Karnataka State Board',
-    defaultBatch: 'batch-9a-morning',
+    defaultBatch: 'batch-9-morning',
   },
   {
     id: 'ksb-10',
@@ -467,7 +467,7 @@ export const TEACHER_CURRICULUM_TRACKS = [
     boardId: 'brd-ksb',
     className: 'Class 10',
     boardName: 'Karnataka State Board',
-    defaultBatch: 'batch-10b-morning',
+    defaultBatch: 'batch-10-morning',
   },
   {
     id: 'cbse-9',
@@ -477,7 +477,7 @@ export const TEACHER_CURRICULUM_TRACKS = [
     boardId: 'brd-cbse',
     className: 'Class 9',
     boardName: 'CBSE',
-    defaultBatch: 'batch-9b-morning',
+    defaultBatch: 'batch-9-morning',
   },
   {
     id: 'cbse-10',
@@ -487,13 +487,13 @@ export const TEACHER_CURRICULUM_TRACKS = [
     boardId: 'brd-cbse',
     className: 'Class 10',
     boardName: 'CBSE',
-    defaultBatch: 'batch-10a-morning',
+    defaultBatch: 'batch-10-morning',
   },
 ];
 
 export const TeacherPortionProgressPage: React.FC = () => {
   const [selectedTrackId, setSelectedTrackId] = useState<string>('ksb-9');
-  const [selectedBatchId, setSelectedBatchId] = useState<string>('batch-9a-morning');
+  const [selectedBatchId, setSelectedBatchId] = useState<string>('batch-9-morning');
   const [activeTab, setActiveTab] = useState<'PORTIONS' | 'QUESTION_PAPERS'>('PORTIONS');
 
   const [chapters, setChapters] = useState<SyllabusChapter[]>(KSB_CLASS_9_SYLLABUS);
@@ -687,28 +687,15 @@ export const TeacherPortionProgressPage: React.FC = () => {
             onChange={(e) => setSelectedBatchId(e.target.value)}
             className="text-xs font-bold border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 focus:bg-white text-slate-800"
           >
-            {selectedTrackId === 'ksb-9' && (
+            {(selectedTrackId === 'ksb-9' || selectedTrackId === 'cbse-9') ? (
               <>
-                <option value="batch-9a-morning">Batch 9-A Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-9a-evening">Batch 9-A Evening (05:00 PM - 06:30 PM)</option>
+                <option value="batch-9-morning">9th Morning session (07:00 AM - 08:30 AM)</option>
+                <option value="batch-9-evening">9th Evening session (05:00 PM - 06:30 PM)</option>
               </>
-            )}
-            {selectedTrackId === 'cbse-9' && (
+            ) : (
               <>
-                <option value="batch-9b-morning">Batch 9-B Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-9b-evening">Batch 9-B Evening (05:00 PM - 06:30 PM)</option>
-              </>
-            )}
-            {selectedTrackId === 'ksb-10' && (
-              <>
-                <option value="batch-10b-morning">Batch 10-B Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-10b-evening">Batch 10-B Evening (05:30 PM - 07:00 PM)</option>
-              </>
-            )}
-            {selectedTrackId === 'cbse-10' && (
-              <>
-                <option value="batch-10a-morning">Batch 10-A Morning (07:00 AM - 08:30 AM)</option>
-                <option value="batch-10a-evening">Batch 10-A Evening (05:30 PM - 07:00 PM)</option>
+                <option value="batch-10-morning">10th Morning session (07:00 AM - 08:30 AM)</option>
+                <option value="batch-10-evening">10th Evening session (05:30 PM - 07:00 PM)</option>
               </>
             )}
           </select>

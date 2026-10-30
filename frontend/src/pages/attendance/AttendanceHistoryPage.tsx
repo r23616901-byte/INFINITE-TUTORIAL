@@ -96,7 +96,20 @@ export const AttendanceHistoryPage: React.FC = () => {
     let list = currentStudentStats.history;
 
     if (selectedBatch) {
-      list = list.filter((r) => r.batchId === selectedBatch || r.batchName === selectedBatch);
+      list = list.filter((r) => {
+        if (r.batchId === selectedBatch || r.batchName === selectedBatch) return true;
+        const normSelected = selectedBatch.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normRecord = (r.batchName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (normRecord.includes('10') && normSelected.includes('10')) {
+          if (normSelected.includes('morning') && normRecord.includes('morning')) return true;
+          if (normSelected.includes('evening') && normRecord.includes('evening')) return true;
+        }
+        if (normRecord.includes('9') && normSelected.includes('9')) {
+          if (normSelected.includes('morning') && normRecord.includes('morning')) return true;
+          if (normSelected.includes('evening') && normRecord.includes('evening')) return true;
+        }
+        return false;
+      });
     }
     if (selectedSession) {
       list = list.filter((r) => r.session === selectedSession);

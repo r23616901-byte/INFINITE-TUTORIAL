@@ -33,9 +33,10 @@ import {
 } from 'lucide-react';
 
 const BATCH_OPTIONS = [
-  { id: 'batch-10a-morning', name: '10-A Morning' },
-  { id: 'batch-10b-evening', name: '10-B Evening' },
-  { id: 'batch-9a-evening', name: '9-A Evening' },
+  { id: 'batch-10-morning', name: '10th Morning session' },
+  { id: 'batch-10-evening', name: '10th Evening session' },
+  { id: 'batch-9-morning', name: '9th Morning session' },
+  { id: 'batch-9-evening', name: '9th Evening session' },
 ];
 
 const DEFAULT_SUBJECTS = ['Physics', 'Chemistry', 'Mathematics', 'Biology'];
