@@ -73,11 +73,6 @@ export const TeacherLayout: React.FC = () => {
           icon: <FileText className="w-4 h-4" />,
         },
         {
-          name: 'Upload Test Papers',
-          href: '/teacher/test-papers',
-          icon: <UploadCloud className="w-4 h-4" />,
-        },
-        {
           name: 'Enter / Edit Marks',
           href: '/teacher/marks-entry',
           icon: <Award className="w-4 h-4" />,

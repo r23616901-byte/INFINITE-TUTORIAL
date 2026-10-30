@@ -107,10 +107,10 @@ export const TeacherStudentsPage: React.FC = () => {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => navigate('/teacher/test-papers')}
-            leftIcon={<UploadCloud className="w-3.5 h-3.5" />}
+            onClick={() => navigate('/teacher/tests')}
+            leftIcon={<FileText className="w-3.5 h-3.5" />}
           >
-            Upload Test Paper
+            Create / View Tests
           </Button>
           <Button
             size="sm"
@@ -445,12 +445,12 @@ export const TeacherStudentsPage: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={() => navigate('/teacher/test-papers')}
+                  onClick={() => navigate('/teacher/tests')}
                   className="p-3 text-left rounded-xl bg-gray-50 hover:bg-teal-50 border border-gray-200 hover:border-teal-300 transition-all group"
                 >
                   <FileText className="w-4 h-4 text-teal-600 mb-1" />
-                  <span className="font-bold text-gray-900 text-xs block group-hover:text-teal-700">Upload Test Paper</span>
-                  <span className="text-[10px] text-gray-400 block">Question paper repository</span>
+                  <span className="font-bold text-gray-900 text-xs block group-hover:text-teal-700">Create / View Tests</span>
+                  <span className="text-[10px] text-gray-400 block">Draft & view scheduled tests</span>
                 </button>
 
                 <button

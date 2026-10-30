@@ -14,7 +14,6 @@ import {
   Layers,
   ClipboardCheck,
   FileClock,
-  FileQuestion,
   PenLine,
   Award,
   Files,
@@ -115,27 +114,11 @@ export const TeacherDashboard: React.FC = () => {
       items: [
         {
           id: 'teacher-tests',
-          title: 'Tests',
-          description: 'Scheduled exams & syllabus dates',
+          title: 'Create & View Tests',
+          description: 'Draft, view & schedule test papers',
           route: '/teacher/tests',
-          icon: FileQuestion,
+          icon: FileText,
           iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
-        },
-        {
-          id: 'teacher-create-test',
-          title: 'Create Test',
-          description: 'Draft unit & chapter evaluations',
-          route: '/teacher/tests',
-          icon: FileText,
-          iconStyle: 'text-[#1677FF] bg-[#EEF4FF] border-[#DCE5F2]',
-        },
-        {
-          id: 'teacher-question-papers',
-          title: 'Question Papers',
-          description: 'Upload & archive question papers',
-          route: '/teacher/test-papers',
-          icon: FileText,
-          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
         },
         {
           id: 'teacher-enter-marks',
