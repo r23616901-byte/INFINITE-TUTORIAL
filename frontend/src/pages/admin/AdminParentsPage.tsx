@@ -599,7 +599,7 @@ export const AdminParentsPage: React.FC = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[980px]">
               <thead className="bg-[#F8FAFD] border-b border-[#DCE5F2] text-[#0B1F4D] uppercase tracking-wider font-bold">
                 <tr>
                   <th className="px-5 py-3.5">Parent / Guardian</th>
@@ -607,7 +607,7 @@ export const AdminParentsPage: React.FC = () => {
                   <th className="px-5 py-3.5">Linked Student(s)</th>
                   <th className="px-5 py-3.5">Portal Status</th>
                   <th className="px-5 py-3.5">Emergency Contact</th>
-                  <th className="px-5 py-3.5 text-right">Actions</th>
+                  <th className="px-5 py-3.5 text-right w-36 min-w-[140px] whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F0F4FA]">
@@ -725,8 +725,8 @@ export const AdminParentsPage: React.FC = () => {
                       </td>
 
                       {/* Actions */}
-                      <td className="px-5 py-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
+                      <td className="px-5 py-4 text-right whitespace-nowrap w-36 min-w-[140px]">
+                        <div className="flex items-center justify-end gap-2">
                           <button
                             type="button"
                             onClick={() => {
@@ -734,25 +734,28 @@ export const AdminParentsPage: React.FC = () => {
                               setIsViewModalOpen(true);
                             }}
                             title="View Family Details"
-                            className="p-1.5 rounded-lg text-[#5B6B82] hover:text-[#155EEF] hover:bg-[#EEF4FF] transition-colors"
+                            aria-label="View Family Details"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-[#155EEF] bg-[#EEF4FF] hover:bg-[#D1E0FF] border border-[#DCE5F2] transition-colors shadow-2xs cursor-pointer"
                           >
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-4 h-4 flex-shrink-0" />
                           </button>
                           <button
                             type="button"
                             onClick={() => openEditModal(parent)}
                             title="Edit Contact"
-                            className="p-1.5 rounded-lg text-[#5B6B82] hover:text-[#155EEF] hover:bg-[#EEF4FF] transition-colors"
+                            aria-label="Edit Contact"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-[#0284C7] bg-[#E0F8FF] hover:bg-[#BAE6FD] border border-[#BAE6FD] transition-colors shadow-2xs cursor-pointer"
                           >
-                            <Edit2 className="w-4 h-4" />
+                            <Edit2 className="w-4 h-4 flex-shrink-0" />
                           </button>
                           <button
                             type="button"
                             onClick={() => openResetPinModal(parent)}
                             title="Reset Portal Access PIN"
-                            className="p-1.5 rounded-lg text-[#5B6B82] hover:text-amber-600 hover:bg-amber-50 transition-colors"
+                            aria-label="Reset Portal Access PIN"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-colors shadow-2xs cursor-pointer"
                           >
-                            <KeyRound className="w-4 h-4" />
+                            <KeyRound className="w-4 h-4 flex-shrink-0" />
                           </button>
                         </div>
                       </td>

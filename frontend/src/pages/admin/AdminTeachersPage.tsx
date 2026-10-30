@@ -457,7 +457,7 @@ export const AdminTeachersPage: React.FC = () => {
           />
         ) : (
           <div className="overflow-x-auto -mx-6">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[1080px]">
               <thead className="bg-slate-50/80 border-b border-slate-100 text-slate-500 uppercase tracking-wider font-semibold">
                 <tr>
                   <th className="px-6 py-3.5">Teacher Name & Info</th>
@@ -466,7 +466,7 @@ export const AdminTeachersPage: React.FC = () => {
                   <th className="px-6 py-3.5">Assigned Batches</th>
                   <th className="px-6 py-3.5">Joining Date</th>
                   <th className="px-6 py-3.5">Status</th>
-                  <th className="px-6 py-3.5 text-right">Actions</th>
+                  <th className="px-6 py-3.5 text-right w-64 min-w-[240px] whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -561,55 +561,61 @@ export const AdminTeachersPage: React.FC = () => {
                     </td>
 
                     {/* Actions */}
-                    <td className="px-6 py-3.5 text-right">
-                      <div className="flex items-center justify-end gap-1">
+                    <td className="px-6 py-3.5 text-right whitespace-nowrap w-64 min-w-[240px]">
+                      <div className="flex items-center justify-end gap-1.5">
                         <button
                           type="button"
                           onClick={() => setPrintingTeacher(teacher)}
                           title="Print Faculty Dossier"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-[#0A3622] hover:bg-emerald-50 transition-colors"
+                          aria-label="Print Faculty Dossier"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors shadow-2xs cursor-pointer"
                         >
-                          <Printer className="w-4 h-4 text-[#0A3622]" />
+                          <Printer className="w-4 h-4 flex-shrink-0" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleOpenStudentsModal(teacher)}
                           title="View Assigned Students"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-[#155EEF] hover:bg-[#EEF4FF] transition-colors"
+                          aria-label="View Assigned Students"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-[#155EEF] bg-[#EEF4FF] hover:bg-[#D1E0FF] border border-[#DCE5F2] transition-colors shadow-2xs cursor-pointer"
                         >
-                          <GraduationCap className="w-4 h-4" />
+                          <GraduationCap className="w-4 h-4 flex-shrink-0" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleOpenAssignModal(teacher)}
                           title="Assign Subjects & Batches"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                          aria-label="Assign Subjects & Batches"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-[#0284C7] bg-[#E0F8FF] hover:bg-[#BAE6FD] border border-[#BAE6FD] transition-colors shadow-2xs cursor-pointer"
                         >
-                          <BookOpen className="w-4 h-4" />
+                          <BookOpen className="w-4 h-4 flex-shrink-0" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleOpenResetModal(teacher)}
                           title="Reset Password"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-amber-600 hover:bg-amber-50 transition-colors"
+                          aria-label="Reset Password"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-colors shadow-2xs cursor-pointer"
                         >
-                          <KeyRound className="w-4 h-4" />
+                          <KeyRound className="w-4 h-4 flex-shrink-0" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleOpenActivityModal(teacher)}
                           title="View Activity Log"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-[#155EEF] hover:bg-[#EEF4FF] transition-colors"
+                          aria-label="View Activity Log"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors shadow-2xs cursor-pointer"
                         >
-                          <Activity className="w-4 h-4" />
+                          <Activity className="w-4 h-4 flex-shrink-0" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleOpenEditModal(teacher)}
                           title="Edit Teacher"
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          aria-label="Edit Teacher"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors shadow-2xs cursor-pointer"
                         >
-                          <Edit2 className="w-4 h-4" />
+                          <Edit2 className="w-4 h-4 flex-shrink-0" />
                         </button>
                       </div>
                     </td>
