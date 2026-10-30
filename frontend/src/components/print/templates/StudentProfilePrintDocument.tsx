@@ -32,9 +32,13 @@ export const StudentProfilePrintDocument: React.FC<StudentProfilePrintDocumentPr
       {/* 1. Profile Top Card */}
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 p-4 bg-slate-50 border border-slate-300 rounded-lg">
         {/* Student Photograph */}
-        <div className="w-24 h-28 rounded-lg overflow-hidden border-2 border-slate-300 bg-white flex items-center justify-center flex-shrink-0 shadow-2xs">
+        <div className="w-24 h-28 min-w-[96px] max-w-[96px] min-h-[112px] max-h-[112px] rounded-lg overflow-hidden border-2 border-slate-300 bg-white flex items-center justify-center flex-shrink-0 shadow-2xs profile-photo-container">
           {student.photoUrl ? (
-            <img src={student.photoUrl} alt={student.name} className="w-full h-full object-cover" />
+            <img
+              src={student.photoUrl}
+              alt={student.name}
+              className="w-24 h-28 max-w-[96px] max-h-[112px] object-cover block"
+            />
           ) : (
             <div className="text-center p-2">
               <span className="text-3xl font-black text-slate-400 block">{student.name.charAt(0)}</span>

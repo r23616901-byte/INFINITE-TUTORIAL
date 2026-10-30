@@ -88,11 +88,15 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
       customFooterNote="Official Certified Academic Scorecard issued by Infinite Tutorial Academic Directorate. Certified Teacher and Parent evaluated record."
     >
       {/* Student Identity Brief Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-slate-50 border border-slate-300 rounded-xl mb-4 gap-2.5">
+      <div className="flex flex-col sm:flex-row print:flex-row items-start sm:items-center print:items-center justify-between p-3 bg-slate-50 border border-slate-300 rounded-xl mb-4 gap-2.5">
         <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-slate-200 border border-slate-300 flex items-center justify-center font-black text-base sm:text-lg text-slate-700 flex-shrink-0 overflow-hidden">
+          <div className="w-12 h-12 min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] rounded-xl bg-slate-200 border border-slate-300 flex items-center justify-center font-black text-base text-slate-700 flex-shrink-0 overflow-hidden student-avatar">
             {scorecard.photoUrl ? (
-              <img src={scorecard.photoUrl} alt={scorecard.studentName} className="w-full h-full object-cover" />
+              <img
+                src={scorecard.photoUrl}
+                alt={scorecard.studentName}
+                className="w-12 h-12 max-w-[48px] max-h-[48px] object-cover rounded-xl block"
+              />
             ) : (
               <span>{scorecard.studentName.charAt(0)}</span>
             )}
@@ -110,11 +114,11 @@ export const ScorecardPrintDocument: React.FC<ScorecardPrintDocumentProps> = ({
           </div>
         </div>
 
-        <div className="text-left sm:text-right shrink-0">
+        <div className="text-left sm:text-right print:text-right shrink-0">
           <span className="text-[9px] uppercase font-bold text-slate-500 block">
             {isSubjectFiltered && targetSubject ? `${targetSubject.subjectName} Overall` : 'Cumulative Score'}
           </span>
-          <div className="flex items-baseline gap-1 mt-0.5 justify-start sm:justify-end">
+          <div className="flex items-baseline gap-1 mt-0.5 justify-start sm:justify-end print:justify-end">
             <span className="text-lg sm:text-xl font-black text-[#0A3622]">{overallPercentage}%</span>
             <span className="text-[10px] text-slate-500 font-bold">
               ({totalObtainedMarks}/{totalMaxMarks})

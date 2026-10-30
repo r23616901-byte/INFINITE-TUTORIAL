@@ -102,19 +102,15 @@
     height: 0 !important;
   }
 
-  /* Ensure containers do not crop or clip and take full A4 printable width */
+  /* Ensure outer application containers do not crop or clip and take full A4 printable width */
   #root,
   main,
   .print-preview-modal-root,
-  div[class*="min-h-screen"],
-  div[class*="flex-1"],
-  div[class*="flex-col"],
-  div[class*="flex-row"],
-  div[class*="overflow-"] {
+  .print-preview-viewport,
+  div[class*="min-h-screen"] {
     min-height: 0 !important;
     height: auto !important;
     overflow: visible !important;
-    display: block !important;
     width: 100% !important;
     max-width: 100% !important;
     background: transparent !important;
@@ -122,6 +118,34 @@
     margin: 0 !important;
     padding: 0 !important;
     position: static !important;
+  }
+
+  /* Prevent avatar/student photo explosion in print output */
+  .student-photo,
+  .student-avatar,
+  img[alt*="photo"],
+  img[alt*="Photo"],
+  [class*="w-10"] > img,
+  [class*="w-12"] > img,
+  [class*="w-14"] > img,
+  [class*="w-16"] > img {
+    max-width: 48px !important;
+    max-height: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: cover !important;
+    display: inline-block !important;
+  }
+
+  /* Specific rule for Student Profile full ID photograph */
+  .profile-photo-container,
+  .profile-photo-container img,
+  [class*="w-24"][class*="h-28"] img {
+    max-width: 96px !important;
+    max-height: 112px !important;
+    width: 96px !important;
+    height: 112px !important;
+    object-fit: cover !important;
   }
 
   /* Neutralize any zoom scaling in print mode so physical printout is 1:1 true scale */
