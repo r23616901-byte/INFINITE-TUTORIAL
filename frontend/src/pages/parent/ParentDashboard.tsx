@@ -80,7 +80,10 @@ export const ParentDashboard: React.FC = () => {
   const studentPhotoUrl =
     'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=300';
 
-  // Parent Quick Access categorized navigation modules
+  // Parent Quick Access categorized navigation modules using Infinite Tutorial Brand Palette:
+  // 1. Dark Royal Blue (#1048B5 / #0B1F4D)
+  // 2. Lighter Shade of Blue (#0284C7 / #00B8F8)
+  // 3. Golden Yellow Shade (#D97706 / #F59E0B)
   const parentCategories: QuickAccessCategory[] = [
     {
       title: 'Student',
@@ -91,7 +94,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Enrollment details & student bio',
           route: '/parent/profile',
           icon: UserCheck,
-          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+          iconStyle: 'text-[#1048B5] bg-[#EEF4FF] border-[#C7D9F8]',
         },
         {
           id: 'parent-scorecard',
@@ -99,7 +102,7 @@ export const ParentDashboard: React.FC = () => {
           description: '4-Subject term report cards',
           route: '/parent/scorecards',
           icon: Award,
-          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+          iconStyle: 'text-[#D97706] bg-[#FFFBEB] border-[#FDE68A]',
           badge: '84.7%',
         },
         {
@@ -116,7 +119,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Scanned paper answer sheets',
           route: '/parent/answer-sheets',
           icon: Files,
-          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+          iconStyle: 'text-[#1048B5] bg-[#EEF4FF] border-[#C7D9F8]',
         },
       ],
     },
@@ -129,7 +132,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Live morning & evening roll status',
           route: '/parent/attendance',
           icon: ClipboardCheck,
-          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
           badge: '91.3%',
         },
         {
@@ -138,7 +141,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Monthly attendance registers & metrics',
           route: '/parent/attendance',
           icon: CalendarCheck,
-          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+          iconStyle: 'text-[#1048B5] bg-[#EEF4FF] border-[#C7D9F8]',
         },
         {
           id: 'parent-leave-requests',
@@ -146,7 +149,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Submit & monitor leave status',
           route: '/parent/leaves',
           icon: FileCheck,
-          iconStyle: 'text-amber-800 bg-amber-50 border-amber-200',
+          iconStyle: 'text-[#D97706] bg-[#FFFBEB] border-[#FDE68A]',
         },
         {
           id: 'parent-home-reach',
@@ -154,7 +157,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Safe arrival & departure alerts',
           route: '/parent/tuition-reach',
           icon: Home,
-          iconStyle: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
           badge: 'Safe',
         },
       ],
@@ -176,7 +179,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Term syllabus progress & chapters',
           route: '/parent/portion-completion',
           icon: BookMarked,
-          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+          iconStyle: 'text-[#1048B5] bg-[#EEF4FF] border-[#C7D9F8]',
         },
         {
           id: 'parent-performance',
@@ -184,7 +187,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Line charts & chapter comparisons',
           route: '/parent/performance-graphs',
           icon: BarChart3,
-          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
+          iconStyle: 'text-[#D97706] bg-[#FFFBEB] border-[#FDE68A]',
         },
         {
           id: 'parent-timetable',
@@ -192,7 +195,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Weekly schedule & class timing',
           route: '/parent/timetable',
           icon: Clock,
-          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+          iconStyle: 'text-[#1048B5] bg-[#EEF4FF] border-[#C7D9F8]',
         },
       ],
     },
@@ -205,7 +208,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Institute circulars & notices',
           route: '/parent/announcements',
           icon: Megaphone,
-          iconStyle: 'text-[#D97706] bg-[#FFF4E5] border-[#FDE68A]',
+          iconStyle: 'text-[#D97706] bg-[#FFFBEB] border-[#FDE68A]',
           badge: '2 New',
         },
         {
@@ -214,7 +217,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Exam dates, holidays & PTM dates',
           route: '/parent/calendar',
           icon: CalendarDays,
-          iconStyle: 'text-[#5B6B82] bg-[#F5F8FC] border-[#DCE5F2]',
+          iconStyle: 'text-[#0284C7] bg-[#E0F8FF] border-[#BAE6FD]',
         },
         {
           id: 'parent-notifications',
@@ -222,7 +225,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'System reminders & faculty alerts',
           route: '/parent/announcements',
           icon: Bell,
-          iconStyle: 'text-[#155EEF] bg-[#EEF4FF] border-[#DCE5F2]',
+          iconStyle: 'text-[#1048B5] bg-[#EEF4FF] border-[#C7D9F8]',
         },
         {
           id: 'parent-change-password',
@@ -230,7 +233,7 @@ export const ParentDashboard: React.FC = () => {
           description: 'Manage account security credentials',
           action: () => setShowPasswordModal(true),
           icon: KeyRound,
-          iconStyle: 'text-[#0B1F4D] bg-[#EEF4FF] border-[#DCE5F2]',
+          iconStyle: 'text-[#D97706] bg-[#FFFBEB] border-[#FDE68A]',
         },
       ],
     },

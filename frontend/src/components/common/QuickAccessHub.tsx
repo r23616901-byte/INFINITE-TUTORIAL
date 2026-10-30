@@ -11,6 +11,7 @@ export interface QuickAccessItem {
   icon: LucideIcon;
   iconStyle: string;
   badge?: string;
+  badgeColor?: string;
 }
 
 export interface QuickAccessCategory {
@@ -121,7 +122,17 @@ export const QuickAccessHub: React.FC<QuickAccessHubProps> = ({
                       className="group relative p-3 rounded-xl bg-white border border-[#DCE5F2] hover:border-[#155EEF] hover:bg-[#F8FAFD] hover:shadow-xs hover:-translate-y-0.5 transition-all duration-150 cursor-pointer flex flex-col items-center justify-center text-center min-h-[90px]"
                     >
                       {item.badge && (
-                        <span className="absolute top-1.5 right-1.5 text-[9.5px] font-bold px-1.5 py-0.5 rounded-full bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
+                        <span
+                          className={`absolute top-1.5 right-1.5 text-[9.5px] font-bold px-1.5 py-0.5 rounded-full border ${
+                            item.badgeColor
+                              ? item.badgeColor
+                              : item.iconStyle.includes('text-[#D97706]')
+                              ? 'bg-[#FFFBEB] text-[#D97706] border-[#FDE68A]'
+                              : item.iconStyle.includes('text-[#0284C7]')
+                              ? 'bg-[#E0F8FF] text-[#0284C7] border-[#BAE6FD]'
+                              : 'bg-[#EEF4FF] text-[#1048B5] border-[#C7D9F8]'
+                          }`}
+                        >
                           {item.badge}
                         </span>
                       )}
@@ -166,7 +177,17 @@ export const QuickAccessHub: React.FC<QuickAccessHubProps> = ({
                         </div>
                         <div className="flex items-center gap-1.5">
                           {item.badge && (
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EEF4FF] text-[#155EEF] border border-[#DCE5F2]">
+                            <span
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                                item.badgeColor
+                                  ? item.badgeColor
+                                  : item.iconStyle.includes('text-[#D97706]')
+                                  ? 'bg-[#FFFBEB] text-[#D97706] border-[#FDE68A]'
+                                  : item.iconStyle.includes('text-[#0284C7]')
+                                  ? 'bg-[#E0F8FF] text-[#0284C7] border-[#BAE6FD]'
+                                  : 'bg-[#EEF4FF] text-[#1048B5] border-[#C7D9F8]'
+                              }`}
+                            >
                               {item.badge}
                             </span>
                           )}
